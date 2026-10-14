@@ -75,13 +75,13 @@ const ACT = {
   scrim: () => { S.expanded = false; renderToolbarState(); },
   info: () => { S.showInfo = !S.showInfo; store.set('showInfo', S.showInfo); renderToolbarState(); afterRender(); toast(S.showInfo ? '已显示说明与字段来源' : '已隐藏说明与字段来源（右上角 ⓘ 可再打开）'); },
   morefilters: () => { S.moreF = !S.moreF; rerenderKeep(); },
-  theme: () => { S.theme = { system: 'light', light: 'dark', dark: 'system' }[S.theme]; store.set('theme', S.theme); renderToolbarState(); toast({ system: '主题：跟随系统', light: '主题：浅色', dark: '主题：深色' }[S.theme]); },
+  theme: () => { S.theme = { system: 'light', light: 'dark', dark: 'system' }[S.theme]; store.set('theme', S.theme); renderToolbarState(); drawChartsThemed(); toast({ system: '主题：跟随系统', light: '主题：浅色', dark: '主题：深色' }[S.theme]); },
   density: () => { S.density = S.density === 'compact' ? 'comfortable' : 'compact'; store.set('density', S.density); renderToolbarState(); applyPins(); },
   country: t => { const v = cui(S.country).view, f = cui(S.country).fut; S.country = t.dataset.v; cui(S.country).view = v; cui(S.country).fut = f; go('country'); },
   cview: t => { cui(S.country).view = t.dataset.v; rerenderKeep(); },
   cclear: () => { Object.assign(cui(S.country), { q: '', owner: 'ALL', grade: 'ALL', label: 'ALL', issue: false, page: 1 }); rerenderKeep(); },
-  sort: t => { const sc = t.dataset.scope; const st = sc === 'country' ? cui(S.country) : null; if (!st) return; const k = t.dataset.key; st.sort = st.sort && st.sort.key === k ? (st.sort.dir > 0 ? { key: k, dir: -1 } : null) : { key: k, dir: 1 }; rerenderKeep(); },
-  page: t => { const sc = t.dataset.scope; const st = sc === 'country' ? cui(S.country) : S[sc]; st.page = Number(t.dataset.p); rerenderKeep(); const w = $('.tbl-wrap'); },
+  sort: t => { const sc = t.dataset.scope; const st = sc === 'country' ? cui(S.country) : sc === 'people' ? S.people : null; if (!st) return; const k = t.dataset.key; st.sort = st.sort && st.sort.key === k ? (st.sort.dir > 0 ? { key: k, dir: -1 } : null) : { key: k, dir: 1 }; rerenderKeep(); },
+  page: t => { const st = pstate(t.dataset.scope); st.page = Number(t.dataset.p); rerenderKeep(); },
   hlmonth: t => { const k = t.dataset.hk, m = Number(t.dataset.m); S.hl[k] = S.hl[k] === m ? null : m; rerenderKeep(); },
   wyear: t => { const st = t.dataset.scope === 'detail' ? S.detail : cui(S.country); st.wyear = t.dataset.v; st.wfrom = st.wto = null; rerenderKeep(); },
   wquick: t => { const st = t.dataset.scope === 'detail' ? S.detail : cui(S.country); st.wyear = 'ALL'; st.wto = null; st.wfrom = t.dataset.q === 'last8' ? D.WEEKS[D.WEEKS.length - 8].key : null; rerenderKeep(); },
@@ -110,7 +110,7 @@ const ACT = {
   try: t => { S.search.q = t.dataset.q; S.search.page = 1; rerenderKeep(); },
   ttab: t => { S.total.tab = t.dataset.v; rerenderKeep(); }, tblk: t => { S.total.blk = t.dataset.v; rerenderKeep(); },
   stab: t => { S.stock.tab = t.dataset.v; rerenderKeep(); },
-  plcountry: t => { S.plan.country = t.dataset.v; rerenderKeep(); }, plstatus: t => { S.plan.status = t.dataset.v; rerenderKeep(); },
+  plcountry: t => { S.plan.country = t.dataset.v; pstate('plan').page = 1; rerenderKeep(); }, plstatus: t => { S.plan.status = t.dataset.v; pstate('plan').page = 1; rerenderKeep(); },
   popen: t => { const id = t.dataset.pid; if (S.plan.open[id]) delete S.plan.open[id]; else S.plan.open[id] = true; rerenderKeep(); },
   pexpand: () => { if (Object.keys(S.plan.open).length) S.plan.open = {}; else D.PRODUCTS.forEach(p => { S.plan.open[p.pid] = true; }); rerenderKeep(); },
   simremote: () => simRemote(),
@@ -118,7 +118,7 @@ const ACT = {
   ureset: () => { S.upd = newUpd(); rerenderKeep(); },
   uapply: () => applyUpdate(),
   covtab: t => { S.coverage.tab = t.dataset.v; rerenderKeep(); },
-  goto: t => gotoTarget(t.dataset.t),
+  goto: t => { closeModal(); gotoTarget(t.dataset.t); },
   save: () => save(),
   discard: () => { S.plans = clone(S.plansSaved); Object.keys(S.halfSaved).forEach(k => { S.half[k] = S.halfSaved[k].slice(); }); rerenderKeep(); toast('已放弃未保存的演示修改，恢复为上次保存的值。'); },
   cresolve: t => resolveConflicts(t.dataset.lids.split(',')),
@@ -133,7 +133,7 @@ const INP = {
   cissue: t => { cui(S.country).issue = t.checked; cui(S.country).page = 1; rerenderKeep(); },
   dlid: t => { const l = L(t.value); S.detail.lid = l.lid; S.detail.country = l.country; rerenderKeep(); },
   hidezero: t => { S.hideZero = t.checked; rerenderKeep(); },
-  pagesize: t => { const sc = t.dataset.scope; const st = sc === 'country' ? cui(S.country) : S[sc]; st.size = Number(t.value); st.page = 1; rerenderKeep(); },
+  pagesize: t => { const st = pstate(t.dataset.scope); st.size = Number(t.value); st.page = 1; rerenderKeep(); },
   wfrom: t => { const st = t.dataset.scope === 'detail' ? S.detail : cui(S.country); st.wfrom = t.value || null; rerenderKeep(); },
   wto: t => { const st = t.dataset.scope === 'detail' ? S.detail : cui(S.country); st.wto = t.value || null; rerenderKeep(); },
   plan: t => { const r = parseQty(t.value); t.setCustomValidity(r.ok ? '' : '请输入非负整数'); t.style.borderColor = r.ok ? '' : 'var(--bad)'; t.title = r.ok ? '人工计划字段：可编辑' : '请输入非负整数；未写入'; if (!r.ok) return; S.plans[t.dataset.lid].qty = r.v; t.classList.toggle('dirty', isDirtyPlan(t.dataset.lid)); $$(`[data-in="plan"][data-lid="${t.dataset.lid}"]`).forEach(x => { if (x !== t) { x.value = t.value; x.classList.toggle('dirty', isDirtyPlan(t.dataset.lid)); } }); refreshPlanDerived(t.dataset.lid); },
@@ -147,12 +147,13 @@ const INP = {
   scountry: t => { S.search.country = t.value; S.search.page = 1; rerenderKeep(); },
   sowner: t => { S.search.owner = t.value; S.search.page = 1; rerenderKeep(); },
   tq: t => { S.total.q = t.value; S.total.page = 1; rerenderKeep(); }, towner: t => { S.total.owner = t.value; S.total.page = 1; rerenderKeep(); },
-  plq: t => { S.plan.q = t.value; rerenderKeep(); }, plonly: t => { S.plan.onlyPlanned = t.checked; rerenderKeep(); },
+  plq: t => { S.plan.q = t.value; pstate('plan').page = 1; rerenderKeep(); }, plonly: t => { S.plan.onlyPlanned = t.checked; pstate('plan').page = 1; rerenderKeep(); },
   ufile: t => { S.upd.files.find(f => f.id === t.dataset.id).on = t.checked; },
   ubase: t => { S.upd.baseDate = t.value; }, unb: t => { S.upd.newBatch = t.checked; rerenderKeep(); },
   unbd: t => { S.upd.nbDate = t.value; }, unbf: t => { S.upd.nbFrom = t.value; }, unbt: t => { S.upd.nbTo = t.value; },
   uvc: t => { S.upd.versionChanged = t.checked; },
   umode: null,
+  heat: t => { S.heat = t.checked; rerenderKeep(); },
   rectab: t => { S.recTab = t.value; rerenderKeep(); },
   role: t => { S.role = t.value; rerenderKeep(); toast(ROLES[S.role].canEdit ? '演示身份：运营甲，可编辑计划（不是真实权限）' : '演示身份：查看者，所有输入只读（不是真实权限）'); },
 };
@@ -179,13 +180,17 @@ function boot() {
     if (t.disabled) return; const fn = ACT[t.dataset.act]; if (fn) fn(t, e);
   });
   let deb = null;
-  document.addEventListener('input', e => {
-    const t = e.target; if (t.id === 'gq') { showPop(); return; }
+  // 中文输入法拼写过程中（isComposing）不处理，等 compositionend 再处理，避免重绘打断输入
+  const onText = t => {
+    if (t.id === 'gq') { showPop(); return; }
     const k = t.dataset && t.dataset.in; if (!k || !INP[k]) return;
     if (LIVE.has(k)) INP[k](t); else if (DEBOUNCE.has(k)) { clearTimeout(deb); deb = setTimeout(() => INP[k](t), 260); }
-  });
+  };
+  document.addEventListener('input', e => { if (e.isComposing) return; onText(e.target); });
+  document.addEventListener('compositionend', e => onText(e.target));
   document.addEventListener('change', e => { const t = e.target; const k = t.dataset && t.dataset.in; if (!k || !INP[k] || LIVE.has(k) || DEBOUNCE.has(k)) return; INP[k](t); });
   document.addEventListener('keydown', e => {
+    trapModalTab(e);
     const tg = e.target;
     if (e.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(tg.tagName)) { e.preventDefault(); $('#gq').focus(); $('#gq').select(); return; }
     if (e.key === 'Escape') { if ($('#modal-root').innerHTML) closeModal(); hidePop(); if (S.expanded) { S.expanded = false; renderToolbarState(); } return; }
@@ -198,7 +203,7 @@ function boot() {
     }
   });
   window.addEventListener('beforeunload', e => { if (dirtyCount()) { e.preventDefault(); e.returnValue = ''; } });
-  window.addEventListener('resize', () => { applyPins(); if (window.innerWidth > 1100 && S.expanded) { S.expanded = false; renderToolbarState(); } });
+  window.addEventListener('resize', () => { applyPins(); scheduleCharts(); if (window.innerWidth > 1100 && S.expanded) { S.expanded = false; renderToolbarState(); } });
   render({ top: true });
 }
 boot();

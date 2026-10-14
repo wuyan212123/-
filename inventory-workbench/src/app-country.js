@@ -1,9 +1,10 @@
 /* ========== 共享：月矩阵 / 周历史 / 半月计划 ========== */
-const yearOn = y => !S.years || S.years.includes(y);
-function yearRowsForListing(l) {
+/** 生效的年份选择：只取本页存在的年份；所选年份在本页都不存在时按“全部”处理，选择器也显示为“全部”，不留看不见的筛选 */
+function effYears(avail) { if (!S.years) return null; const e = S.years.filter(y => avail.includes(y)); return e.length ? e : null; }
+function yearRowsForListing(l, ysel) {
   const cfg = D.CMAP[l.country]; const rows = [];
   const years = [...cfg.annualOnly.map(y => ({ y, t: 'annual' })), ...cfg.monthYears.map(y => ({ y, t: 'month' }))].sort((a, b) => a.y - b.y);
-  years.filter(({ y }) => yearOn(y)).forEach(({ y, t }) => {
+  years.filter(({ y }) => !ysel || ysel.includes(y)).forEach(({ y, t }) => {
     if (t === 'annual') { rows.push({ y, type: 'annual', total: l.annual[y], note: l.country === 'SA' ? 'SA 年度字段（Z列）' : '仅年总量' }); return; }
     const arr = l.monthly[y]; const s = sumNums(arr); const src = l.annual[y];
     let flag = '';
@@ -13,23 +14,29 @@ function yearRowsForListing(l) {
   });
   return rows;
 }
-function yearRowsForProduct(p) {
-  return [2023, 2024, 2025, 2026].filter(yearOn).map(y => ({ y, type: 'month', arr: p.total.monthly[y], total: p.total.annual[y], cutM: y === D.BASE.y ? D.BASE.m : null, flag: '' }));
+const TOTAL_YEARS = [2023, 2024, 2025, 2026];
+function yearRowsForProduct(p, ysel) {
+  return TOTAL_YEARS.filter(y => !ysel || ysel.includes(y)).map(y => ({ y, type: 'month', arr: p.total.monthly[y], total: p.total.annual[y], cutM: y === D.BASE.y ? D.BASE.m : null, flag: '' }));
 }
 function monthMatrix(id, groups, o = {}) {
   const hk = o.hlKey || id; const hm = S.hl[hk];
   const ident = o.ident !== false;
-  const mh = D.MONTHS.map((m, i) => `<th class="c matrix-cell sortable ${hm === i ? 'hl' : ''}" data-act="hlmonth" data-hk="${hk}" data-m="${i}" tabindex="0" title="点击高亮所有年份的${m}" aria-pressed="${hm === i}">${m}${hm === i ? '<span class="th-flag">● 已高亮</span>' : ''}</th>`).join('');
+  const mh = D.MONTHS.map((m, i) => `<th class="c matrix-cell ${hm === i ? 'hl' : ''}"><button class="th-btn" data-act="hlmonth" data-hk="${hk}" data-m="${i}" aria-pressed="${hm === i}" title="高亮所有年份的${m}">${m}</button>${hm === i ? '<span class="th-flag">● 已高亮</span>' : ''}</th>`).join('');
   const head = `<thead><tr>${ident ? `<th class="l fz1" style="min-width:${o.fz1w || 172}px">${o.c1 || 'SKU'}</th><th class="l fz2" style="min-width:170px">${o.c2 || '品名 / Listing'}</th>` : ''}<th class="l ${ident ? '' : 'fz1 last'}" style="min-width:64px">年份</th>${mh}<th style="min-width:96px">年合计<span class="th-sub">年度源值</span></th><th class="l" style="min-width:120px">核对</th></tr></thead>`;
-  const body = groups.map(g => !g.rows.length ? `<tr class="g-start">${ident ? `<td class="l fz1">${g.c1}</td><td class="l fz2">${g.c2}</td>` : ''}<td colspan="15" class="l dim">所选年份没有该记录的数据</td></tr>` : g.rows.map((r, ri) => {
-    const idc = ident ? `<td class="l fz1 ${ri ? 'ghost-cell' : ''}">${ri ? '' : g.c1}</td><td class="l fz2">${ri ? '' : g.c2}</td>` : '';
-    const yc = `<td class="year-c ${ident ? '' : 'fz1 last'}">${r.y}</td>`;
-    if (r.type === 'annual') return `<tr class="${ri ? '' : 'g-start'}">${idc}${yc}<td colspan="12" class="l dim" title="源表该年没有月份字段：不拆分、不平均、不反推月份">${tag('mute', r.note || '仅年总量')}<span class="note-inline"> 源表该年无月份字段，不拆分</span></td><td class="sum-c">${V(r.total)}</td><td class="l"></td></tr>`;
-    const cells = r.arr.map((v, i) => `<td class="${hm === i ? 'hl' : ''}">${V(v)}${r.cutM === i + 1 && isNum(v) ? `<sup class="cut" title="${curMonthLabel()}：该记录只统计到 ${S.baseDate}，与往年完整月不可直接同比" aria-label="${curMonthLabel()}">•</sup>` : ''}</td>`).join('');
-    const tn = '';
-    return `<tr class="${ri ? '' : 'g-start'}">${idc}${yc}${cells}<td class="sum-c"${r.cutM ? ` title="${curMonthLabel()}"` : ''}>${V(r.total)}${tn}</td><td class="l">${r.flag || ''}</td></tr>`;
-  }).join('')).join('');
-  return `<div class="tbl-wrap ${o.wrapCls || ''}" id="${id}" style="--fz1w:${o.fz1w || 172}px"><table class="t">${head}<tbody>${body || `<tr><td colspan="16"><div class="empty"><h3>没有匹配的记录</h3></div></td></tr>`}</tbody></table></div>`;
+  const body = groups.map(g => {
+    if (!g.rows.length) return `<tr class="g-start">${ident ? `<td class="l fz1">${g.c1}</td><td class="l fz2">${g.c2}</td>` : ''}<td colspan="15" class="l dim">所选年份没有该记录的数据</td></tr>`;
+    // 色阶按本记录自身最大值分 5 档；未完整月不着色
+    const gmax = S.heat ? Math.max(0, ...g.rows.filter(r => r.type === 'month').flatMap(r => r.arr.filter((v, i) => isNum(v) && r.cutM !== i + 1))) : 0;
+    return g.rows.map((r, ri) => {
+      const idc = ident ? `<td class="l fz1">${ri ? '' : g.c1}</td><td class="l fz2">${ri ? '' : g.c2}</td>` : '';
+      const yc = `<td class="year-c ${ident ? '' : 'fz1 last'}">${r.y}</td>`;
+      if (r.type === 'annual') return `<tr class="${ri ? '' : 'g-start'}">${idc}${yc}<td colspan="12" class="l dim" title="源表该年没有月份字段：不拆分、不平均、不反推月份">${tag('mute', r.note || '仅年总量')}<span class="note-inline"> 源表该年无月份字段，不拆分</span></td><td class="sum-c">${V(r.total)}</td><td class="l"></td></tr>`;
+      const cells = r.arr.map((v, i) => { const part = r.cutM === i + 1; const h = S.heat && !part ? heatLevel(v, gmax) : 0;
+        return `<td class="${hm === i ? 'hl' : ''}${h ? ' heat-' + h : ''}">${V(v)}${part && isNum(v) ? `<sup class="cut" title="${curMonthLabel()}：该记录只统计到 ${S.baseDate}，与往年完整月不可直接同比" aria-label="${curMonthLabel()}">•</sup>` : ''}</td>`; }).join('');
+      return `<tr class="${ri ? '' : 'g-start'}">${idc}${yc}${cells}<td class="sum-c"${r.cutM ? ` title="${curMonthLabel()}累计，非全年合计"` : ''}>${V(r.total)}</td><td class="l">${r.flag || ''}</td></tr>`;
+    }).join('');
+  }).join('');
+  return `<div class="tbl-wrap ${o.wrapCls || ''}" id="${id}" style="--fz1w:${o.fz1w || 172}px"><table class="t">${head}<tbody>${body || `<tr><td colspan="16"><div class="empty"><h2>没有匹配的记录</h2></div></td></tr>`}</tbody></table></div>`;
 }
 function weekIdx(st) {
   let idx = D.WEEKS.map((w, i) => i).filter(i => st.wyear === 'ALL' || String(D.WEEKS[i].srcYear) === st.wyear);
@@ -53,19 +60,23 @@ function weekHead(i) {
 }
 function weekTable(id, items, st, o = {}) {
   const idx = weekIdx(st);
-  if (!idx.length) return `<div class="empty"><h3>所选范围没有周期</h3><div>调整起止周。</div></div>`;
+  if (!idx.length) return `<div class="empty"><h2>所选范围没有周期</h2><div>调整起止周。</div></div>`;
   const head = `<thead><tr><th class="l fz1" style="min-width:${o.fz1w || 172}px">${o.c1 || 'SKU'}</th><th class="l fz2" style="min-width:150px">${o.c2 || 'MSKU'}</th>${idx.map(weekHead).join('')}<th style="min-width:90px">区间合计<span class="th-sub">仅数值周</span></th></tr></thead>`;
   const body = items.map(it => `<tr><td class="l fz1">${it.c1}</td><td class="l fz2">${it.c2}</td>${idx.map(i => `<td>${it.vals ? V(it.vals[i]) : V('NF')}</td>`).join('')}<td class="sum-c">${it.vals ? fmt(sumNums(idx.map(i => it.vals[i]))) : ''}</td></tr>`).join('');
   return `<div class="tbl-wrap" id="${id}" style="--fz1w:${o.fz1w || 172}px"><table class="t">${head}<tbody>${body}</tbody></table></div>`;
 }
 function arrivalIdx(cc, shipDate) {
-  const cfg = D.CMAP[cc]; if (!cfg.transitDays || !shipDate) return -1;
-  const d = new Date(shipDate + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + cfg.transitDays); const ds = d.toISOString().slice(0, 10);
+  const cfg = D.CMAP[cc]; if (!cfg.transitDays || !shipDate) return { k: -1, date: null };
+  const d = new Date(shipDate + 'T00:00:00Z'); if (isNaN(d)) return { k: -1, date: null };
+  d.setUTCDate(d.getUTCDate() + cfg.transitDays); const ds = d.toISOString().slice(0, 10);
+  const last = D.HALF[D.HALF.length - 1]; const end = `${last.y + (last.m === 12 ? 1 : 0)}-${String(last.m % 12 + 1).padStart(2, '0')}-01`;
+  if (ds < D.HALF[0].start || ds >= end) return { k: -1, date: ds, out: true };
   let k = -1; D.HALF.forEach((h, i) => { if (h.start <= ds) k = i; }); return { k, date: ds };
 }
-function halfHead(i, arr) { const h = D.HALF[i]; return `<th class="c ${arr === i ? 'arrive' : ''}" style="min-width:84px" title="${h.y}年${h.m}月${h.h}半月">${h.label}${arr === i ? '<span class="th-flag">◆ 预计到仓</span>' : ''}</th>`; }
 
 /* ========== 国家主表 ========== */
+/** 列表排序取值（国家主表与人员视图共用）；空值排在最前或最后，不与 0 混淆 */
+const LISTING_SORT = { sku: r => r.sku, fba: r => r.fba, transit: r => transitOf(r.lid), avg4: r => isNum(r.avg4) ? r.avg4 : null, plan: r => planQty(r.lid), m9: r => isNum(r.monthly[2026]?.[8]) ? r.monthly[2026][8] : null, owner: r => r.owner || '' };
 function filteredListings(cc) {
   const c = cui(cc); const q = norm(c.q);
   let rows = listingsOf(cc).filter(l => {
@@ -77,8 +88,7 @@ function filteredListings(cc) {
     if (c.issue && !issuesOfL(l.lid).length && !(l.variant && ['zeroden', 'outgroup', 'referr'].includes(l.variant.kind))) return false;
     return true;
   });
-  rows = sortRows(rows, c.sort, { sku: r => r.sku, fba: r => r.fba, transit: r => transitOf(r.lid), avg4: r => r.avg4, plan: r => planQty(r.lid), m9: r => isNum(r.monthly[2026]?.[8]) ? r.monthly[2026][8] : null, owner: r => r.owner || '' });
-  return rows;
+  return sortRows(rows, c.sort, LISTING_SORT);
 }
 const VIEWS = [
   { id: 'overview', label: '综合总览' }, { id: 'month', label: '月历史' }, { id: 'week', label: '周历史', need: 'weeks' }, { id: 'future', label: '未来计划/目标', need: 'half' },
@@ -112,7 +122,7 @@ PAGES.country = function () {
       <input class="inp" id="cq-${cc}" data-in="cq" placeholder="本国内筛选 SKU / 品名 / ASIN / MSKU" value="${esc(c.q)}" style="flex:1 1 220px;min-width:0;max-width:320px" aria-label="本国内筛选">
       <label class="grp" title="原字段：${esc(cfg.ownerField)}">${esc(cfg.ownerField)} <select class="sel" id="co-${cc}" data-in="cowner" aria-label="负责人筛选"><option value="ALL">全部</option>${owners.map(o => `<option ${c.owner === o ? 'selected' : ''}>${o}</option>`).join('')}${hasNone ? `<option value="__none" ${c.owner === '__none' ? 'selected' : ''}>未分配</option>` : ''}</select></label>
       <button class="btn sm${S.moreF ? ' on' : ''}" data-act="morefilters" aria-expanded="${S.moreF}">${icon('density')} 更多筛选${moreCount ? ` <span class="badge">${moreCount}</span>` : ''}</button>
-      ${['overview', 'plan', 'stock', 'info'].includes(c.view) && viewAvailable(cc, v) ? colBtn(c.view) : ''}${c.view === 'month' ? yearPicker(cfg.annualOnly.concat(cfg.monthYears)) : ''}
+      ${COL_VIEWS.includes(c.view) && viewAvailable(cc, v) ? colBtn(c.view) : ''}${c.view === 'month' ? yearPicker(cfg.annualOnly.concat(cfg.monthYears)) + heatSwitch() : ''}
       <span class="spacer"></span>
       <span class="small muted">${rows.length === all.length ? `${all.length} 条` : `筛选出 <b>${rows.length}</b> / ${all.length} 条`}</span>
       ${filtersOn ? `<button class="link small" data-act="cclear">清空筛选</button>` : ''}
@@ -124,7 +134,7 @@ PAGES.country = function () {
 };
 function notApplicable(cc, v) {
   const why = { week: '本国原表没有周销量区', future: '本国原表没有 20 期半月计划与 APR—MAR 财年月目标区', plan: '本国原表未设补货数量区（发货推演）' }[v.id];
-  return `<div class="empty" style="border-top:1px solid var(--line)"><h3>${esc(v.label)}：不适用</h3><div>${why}。这里不补造同样结构，也不用 0 代替。该国已有的数据可在“综合总览 / 月历史 / 批次与在途 / 库存明细”及 SKU 统一详情中查看。</div></div>`;
+  return `<div class="empty" style="border-top:1px solid var(--line)"><h2>${esc(v.label)}：不适用</h2><div>${why}。这里不补造同样结构，也不用 0 代替。该国已有的数据可在“综合总览 / 月历史 / 批次与在途 / 库存明细”及 SKU 统一详情中查看。</div></div>`;
 }
 const skuCell = (l, list) => `<button class="sku-btn" data-act="sku" data-pid="${l.pid}" data-cc="${l.country}" data-lid="${l.lid}" ${list ? `data-list="${list}"` : ''} title="打开 ${esc(l.sku)} 统一详情">${esc(l.sku)}</button>${listingsOfP(l.pid).filter(x => x.country === l.country).length > 1 ? `<span class="multi" title="同国同 SKU 有 ${listingsOfP(l.pid).filter(x => x.country === l.country).length} 个 Listing（ASIN/MSKU 各自独立）">×${listingsOfP(l.pid).filter(x => x.country === l.country).length}</span>` : ''}`;
 const nameCell = l => `<span class="cell-name" title="${esc(P(l.pid).name)}">${esc(P(l.pid).name)}</span>`;
@@ -143,18 +153,12 @@ function listCtx(rows) { return rows.map(r => r.pid).filter((v, i, a) => a.index
 
 function countryView(cc, c, rows, allRows) {
   const cfg = D.CMAP[cc]; const listAttr = listCtx(allRows);
-  const ID = [
-    { key: 'sku', label: 'SKU', sub: '领星SKU', fz: 1, cls: 'l', sort: true, render: l => skuCell(l, listAttr) },
-    { key: 'name', label: '品名', fz: 2, cls: 'l', render: nameCell },
-  ];
-  const nextHalf = cfg.half ? D.HALF.findIndex(h => h.start > S.baseDate) : -1;
-  const sel = selOf(cc);
   switch (c.view) {
     case 'overview': return table(`tbl-${cc}-overview`, configuredCols('overview', cc, listAttr), rows, { sort: c.sort, sortKey: 'country' }) + legendRow(['edit']);
     case 'month': {
-      const groups = rows.map(l => ({ c1: skuCell(l, listAttr), c2: `<span class="mono small">${esc(l.msku)}</span>`, rows: yearRowsForListing(l) }));
-      const yrs = [...cfg.annualOnly, ...cfg.monthYears].sort();
-      return `<div class="note">${icon('info')} 全部可用年份默认同时展开：${yrs.map(y => cfg.annualOnly.includes(y) ? `${y}（仅年总量）` : `${y}`).join('、')}。点击月份表头可高亮所有年份的同一月。${cc === 'EU' ? ' EU 未设 2022/2023 年度字段，不补造。' : ''}</div>` + monthMatrix(`tbl-${cc}-month`, groups, { hlKey: 'cm-' + cc, c2: 'MSKU' }) + legendRow(['hl', 'na']);
+      const avail = cfg.annualOnly.concat(cfg.monthYears); const ysel = effYears(avail);
+      const groups = rows.map(l => ({ c1: skuCell(l, listAttr), c2: `<span class="mono small">${esc(l.msku)}</span>`, rows: yearRowsForListing(l, ysel) }));
+      return `<div class="note">${icon('info')} 全部可用年份默认同时展开：${[...avail].sort().map(y => cfg.annualOnly.includes(y) ? `${y}（仅年总量）` : `${y}`).join('、')}。点击月份表头可高亮所有年份的同一月；橙点表示该格截至 ${S.baseDate}，悬停可见。${cc === 'EU' ? ' EU 未设 2022/2023 年度字段，不补造。' : ''}</div>` + monthMatrix(`tbl-${cc}-month`, groups, { hlKey: 'cm-' + cc, c2: 'MSKU' }) + legendRow(['hl', 'na'].concat(S.heat ? ['heat'] : []));
     }
     case 'week': {
       const items = rows.map(l => ({ c1: skuCell(l, listAttr), c2: `<span class="mono small">${esc(l.msku)}</span>`, vals: l.weekly }));
@@ -162,7 +166,7 @@ function countryView(cc, c, rows, allRows) {
     }
     case 'future': return futureView(cc, c, rows, listAttr);
     case 'plan': return planView(cc, c, rows, listAttr);
-    case 'batch': return batchView(cc, c);
+    case 'batch': return batchView(cc, c, allRows);
     case 'stock': return table(`tbl-${cc}-stock`, configuredCols('stock', cc, listAttr), rows, { sort: c.sort, sortKey: 'country' });
     case 'info': {
       const cols = configuredCols('info', cc, listAttr);
@@ -179,7 +183,7 @@ function boxCell(l) {
   return `<span data-derived="box-${l.lid}">${fmt1(b.v)}</span>${l.country === 'US' ? '' : ' <span class="tiny muted">示例</span>'}`;
 }
 function legendRow(keys) {
-  const m = { edit: '<span><i class="sw-edit"></i>可编辑的人工计划字段（只改计划，不改实际库存/在途）</span>', hl: '<span><i class="sw-hl"></i>高亮月份（表头另有“● 已高亮”文字）</span>', na: '<span>“未提供”=缺报 · “无字段”=源表未设 · “未发生”=期间未到 · 数字0=真实0</span>', ex: '<span><i class="sw-ex"></i>采购关联区：仅回查，本轮不计算</span>', arr: '<span><i class="sw-arr"></i>预计到仓半月（只高亮表头，不改预测值）</span>' };
+  const m = { edit: '<span><i class="sw-edit"></i>可编辑的人工计划字段（只改计划，不改实际库存/在途）</span>', hl: '<span><i class="sw-hl"></i>高亮月份（表头另有“● 已高亮”文字）</span>', na: '<span>“未提供”=缺报 · “无字段”=源表未设 · “未发生”=期间未到 · 数字0=真实0</span>', ex: '<span><i class="sw-ex"></i>采购关联区：仅回查，本轮不计算</span>', arr: '<span><i class="sw-arr"></i>预计到仓半月（只高亮表头，不改预测值）</span>', heat: '<span><i class="sw-heat"></i>色阶：按本记录最大值分 5 档，越深越多；未完整月不着色</span>' };
   return `<div class="filters legend">${keys.map(k => m[k]).join('')}</div>`;
 }
 
@@ -208,7 +212,7 @@ function futureView(cc, c, rows, listAttr) {
   ];
   return `<div class="filters" style="padding-top:0">${sub}<span class="spacer"></span>
     <label class="grp">计划发货日 <input class="inp" type="date" id="sd-${cc}" data-in="shipdate" value="${c.shipDate}" aria-label="计划发货日"></label>
-    <span class="small muted">+ 运输天数 ${cfg.transitDays} 天（D1·示例参数）→ 预计到仓 <b>${ai.date || '—'}</b></span></div>
+    <span class="small muted">+ 运输天数 ${cfg.transitDays} 天（D1·示例参数）→ 预计到仓 <b>${ai.date || '—'}</b>${ai.out ? ' ' + tag('warn', '超出 20 期范围，不高亮', 'warn') : ''}</span></div>
     <div class="note">${icon('info')} 20 期覆盖 2026年7月上 至 2027年4月下（${esc(cfg.src.half)}），源表为保存数值、非公式。编辑只改销售计划，不改实际销量、发货计划或库存。空格表示“未设置”，不是0。</div>
     ${table(`tbl-${cc}-half`, cols, rows)}${legendRow(['edit', 'arr'])}`;
 }
@@ -222,33 +226,42 @@ function planView(cc, c, rows, listAttr) {
 function noteInput(l) { const p = planOf(l.lid); if (!p) return V(null); const dis = !canEdit(); return `<input class="ein wide ${isDirtyPlan(l.lid) && p.note !== S.plansSaved[l.lid].note ? 'dirty' : ''}" id="note-${l.lid}" data-in="note" data-lid="${l.lid}" value="${esc(p.note)}" ${dis ? 'disabled title="只读（演示权限）"' : ''} aria-label="${esc(l.sku)} 备注" placeholder="备注">`; }
 
 const BSTATUS = { created: ['info', '新建待发（申报量）'], shipped: ['mute', '已发货·未接收'], receiving: ['warn', '接收中'], closed: ['ok', '接收完成'] };
-function batchView(cc, c) {
+function batchView(cc, c, allRows) {
   const bs = batchesOf(cc); const sel = selOf(cc); const lsts = listingsOf(cc);
-  if (!bs.length) return `<div class="empty"><h3>本国没有批次记录</h3></div>`;
-  const chips = bs.map(b => {
-    const on = isSelected(b); const st = BSTATUS[b.status];
-    const remind = b.lines.some(ln => ln.received != null && ln.current !== 0);
-    return `<div class="metric" style="min-width:210px;flex:0 1 240px">
-      <div class="row"><b class="mono">${esc(b.label)}</b>${b.kind === 'SY' ? tag('line', '海外仓 SY') : ''}<span class="mono small muted">${b.bizDate}</span><span class="spacer"></span>${tag(st[0], st[1])}</div>
-      <div class="small muted" style="margin:4px 0">${b.ships.length} 个货件 · 创建 ${b.ships.map(s => s.created.slice(5)).join(', ')}${remind ? ' · ' + tag('warn', '接收差异提醒', 'warn') : ''}${b.evidence ? '' : ' · ' + tag('bad', '无原发货依据', 'warn')}</div>
-      <div class="row"><label class="chk"><input type="checkbox" id="bs-${b.bid}" data-in="bsel" data-bid="${b.bid}" ${on && sel != null ? 'checked' : ''} ${!canEdit() ? 'disabled' : ''}> 计入在途</label><span class="spacer"></span><button class="btn sm" data-act="batch" data-bid="${b.bid}">批次详情</button></div>
-    </div>`;
-  }).join('');
-  const lines = lsts.filter(l => bs.some(b => b.lines.some(x => x.lid === l.lid)));
+  if (!bs.length) return `<div class="empty"><h2>本国没有批次记录</h2></div>`;
+  // 批次清单：一行一批，开关就在行首；真实表格单国可有 20 多批，列表比卡片更好扫读
+  const bsum = b => ({ cur: sumNums(b.lines.map(x => x.current)), dec: sumNums(b.lines.map(x => x.declared)), recv: b.lines.filter(x => x.received != null || x.writtenOff).length, remind: b.lines.filter(x => x.received != null && x.current !== 0).length });
+  const bcols = [
+    { key: 'on', label: '计入在途', cls: 'c', render: b => `<input type="checkbox" class="sw-in" id="bs-${b.bid}" data-in="bsel" data-bid="${b.bid}" ${isSelected(b) && sel != null ? 'checked' : ''} ${!canEdit() ? 'disabled' : ''} aria-label="${cc} 批次 ${esc(b.label)} 计入在途">${sel == null ? '<span class="tiny muted"> 原范围</span>' : ''}` },
+    { key: 'label', label: '批次', cls: 'l', render: b => `<button class="link mono" data-act="batch" data-bid="${b.bid}" title="查看批次详情">${esc(b.label)}</button>${b.kind === 'SY' ? ' ' + tag('line', '海外仓 SY') : ''}` },
+    { key: 'date', label: '业务归属日', cls: 'l mono', render: b => b.bizDate },
+    { key: 'st', label: '状态', cls: 'l', render: b => tag(BSTATUS[b.status][0], BSTATUS[b.status][1]) },
+    { key: 'ship', label: '货件', cls: 'l', render: b => `${b.ships.length} 个 <span class="tiny muted">创建 ${b.ships.map(x => x.created.slice(5)).join('、')}</span>` },
+    { key: 'n', label: 'SKU 数', render: b => fmt(b.lines.length) },
+    { key: 'dec', label: '原申报/原发货量', sub: '归档·不再计入', render: b => fmt(bsum(b).dec) },
+    { key: 'cur', label: '当前值合计', sub: '带符号', render: b => `<b>${V(bsum(b).cur, { keepZero: true })}</b>` },
+    { key: 'rem', label: '提醒', cls: 'l', render: b => { const x = bsum(b); return `${x.remind ? tag('warn', `接收差异 ${x.remind}`, 'warn') : ''}${b.evidence ? '' : ' ' + tag('bad', '无原发货依据', 'warn')}` || '<span class="na">—</span>'; } },
+  ];
+  const inBatch = new Set(); bs.forEach(b => b.lines.forEach(x => inBatch.add(x.lid)));
+  const lines = allRows.filter(l => inBatch.has(l.lid));
   const cols = [
     { key: 'sku', label: 'SKU', fz: 1, cls: 'l', render: l => skuCell(l) }, { key: 'msku', label: 'MSKU', fz: 2, cls: 'l mono', render: l => esc(l.msku) },
-    ...bs.map(b => ({ key: b.bid, label: `${b.label}`, sub: (b.kind === 'SY' ? '海外仓SY · ' : '') + `${isSelected(b) ? (sel == null ? '原范围' : '✓ 计入') : '未计入'} · 当前值/原量`, cls: isSelected(b) ? '' : 'batch-off', tdCls: () => isSelected(b) ? '' : 'batch-off', render: l => { const ln = b.lines.find(x => x.lid === l.lid); if (!ln) return ''; const rem = ln.received != null && ln.current !== 0; return `${V(ln.current, { keepZero: true, signed: false })}${rem ? ' <span title="已开始接收且差异非0" aria-label="差异提醒">⚑</span>' : ''}<span class="tiny muted"> ／${fmt(ln.declared)}</span>`; } })),
+    ...bs.map(b => ({ key: b.bid, label: `${b.label}`, flag: isSelected(b) ? (sel == null ? '原范围' : '✓ 计入') : '未计入', sub: (b.kind === 'SY' ? '海外仓SY · ' : '') + '当前值/原量', cls: isSelected(b) ? '' : 'batch-off', tdCls: () => isSelected(b) ? '' : 'batch-off', render: l => { const ln = b.lines.find(x => x.lid === l.lid); if (!ln) return ''; const rem = ln.received != null && ln.current !== 0; return `${V(ln.current, { keepZero: true, signed: false })}${rem ? ' <span title="已开始接收且差异非0" aria-label="差异提醒">⚑</span>' : ''}<span class="tiny muted"> ／${fmt(ln.declared)}</span>`; } })),
     { key: 'sum', label: '当前在途合计', sub: sel == null ? '保留原范围' : `所选 ${sel.length} 批`, render: l => `<b>${V(transitOf(l.lid), { keepZero: true })}</b>` },
   ];
-  const tot = lines.reduce((a, l) => a + transitOf(l.lid), 0);
-  return `<div class="panel-b">
-    <div class="row" style="margin-bottom:8px"><b>批次（按业务归属日期）</b><span class="muted small">各国独立选择计入在途的批次，不限最近五批；取消选择不删除批次与原发货历史。</span><span class="spacer"></span>
-      <button class="btn sm" data-act="bselall" data-cc="${cc}" ${!canEdit() ? 'disabled' : ''}>全选</button><button class="btn sm" data-act="bselnone" data-cc="${cc}" ${!canEdit() ? 'disabled' : ''}>明确空选</button>${sel == null ? '' : `<button class="btn sm" data-act="bselorig" data-cc="${cc}" ${!canEdit() ? 'disabled' : ''}>恢复原范围</button>`}</div>
-    ${sel == null ? `<div class="callout info" style="margin-bottom:8px">${icon('info')}<div>本次未上传 ${cc} 货件文件：在途保留原组成与原周期（全部 ${bs.length} 批）。勾选任一批次即切换为“本次明确选择”。</div></div>` : ''}
-    ${sel != null && sel.length === 0 ? `<div class="callout warn" style="margin-bottom:8px">${icon('warn')}<div><b>已明确空选：</b>本国当前在途 = 0。这是有意选择，不是缺数据；批次与原发货历史仍保留。</div></div>` : ''}
-    <div class="row" style="align-items:stretch">${chips}</div>
-    <div class="row small" style="margin-top:8px"><span>本国当前在途合计（所选批次，所有 Listing）：<b class="num">${fmt(tot)}</b></span><span class="muted">原发货量只作历史，不再计入；单元格“当前值／原量”，负数=多收。</span></div>
-  </div>` + table(`tbl-${cc}-batch`, cols, lines);
+  const tot = lsts.filter(l => inBatch.has(l.lid)).reduce((a, l) => a + transitOf(l.lid), 0);
+  const nOn = sel == null ? bs.length : sel.length;
+  return `<div class="batch-head">
+      <div class="bh-sum"><span class="small muted">本国当前在途合计</span><b class="bh-v">${fmt(tot)}</b><span class="small muted">${sel == null ? `保留原范围 · 全部 ${bs.length} 批` : `已选 ${nOn} / ${bs.length} 批`}</span></div>
+      <span class="spacer"></span>
+      <button class="btn sm" data-act="bselall" data-cc="${cc}" ${!canEdit() ? 'disabled' : ''}>全选</button><button class="btn sm" data-act="bselnone" data-cc="${cc}" ${!canEdit() ? 'disabled' : ''}>明确空选</button>${sel == null ? '' : `<button class="btn sm" data-act="bselorig" data-cc="${cc}" ${!canEdit() ? 'disabled' : ''}>恢复原范围</button>`}
+    </div>
+    ${sel == null ? `<div class="filters" style="padding-top:0"><div class="callout info" style="flex:1">${icon('info')}<div>本次未上传 ${cc} 货件文件：在途保留原组成与原周期（全部 ${bs.length} 批）。勾选或取消任一批次即切换为“本次明确选择”。</div></div></div>` : ''}
+    ${sel != null && sel.length === 0 ? `<div class="filters" style="padding-top:0"><div class="callout warn" style="flex:1">${icon('warn')}<div><b>已明确空选：</b>本国当前在途 = 0。这是有意选择，不是缺数据；批次与原发货历史仍保留。</div></div></div>` : ''}
+    ${table(`tbl-${cc}-batches`, bcols, bs, { wrapCls: 'auto-h', rowAttr: b => isSelected(b) ? '' : 'class="row-off"' })}
+    <div class="note" style="padding-top:10px">${icon('info')} 各国独立选择计入在途的批次，不限最近五批；取消选择不删除批次与原发货历史。原发货量只作历史，不再计入；下表单元格为“当前值／原量”，负数=多收。</div>
+    <div class="panel-h" style="border-top:0.5px solid var(--line)"><h2>按 Listing 的批次明细</h2><span class="hint">筛选条件作用于此表</span></div>
+  ` + pagedTable('batch-' + cc, `tbl-${cc}-batch`, cols, lines, { emptyTitle: '筛选条件下没有出现在批次中的 Listing' });
 }
 function batchModal(bid) {
   const b = D.BATCHES.find(x => x.bid === bid); const st = BSTATUS[b.status];
@@ -280,14 +293,15 @@ function awdModal(lid) {
 }
 
 function yearPicker(avail) {
-  const ys = [...new Set(avail)].sort((a, b) => a - b); const sel = S.years;
-  const last2 = !!sel && sel.length === 2 && sel.includes(D.BASE.y) && sel.includes(D.BASE.y - 1);
-  return `<div class="ypick" role="group" aria-label="显示年份"><span class="small muted">年份</span><div class="seg">
-    <button aria-pressed="${!sel}" data-act="yall">全部</button><button aria-pressed="${last2}" data-act="ylast2">近2年</button>
-    ${ys.map(y => `<button aria-pressed="${!!sel && sel.includes(y)}" data-act="ytoggle" data-y="${y}" title="多选：点击加入或移出 ${y}">${y}</button>`).join('')}</div></div>`;
+  const ys = [...new Set(avail)].sort((a, b) => a - b); const eff = effYears(ys);
+  const last2 = !!eff && eff.length === 2 && eff.includes(D.BASE.y) && eff.includes(D.BASE.y - 1);
+  return `<div class="ypick" role="group" aria-label="显示年份（可多选）"><span class="small muted">年份</span><div class="seg">
+    <button aria-pressed="${!eff}" data-act="yall">全部</button>${ys.includes(D.BASE.y - 1) ? `<button aria-pressed="${last2}" data-act="ylast2">近2年</button>` : ''}
+    ${ys.map(y => `<button aria-pressed="${!!eff && eff.includes(y)}" data-act="ytoggle" data-y="${y}" title="多选：点击加入或移出 ${y}">${y}</button>`).join('')}</div></div>`;
 }
+function heatSwitch() { return `<label class="chk" title="按每条记录自身最大值分 5 档着色，未完整月不着色"><input type="checkbox" class="sw" id="heat" data-in="heat" ${S.heat ? 'checked' : ''}> 色阶</label>`; }
 Object.assign(ACT_EXTRA, {
   yall: () => { S.years = null; rerenderKeep(); },
   ylast2: () => { S.years = [D.BASE.y - 1, D.BASE.y]; rerenderKeep(); },
-  ytoggle: t => { const y = Number(t.dataset.y); let s = S.years ? S.years.slice() : []; s = s.includes(y) ? s.filter(x => x !== y) : [...s, y]; S.years = s.length ? s.sort((a, b) => a - b) : null; rerenderKeep(); },
+  ytoggle: t => { const y = Number(t.dataset.y); const avail = [...t.closest('.seg').querySelectorAll('[data-act="ytoggle"]')].map(b => Number(b.dataset.y)); let s = effYears(avail) || []; s = s.includes(y) ? s.filter(x => x !== y) : [...s, y]; S.years = s.length ? s.sort((a, b) => a - b) : null; rerenderKeep(); },
 });

@@ -42,9 +42,9 @@ const check = (id, name, ok, detail = '') => { results.push({ id, name, ok: !!ok
   const cuts = await page.locator('#tbl-US-month .cut').count();
   const groups = await page.locator('#tbl-US-month tr.g-start').count();
   check('UI-03', '“截至10/11”只标在 2026×10 记录（每个 Listing 一处）', cuts === groups, `cut=${cuts} groups=${groups}`);
-  await act('#tbl-US-month th[data-m="9"]');
+  await act('#tbl-US-month th button[data-m="9"]');
   const hlCount = await page.locator('#tbl-US-month td.hl').count();
-  check('UI-03', '点击10月表头高亮所有年份同月，且表头有文字标记', hlCount > 0 && (await text('#tbl-US-month th[data-m="9"]')).includes('已高亮'), `hl cells=${hlCount}`);
+  check('UI-03', '点击10月表头高亮所有年份同月，且表头有文字标记', hlCount > 0 && (await page.locator('#tbl-US-month th:has(button[data-m="9"])').innerText()).includes('已高亮'), `hl cells=${hlCount}`);
   check('A06', '缺报月份显示“未提供”而不是0', us.includes('未提供') && (await page.locator('#tbl-US-month .na.np').count()) >= 1);
   await page.screenshot({ path: path.join(OUT, '02-us-month-matrix.png') });
 
@@ -60,13 +60,15 @@ const check = (id, name, ok, detail = '') => { results.push({ id, name, ok: !!ok
   check('A07', '最近8周范围切换', (await page.locator('#tbl-US-week thead th').count()) - 3 === 8);
   await page.screenshot({ path: path.join(OUT, '03-us-week-range.png') });
 
+  // 综合总览默认列（含趋势图列）
+  await act('[data-act="cview"][data-v="overview"]');
+  await page.screenshot({ path: path.join(OUT, '01-us-overview.png') });
   // UI-08 第2页进入详情再返回
   await page.evaluate(() => { S.colcfg.overview = { cols: colCatalog('US', '').map(c => c.key).filter(k => k !== 'country'), pin: ['sku', 'name'] }; });
   await act('[data-act="cview"][data-v="overview"]');
   await page.fill('#cq-US', 'DEMO'); await page.waitForTimeout(400);
   await act('[data-act="page"][data-scope="country"][data-p="2"]');
   const setLeft = await page.evaluate(() => { const w = document.getElementById('tbl-US-overview'); w.scrollLeft = 420; return w.scrollLeft; });
-  await page.screenshot({ path: path.join(OUT, '01-us-overview.png') });
   const firstSku = await text('#tbl-US-overview .sku-btn');
   await page.locator('#tbl-US-overview .sku-btn').first().click(); await page.waitForTimeout(80);
   const det = await text('#main');
@@ -237,7 +239,7 @@ const check = (id, name, ok, detail = '') => { results.push({ id, name, ok: !!ok
   check('R2', '恢复“全部”年份', (await text('#tbl-US-month')).includes('2022'));
   await act('[data-act="cview"][data-v="overview"]');
   await act('[data-act="colcfg"][data-view="overview"]');
-  check('R3', '列配置弹层：分组、已选列表、模板', (await page.locator('.cc-group').count()) === 5 && (await page.locator('.cc-list li').count()) === 12 && (await page.locator('#cc-tpl').count()) === 1);
+  check('R3', '列配置弹层：分组、已选列表、模板', (await page.locator('.cc-group').count()) === 5 && (await page.locator('.cc-list li').count()) === 13 && (await page.locator('#cc-tpl').count()) === 1);
   await page.check('input[data-in="cccol"][data-key="asin"]'); await page.waitForTimeout(60);
   await page.uncheck('input[data-in="cccol"][data-key="avg4"]'); await page.waitForTimeout(60);
   await act('[data-act="ccpin"][data-key="asin"]');
@@ -262,6 +264,65 @@ const check = (id, name, ok, detail = '') => { results.push({ id, name, ok: !!ok
   await act('[data-act="vdetail"][data-id="V-1012"]');
   check('R5', '版本详情弹层', (await page.locator('.modal').innerText()).includes('数据基准日'));
   await act('[data-act="close"]');
+
+  // 第五版：审查修复回归 + 新可视化
+  await page.evaluate(() => { S.colcfg = {}; S.years = null; S.country = 'US'; cui('US').view = 'overview'; go('country'); });
+  check('V1', '综合总览默认含趋势小图（每行一张）', (await page.locator('#tbl-US-overview svg.spark').count()) >= 10);
+  await act('[data-act="colcfg"][data-view="overview"]');
+  await act('[data-act="ccgroup"][data-g="库存"][data-on="1"]');
+  await act('[data-act="ccpin"][data-key="fba"]'); await act('[data-act="ccpin"][data-key="transit"]');
+  await act('[data-act="ccgroup"][data-g="库存"][data-on="0"]');
+  const pinAfter = await page.evaluate(() => S.colEdit.pin.join(','));
+  check('F1', '分组“取消”同时清掉该组固定列', pinAfter === 'sku,name', pinAfter);
+  await page.fill('#cc-q', '库存'); await page.dispatchEvent('#cc-q', 'input'); await page.waitForTimeout(60);
+  const sameInput = await page.evaluate(() => document.activeElement && document.activeElement.id === 'cc-q');
+  check('F5', '字段搜索只刷新列表、不替换输入框（输入法不中断）', sameInput && (await page.locator('.cc-item').count()) >= 2);
+  await act('[data-act="close"]');
+  await page.evaluate(() => { S.country = 'CA'; cui('CA').view = 'stock'; go('country'); });
+  const caHdr = (await page.locator('#tbl-CA-stock thead th').allInnerTexts()).join('|');
+  check('F8', 'CA 库存明细不出现 US 专属 AWD/海外仓列', !caHdr.includes('AWD') && !caHdr.includes('海外仓'));
+  await page.evaluate(() => { S.country = 'AE'; cui('AE').view = 'plan'; go('country'); });
+  const aeHdr = (await page.locator('#tbl-AE-plan thead th').allInnerTexts()).join('|');
+  check('F8', 'AE 发货计划不补造运输期/可售天数列', aeHdr.includes('备货数量') && !aeHdr.includes('运输期末库存') && !aeHdr.includes('补货后可售天数'));
+  await page.evaluate(() => { S.country = 'US'; cui('US').view = 'plan'; go('country'); });
+  check('F9', 'US 发货计划副标题保留本国源列与局部公式', (await page.evaluate(() => document.querySelector('#tbl-US-plan thead').textContent)).includes('HX=(HS+HT)/(HO/7)'));
+  await page.evaluate(() => { S.country = 'CA'; cui('CA').view = 'plan'; go('country'); });
+  check('F9', 'CA 补货后天数标“原公式待接入”', (await page.evaluate(() => document.querySelector('#tbl-CA-plan thead').textContent)).includes('原公式待接入'));
+  await page.evaluate(() => { S.people.person = 'ALL'; S.people.sort = null; go('people'); });
+  await act('#tbl-people th[data-key="fba"]');
+  const fbaCol = await page.evaluate(() => [...document.querySelectorAll('#tbl-people tbody tr')].map(tr => tr.querySelector('td:nth-child(' + ([...document.querySelectorAll('#tbl-people thead th')].findIndex(t => t.dataset.key === 'fba') + 1) + ')').textContent.replace(/,/g, '')).map(Number));
+  check('F2', '人员视图表头可排序（FBA 升序）', fbaCol.length > 3 && fbaCol.every((v, i) => !i || fbaCol[i - 1] <= v), fbaCol.slice(0, 5).join(','));
+  await page.evaluate(() => { S.people.country = 'EU'; S.people.page = 1; go('people'); });
+  check('F10', '人员视图 EU 行标“发货角色”', (await text('#tbl-people')).includes('发货角色'));
+  await page.evaluate(() => { S.people.country = 'ALL'; });
+  await page.evaluate(() => { S.country = 'US'; cui('US').view = 'month'; S.years = [2022]; go('country'); });
+  await page.evaluate(() => { S.country = 'EU'; cui('EU').view = 'month'; go('country'); });
+  const euTxt = await text('#tbl-EU-month');
+  check('F7', 'US 选 2022 后切到 EU：不出现空表，选择器显示“全部”', !euTxt.includes('所选年份没有') && (await page.locator('[data-act="yall"][aria-pressed="true"]').count()) === 1);
+  await page.evaluate(() => { S.years = null; });
+  await act('#heat');
+  check('V3', '色阶开关为月表单元格着色（未完整月除外）', (await page.locator('#tbl-EU-month td[class*="heat-"]').count()) > 20);
+  await page.evaluate(() => { S.heat = false; openSku('P-001', { country: 'US' }); });
+  await page.waitForTimeout(150);
+  check('V2', '详情页逐年同月对比图已绘制（多条年线 + 图例）', (await page.locator('#yoy-d svg path.ln').count()) >= 2 && (await page.locator('#yoy-d .yoy-legend span').count()) >= 2);
+  await page.focus('#yoy-d'); await page.keyboard.press('ArrowRight'); await page.keyboard.press('ArrowRight');
+  check('V2', '键盘左右键逐月显示提示框（数值在前）', !(await page.locator('#yoy-d .yoy-tip').isHidden()) && (await page.locator('#yoy-d .yoy-tip').innerText()).includes('2月'));
+  await page.screenshot({ path: path.join(OUT, '18-yoy-chart.png') });
+  // 版本：演示更新后 V-1012 不被混入
+  await page.evaluate(() => { S.upd = null; go('update'); });
+  await act('[data-act="ustep"][data-s="5"]'); await act('[data-act="uapply"]');
+  await page.evaluate(() => { S.ver = { sel: [] }; go('versions'); });
+  const runId = await page.evaluate(() => S.runs[0].id);
+  await page.check(`#vs-${runId}`); await page.check('#vs-V-1012'); await page.waitForTimeout(80);
+  const vcmp = await page.evaluate(() => [...document.querySelectorAll('#tbl-vcmp tbody tr')].pop().innerText);
+  check('F3', 'V-1012 与演示版本对比能看到演示带来的 FBA 变化', /[+-]\d/.test(vcmp), vcmp.replace(/\s+/g, ' '));
+  await page.selectOption('#role', 'viewer'); await page.waitForTimeout(60);
+  check('F11', '切换身份后版本生成人不变', (await text('#tbl-versions')).includes(runId) && (await page.evaluate(id => versions().find(v => v.id === id).by, runId)) === '运营甲');
+  await page.selectOption('#role', 'editor');
+  await act('[data-act="vdetail"][data-id="V-1012"]'); await act('.modal [data-act="goto"]');
+  check('F4', '版本详情跳转过程记录时关闭弹层', (await page.locator('.modal').count()) === 0 && (await page.evaluate(() => S.page)) === 'update');
+  const ime = await page.evaluate(async () => { S.country = 'US'; cui('US').view = 'overview'; cui('US').q = ''; go('country'); const el = document.getElementById('cq-US'); el.focus(); el.value = 'ac'; el.dispatchEvent(new InputEvent('input', { bubbles: true, isComposing: true })); await new Promise(r => setTimeout(r, 400)); const kept = document.getElementById('cq-US') === el; el.value = 'acr'; el.dispatchEvent(new CompositionEvent('compositionend', { bubbles: true })); await new Promise(r => setTimeout(r, 400)); return kept && cui('US').q === 'acr'; });
+  check('F5', '输入法拼写中不重绘，结束后才筛选', ime);
   check('ERR', '无脚本错误', errors.length === 0, errors.slice(0, 3).join(' | '));
 
   // 宽度 × 主题

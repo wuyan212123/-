@@ -20,7 +20,7 @@ const S = {
   page: 'country', country: 'US', cui: {}, detail: null,
   baseDate: D.BASE_DATE, baseDay: D.BASE.d,
   theme: store.get('theme', 'system'), density: store.get('density', 'comfortable'), collapsed: store.get('collapsed', false), expanded: false,
-  role: 'editor', hideZero: false, hl: {}, showInfo: store.get('showInfo', false), moreF: false, years: null,
+  role: 'editor', hideZero: false, hl: {}, tp: {}, showInfo: store.get('showInfo', false), moreF: false, years: null, heat: false,
   plans: clone(D.PLANS), plansSaved: clone(D.PLANS),
   half: Object.fromEntries(D.LISTINGS.filter(l => l.half).map(l => [l.lid, l.half.slice()])),
   halfSaved: Object.fromEntries(D.LISTINGS.filter(l => l.half).map(l => [l.lid, l.half.slice()])),
@@ -99,9 +99,13 @@ const ownerFieldOf = cc => D.CMAP[cc].ownerField;
 /* ========== 领域派生（只读，不改事实） ========== */
 const L = lid => D.byId[lid];
 const P = pid => D.pById[pid];
-const listingsOf = cc => D.LISTINGS.filter(l => l.country === cc);
-const listingsOfP = pid => D.LISTINGS.filter(l => l.pid === pid);
-const batchesOf = cc => D.BATCHES.filter(b => b.country === cc);
+// Listing、批次在运行期不增减，按国家/商品建一次索引（真实规模约 3,000 条 Listing，避免每格都全表过滤）
+const IDX = { cc: {}, pid: {}, bcc: {} };
+D.LISTINGS.forEach(l => { (IDX.cc[l.country] = IDX.cc[l.country] || []).push(l); (IDX.pid[l.pid] = IDX.pid[l.pid] || []).push(l); });
+D.BATCHES.forEach(b => { (IDX.bcc[b.country] = IDX.bcc[b.country] || []).push(b); });
+const listingsOf = cc => (IDX.cc[cc] || []).slice();
+const listingsOfP = pid => (IDX.pid[pid] || []).slice();
+const batchesOf = cc => IDX.bcc[cc] || [];
 function selOf(cc) { const s = S.transitSel[cc]; return s == null ? null : s; }
 function isSelected(b) { const s = selOf(b.country); return s == null ? true : s.includes(b.bid); }
 function transitOf(lid) {
@@ -201,8 +205,28 @@ function toast(msg, kind) {
   const box = $('#toast'); box.appendChild(el); const max = window.innerWidth < 720 ? 1 : 2; while (box.children.length > max) box.firstElementChild.remove();
   setTimeout(() => el.remove(), 3200);
 }
-function modal(html, cls = '') { $('#modal-root').innerHTML = `<div class="modal-back" data-act="modal-bg"><div class="modal ${cls}" role="dialog" aria-modal="true">${html}</div></div>`; const f = $('#modal-root [autofocus], #modal-root button, #modal-root input'); f && f.focus(); }
-function closeModal() { $('#modal-root').innerHTML = ''; }
+let modalReturn = null;
+function modal(html, cls = '') {
+  if (!$('#modal-root').innerHTML) modalReturn = document.activeElement;
+  $('#modal-root').innerHTML = `<div class="modal-back" data-act="modal-bg"><div class="modal ${cls}" role="dialog" aria-modal="true">${html}</div></div>`;
+  const h = $('#modal-root .modal-h h2'); if (h) { h.id = h.id || 'modal-title'; $('#modal-root .modal').setAttribute('aria-labelledby', h.id); }
+  const f = $('#modal-root [autofocus], #modal-root .modal-h ~ * button:not([disabled]), #modal-root button:not([disabled]), #modal-root input'); f && f.focus();
+}
+function closeModal() {
+  if (!$('#modal-root').innerHTML) return;
+  $('#modal-root').innerHTML = '';
+  const r = modalReturn; modalReturn = null;
+  if (r && document.contains(r)) r.focus({ preventScroll: true });
+}
+/** 对话框内 Tab 循环，不跑到背后的页面 */
+function trapModalTab(e) {
+  const m = $('#modal-root .modal'); if (!m || e.key !== 'Tab') return;
+  const items = $$('button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea, [tabindex]:not([tabindex="-1"])', m).filter(x => x.offsetParent !== null);
+  if (!items.length) return; const first = items[0], last = items[items.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  else if (!m.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+}
 
 /* ========== 渲染调度 ========== */
 const PAGES = {};
@@ -216,21 +240,40 @@ function render(opts = {}) {
   if (opts.top) main.scrollTop = 0;
   afterRender();
 }
+/** 记住焦点：有 id 用 id；否则用 data-act 及其参数拼出选择器，重绘后把焦点放回“同一个”控件（键盘用户不会被甩回页首） */
+const FOCUS_KEYS = ['act', 'v', 'key', 'page', 'bid', 'lid', 'scope', 'p', 'm', 'hk', 'y', 'id', 'g', 'view', 'pid', 'cc', 't', 's', 'q', 'd'];
+function focusSig(el) {
+  if (!el || el === document.body) return null;
+  if (el.id) return '#' + CSS.escape(el.id);
+  if (!el.dataset || !el.dataset.act) return null;
+  return FOCUS_KEYS.filter(k => el.dataset[k] != null).map(k => `[data-${k}="${CSS.escape(el.dataset[k])}"]`).join('');
+}
 function rerenderKeep() {
   const main = $('#main'); const st = main.scrollTop; const sc = captureTables();
-  const act = document.activeElement; const actId = act && act.id;
+  const sig = focusSig(document.activeElement);
   render(); main.scrollTop = st; restoreTables(sc);
-  if (actId && document.getElementById(actId)) { const el = document.getElementById(actId); el.focus(); if (el.setSelectionRange && el.type === 'text') { const n = el.value.length; el.setSelectionRange(n, n); } }
+  const el = sig && $(sig);
+  if (el) { el.focus({ preventScroll: true }); if (el.setSelectionRange && el.type === 'text') { const n = el.value.length; el.setSelectionRange(n, n); } }
 }
 function captureTables() { const o = {}; $$('.tbl-wrap[id]').forEach(w => { o[w.id] = [w.scrollLeft, w.scrollTop]; }); return o; }
 function restoreTables(o) { Object.entries(o || {}).forEach(([id, [x, y]]) => { const w = document.getElementById(id); if (w) { w.scrollLeft = x; w.scrollTop = y; } }); }
 function afterRender() {
   // 二级表头偏移
   $$('table.t').forEach(t => { const r = t.tHead && t.tHead.rows[0]; if (r && t.tHead.rows.length > 1) t.style.setProperty('--th1', r.getBoundingClientRect().height + 'px'); });
-  applyPins();
+  applyPins(); drawCharts(); markScrollRegions();
   if (S.page === 'detail') setupAnchors();
 }
 
+/** 可横向/纵向滚动、但内部没有可聚焦控件的表格区域：加 tabindex，键盘用户也能用方向键滚动 */
+function markScrollRegions() {
+  const used = {};
+  $$('.tbl-wrap').forEach(w => {
+    const scrolls = w.scrollWidth > w.clientWidth + 1 || w.scrollHeight > w.clientHeight + 1;
+    const hasFocusable = !!w.querySelector('button, input, select, a[href], [tabindex]');
+    if (scrolls && !hasFocusable) { w.tabIndex = 0; w.setAttribute('role', 'region'); const h = w.closest('.panel, .sec, .modal'); const t = h && h.querySelector('h1, h2, h3'); let name = (t ? t.textContent.trim() : '表格') + '（可滚动）'; used[name] = (used[name] || 0) + 1; if (used[name] > 1) name += ` ${used[name]}`; w.setAttribute('aria-label', name); }
+    else if (w.getAttribute('role') === 'region') { w.removeAttribute('tabindex'); w.removeAttribute('role'); w.removeAttribute('aria-label'); }
+  });
+}
 /* ========== 导航 ========== */
 function go(page, extra = {}) {
   if (S.page === 'detail' && page !== 'detail') S.detail = null;
@@ -271,12 +314,12 @@ function th(c, sort, sortKey) {
   const s = c.sort ? ` sortable" data-act="sort" data-key="${c.key}" data-scope="${sortKey}` : '';
   const ind = sort && sort.key === c.key ? `<span class="sort-ind" aria-hidden="true">${sort.dir > 0 ? '▲' : '▼'}</span>` : '';
   const aria = c.sort ? ` aria-sort="${sort && sort.key === c.key ? (sort.dir > 0 ? 'ascending' : 'descending') : 'none'}" tabindex="0" role="columnheader"` : '';
-  return `<th class="${c.cls || ''} ${c.fz ? 'fz' + c.fz : ''}${c.pin != null ? ` pin pin-${c.pin}${c.pinLast ? ' pin-last' : ''}` : ''}${s}"${aria} ${c.w ? `style="min-width:${c.w}px"` : ''} ${c.title ? `title="${esc(c.title)}"` : ''}>${c.label}${ind}${c.flag ? `<span class="th-flag">${c.flag}</span>` : ''}${c.sub ? `<span class="th-sub">${c.sub}</span>` : ''}</th>`;
+  return `<th class="${c.cls || ''} ${c.fz ? 'fz' + c.fz : ''}${c.pin != null ? ` pin pin-${c.pin}${c.pinLast ? ' pin-last' : ''}` : ''}${s}"${aria} ${c.w ? `style="min-width:${c.w}px"` : ''} ${c.title ? `title="${esc(c.title)}"` : ''}>${esc(c.label)}${ind}${c.flag ? `<span class="th-flag">${esc(c.flag)}</span>` : ''}${c.sub ? `<span class="th-sub">${esc(c.sub)}</span>` : ''}</th>`;
 }
 function table(id, cols, rows, o = {}) {
   const fz1w = o.fz1w || 172;
   const head = `<thead><tr>${cols.map(c => th(c, o.sort, o.sortKey || id)).join('')}</tr></thead>`;
-  const body = rows.length ? rows.map(r => `<tr ${o.rowAttr ? o.rowAttr(r) : ''}>${cols.map(c => `<td class="${c.cls || ''} ${c.fz ? 'fz' + c.fz : ''}${c.pin != null ? ` pin pin-${c.pin}${c.pinLast ? ' pin-last' : ''}` : ''} ${c.tdCls ? c.tdCls(r) : ''}">${c.render(r)}</td>`).join('')}</tr>`).join('') : `<tr><td colspan="${cols.length}" class="l"><div class="empty"><h3>${o.emptyTitle || '没有匹配的记录'}</h3><div>${o.emptyText || '调整或清空筛选条件后重试。'}</div></div></td></tr>`;
+  const body = rows.length ? rows.map(r => `<tr ${o.rowAttr ? o.rowAttr(r) : ''}>${cols.map(c => `<td class="${c.cls || ''} ${c.fz ? 'fz' + c.fz : ''}${c.pin != null ? ` pin pin-${c.pin}${c.pinLast ? ' pin-last' : ''}` : ''} ${c.tdCls ? c.tdCls(r) : ''}">${c.render(r)}</td>`).join('')}</tr>`).join('') : `<tr><td colspan="${cols.length}" class="l"><div class="empty"><h2>${o.emptyTitle || '没有匹配的记录'}</h2><div>${o.emptyText || '调整或清空筛选条件后重试。'}</div></div></td></tr>`;
   return `<div class="tbl-wrap ${o.wrapCls || ''}" id="${id}" style="--fz1w:${fz1w}px"><table class="t" data-pins="${cols.filter(c => c.pin != null).length}">${head}<tbody>${body}</tbody>${o.foot || ''}</table></div>`;
 }
 function sortRows(rows, sort, getters) {
@@ -293,6 +336,17 @@ function pager(scope, total, page, size, sizes = [8, 12, 25, 50]) {
     <button class="btn sm" data-act="page" data-scope="${scope}" data-p="${page + 1}" ${page >= pages ? 'disabled' : ''} aria-label="下一页">${icon('right')}</button></div>`;
 }
 const paginate = (rows, page, size) => rows.slice((page - 1) * size, page * size);
+/** 分页状态：主列表沿用各自的状态，其余表格（库存明细、过程记录等）按表格键各自记住页码 */
+function pstate(sc) {
+  if (sc === 'country') return cui(S.country);
+  if (['people', 'search', 'total'].includes(sc)) return S[sc];
+  return S.tp[sc] || (S.tp[sc] = { page: 1, size: 25 });
+}
+/** 带分页的表格：真实数据可达上万行（国内库存约 1 万、FBA 导出约 8,700），一次只渲染一页 */
+function pagedTable(sc, id, cols, rows, o = {}) {
+  const st = pstate(sc); const pages = Math.max(1, Math.ceil(rows.length / st.size)); if (st.page > pages) st.page = pages;
+  return table(id, cols, paginate(rows, st.page, st.size), o) + pager(sc, rows.length, st.page, st.size, o.sizes || [25, 50, 100]);
+}
 function seg(items, cur, act, extra = '') { return `<div class="seg" role="tablist">${items.map(it => `<button role="tab" aria-selected="${it.id === cur}" data-act="${act}" data-v="${it.id}" ${extra}>${it.label}${it.cnt != null ? ` <span class="cnt">${it.cnt}</span>` : ''}</button>`).join('')}</div>`; }
 function editNum(kind, lid, val, o = {}) {
   const dis = !canEdit() || o.disabled;

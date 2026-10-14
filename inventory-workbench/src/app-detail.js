@@ -52,7 +52,7 @@ function secOverview(p, ls, d) {
     { key: 'avg', label: '近4周均销', render: l => D.CMAP[l.country].half ? V(l.avg4, { keepZero: true }) : V('NF') },
     { key: 'm9', label: '2026-09 实际', render: l => V(l.monthly[2026] ? l.monthly[2026][8] : 'NF') },
     { key: 'st', label: '状态', cls: 'l', render: statusCell },
-    { key: 'go', label: '', cls: 'l', render: l => `<button class="link small" data-act="dlisting" data-lid="${l.lid}" data-setcc="1">看此国</button>` },
+    { key: 'go', label: '查看', cls: 'l', render: l => `<button class="link small" data-act="dlisting" data-lid="${l.lid}" data-setcc="1">看此国</button>` },
   ];
   return `<section class="sec" id="sec-ov"><h2 class="sec-title">总览 ${layerTag('sku')}</h2>
     <div class="grid3" style="margin-bottom:12px">
@@ -67,17 +67,24 @@ function secOverview(p, ls, d) {
 
 function secHistory(p, ls, d, cur) {
   const scope = scopeLs(ls, d);
-  const groups = scope.map(l => ({ c1: `<b>${l.country}</b> <span class="tiny muted">${esc(ownerFieldOf(l.country))}：${esc(l.owner || '未分配')}</span>`, c2: `<span class="mono small">${esc(l.msku)}</span>`, rows: yearRowsForListing(l) }));
+  const avail = [...new Set([...scope.flatMap(l => D.CMAP[l.country].annualOnly.concat(D.CMAP[l.country].monthYears)), ...TOTAL_YEARS])];
+  const ysel = effYears(avail);
+  const groups = scope.map(l => ({ c1: `<b>${l.country}</b> <span class="tiny muted">${esc(ownerFieldOf(l.country))}：${esc(l.owner || '未分配')}</span>`, c2: `<span class="mono small">${esc(l.msku)}</span>`, rows: yearRowsForListing(l, ysel) }));
+  const one = d.country !== 'ALL' && cur;
+  const chartRows = one ? yearRowsForListing(cur, ysel) : yearRowsForProduct(p, ysel);
+  const chartTitle = one ? `${cur.country} · ${cur.msku} 逐年同月对比` : '总销量 · 逐年同月对比';
   const wk = scope.filter(l => l.weekly);
-  const st = d;
-  return `<section class="sec" id="sec-hist"><h2 class="sec-title">历史销量 ${layerTag(d.country === 'ALL' ? 'listing' : 'country')}<span class="small muted" style="font-weight:400">全部可用年份同时展开 · 年份为行、1—12月为列</span></h2>
-    <div class="panel"><div class="panel-h"><h3>月销量 · ${d.country === 'ALL' ? '全部国家/Listing' : ccName(d.country)}</h3><span class="spacer"></span>${yearPicker([...new Set(scope.flatMap(l => D.CMAP[l.country].annualOnly.concat(D.CMAP[l.country].monthYears))), 2023])}<span class="hint">点击月份表头高亮所有年份的同一月；${curMonthLabel()} 只标在 2026×10 这一格</span></div>
+  return `<section class="sec" id="sec-hist"><h2 class="sec-title">历史销量 ${layerTag(d.country === 'ALL' ? 'listing' : 'country')}</h2>
+    <div class="filters bar-row">${yearPicker(avail)}${heatSwitch()}</div>
+    <div class="panel"><div class="panel-h"><h3>${esc(chartTitle)}</h3>${one ? '' : tag('warn', '汇总覆盖国家待逐公式核验', 'warn')}<span class="hint">蓝线为当年，灰线为往年（越早越浅）；空心点是未完整月；只画有月度字段的年份</span></div>
+      <div class="panel-b">${chartSlot('yoy-d', { title: chartTitle, series: yoySeries(chartRows) })}</div></div>
+    <div class="panel"><div class="panel-h"><h3>月销量 · ${d.country === 'ALL' ? '全部国家/Listing' : ccName(d.country)}</h3><span class="hint">点击月份表头高亮所有年份的同一月；橙点表示该格截至 ${S.baseDate}</span></div>
       ${monthMatrix('tbl-d-month', groups, { hlKey: 'dm', c1: '国家 / 负责人', c2: 'MSKU', fz1w: 190, wrapCls: 'auto-h' })}
-      <div class="note">${icon('info')} US/CA/AU/UK 的 2022/2023 只有年总量，单独成行标“仅年总量”；EU 未设早年字段；AE 从 2025 起；SA 仅部分 2025 月份。缺失与真实 0 分开显示。未生成不等期同比。</div></div>
+      <div class="note">${icon('info')} US/CA/AU/UK 的 2022/2023 只有年总量，单独成行标“仅年总量”；EU 未设早年字段；AE 从 2025 起；SA 仅 2025 年 1—9 月。缺失与真实 0 分开显示。未生成不等期同比。</div></div>
     <div class="panel"><div class="panel-h"><h3>总销量 · 月历史 2023—2026</h3>${layerTag('sku')}${tag('warn', '汇总覆盖国家待逐公式核验', 'warn')}<span class="hint">总销量 L:BK；2023 有月历史，不按“仅年总量”处理</span></div>
-      ${monthMatrix('tbl-d-total', [{ c1: '', c2: '', rows: yearRowsForProduct(p) }], { hlKey: 'dm', ident: false, wrapCls: 'auto-h', fz1w: 72 })}</div>
+      ${monthMatrix('tbl-d-total', [{ c1: '', c2: '', rows: yearRowsForProduct(p, ysel) }], { hlKey: 'dm', ident: false, wrapCls: 'auto-h', fz1w: 72 })}</div>
     <div class="panel"><div class="panel-h"><h3>周历史</h3><span class="hint">按源周区年份/周范围切换；显示真实起止日期与 ISO 周</span></div>
-      ${wk.length ? `<div class="filters">${weekControls('detail', st)}</div>${weekTable('tbl-d-week', wk.map(l => ({ c1: `<b>${l.country}</b>`, c2: `<span class="mono small">${esc(l.msku)}</span>`, vals: l.weekly })), st, { c1: '国家', c2: 'MSKU', fz1w: 70 })}` : `<div class="empty"><h3>所选国家没有周历史区</h3><div>${d.country === 'ALL' ? '' : `${d.country} 原表未设周销量区；不补造。`}</div></div>`}
+      ${wk.length ? `<div class="filters">${weekControls('detail', d)}</div>${weekTable('tbl-d-week', wk.map(l => ({ c1: `<b>${l.country}</b>`, c2: `<span class="mono small">${esc(l.msku)}</span>`, vals: l.weekly })), d, { c1: '国家', c2: 'MSKU', fz1w: 70 })}` : `<div class="empty"><h2>所选国家没有周历史区</h2><div>${d.country === 'ALL' ? '' : `${d.country} 原表未设周销量区；不补造。`}</div></div>`}
     </div></section>`;
 }
 
@@ -105,9 +112,9 @@ function secFuture(p, ls, d, cur) {
   ];
   return `<section class="sec" id="sec-fut"><h2 class="sec-title">未来计划/目标 ${layerTag('listing')}<span class="small muted" style="font-weight:400">半月销售计划、财年月目标、总销量保存预测与发货计划分别存放</span></h2>
     <div class="panel"><div class="panel-h"><h3>半月销量计划 · 20期（26年7月上—27年4月下）</h3><span class="hint">可编辑；修改不影响实际销量、发货计划或库存</span></div>
-      ${scope.length ? table('tbl-d-half', halfCols, scope, { wrapCls: 'auto-h', fz1w: 60 }) : `<div class="empty"><h3>所选国家没有半月计划区</h3><div>AE/SA 原表未设该区，不补成 20 期。</div></div>`}</div>
+      ${scope.length ? table('tbl-d-half', halfCols, scope, { wrapCls: 'auto-h', fz1w: 60 }) : `<div class="empty"><h2>所选国家没有半月计划区</h2><div>AE/SA 原表未设该区，不补成 20 期。</div></div>`}</div>
     <div class="panel"><div class="panel-h"><h3>财年月目标 APR—MAR</h3>${tag('warn', '财年起止年份待确认', 'warn')}<span class="hint">与实际对照请在国家主表“未来计划/目标”中选择对照假设</span></div>
-      ${scope.length ? table('tbl-d-fiscal', fiscalCols, scope, { wrapCls: 'auto-h', fz1w: 60 }) : `<div class="empty"><h3>所选国家没有财年月目标区</h3></div>`}</div>
+      ${scope.length ? table('tbl-d-fiscal', fiscalCols, scope, { wrapCls: 'auto-h', fz1w: 60 }) : `<div class="empty"><h2>所选国家没有财年月目标区</h2></div>`}</div>
     <div class="panel"><div class="panel-h"><h3>总销量右侧区块</h3>${layerTag('sku')}<span class="hint">三块分别展示，不合并成一组 40 期</span></div>
       <div class="panel-b stack">
         <div><div class="row small" style="margin-bottom:6px"><b>DL:EE · 20期国家半月计划汇总</b><span class="muted">DL:DQ 旧期源表为空（显示“空”，不补0）；DR:EE 按源公式描述汇总 US/CA/EU/UK/AU 同名半月字段，随上方编辑实时变化</span></div>${tblRow('国家预测汇总', 'DL:EE', dlee, D.HALF)}</div>
@@ -160,7 +167,7 @@ function secBatch(p, ls, d) {
     { key: 'dec', label: '原申报/原发货量', sub: '归档', render: r => V(r.ln.declared) },
     { key: 'rec', label: '已接收', render: r => r.ln.writtenOff ? tag('mute', '快照未列出·核销0') : (r.ln.received == null ? V(null, { nullText: '未开始' }) : V(r.ln.received, { keepZero: true })) },
     { key: 'cur', label: '当前值', sub: '带符号', render: r => `<b>${V(r.ln.current, { keepZero: true })}</b>` },
-    { key: 'in', label: '计入在途', cls: 'c', render: r => `<label class="chk"><input type="checkbox" id="dbs-${r.b.bid}-${r.l.lid}" data-in="bsel" data-bid="${r.b.bid}" ${isSelected(r.b) && selOf(r.b.country) != null ? 'checked' : ''} ${!canEdit() ? 'disabled' : ''}>${selOf(r.b.country) == null ? '<span class="tiny muted">原范围</span>' : ''}</label>` },
+    { key: 'in', label: '计入在途', cls: 'c', render: r => `<label class="chk"><input type="checkbox" id="dbs-${r.b.bid}-${r.l.lid}" aria-label="${r.l.country} 批次 ${esc(r.b.label)} 计入在途（按国家整批生效）" data-in="bsel" data-bid="${r.b.bid}" ${isSelected(r.b) && selOf(r.b.country) != null ? 'checked' : ''} ${!canEdit() ? 'disabled' : ''}>${selOf(r.b.country) == null ? '<span class="tiny muted">原范围</span>' : ''}</label>` },
     { key: 'rm', label: '提醒', cls: 'c', render: r => r.ln.received != null && r.ln.current !== 0 ? tag(r.ln.current < 0 ? 'bad' : 'warn', r.ln.current < 0 ? '多收' : '少收', 'warn') : '' },
   ];
   return `<section class="sec" id="sec-batch"><h2 class="sec-title">批次 / 在途 ${layerTag('listing')}</h2>

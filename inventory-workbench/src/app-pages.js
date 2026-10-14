@@ -3,7 +3,7 @@ PAGES.people = function () {
   const st = S.people; const persons = [...D.OWNERS, '__none'];
   const match = (l, person = st.person, cc = st.country) => (person === 'ALL' || (person === '__none' ? !l.owner : l.owner === person)) && (cc === 'ALL' || l.country === cc);
   const statusOk = l => st.status === 'all' || (st.status === 'plan' && planQty(l.lid) > 0) || (st.status === 'issue' && (issuesOfL(l.lid).length || ['zeroden', 'outgroup', 'referr'].includes(l.variant.kind))) || (st.status === 'transit' && transitOf(l.lid) > 0);
-  let rows = D.LISTINGS.filter(l => match(l) && statusOk(l));
+  const rows = sortRows(D.LISTINGS.filter(l => match(l) && statusOk(l)), st.sort, LISTING_SORT);
   const pages = Math.max(1, Math.ceil(rows.length / st.size)); if (st.page > pages) st.page = pages;
   const skus = [...new Set(rows.map(l => l.pid))];
   const domOnce = sumNums(skus.map(pid => P(pid).domestic.avail));
@@ -21,7 +21,7 @@ PAGES.people = function () {
       <span class="spacer"></span><button class="btn sm${st.matrix ? ' on' : ''}" data-act="pmatrix" aria-expanded="${!!st.matrix}">${icon('sum')} 人员 × 国家分布</button>${colBtn('people')}</div>
     ${st.matrix ? `<div class="pm-wrap">${matrix}</div>` : ''}
     <div class="sumstrip"><span><b>${rows.length}</b> 条 Listing</span><span><b>${skus.length}</b> 个 SKU</span><span>FBA 小计 <b>${fmt(sumNums(rows.map(l => l.fba)))}</b></span><span>本次计划小计 <b>${fmt(sumNums(rows.map(l => planQty(l.lid))))}</b></span><span title="国内库存是 SKU 共享池：按 SKU 去重只计一次">国内现货（按SKU去重计一次）${fmt(domOnce)}</span><span class="tiny muted">当前筛选</span></div>
-    ${table('tbl-people', cols, paginate(rows, st.page, st.size), { emptyTitle: '该组合下没有记录', emptyText: '换一个人员或国家，或清空状态筛选。' })}
+    ${table('tbl-people', cols, paginate(rows, st.page, st.size), { sort: st.sort, sortKey: 'people', emptyTitle: '该组合下没有记录', emptyText: '换一个人员或国家，或清空状态筛选。' })}
     ${pager('people', rows.length, st.page, st.size)}
   </div>`;
 };
@@ -83,9 +83,9 @@ PAGES.search = function () {
     <div class="filters small muted" style="padding-top:0">${searched ? `结果 <b>${results.length}</b> 个 SKU。` : ''}
       ${st.q || st.multi ? `<button class="btn sm" data-act="sclearq">清空关键词</button>` : ''}${st.country !== 'ALL' || st.owner !== 'ALL' ? `<button class="btn sm" data-act="sclearf">清空国家/负责人</button>` : ''}</div>
     ${missing.length ? `<div class="filters" style="padding-top:0"><div class="callout warn" style="flex:1">${icon('warn')}<div>未找到 ${missing.length} 个：${missing.map(esc).join('、')}（在当前国家/负责人条件下没有精确匹配）</div></div></div>` : ''}
-    ${!searched ? `<div class="empty"><h3>输入关键词开始搜索</h3><div>也可在顶部工具栏随时按 <kbd>/</kbd> 搜索。试试：<button class="link" data-act="try" data-q="acr">acr</button> · <button class="link" data-act="try" data-q="B0DEMO1001">B0DEMO1001</button> · <button class="link" data-act="try" data-q="丙烯颜料">丙烯颜料</button> · <button class="link" data-act="try" data-q="US-WC36-FBA">US-WC36-FBA</button></div></div>` :
+    ${!searched ? `<div class="empty"><h2>输入关键词开始搜索</h2><div>也可在顶部工具栏随时按 <kbd>/</kbd> 搜索。试试：<button class="link" data-act="try" data-q="acr">acr</button> · <button class="link" data-act="try" data-q="B0DEMO1001">B0DEMO1001</button> · <button class="link" data-act="try" data-q="丙烯颜料">丙烯颜料</button> · <button class="link" data-act="try" data-q="US-WC36-FBA">US-WC36-FBA</button></div></div>` :
       results.length ? `<div class="tbl-wrap" id="tbl-search" style="--fz1w:160px"><table class="t"><thead><tr><th class="l fz1" style="min-width:160px">SKU</th><th class="l">品名</th><th class="l">命中字段</th><th class="c">Listing 数</th><th class="l">国家 · 负责人 · ASIN / MSKU</th></tr></thead><tbody>${rowsHtml}</tbody></table></div>${pager('search', results.length, st.page, st.size, [8, 12, 25])}` :
-      `<div class="empty"><h3>没有找到“${esc(searched)}”</h3><div>当前条件：国家 ${st.country === 'ALL' ? '全部' : st.country} · 负责人 ${st.owner === 'ALL' ? '全部' : st.owner === '__none' ? '未分配' : st.owner}。<button class="link" data-act="sclearf">清空国家/负责人</button> 或 <button class="link" data-act="sclearq">清空关键词</button>。</div></div>`}
+      `<div class="empty"><h2>没有找到“${esc(searched)}”</h2><div>当前条件：国家 ${st.country === 'ALL' ? '全部' : st.country} · 负责人 ${st.owner === 'ALL' ? '全部' : st.owner === '__none' ? '未分配' : st.owner}。<button class="link" data-act="sclearf">清空国家/负责人</button> 或 <button class="link" data-act="sclearq">清空关键词</button>。</div></div>`}
   </div>`;
 };
 
@@ -98,7 +98,7 @@ PAGES.total = function () {
   const skuB = p => `<button class="sku-btn" data-act="sku" data-pid="${p.pid}" data-list="${list}">${esc(p.sku)}</button>`;
   let body = '';
   if (st.tab === 'month') {
-    body = monthMatrix('tbl-total-month', pr.map(p => ({ c1: skuB(p), c2: `<span class="cell-name">${esc(p.name)}</span>`, rows: yearRowsForProduct(p) })), { hlKey: 'tm', c2: '品名' });
+    body = monthMatrix('tbl-total-month', pr.map(p => ({ c1: skuB(p), c2: `<span class="cell-name">${esc(p.name)}</span>`, rows: yearRowsForProduct(p, effYears(TOTAL_YEARS)) })), { hlKey: 'tm', c2: '品名' });
   } else if (st.tab === 'stock') {
     const cols = [
       { key: 'sku', label: '领星SKU', sub: 'H', fz: 1, cls: 'l', render: skuB }, { key: 'own', label: '负责人', sub: 'J · 总销量原字段', cls: 'l', render: p => esc(p.totalOwner) },
@@ -135,7 +135,7 @@ PAGES.total = function () {
   return `<div class="page-h"><div class="grow"><h1>总销量</h1><div class="sub">跨国 SKU 的月历史、库存周转与右侧计划区块。</div></div>${DEMO_TAG}</div>
   <div class="callout warn" style="margin-bottom:12px">${icon('warn')}<div>总销量各历史指标实际汇总了哪些国家/Listing 尚待逐公式核验：不套用总库存的五国口径，也不宣称七国全量。演示月销量为独立虚构值，不由国家页加总。</div></div>
   <div class="panel"><div class="panel-h">${seg([{ id: 'month', label: '月历史 2023—2026' }, { id: 'stock', label: '库存·周转·货值' }, { id: 'blocks', label: '右侧计划区块' }, { id: 'var', label: '变体比例 K' }], st.tab, 'ttab')}<span class="spacer"></span>
-    ${st.tab === 'month' ? yearPicker([2023, 2024, 2025, 2026]) : ''}
+    ${st.tab === 'month' ? yearPicker(TOTAL_YEARS) + heatSwitch() : ''}
     <input class="inp" id="tq" data-in="tq" value="${esc(st.q)}" placeholder="筛选 SKU / 品名" aria-label="筛选SKU" style="width:180px">
     <label class="grp small">负责人(J) <select class="sel" id="to" data-in="towner" aria-label="总销量负责人"><option value="ALL">全部</option>${D.OWNERS.map(o => `<option ${st.owner === o ? 'selected' : ''}>${o}</option>`).join('')}</select></label></div>
     ${body}${pager('total', ps.length, st.page, st.size, [8, 12, 25])}</div>`;
@@ -157,26 +157,26 @@ PAGES.stock = function () {
       { key: 'q', label: '总库存', sub: 'Q · 五国+US AWD', render: p => `<b>${fmt(sumNums(D.FIVE.map(cc => fbaOf(p, cc))) + sumNums(D.FIVE.map(cc => trOf(p, cc))) + awd(p))}</b>` }];
     const aeSa = D.LISTINGS.filter(l => !D.CMAP[l.country].inTotalStock);
     const c2 = [{ key: 'cc', label: '国家', cls: 'l', render: l => `<b>${l.country}</b>` }, { key: 'sku', label: 'SKU', cls: 'l', render: l => skuCell(l) }, { key: 'm', label: 'MSKU', cls: 'l mono', render: l => esc(l.msku) }, { key: 'f', label: 'FBA', render: l => V(l.fba) }, { key: 't', label: '当前在途', render: l => V(transitOf(l.lid), { keepZero: true }) }];
-    body = `<div class="panel-b"><div class="callout info">${icon('info')}<div>原“总库存”口径只汇总 <b>US/CA/AU/EU/UK</b> 五国 FBA 与在途，<b>US AWD 另列</b>；不是七国全量。AE/SA 在下方及各自国家页、SKU 详情中可查，未经授权不并入。国内共享库存不在本表重复相加。</div></div></div>${table('tbl-stock-total', cols, D.PRODUCTS)}
-      <div class="panel-h"><h3>AE / SA 自身库存（不在原总库存）</h3></div>${table('tbl-stock-aesa', c2, aeSa, { wrapCls: 'auto-h' })}`;
+    body = `<div class="panel-b"><div class="callout info">${icon('info')}<div>原“总库存”口径只汇总 <b>US/CA/AU/EU/UK</b> 五国 FBA 与在途，<b>US AWD 另列</b>；不是七国全量。AE/SA 在下方及各自国家页、SKU 详情中可查，未经授权不并入。国内共享库存不在本表重复相加。</div></div></div>${pagedTable('st-total', 'tbl-stock-total', cols, D.PRODUCTS)}
+      <div class="panel-h"><h2>AE / SA 自身库存（不在原总库存）</h2></div>${pagedTable('st-aesa', 'tbl-stock-aesa', c2, aeSa)}`;
   } else if (st.tab === 'domestic') {
     const cols = [{ key: 'sku', label: 'SKU', fz: 1, cls: 'l', render: skuB }, { key: 'a', label: '国内现货', sub: '亚马逊仓可用', render: p => V(p.domestic.avail, { keepZero: true }) }, { key: 'p', label: '采购在途', sub: '待到货 · 仅展示', render: p => V(p.domestic.pending, { keepZero: true }) },
       ...D.TRANSFER_WH.map(w => ({ key: w, label: w, sub: '可调拨', render: p => V(p.domestic.transfer[w], { keepZero: true }) })), { key: 's', label: '可调拨合计', render: p => `<b>${fmt(domesticOf(p.pid).transfer)}</b>` }];
     const rawCols = [{ key: 'sku', label: 'SKU', cls: 'l mono', render: r => esc(r.sku) }, { key: 'd', label: '产品标签/部门', cls: 'l', render: r => esc(r.dept) }, { key: 'w', label: '仓库', cls: 'l', render: r => esc(r.wh) }, { key: 'a', label: '可用量', render: r => V(r.avail, { keepZero: true }) }, { key: 'p', label: '待到货', render: r => V(r.pending, { keepZero: true }) }, { key: 'u', label: '业务统计', cls: 'l', render: r => r.dept !== '亚马逊二部' ? tag('mute', '不纳入：非亚马逊二部') : (r.wh === '亚马逊仓' ? tag('ok', '现货/采购在途') : D.TRANSFER_WH.includes(r.wh) ? tag('info', '可调拨白名单') : tag('mute', '不纳入：非白名单仓')) }];
     const tot = sumNums(D.PRODUCTS.map(p => p.domestic.avail));
-    body = `<div class="panel-b"><div class="row small"><span>国内现货合计（每SKU计一次）<b class="num">${fmt(tot)}</b></span><span class="muted">可调拨白名单：${D.TRANSFER_WH.join('、')}（精确仓库名）。采购在途只展示，不据此生成采购计算。</span></div></div>${table('tbl-stock-dom', cols, D.PRODUCTS)}<div class="panel-h"><h3>国内库存原始明细（全部部门保留）</h3><span class="hint">${D.DOMESTIC_RAW.length} 行</span></div>${table('tbl-stock-domraw', rawCols, D.DOMESTIC_RAW)}`;
+    body = `<div class="panel-b"><div class="row small"><span>国内现货合计（每SKU计一次）<b class="num">${fmt(tot)}</b></span><span class="muted">可调拨白名单：${D.TRANSFER_WH.join('、')}（精确仓库名）。采购在途只展示，不据此生成采购计算。</span></div></div>${pagedTable('st-dom', 'tbl-stock-dom', cols, D.PRODUCTS)}<div class="panel-h"><h2>国内库存原始明细（全部部门保留）</h2><span class="hint">${D.DOMESTIC_RAW.length} 行</span></div>${pagedTable('st-domraw', 'tbl-stock-domraw', rawCols, D.DOMESTIC_RAW)}`;
   } else if (st.tab === 'fba') {
     const cols = [{ key: 'cc', label: '业务国家', cls: 'l', render: r => `<b>${L(r.lid).country}</b>` }, { key: 'site', label: 'ERP站点', cls: 'l', render: r => esc(r.site) }, { key: 'phy', label: '物理库存池', cls: 'l', render: r => esc(r.physical) }, { key: 'sku', label: 'SKU', cls: 'l', render: r => skuCell(L(r.lid)) }, { key: 'asin', label: 'ASIN', cls: 'l mono', render: r => esc(r.asin) }, { key: 'msku', label: 'MSKU', cls: 'l mono', render: r => esc(r.msku) }, { key: 'v', label: 'FBA可用库存', sub: '→ 原“FBA可售库存”', render: r => V(r.fbaAvail) }, { key: 'u', label: '采用', cls: 'l', render: r => r.used ? tag('ok', '采用') : tag('mute', 'EU池重复·不相加') }];
-    body = `<div class="panel-b"><div class="callout info">${icon('info')}<div>源“FBA可用库存”（或允许的“FBA可用”别名）映射到原“FBA可售库存”；不混用实际在途、标发在途、计划入库、入库中字段。EU 共享池在 DE/FR/IT/ES 重复呈现，业务只取 DE。</div></div></div>${table('tbl-stock-fba', cols, D.FBA_RAW)}`;
+    body = `<div class="panel-b"><div class="callout info">${icon('info')}<div>源“FBA可用库存”（或允许的“FBA可用”别名）映射到原“FBA可售库存”；不混用实际在途、标发在途、计划入库、入库中字段。EU 共享池在 DE/FR/IT/ES 重复呈现，业务只取 DE。</div></div></div>${pagedTable('st-fba', 'tbl-stock-fba', cols, D.FBA_RAW)}`;
   } else if (st.tab === 'aging') {
     const cols = [{ key: 'cc', label: '国家', cls: 'l', render: l => `<b>${l.country}</b>` }, { key: 'sku', label: 'SKU', cls: 'l', render: l => skuCell(l) }, { key: 'm', label: 'MSKU', cls: 'l mono', render: l => esc(l.msku) }, { key: 'a', label: '180天以内', render: l => V(l.aging.lt180) }, { key: 'b', label: '180–365天', render: l => V(l.aging.m180_365) }, { key: 'c', label: '365天以上', render: l => V(l.aging.gt365) }, { key: 'v', label: '180+库龄货值', render: l => V(l.value180) }];
     const r = D.AGING_RAW; const mx = k => Math.max(...r.map(x => x[k])); const sm = k => sumNums(r.map(x => x[k]));
-    body = `<div class="panel-b"><div class="callout warn">${icon('warn')}<div><b>重复 MSKU 示例</b>（${esc(L(r[0].lid).sku)}，ASIN ${esc(r[0].asin)}）：两行 MSKU（${r.map(x => esc(x.msku)).join('、')}）。按最大值口径：180内 ${mx('lt180')}、180–365 ${mx('m180_365')}、365+ ${mx('gt365')}；若直接累加会得到 ${sm('lt180')} / ${sm('m180_365')} / ${sm('gt365')}（错误）。</div></div></div>${table('tbl-stock-aging', cols, D.LISTINGS)}`;
+    body = `<div class="panel-b"><div class="callout warn">${icon('warn')}<div><b>重复 MSKU 示例</b>（${esc(L(r[0].lid).sku)}，ASIN ${esc(r[0].asin)}）：两行 MSKU（${r.map(x => esc(x.msku)).join('、')}）。按最大值口径：180内 ${mx('lt180')}、180–365 ${mx('m180_365')}、365+ ${mx('gt365')}；若直接累加会得到 ${sm('lt180')} / ${sm('m180_365')} / ${sm('gt365')}（错误）。</div></div></div>${pagedTable('st-aging', 'tbl-stock-aging', cols, D.LISTINGS)}`;
   } else {
     const us = listingsOf('US');
     const cols = [{ key: 'sku', label: 'SKU', fz: 1, cls: 'l', render: l => skuCell(l) }, { key: 'm', label: 'MSKU', cls: 'l mono', render: l => esc(l.msku) }, { key: 'a', label: 'Available', render: l => V(l.awd.available, { keepZero: true }) }, { key: 'r', label: 'Reserved', render: l => V(l.awd.reserved, { keepZero: true }) }, { key: 'o', label: 'Outbound to FBA', render: l => V(l.awd.outbound, { keepZero: true }) }, { key: 's', label: 'AWD合计', sub: 'AG', render: l => `<b>${fmt(l.awd.available + l.awd.reserved + l.awd.outbound)}</b>` }, { key: 'h', label: '海外仓', sub: 'AH', render: l => V(l.overseas, { keepZero: true }) }, { key: 'u', label: 'U列源值', render: l => { const s = l.awd.available + l.awd.reserved + l.awd.outbound + l.overseas; return `${fmt(l.awdOverseasSrc)}${s !== l.awdOverseasSrc ? ' ' + tag('warn', '小计差异·待核对', 'warn') : ''}`; } }];
     const f = S.freshness.find(x => x.key === 'awd');
-    body = `<div class="panel-b"><div class="callout ${f.state === 'stale' ? 'warn' : 'info'}">${icon(f.state === 'stale' ? 'warn' : 'info')}<div>AWD 来源日期 <b>${f.date}</b>${f.state === 'stale' ? '（本次未提供 AWD 文件，沿用旧周期；依赖 AWD 的总库存合计同样使用旧来源）' : ''}。AWD = Available + Reserved + Outbound to FBA；不把 AWD 代替全部海外仓。</div></div></div>${table('tbl-stock-awd', cols, us)}`;
+    body = `<div class="panel-b"><div class="callout ${f.state === 'stale' ? 'warn' : 'info'}">${icon(f.state === 'stale' ? 'warn' : 'info')}<div>AWD 来源日期 <b>${f.date}</b>${f.state === 'stale' ? '（本次未提供 AWD 文件，沿用旧周期；依赖 AWD 的总库存合计同样使用旧来源）' : ''}。AWD = Available + Reserved + Outbound to FBA；不把 AWD 代替全部海外仓。</div></div></div>${pagedTable('st-awd', 'tbl-stock-awd', cols, us)}`;
   }
   return `<div class="page-h"><div class="grow"><h1>库存汇总</h1><div class="sub">FBA、在途、AWD、海外仓与国内库存分开汇总，每项都能回到组成。</div></div>${DEMO_TAG}</div>
   <div class="panel"><div class="panel-h">${seg([{ id: 'total', label: '原总库存（五国+US AWD）' }, { id: 'domestic', label: '国内库存' }, { id: 'fba', label: 'FBA · ERP导出' }, { id: 'aging', label: '库龄' }, { id: 'awd', label: 'US AWD / 海外仓' }], st.tab, 'stab')}</div>${body}</div>`;
@@ -195,7 +195,8 @@ PAGES.plan = function () {
     return true;
   });
   const list = ps.map(p => p.pid).join(',');
-  const rows = ps.map(p => {
+  const pst = pstate('plan'); const ppages = Math.max(1, Math.ceil(ps.length / pst.size)); if (pst.page > ppages) pst.page = ppages;
+  const rows = paginate(ps, pst.page, pst.size).map(p => {
     const ls = listingsOfP(p.pid).filter(l => planOf(l.lid));
     const by = cc => { const x = ls.filter(l => l.country === cc); return x.length ? sumNums(x.map(l => planQty(l.lid))) : null; };
     const tot = sumNums(ls.map(l => planQty(l.lid)));
@@ -218,7 +219,7 @@ PAGES.plan = function () {
       <label class="chk"><input type="checkbox" class="sw" id="plonly" data-in="plonly" ${st.onlyPlanned ? 'checked' : ''}> 仅看已填计划</label>
       <span class="spacer"></span><button class="btn sm" data-act="simremote" title="模拟另一位同事先保存了同一条计划记录">${icon('people')} 模拟同事修改同一记录</button><button class="btn sm" data-act="pexpand">${Object.keys(st.open).length ? '全部收起' : '全部展开'}</button></div>
     <div class="filters small" style="padding-top:0"><span>全部计划量合计 <b class="num" data-derived="pgrand">${fmt(grand)}</b>（含未保存）</span><span class="muted">SA 原表未设补货数量区，不出现在计划列；AE 使用“备货数量”。计划状态（草稿/已确认/部分执行）为建议规则的示例。</span></div>
-    <div class="tbl-wrap" id="tbl-plan" style="--fz1w:200px"><table class="t"><thead><tr><th class="l fz1" style="min-width:200px">SKU</th><th class="l">品名</th><th>装率</th>${planCcs.map(cc => `<th>${cc}${cc === 'AE' ? '<span class="th-sub">备货数量</span>' : '<span class="th-sub">本次发货量</span>'}</th>`).join('')}<th>计划合计</th><th>国内现货<span class="th-sub">共享·一次</span></th><th class="l">核对<span class="th-sub">演示·非原HW公式</span></th><th>已建货件待发<span class="th-sub">申报量</span></th><th>已发未接收</th><th>接收差异<span class="th-sub">带符号</span></th></tr></thead><tbody>${rows || `<tr><td colspan="14"><div class="empty"><h3>没有匹配的计划</h3><div>清空筛选后重试。</div></div></td></tr>`}</tbody></table></div>
+    <div class="tbl-wrap" id="tbl-plan" style="--fz1w:200px"><table class="t"><thead><tr><th class="l fz1" style="min-width:200px">SKU</th><th class="l">品名</th><th>装率</th>${planCcs.map(cc => `<th>${cc}${cc === 'AE' ? '<span class="th-sub">备货数量</span>' : '<span class="th-sub">本次发货量</span>'}</th>`).join('')}<th>计划合计</th><th>国内现货<span class="th-sub">共享·一次</span></th><th class="l">核对<span class="th-sub">演示·非原HW公式</span></th><th>已建货件待发<span class="th-sub">申报量</span></th><th>已发未接收</th><th>接收差异<span class="th-sub">带符号</span></th></tr></thead><tbody>${rows || `<tr><td colspan="14"><div class="empty"><h2>没有匹配的计划</h2><div>清空筛选后重试。</div></div></td></tr>`}</tbody></table></div>${pager('plan', ps.length, pst.page, pst.size, [25, 50, 100])}
   </div>`;
 };
 
@@ -282,7 +283,7 @@ PAGES.update = function () {
   if (u.step === 3) { const mods = updPlan(u); const M = { ok: ['ok', '可更新'], keep: ['mute', '沿用旧值'], block: ['bad', '阻断'], skip: ['warn', '跳过'], warn: ['warn', '部分需核对'] };
     body = table('tbl-upd-pre', [{ key: 'm', label: '模块', cls: 'l', render: x => `<b>${x.m}</b>` }, { key: 's', label: '预检结果', cls: 'l', render: x => tag(M[x.st][0], M[x.st][1]) }, { key: 't', label: '说明', cls: 'l wrap', render: x => esc(x.t) }], mods, { wrapCls: 'auto-h' }) + `<p class="small muted" style="margin-top:8px">不可信模块保持旧事实和旧周期，其他独立模块继续；批次写入、原发货历史与在途求和共同成功或共同撤回。</p>`; }
   if (u.step === 4) { const rows = updPreview(u);
-    body = `${rows.length ? table('tbl-upd-diff', [{ key: 'sku', label: 'SKU', cls: 'l', render: r => skuCell(r.l) }, { key: 'cc', label: '国家', cls: 'l', render: r => r.l.country }, { key: 'f', label: '字段', cls: 'l', render: r => esc(r.f) }, { key: 'a', label: '更新前', render: r => V(r.a, { keepZero: true }) }, { key: 'b', label: '候选值', render: r => `<b>${V(r.b, { keepZero: true })}</b>` }, { key: 's', label: '来源', cls: 'l small', render: r => esc(r.src) }], rows, { wrapCls: 'auto-h' }) : '<div class="empty"><h3>没有可应用的变化</h3><div>所有模块都沿用旧值或被阻断。</div></div>'}
+    body = `${rows.length ? table('tbl-upd-diff', [{ key: 'sku', label: 'SKU', cls: 'l', render: r => skuCell(r.l) }, { key: 'cc', label: '国家', cls: 'l', render: r => r.l.country }, { key: 'f', label: '字段', cls: 'l', render: r => esc(r.f) }, { key: 'a', label: '更新前', render: r => V(r.a, { keepZero: true }) }, { key: 'b', label: '候选值', render: r => `<b>${V(r.b, { keepZero: true })}</b>` }, { key: 's', label: '来源', cls: 'l small', render: r => esc(r.src) }], rows, { wrapCls: 'auto-h' }) : '<div class="empty"><h2>没有可应用的变化</h2><div>所有模块都沿用旧值或被阻断。</div></div>'}
     <div class="callout info" style="margin-top:10px">${icon('info')}<div><b>保留范围：</b>人工发货计划 ${Object.values(S.plans).filter(p => isNum(p.qty)).length} 条、备注、半月销售计划、财年月目标、产品等级不被覆盖。示例行只列出部分变化。</div></div>
     <label class="chk" style="margin-top:10px"><input type="checkbox" class="sw" id="uvc" data-in="uvc" ${u.versionChanged ? 'checked' : ''}> 模拟：预检后正式版本已被他人更新</label>`; }
   if (u.step === 5) body = u.result ? `<div class="callout ${u.result.ok ? 'demo' : 'warn'}">${icon(u.result.ok ? 'flask' : 'warn')}<div>${u.result.html}</div></div>` : `<p>确认后，候选变化只写入本页内存中的演示数据：</p><ul class="clean small"><li>不写入任何正式数据，不通知或同步任何同事</li><li>未提供/被阻断的模块保持旧值与旧日期</li><li>刷新页面后全部演示修改都会重置</li></ul><div class="row" style="margin-top:12px"><button class="btn primary" data-act="uapply">应用到本次演示</button></div>`;
@@ -294,8 +295,8 @@ PAGES.update = function () {
   <div class="panel"><div class="panel-h"><div class="steps">${steps.map((s, i) => `<button class="${u.step === i + 1 ? 'on' : u.step > i + 1 ? 'done' : ''}" data-act="ustep" data-s="${i + 1}"><span class="n">${u.step > i + 1 ? '✓' : i + 1}</span>${s}</button>`).join('')}</div><span class="spacer"></span><button class="btn sm" data-act="ureset">重新开始</button></div>
     <div class="panel-b stack">${body}<div class="row"><button class="btn" data-act="ustep" data-s="${u.step - 1}" ${u.step <= 1 ? 'disabled' : ''}>上一步</button><span class="spacer"></span>${u.step < 5 ? `<button class="btn primary" data-act="ustep" data-s="${u.step + 1}">下一步</button>` : ''}</div></div></div>
   <div class="grid2" style="margin-top:14px">
-    <div class="panel"><div class="panel-h"><h3>逐模块来源状态</h3><span class="hint">不同模块可有不同更新时间</span></div>${table('tbl-fresh', fcols, S.freshness, { wrapCls: 'auto-h' })}</div>
-    <div class="panel"><div class="panel-h"><h3>演示运行记录</h3><span class="hint">过程记录与业务数据分开</span></div><div class="panel-b">${S.runs.length ? `<ul class="clean small">${S.runs.map(r => `<li><span class="mono">${r.id}</span> · ${r.at} · ${esc(r.summary)}</li>`).join('')}</ul>` : '<span class="muted small">暂无。完成上方流程后在此记录。</span>'}</div></div>
+    <div class="panel"><div class="panel-h"><h2>逐模块来源状态</h2><span class="hint">不同模块可有不同更新时间</span></div>${table('tbl-fresh', fcols, S.freshness, { wrapCls: 'auto-h' })}</div>
+    <div class="panel"><div class="panel-h"><h2>演示运行记录</h2><span class="hint">过程记录与业务数据分开</span></div><div class="panel-b">${S.runs.length ? `<ul class="clean small">${S.runs.map(r => `<li><span class="mono">${r.id}</span> · ${r.at} · ${esc(r.summary)}</li>`).join('')}</ul>` : '<span class="muted small">暂无。完成上方流程后在此记录。</span>'}</div></div>
   </div>
   ${recordsPanel(icols, issues)}`;
 };
@@ -308,7 +309,7 @@ const PROC = [
 ];
 function recordsPanel(icols, issues) {
   const tab = S.recTab || 'status'; let body = '', hint = '';
-  const T = (cols, rows, id) => table('tbl-rec-' + id, cols.map(([label, render, cls]) => ({ key: label, label, cls: cls || 'l', render })), rows, { wrapCls: 'auto-h' });
+  const T = (cols, rows, id) => pagedTable('rec-' + id, 'tbl-rec-' + id, cols.map(([label, render, cls]) => ({ key: label, label, cls: cls || 'l', render })), rows, { wrapCls: 'auto-h' });
   const num = v => V(v, { keepZero: true });
   switch (tab) {
     case 'status': {
@@ -370,7 +371,7 @@ function recordsPanel(icols, issues) {
       body = T([['类型', r => esc(r.purpose)], ['文件名', r => esc(r.name)], ['指纹（演示）', r => r.fp, 'l mono'], ['本次纳入', r => r.on ? tag('ok', '是') : tag('mute', '否'), 'c']], u.files, 'files'); break;
     }
   }
-  return `<div class="panel" style="margin-top:14px"><div class="panel-h"><h3>过程记录</h3><span class="hint">对应现有表格中的过程工作表；与业务数据分开保存，可互相跳转</span></div>
+  return `<div class="panel" style="margin-top:14px"><div class="panel-h"><h2>过程记录</h2><span class="hint">对应现有表格中的过程工作表；与业务数据分开保存，可互相跳转</span></div>
     <div class="filters" style="border-bottom:0.5px solid var(--line)"><label class="grp">记录表 <select class="sel" id="rectab" data-in="rectab" aria-label="过程记录表">${PROC.map(([id, n]) => `<option value="${id}" ${tab === id ? 'selected' : ''}>${n}</option>`).join('')}</select></label>${hint ? `<span class="small muted">${hint}</span>` : ''}<span class="spacer"></span>${DEMO_TAG}</div>${body}</div>`;
 }
 function applyUpdate() {
@@ -378,7 +379,7 @@ function applyUpdate() {
   if (u.versionChanged) { u.result = { ok: false, html: '<b>未应用：</b>预检后正式版本已变化（模拟他人已更新）。请返回“候选预检”重新核对差异后再确认。本次没有任何数据被写入。' }; u.versionChanged = false; rerenderKeep(); toast('版本已变化：需要重新预检', 'warn'); return; }
   const mods = updPlan(u); const ok = m => mods.find(x => x.m === m && x.st === 'ok');
   const prev = updPreview(u); const applied = [];
-  prev.forEach(r => { if (r.f === 'FBA可售') r.l.fba = r.b; if (r.f.startsWith('2026-10')) r.l.monthly[2026][9] = r.b; if (r.batch) { r.batch.received = r.batch.declared - 2; r.batch.diffRaw = 2; r.batch.current = 2; } applied.push(r); });
+  prev.forEach(r => { if (r.f === 'FBA可售') r.l.fba = r.b; if (r.f.startsWith('2026-10')) { r.l.annual[2026] += r.b - r.l.monthly[2026][9]; r.l.monthly[2026][9] = r.b; } if (r.batch) { r.batch.received = r.batch.declared - 2; r.batch.diffRaw = 2; r.batch.current = 2; } applied.push(r); });
   const fr = k => S.freshness.find(f => f.key === k);
   if (ok('FBA库存')) { fr('fba').date = u.baseDate; fr('fba').state = 'updated'; fr('fba').note = ''; S.staleFba = false; } else { fr('fba').state = 'stale'; fr('fba').note = '本次未提供 FBA 文件，沿用旧周期；可售天数依赖旧库存来源'; S.staleFba = true; }
   if (ok('国内库存')) { fr('domestic').date = u.baseDate; } else { fr('domestic').state = 'stale'; fr('domestic').note = '本次未提供，沿用旧周期'; }
@@ -387,7 +388,7 @@ function applyUpdate() {
   else if (sm.st === 'block') { fr('sales').state = 'blocked'; fr('sales').note = '严格日期检查阻断，保留 10/11 旧值'; }
   const shipMod = mods.find(x => x.m === '货件/批次'); if (shipMod.st !== 'keep') fr('ship').date = u.baseDate;
   const id = `RUN-${String(S.runs.length + 1).padStart(3, '0')}`; const at = new Date().toTimeString().slice(0, 5);
-  S.runs.unshift({ id, at, base: u.baseDate, inputs: u.files.filter(f => f.on).length, summary: `基准日 ${u.baseDate}；应用 ${applied.length} 项示例变化；${mods.filter(m => m.st !== 'ok').map(m => m.m + (m.st === 'block' ? '阻断' : m.st === 'keep' ? '沿用' : '部分')).join('、')}` });
+  S.runs.unshift({ id, at, by: ROLES[S.role].name, snap: takeSnap(), base: u.baseDate, inputs: u.files.filter(f => f.on).length, summary: `基准日 ${u.baseDate}；应用 ${applied.length} 项示例变化；${mods.filter(m => m.st !== 'ok').map(m => m.m + (m.st === 'block' ? '阻断' : m.st === 'keep' ? '沿用' : '部分')).join('、')}` });
   u.result = { ok: true, html: `<b>已应用到本次演示（${id}）。</b>写入 ${applied.length} 项示例变化，只存在于本页内存；没有写入正式数据，也没有同步给任何同事。${sm.st === 'block' ? '销量模块被阻断，保持旧值。' : ''}${S.staleFba ? 'FBA 未更新：相关可售天数已标“依赖旧库存”。' : ''} 人工计划与备注未被覆盖。` };
   render(); toast(`已应用到本次演示（${id}）。未写入正式数据；版本记录已新增未确认版本。`);
 }
@@ -409,7 +410,7 @@ PAGES.coverage = function () {
   const acols = [{ key: 'id', label: '编号', cls: 'l mono', render: r => r[0] }, { key: 't', label: '场景', cls: 'l wrap', render: r => esc(r[1]) }, { key: 'g', label: '去验证', cls: 'l', render: r => `<button class="btn sm" data-act="goto" data-t="${r[2]}">打开 ${icon('right')}</button>` }];
   return `<div class="page-h"><div class="grow"><h1>原表覆盖与验收</h1><div class="sub">16 张业务工作表与 14 张过程记录表的入口映射，以及验收场景的一键定位。业务数据与过程记录分开组织，可互相跳转。</div></div>${DEMO_TAG}</div>
   <div class="panel"><div class="panel-h">${seg([{ id: 'sheets', label: '16 张原表映射' }, { id: 'accept', label: '验收场景 A01–A24' }], st.tab, 'covtab')}</div>
-    ${st.tab === 'sheets' ? table('tbl-cov', sheetCols, D.SHEETS, { wrapCls: 'auto-h', fz1w: 130 }) + `<div class="panel-h" style="border-top:0.5px solid var(--line)"><h3>过程记录工作表（${PROC.length} 张）</h3><span class="hint">更新程序写入的记录，在“数据更新与异常 → 过程记录”中逐张查看</span></div>` + table('tbl-cov-proc', [{ key: 'n', label: '工作表', cls: 'l', render: r => `<b>${r[1]}</b>` }, { key: 'g', label: '程序内入口', cls: 'l', render: r => `<button class="link" data-act="goto" data-t="update:${r[0]}">数据更新与异常 · ${r[1]}</button>` }, { key: 's', label: '状态', cls: 'l', render: () => tag('ok', '已映射', 'check') }], PROC, { wrapCls: 'auto-h' }) + `<div class="note">${icon('info')} Craft&amp;Fresh、Sheet1 仅确认工作表存在，业务角色与字段依赖待确认：保留回查入口，不删除、不猜映射。</div>` : table('tbl-acc', acols, ACCEPT, { wrapCls: 'auto-h' })}</div>`;
+    ${st.tab === 'sheets' ? table('tbl-cov', sheetCols, D.SHEETS, { wrapCls: 'auto-h', fz1w: 130 }) + `<div class="panel-h" style="border-top:0.5px solid var(--line)"><h2>过程记录工作表（${PROC.length} 张）</h2><span class="hint">更新程序写入的记录，在“数据更新与异常 → 过程记录”中逐张查看</span></div>` + table('tbl-cov-proc', [{ key: 'n', label: '工作表', cls: 'l', render: r => `<b>${r[1]}</b>` }, { key: 'g', label: '程序内入口', cls: 'l', render: r => `<button class="link" data-act="goto" data-t="update:${r[0]}">数据更新与异常 · ${r[1]}</button>` }, { key: 's', label: '状态', cls: 'l', render: () => tag('ok', '已映射', 'check') }], PROC, { wrapCls: 'auto-h' }) + `<div class="note">${icon('info')} Craft&amp;Fresh、Sheet1 仅确认工作表存在，业务角色与字段依赖待确认：保留回查入口，不删除、不猜映射。</div>` : table('tbl-acc', acols, ACCEPT, { wrapCls: 'auto-h' })}</div>`;
 };
 function gotoTarget(t) {
   const [k, a, b] = t.split(':');
@@ -436,13 +437,15 @@ PAGES.notes = function () {
     <div class="panel"><div class="panel-h"><h2>状态说明</h2></div><div class="panel-b small">
       <p><b>真实可交互（前端本地状态）：</b>国家/视图切换与各国筛选保留；全局与多 SKU 搜索；人员×国家组合；SKU 详情与返回恢复；月份高亮；周范围切换；编辑发货量/备注/半月计划并实时联动箱数（US）、补货后天数（US）、计划汇总、总销量 DL:EE 汇总；批次选入在途（各国独立、空选、恢复原范围）；保存/放弃；模拟同事冲突与解决；只读身份；更新流程模拟（预检、阻断、预览、版本变化、应用）；主题与密度切换。</p>
       <p><b>第四版新增：</b>列配置（分组勾选、排序、固定列、模版）、年份多选、版本记录与对比、运营人员卡片布局。</p>
+      <p><b>第五版（开发前检查）：</b>代码审查与补充审查共 27 项问题已修复；大表全部分页；综合总览增加趋势小图列，SKU 详情增加逐年同月对比图，月历史可开色阶，批次改为一行一批的清单；无障碍扫描 0 项违规；按真实规模（约 550 个 SKU、2,600 条 Listing）实测，多数页面渲染在 0.1 秒内。详见 docs/05-开发前检查报告。</p>
       <p><b>设计占位（未实现）：</b>登录与权限、真实多人同步与版本服务、文件读取与导入、数据库持久化、原公式结果接口、审计存储、通知。所有“保存/应用”只写本页内存，刷新即重置。</p></div></div>
   </div>
   <div class="panel" style="margin-top:14px"><div class="panel-h"><h2>待确认项（不自行补造公式）</h2></div><div class="panel-b small"><ol style="margin:0;padding-left:18px">
     <li>Craft&amp;Fresh、Sheet1 的业务角色及字段依赖。</li><li>年度/月/周、财年目标、半月预测、海运期末/月底库存、可售天数、变体依赖的逐字段公式与人工输入边界（目前仅 US 局部公式 J、HO、HX 有证据）。</li>
     <li>总销量各“全球”指标的实际国家/Listing 覆盖。</li><li>财年目标的起止年份、形成与分摊、是否锁定。</li><li>发货计划如何对应已建货件、实际发货与部分执行，何时冲销。</li>
     <li>运营角色、记录负责人、正式更新确认人、历史修正人及并发冲突最终规则。</li><li>原表疑点、缺失月份、错误公式与未匹配商品的逐项复核流程。</li>
-    <li>变体比例分子引用的年度；SA 部分月份标题的确切范围；各国运输天数 D1 的真实取值（演示为示例参数）。</li></ol></div></div>`;
+    <li>变体比例分子引用的年度；SA 部分月份标题的确切范围；各国运输天数 D1 的真实取值（演示为示例参数）。</li>
+    <li>带 SY 的海外仓批次是否计入 FBA 当前在途；版本记录的保留期限与回滚权限；列配置模版是否团队共享。</li></ol></div></div>`;
 };
 
 Object.assign(ACT_EXTRA, { pmatrix: () => { S.people.matrix = !S.people.matrix; rerenderKeep(); } });
@@ -457,15 +460,18 @@ const VER_HIST = [
 ];
 const VSTATUS = { cur: ['ok', '当前版本'], hist: ['mute', '历史版本'], void: ['bad', '已作废'], demo: ['demo', '演示应用·未确认'] };
 function verHash(str) { let h = 2166136261; for (const ch of str) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return (h >>> 0) / 4294967296; }
+/** 版本快照：每个 Listing 的 FBA、在途、最新完整周销量。当前正式版本 V-1012 在页面加载时拍下；演示运行在应用后拍下。快照之后的修改不会混入已存版本。 */
+function takeSnap() { const o = {}; const k = D.WEEKS.length - 1; D.LISTINGS.forEach(l => { const w = l.weekly ? l.weekly[k] : null; o[l.lid] = { fba: l.fba, transit: transitOf(l.lid), week: isNum(w) ? w : 0 }; }); return o; }
+const VER_SNAP_CUR = takeSnap();
 function versions() {
-  const cur = { id: 'V-1012', file: '博达-1012进销存.xlsx', base: D.BASE_DATE, at: '2026-10-12 18:30', by: '运营甲', status: 'cur', issues: D.ISSUES.length, inputs: 10, scope: 'FBA、国内、销量、货件；AWD 沿用 10-04', age: 0 };
-  const runs = S.runs.slice().reverse().map(r => ({ id: r.id, file: `博达-${r.base.slice(5).replace('-', '')}进销存（演示）`, base: r.base, at: `2026-10-14 ${r.at}`, by: ROLES[S.role].name, status: 'demo', issues: D.ISSUES.length, inputs: r.inputs, scope: r.summary, age: -1 }));
+  const cur = { id: 'V-1012', file: '博达-1012进销存.xlsx', base: D.BASE_DATE, at: '2026-10-12 18:30', by: '运营甲', status: 'cur', issues: D.ISSUES.length, inputs: 10, scope: 'FBA、国内、销量、货件；AWD 沿用 10-04', age: 0, snap: VER_SNAP_CUR };
+  const runs = S.runs.slice().reverse().map(r => ({ id: r.id, file: `博达-${r.base.slice(5).replace('-', '')}进销存（演示）`, base: r.base, at: `2026-10-14 ${r.at}`, by: r.by, status: 'demo', issues: D.ISSUES.length, inputs: r.inputs, scope: r.summary, age: -1, snap: r.snap }));
   return [...runs, cur, ...VER_HIST.slice().reverse()];
 }
-/** 某版本下某 Listing 的指标：当前版本取实时值，历史版本按版本与 Listing 生成确定性的虚构偏移 */
+/** 某版本下某 Listing 的指标：有快照的版本读快照；历史版本在 V-1012 快照基础上按版本与 Listing 生成确定性的虚构偏移 */
 function verVal(v, l, k) {
-  const base = k === 'fba' ? l.fba : k === 'transit' ? transitOf(l.lid) : (l.weekly ? (isNum(l.weekly[D.WEEKS.length - 1]) ? l.weekly[D.WEEKS.length - 1] : 0) : 0);
-  if (v.age <= 0) return base;
+  if (v.snap) return v.snap[l.lid][k];
+  const base = VER_SNAP_CUR[l.lid][k];
   const r = verHash(v.id + l.lid + k);
   return Math.max(0, Math.round(base * (1 + (r - 0.45) * 0.18 * v.age) + (k === 'fba' ? v.age * 12 * (r - 0.3) : 0)));
 }
@@ -499,16 +505,16 @@ PAGES.versions = function () {
     const nf = (r, k) => k === 'week' && r !== 'ALL' && !D.CMAP[r].weeks;
     const body = rows.map(r => `<tr class="${r === 'ALL' ? 'g-start' : ''}"><td class="l"><b>${r === 'ALL' ? '合计' : r}</b></td>${metrics.map(([k]) => nf(r, k) ? `<td>${V('NF')}</td><td>${V('NF')}</td><td></td>` : `<td>${fmt(a[r][k])}</td><td>${fmt(b[r][k])}</td><td class="sum-c">${d(a[r][k], b[r][k])}</td>`).join('')}</tr>`).join('');
     const top = D.LISTINGS.map(l => ({ l, x: verVal(A, l, 'fba'), y: verVal(B, l, 'fba') })).map(o => ({ ...o, dv: o.y - o.x })).sort((p, q) => Math.abs(q.dv) - Math.abs(p.dv)).slice(0, 8);
-    cmp = `<div class="panel" style="margin-top:20px"><div class="panel-h"><h3>版本对比 · ${A.id} → ${B.id}</h3><span class="small muted">基准日 ${A.base} → ${B.base} · 待核对 ${A.issues} → ${B.issues}</span></div>
+    cmp = `<div class="panel" style="margin-top:20px"><div class="panel-h"><h2>版本对比 · ${A.id} → ${B.id}</h2><span class="small muted">基准日 ${A.base} → ${B.base} · 待核对 ${A.issues} → ${B.issues}</span></div>
       <div class="tbl-wrap auto-h" id="tbl-vcmp"><table class="t">${head}<tbody>${body}</tbody></table></div>
-      <div class="panel-h" style="border-top:0.5px solid var(--line)"><h3>FBA 变化最大的 Listing</h3></div>
+      <div class="panel-h" style="border-top:0.5px solid var(--line)"><h2>FBA 变化最大的 Listing</h2></div>
       ${table('tbl-vtop', [{ key: 'cc', label: '国家', cls: 'l', render: o => `<b>${o.l.country}</b>` }, { key: 'sku', label: 'SKU', cls: 'l', render: o => skuCell(o.l) }, { key: 'm', label: 'MSKU', cls: 'l mono', render: o => esc(o.l.msku) }, { key: 'x', label: A.id, render: o => fmt(o.x) }, { key: 'y', label: B.id, render: o => fmt(o.y) }, { key: 'd', label: '变化', render: o => d(o.x, o.y) }], top, { wrapCls: 'auto-h' })}
       <div class="note">${icon('info')} 历史版本数值为演示生成，用于展示对比交互；正式版从各版本快照读取，不重算。</div></div>`;
   }
   return `<div class="page-h"><div class="grow"><h1>版本记录</h1><div class="sub">每次更新生成的进销存版本；可查看来源与范围，任选两个版本对比。</div></div></div>
   <div class="panel">${table('tbl-versions', cols, vs, { wrapCls: 'auto-h', rowAttr: v => v.status === 'cur' ? 'class="vcur"' : '' })}
     <div class="sumstrip" style="padding-top:12px"><span>勾选两个版本即可对比${st.sel.length === 2 ? '' : `（已选 ${st.sel.length}）`}</span><span class="tiny muted">在“数据更新与异常”应用一次演示更新，会在这里新增一个未确认版本</span></div></div>
-  ${cmp || `<div class="panel" style="margin-top:20px"><div class="empty"><h3>选择两个版本进行对比</h3><div>当前已选 ${st.sel.length} 个。</div></div></div>`}`;
+  ${cmp || `<div class="panel" style="margin-top:20px"><div class="empty"><h2>选择两个版本进行对比</h2><div>当前已选 ${st.sel.length} 个。</div></div></div>`}`;
 };
 function versionModal(id) {
   const v = versions().find(x => x.id === id); const isCur = v.status === 'cur';

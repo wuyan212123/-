@@ -89,7 +89,11 @@ const DEMO = (() => {
   // 总销量 EG:EU 另 15 期保存预测（至 2027-02 上）
   const HALF15 = HALF.slice(0, 15);
 
-  P_RAW.forEach((r, pi) => {
+  // 规模测试：本地打开 index.html?scale=25 时把商品复制 25 份（约 550 个 SKU、2,600 条 Listing），用于验证真实数据量下的渲染；发布页面不带参数，始终为 1
+  const SCALE = (() => { try { return Math.max(1, Math.min(40, Math.floor(Number(new URLSearchParams(location.search).get('scale'))) || 1)); } catch (e) { return 1; } })();
+  const P_ALL = [];
+  for (let k = 0; k < SCALE; k++) P_RAW.forEach(r => P_ALL.push(k ? [`${r[0]}-S${k + 1}`, `${r[1]} #${k + 1}`, ...r.slice(2, 6), r[6] ? `${r[6]}-S${k + 1}` : null, ...r.slice(7)] : r));
+  P_ALL.forEach((r, pi) => {
     const [sku, name, pack, grade, size, label, group, cs, L] = r;
     const pid = `P-${String(pi + 1).padStart(3, '0')}`;
     const countries = cs.split(' ');
@@ -234,6 +238,8 @@ const DEMO = (() => {
     if (ri(0, 2) === 0) DOMESTIC_RAW.push({ sku: p.sku, dept: '国内电商部', wh: '亚马逊仓', avail: ri(10, 400), pending: ri(0, 100) });
     if (ri(0, 3) === 0) DOMESTIC_RAW.push({ sku: p.sku, dept: '亚马逊二部', wh: '退货暂存仓', avail: ri(1, 40), pending: 0 });
   });
+  // 规模测试时补足其他部门的明细行（真实导出约 1 万行，绝大多数不属于亚马逊二部）
+  for (let i = 0; SCALE > 1 && i < SCALE * 380; i++) DOMESTIC_RAW.push({ sku: `OTHER-${String(i).padStart(5, '0')}`, dept: ['国内电商部', '亚马逊一部', 'TEMU 事业部'][i % 3], wh: ['亚马逊仓', '电商仓', 'TEMU仓'][i % 3], avail: ri(0, 300), pending: ri(0, 50) });
 
   // ——— FBA ERP 导出原始明细（EU 共享池在多个站点重复出现） ———
   const FBA_RAW = [];
@@ -357,5 +363,5 @@ const DEMO = (() => {
     ['Sheet1', '原表回查（角色待确认）', 'coverage', '仅确认工作表存在；业务角色待确认，不当无用表删除'],
   ];
 
-  return { BASE_DATE, BASE, MONTHS, FISCAL, OWNERS, TRANSFER_WH, COUNTRIES, CMAP, FIVE, PRODUCTS, LISTINGS, byId, pById, WEEKS, HALF, HALF15, ISSUES, DOMESTIC_RAW, FBA_RAW, AGING_RAW, BATCHES, TRANSIT_SEL, PLANS, FRESHNESS, SHEETS };
+  return { SCALE, BASE_DATE, BASE, MONTHS, FISCAL, OWNERS, TRANSFER_WH, COUNTRIES, CMAP, FIVE, PRODUCTS, LISTINGS, byId, pById, WEEKS, HALF, HALF15, ISSUES, DOMESTIC_RAW, FBA_RAW, AGING_RAW, BATCHES, TRANSIT_SEL, PLANS, FRESHNESS, SHEETS };
 })();
