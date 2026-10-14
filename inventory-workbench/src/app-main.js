@@ -65,6 +65,7 @@ function refreshPlanDerived(lid) {
   setDerived('pchk-' + p.pid, tot > p.domestic.avail ? tag('warn', `超出现货 ${fmt(tot - p.domestic.avail)}`, 'warn') : tag('ok', '现货可覆盖'));
   setDerived('pcheck-' + p.pid, tot > p.domestic.avail ? `计划超出现货 ${fmt(tot - p.domestic.avail)}（演示核对，非原 HW 公式）` : '现货可覆盖计划合计（演示核对）');
   setDerived('pgrand', fmt(sumNums(D.LISTINGS.map(x => planQty(x.lid)))));
+  redrawProj(lid);
   renderSavebar();
 }
 

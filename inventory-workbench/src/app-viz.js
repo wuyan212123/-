@@ -38,7 +38,7 @@ const compact = v => v >= 10000 ? (v / 1000).toFixed(0) + 'K' : v >= 1000 ? (v /
 function drawCharts() {
   Object.keys(CHARTS).forEach(id => {
     const el = document.getElementById(id); if (!el) { delete CHARTS[id]; return; }
-    drawYoy(el, CHARTS[id]);
+    if (CHARTS[id].type === 'proj') drawProj(el, CHARTS[id]); else drawYoy(el, CHARTS[id]);
   });
 }
 function drawYoy(el, spec) {
@@ -115,5 +115,5 @@ function heatLevel(v, max) { if (!isNum(v) || !max) return 0; return Math.min(5,
 /* 主题切换或窗口变化时重绘（颜色随主题取值，宽度随容器） */
 let chartFrame = 0;
 function scheduleCharts() { if (chartFrame) return; chartFrame = requestAnimationFrame(() => { chartFrame = 0; drawCharts(); }); }
-function drawChartsThemed() { Object.keys(CHARTS).forEach(id => { const sp = CHARTS[id]; const grays = YOY_GRAYS[isDark() ? 'dark' : 'light']; const accent = getComputedStyle(document.documentElement).getPropertyValue('--link').trim(); let gi = 0; sp.series.slice().sort((a, b) => b.year - a.year).forEach(s => { s.color = s.cur ? accent : grays[Math.min(gi++, grays.length - 1)]; }); }); drawCharts(); }
+function drawChartsThemed() { Object.keys(CHARTS).forEach(id => { const sp = CHARTS[id]; if (!sp.series) return; const grays = YOY_GRAYS[isDark() ? 'dark' : 'light']; const accent = getComputedStyle(document.documentElement).getPropertyValue('--link').trim(); let gi = 0; sp.series.slice().sort((a, b) => b.year - a.year).forEach(s => { s.color = s.cur ? accent : grays[Math.min(gi++, grays.length - 1)]; }); }); drawCharts(); }
 try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => drawChartsThemed()); } catch (e) { /* 旧浏览器忽略 */ }

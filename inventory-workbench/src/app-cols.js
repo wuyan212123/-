@@ -34,6 +34,7 @@ function colCatalog(cc, listAttr) {
     { key: 'a2', g: '库存', label: '180–365天', render: l => V(l.aging.m180_365) },
     { key: 'a3', g: '库存', label: '365天以上', render: l => V(l.aging.gt365) },
     { key: 'v180', g: '库存', label: '180+库龄货值', sub: '原值回查', render: l => V(l.value180) },
+    { key: 'cover', g: '库存', label: '可撑天数', sub: '演示估算 · FBA+所选在途', title: '条形：深色 = FBA 可撑天数，红色斜纹 = 到仓前断档，浅色 = 在途到仓后可撑；竖线 = 补货线（运输期 + 安全 14 天，示例参数）。演示估算，非原公式', appl: c => c.half, sort: true, cls: 'l cv-c', render: l => coverCell(l) },
     { key: 'daysNow', g: '库存', label: 'FBA当前可售天数', sub: '源值·原公式待接入', appl: c => c.half, render: l => cf(l).half ? (l.daysNow == null ? tag('warn', '均销为0') : V(l.daysNow)) + (S.staleFba ? ' ' + tag('warn', '依赖旧库存') : '') : V('NF') },
     { key: 'daysTotal', g: '库存', label: 'FBA共计可售天数', sub: '源值·原公式待接入', appl: c => c.half, render: l => cf(l).half ? (l.daysTotal == null ? tag('warn', '均销为0') : V(l.daysTotal)) : V('NF') },
     { key: 'awd', g: '库存', label: 'AWD可用库存', sub: 'AG · 可用+预留+转FBA', appl: c => c.awd, render: l => l.awd ? `${V(l.awd.available + l.awd.reserved + l.awd.outbound)} <button class="link small" data-act="awd" data-lid="${l.lid}">组成</button>` : V('NF') },
@@ -66,17 +67,17 @@ function colCatalog(cc, listAttr) {
   return cfg ? C.filter(c => !c.appl || c.appl(cfg)) : C;
 }
 const COL_DEFAULTS = {
-  overview: { cols: ['sku', 'name', 'owner', 'trend', 'fba', 'transit', 'dom', 'avg4', 'm9', 'm10', 'half', 'plan', 'st'], pin: ['sku', 'name'] },
+  overview: { cols: ['sku', 'name', 'owner', 'trend', 'cover', 'fba', 'transit', 'dom', 'avg4', 'm10', 'plan', 'st'], pin: ['sku', 'name'] },
   plan: { cols: ['sku', 'name', 'msku', 'pack', 'plan', 'box', 'note', 'dom', 'enough', 'avg4', 'td', 'sea', 'hx', 'me', 'med', 'sug', 'st'], pin: ['sku', 'name'] },
   stock: { cols: ['sku', 'name', 'fba', 'a1', 'a2', 'a3', 'v180', 'dom', 'transfer', 'daysNow', 'daysTotal', 'transit', 'awd', 'overseas', 'awdU'], pin: ['sku', 'name'] },
   info: { cols: ['sku', 'name', 'row', 'asin', 'msku', 'owner', 'variant', 'size', 'pack', 'box', 'grade', 'labels'], pin: ['sku', 'name'] },
-  people: { cols: ['country', 'sku', 'name', 'msku', 'owner', 'fba', 'transit', 'plan', 'st'], pin: ['country', 'sku'] },
+  people: { cols: ['country', 'sku', 'name', 'msku', 'owner', 'cover', 'fba', 'transit', 'plan', 'st'], pin: ['country', 'sku'] },
 };
 const COL_VIEWS = Object.keys(COL_DEFAULTS);
 const COL_VIEW_NAME = { overview: '综合总览', plan: '发货计划', stock: '库存明细', info: '商品资料', people: '运营人员视图' };
 const BUILTIN_TPL = [
   { name: '库存核对', cols: ['sku', 'name', 'fba', 'transit', 'dom', 'transfer', 'a1', 'a2', 'a3', 'daysNow', 'daysTotal', 'awd'], pin: ['sku'] },
-  { name: '发货决策', cols: ['sku', 'name', 'trend', 'avg4', 'fba', 'transit', 'dom', 'half', 'plan', 'box', 'hx', 'enough', 'note', 'st'], pin: ['sku', 'name'] },
+  { name: '发货决策', cols: ['sku', 'name', 'cover', 'trend', 'avg4', 'fba', 'transit', 'dom', 'half', 'plan', 'box', 'hx', 'enough', 'note', 'st'], pin: ['sku', 'name'] },
   { name: '销量对比', cols: ['sku', 'name', 'owner', 'trend', 'avg4', 'weight', 'wLatest', 'm9', 'm10', 'y2025', 'y2026'], pin: ['sku', 'name'] },
 ];
 const ALL_COL_KEYS = new Set(colCatalog(null, '').map(c => c.key));

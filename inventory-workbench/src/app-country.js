@@ -76,7 +76,7 @@ function arrivalIdx(cc, shipDate) {
 
 /* ========== 国家主表 ========== */
 /** 列表排序取值（国家主表与人员视图共用）；空值排在最前或最后，不与 0 混淆 */
-const LISTING_SORT = { sku: r => r.sku, fba: r => r.fba, transit: r => transitOf(r.lid), avg4: r => isNum(r.avg4) ? r.avg4 : null, plan: r => planQty(r.lid), m9: r => isNum(r.monthly[2026]?.[8]) ? r.monthly[2026][8] : null, owner: r => r.owner || '' };
+const LISTING_SORT = { cover: r => coverSortKey(r), sku: r => r.sku, fba: r => r.fba, transit: r => transitOf(r.lid), avg4: r => isNum(r.avg4) ? r.avg4 : null, plan: r => planQty(r.lid), m9: r => isNum(r.monthly[2026]?.[8]) ? r.monthly[2026][8] : null, owner: r => r.owner || '' };
 function filteredListings(cc) {
   const c = cui(cc); const q = norm(c.q);
   let rows = listingsOf(cc).filter(l => {
@@ -254,11 +254,12 @@ function batchView(cc, c, allRows) {
   return `<div class="batch-head">
       <div class="bh-sum"><span class="small muted">本国当前在途合计</span><b class="bh-v">${fmt(tot)}</b><span class="small muted">${sel == null ? `保留原范围 · 全部 ${bs.length} 批` : `已选 ${nOn} / ${bs.length} 批`}</span></div>
       <span class="spacer"></span>
+      ${seg([{ id: 'list', label: '清单' }, { id: 'time', label: '时间线' }], c.bmode || 'list', 'bmode')}
       <button class="btn sm" data-act="bselall" data-cc="${cc}" ${!canEdit() ? 'disabled' : ''}>全选</button><button class="btn sm" data-act="bselnone" data-cc="${cc}" ${!canEdit() ? 'disabled' : ''}>明确空选</button>${sel == null ? '' : `<button class="btn sm" data-act="bselorig" data-cc="${cc}" ${!canEdit() ? 'disabled' : ''}>恢复原范围</button>`}
     </div>
     ${sel == null ? `<div class="filters" style="padding-top:0"><div class="callout info" style="flex:1">${icon('info')}<div>本次未上传 ${cc} 货件文件：在途保留原组成与原周期（全部 ${bs.length} 批）。勾选或取消任一批次即切换为“本次明确选择”。</div></div></div>` : ''}
     ${sel != null && sel.length === 0 ? `<div class="filters" style="padding-top:0"><div class="callout warn" style="flex:1">${icon('warn')}<div><b>已明确空选：</b>本国当前在途 = 0。这是有意选择，不是缺数据；批次与原发货历史仍保留。</div></div></div>` : ''}
-    ${table(`tbl-${cc}-batches`, bcols, bs, { wrapCls: 'auto-h', rowAttr: b => isSelected(b) ? '' : 'class="row-off"' })}
+    ${c.bmode === 'time' ? batchTimeline(cc, bs) : table(`tbl-${cc}-batches`, bcols, bs, { wrapCls: 'auto-h', rowAttr: b => isSelected(b) ? '' : 'class="row-off"' })}
     <div class="note" style="padding-top:10px">${icon('info')} 各国独立选择计入在途的批次，不限最近五批；取消选择不删除批次与原发货历史。原发货量只作历史，不再计入；下表单元格为“当前值／原量”，负数=多收。</div>
     <div class="panel-h" style="border-top:0.5px solid var(--line)"><h2>按 Listing 的批次明细</h2><span class="hint">筛选条件作用于此表</span></div>
   ` + pagedTable('batch-' + cc, `tbl-${cc}-batch`, cols, lines, { emptyTitle: '筛选条件下没有出现在批次中的 Listing' });

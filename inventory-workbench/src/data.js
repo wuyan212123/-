@@ -152,7 +152,11 @@ const DEMO = (() => {
         if (cfg.weeks) l.weekly = WEEKS.map(w => { const m = Number(w.start.slice(5, 7)) - 1; return Math.round(cL / 4.35 * SEASON[m] * YF[w.isoYear] * (0.8 + rnd() * 0.4)); });
         // —— 库存 ——
         l.fba = Math.round(cL * (0.8 + rnd() * 2.8));
-        l.aging = { lt180: Math.round(l.fba * 0.7), m180_365: Math.round(l.fba * 0.22), gt365: l.fba - Math.round(l.fba * 0.7) - Math.round(l.fba * 0.22) };
+        // 库龄构成按 Listing 稳定散列取比例（不消耗随机序列，其他演示值不变）：多数货龄短，少数压货
+        { const hz = s => { let h = 2166136261; for (const ch of s) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return (h >>> 0) / 4294967296; };
+          const old = 0.03 + Math.pow(hz(l.lid + '|old'), 2.2) * 0.55, mid = 0.1 + hz(l.lid + '|mid') * 0.22;
+          const a1 = Math.round(l.fba * Math.max(0.1, 1 - old - mid)), a2 = Math.min(l.fba - a1, Math.round(l.fba * mid));
+          l.aging = { lt180: a1, m180_365: a2, gt365: l.fba - a1 - a2 }; }
         l.value180 = (l.aging.m180_365 + l.aging.gt365) * ri(4, 11);
         if (cfg.half) {
           l.weight = [1, 1.1, 0.9, 1.05][ri(0, 3)];

@@ -22,14 +22,15 @@
 | `src/app-core.js` | 共享状态、索引、渲染工具（表格、分页、焦点恢复、弹层）和导航 |
 | `src/app-country.js` | 国家主表的 8 个视图，以及月矩阵、年份选择、周范围、半月计划和批次清单 |
 | `src/app-viz.js` | 趋势小图、逐年同月对比图、色阶 |
+| `src/app-cover.js` | 可撑天数模型（演示估算）、断货风险条、库存推演图、批次时间线、库龄构成条 |
 | `src/app-cols.js` | 列目录（按国家判断适用性）与列配置弹层（分组、排序、固定列、模版） |
 | `src/app-detail.js` | SKU 统一详情的 7 个分区 |
 | `src/app-pages.js` | 人员、搜索、总销量、库存汇总、发货计划、更新、版本记录、覆盖、说明 |
 | `src/app-main.js` | 事件处理、保存/冲突模拟、全局搜索浮层、启动 |
 | `tools/build.py` | 内联生成 `index.html` 与 `dist/workbench.html` |
-| `tools/verify.cjs` | Playwright 交互验证与截图（123 项） |
+| `tools/verify.cjs` | Playwright 交互验证与截图（134 项） |
 | `tools/perf.cjs` | 按真实规模测量各页面的渲染耗时 |
-| `tools/a11y.cjs` | axe-core 无障碍扫描（21 个页面/弹层，浅色和深色各一次） |
+| `tools/a11y.cjs` | axe-core 无障碍扫描（24 个页面/弹层，浅色和深色各一次） |
 | `docs/` | 设计说明、状态说明、覆盖与验证记录、待确认项、开发前检查报告、截图 |
 
 ## 构建与验证

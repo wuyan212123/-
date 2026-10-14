@@ -39,6 +39,7 @@
   --hl: rgba(255, 204, 0, 0.22); --hl-line: #d4a300;
   --row-hover: rgba(0, 100, 209, 0.06);
   --group-line: rgba(0, 0, 0, 0.18);
+  --tint: #a9c8ee; --mark-warn: #e08a00; --ag1: #b9d3f2; --ag2: #5b97de; --ag3: #0b4fa3;
   --shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-btn: 0 0.5px 1px rgba(0, 0, 0, 0.18), 0 0 0 0.5px rgba(0, 0, 0, 0.1);
   --shadow-pop: 0 0 0 0.5px rgba(0, 0, 0, 0.12), 0 12px 40px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -60,7 +61,7 @@
     --accent: #0a6fd9; --link: #56aaff; --accent-text: #ffffff; --accent-soft: rgba(10, 132, 255, 0.16); --accent-line: rgba(86, 170, 255, 0.6); --focus: rgba(86, 170, 255, 0.55);
     --ok: #30d158; --ok-soft: rgba(48, 209, 88, 0.16); --warn: #ff9f0a; --warn-soft: rgba(255, 159, 10, 0.17); --bad: #ff8a82; --bad-soft: rgba(255, 69, 58, 0.16);
     --demo: #ce82f5; --demo-soft: rgba(191, 90, 242, 0.16); --edit-bg: #23303f; --edit-line: rgba(255, 255, 255, 0.18); --field: #1f1f22;
-    --hl: rgba(255, 214, 10, 0.17); --hl-line: #ffd60a; --row-hover: rgba(10, 132, 255, 0.1); --group-line: rgba(255, 255, 255, 0.2);
+    --hl: rgba(255, 214, 10, 0.17); --hl-line: #ffd60a; --row-hover: rgba(10, 132, 255, 0.1); --group-line: rgba(255, 255, 255, 0.2); --tint: #2f5c93; --mark-warn: #ff9f0a; --ag1: #2b4a73; --ag2: #4f8fdc; --ag3: #a8ccff;
     --shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.06), 0 1px 2px rgba(0, 0, 0, 0.3);
     --shadow-btn: 0 0 0 0.5px rgba(255, 255, 255, 0.1), 0 1px 1px rgba(0, 0, 0, 0.3);
     --shadow-pop: 0 0 0 0.5px rgba(255, 255, 255, 0.12), 0 14px 44px rgba(0, 0, 0, 0.55);
@@ -75,7 +76,7 @@
   --accent: #0a6fd9; --link: #56aaff; --accent-text: #ffffff; --accent-soft: rgba(10, 132, 255, 0.16); --accent-line: rgba(86, 170, 255, 0.6); --focus: rgba(86, 170, 255, 0.55);
   --ok: #30d158; --ok-soft: rgba(48, 209, 88, 0.16); --warn: #ff9f0a; --warn-soft: rgba(255, 159, 10, 0.17); --bad: #ff8a82; --bad-soft: rgba(255, 69, 58, 0.16);
   --demo: #ce82f5; --demo-soft: rgba(191, 90, 242, 0.16); --edit-bg: #23303f; --edit-line: rgba(255, 255, 255, 0.18); --field: #1f1f22;
-  --hl: rgba(255, 214, 10, 0.17); --hl-line: #ffd60a; --row-hover: rgba(10, 132, 255, 0.1); --group-line: rgba(255, 255, 255, 0.2);
+  --hl: rgba(255, 214, 10, 0.17); --hl-line: #ffd60a; --row-hover: rgba(10, 132, 255, 0.1); --group-line: rgba(255, 255, 255, 0.2); --tint: #2f5c93; --mark-warn: #ff9f0a; --ag1: #2b4a73; --ag2: #4f8fdc; --ag3: #a8ccff;
   --shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.06), 0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow-btn: 0 0 0 0.5px rgba(255, 255, 255, 0.1), 0 1px 1px rgba(0, 0, 0, 0.3);
   --shadow-pop: 0 0 0 0.5px rgba(255, 255, 255, 0.12), 0 14px 44px rgba(0, 0, 0, 0.55);
@@ -532,6 +533,67 @@ svg.spark circle { fill: var(--link); stroke: var(--panel); stroke-width: 1.5; }
 .t tr.row-off td { color: var(--text-2); }
 .t input.sw-in { width: 14px; height: 14px; accent-color: var(--accent); margin: 0; vertical-align: -2px; }
 
+/* —— 可撑天数（断货风险条） —— */
+.t th.cv-c, .t td.cv-c { padding-inline: 8px; }
+.cv { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.cv-bar, .ag-bar { width: 60px; height: 12px; flex: none; overflow: visible; }
+.ag-bar { width: 110px; }
+.cv-fba { fill: var(--accent); }
+.cv-soft { fill: var(--tint); }
+.cv-gap { fill: var(--bad); }
+.cv-line { stroke: var(--text-2); stroke-width: 1.2; }
+.cv-n { font-variant-numeric: tabular-nums; min-width: 2.2em; text-align: right; color: var(--text); }
+.cv-w { font-size: 11.5px; }
+.cv-bad { color: var(--bad); font-weight: 500; } .cv-warn { color: var(--warn); } .cv-mute { color: var(--text-3); }
+/* —— 库存推演图 —— */
+.proj-panel { margin-top: 14px; }
+.proj-txt { margin: 0 0 10px; font-size: 13px; color: var(--text); max-width: 80ch; }
+.proj .pl-base { fill: none; stroke: var(--text-3); stroke-width: 2; stroke-linejoin: round; }
+.proj .pl-plan { fill: none; stroke: var(--link); stroke-width: 2; stroke-linejoin: round; }
+.proj .pz { fill: var(--bad-soft); }
+.proj .psafe { stroke: var(--text-3); stroke-width: 1; stroke-dasharray: 4 3; }
+.proj .pdot { fill: var(--text-3); stroke: var(--panel); stroke-width: 2; }
+.proj .pdot.plan { fill: var(--link); }
+.yoy-legend i.lg-base, .yoy-tip i.lg-base { background: var(--text-3); }
+.yoy-legend i.lg-plan, .yoy-tip i.lg-plan { background: var(--link); }
+.yoy-legend i.lg-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-3); }
+.yoy-legend i.lg-zone { width: 12px; height: 9px; border-radius: 2px; background: var(--bad-soft); box-shadow: inset 0 0 0 1px var(--bad); }
+/* —— 批次时间线 —— */
+.tl { padding: 6px 20px 14px; display: grid; }
+.tl-row { display: grid; grid-template-columns: 112px minmax(0, 1fr) 168px; align-items: center; gap: 12px; min-height: 34px; }
+.tl-row.off .tl-bar { opacity: .38; }
+.tl-axis { min-height: 38px; }
+.tl-lab { white-space: nowrap; min-width: 0; }
+.tl-track { position: relative; height: 34px; }
+.tl-axis .tl-track { height: 38px; }
+.tl-m { position: absolute; top: 2px; white-space: nowrap; font-size: 11px; color: var(--text-3); padding-left: 4px; border-left: 1px solid var(--line); height: 20px; }
+.tl-base { position: absolute; top: 0; bottom: 0; width: 1.5px; background: var(--bad); }
+.tl-base-lab { position: absolute; top: 20px; transform: translateX(-50%); font-size: 11px; color: var(--bad); background: var(--panel); padding: 0 4px; white-space: nowrap; }
+.tl-bar { position: absolute; top: 11px; height: 12px; border-radius: 3px; }
+.tl-eta { position: absolute; top: 9px; margin-left: 6px; font-size: 11px; color: var(--text-3); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tl-bar.done, .tl-legend i.done, .dot-s.done { background: color-mix(in srgb, var(--text-3) 45%, transparent); }
+.tl-bar.recv, .tl-legend i.recv, .dot-s.recv { background: var(--tint); }
+.tl-bar.transit, .tl-legend i.transit, .dot-s.transit { background: var(--accent); }
+.tl-bar.late, .tl-legend i.late, .dot-s.late { background: var(--bad); }
+.tl-bar.new, .tl-legend i.new, .dot-s.new { background: transparent; box-shadow: inset 0 0 0 1.5px var(--accent); }
+.tl-bar.sy { background-image: repeating-linear-gradient(45deg, transparent 0 3px, rgba(255, 255, 255, .45) 3px 5px); }
+.tl-st { font-size: 12px; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 6px; }
+.dot-s { width: 8px; height: 8px; border-radius: 50%; flex: none; display: inline-block; }
+.tl-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--text-2); margin-top: 10px; }
+.tl-legend i { display: inline-block; width: 14px; height: 9px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+@media (max-width: 720px) { .tl { padding-inline: 12px; } .tl-row { grid-template-columns: 76px minmax(0, 1fr); } .tl-st { grid-column: 2; margin-top: -8px; } .tl-axis .tl-st { display: none; } }
+/* —— 库龄构成 —— */
+.ag1 { fill: var(--ag1); background: var(--ag1); } .ag2 { fill: var(--ag2); background: var(--ag2); } .ag3 { fill: var(--ag3); background: var(--ag3); }
+.ag-top { display: grid; gap: 6px; }
+.ag-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--text-2); margin-bottom: 4px; }
+.ag-legend i { display: inline-block; width: 14px; height: 9px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.ag-row { display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 1fr) 150px; gap: 12px; align-items: center; min-height: 28px; }
+.ag-lab { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.ag-track { display: flex; gap: 2px; height: 14px; border-radius: 3px; overflow: hidden; }
+.ag-track span { min-width: 2px; }
+.ag-v { font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+@media (max-width: 720px) { .ag-row { grid-template-columns: minmax(0, 1fr) 120px; } .ag-track { grid-column: 1 / -1; order: 3; } }
+
 </style>
 </head>
 <body>
@@ -717,7 +779,11 @@ const DEMO = (() => {
         if (cfg.weeks) l.weekly = WEEKS.map(w => { const m = Number(w.start.slice(5, 7)) - 1; return Math.round(cL / 4.35 * SEASON[m] * YF[w.isoYear] * (0.8 + rnd() * 0.4)); });
         // —— 库存 ——
         l.fba = Math.round(cL * (0.8 + rnd() * 2.8));
-        l.aging = { lt180: Math.round(l.fba * 0.7), m180_365: Math.round(l.fba * 0.22), gt365: l.fba - Math.round(l.fba * 0.7) - Math.round(l.fba * 0.22) };
+        // 库龄构成按 Listing 稳定散列取比例（不消耗随机序列，其他演示值不变）：多数货龄短，少数压货
+        { const hz = s => { let h = 2166136261; for (const ch of s) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return (h >>> 0) / 4294967296; };
+          const old = 0.03 + Math.pow(hz(l.lid + '|old'), 2.2) * 0.55, mid = 0.1 + hz(l.lid + '|mid') * 0.22;
+          const a1 = Math.round(l.fba * Math.max(0.1, 1 - old - mid)), a2 = Math.min(l.fba - a1, Math.round(l.fba * mid));
+          l.aging = { lt180: a1, m180_365: a2, gt365: l.fba - a1 - a2 }; }
         l.value180 = (l.aging.m180_365 + l.aging.gt365) * ri(4, 11);
         if (cfg.half) {
           l.weight = [1, 1.1, 0.9, 1.05][ri(0, 3)];
@@ -1365,7 +1431,7 @@ function arrivalIdx(cc, shipDate) {
 
 /* ========== 国家主表 ========== */
 /** 列表排序取值（国家主表与人员视图共用）；空值排在最前或最后，不与 0 混淆 */
-const LISTING_SORT = { sku: r => r.sku, fba: r => r.fba, transit: r => transitOf(r.lid), avg4: r => isNum(r.avg4) ? r.avg4 : null, plan: r => planQty(r.lid), m9: r => isNum(r.monthly[2026]?.[8]) ? r.monthly[2026][8] : null, owner: r => r.owner || '' };
+const LISTING_SORT = { cover: r => coverSortKey(r), sku: r => r.sku, fba: r => r.fba, transit: r => transitOf(r.lid), avg4: r => isNum(r.avg4) ? r.avg4 : null, plan: r => planQty(r.lid), m9: r => isNum(r.monthly[2026]?.[8]) ? r.monthly[2026][8] : null, owner: r => r.owner || '' };
 function filteredListings(cc) {
   const c = cui(cc); const q = norm(c.q);
   let rows = listingsOf(cc).filter(l => {
@@ -1543,11 +1609,12 @@ function batchView(cc, c, allRows) {
   return `<div class="batch-head">
       <div class="bh-sum"><span class="small muted">本国当前在途合计</span><b class="bh-v">${fmt(tot)}</b><span class="small muted">${sel == null ? `保留原范围 · 全部 ${bs.length} 批` : `已选 ${nOn} / ${bs.length} 批`}</span></div>
       <span class="spacer"></span>
+      ${seg([{ id: 'list', label: '清单' }, { id: 'time', label: '时间线' }], c.bmode || 'list', 'bmode')}
       <button class="btn sm" data-act="bselall" data-cc="${cc}" ${!canEdit() ? 'disabled' : ''}>全选</button><button class="btn sm" data-act="bselnone" data-cc="${cc}" ${!canEdit() ? 'disabled' : ''}>明确空选</button>${sel == null ? '' : `<button class="btn sm" data-act="bselorig" data-cc="${cc}" ${!canEdit() ? 'disabled' : ''}>恢复原范围</button>`}
     </div>
     ${sel == null ? `<div class="filters" style="padding-top:0"><div class="callout info" style="flex:1">${icon('info')}<div>本次未上传 ${cc} 货件文件：在途保留原组成与原周期（全部 ${bs.length} 批）。勾选或取消任一批次即切换为“本次明确选择”。</div></div></div>` : ''}
     ${sel != null && sel.length === 0 ? `<div class="filters" style="padding-top:0"><div class="callout warn" style="flex:1">${icon('warn')}<div><b>已明确空选：</b>本国当前在途 = 0。这是有意选择，不是缺数据；批次与原发货历史仍保留。</div></div></div>` : ''}
-    ${table(`tbl-${cc}-batches`, bcols, bs, { wrapCls: 'auto-h', rowAttr: b => isSelected(b) ? '' : 'class="row-off"' })}
+    ${c.bmode === 'time' ? batchTimeline(cc, bs) : table(`tbl-${cc}-batches`, bcols, bs, { wrapCls: 'auto-h', rowAttr: b => isSelected(b) ? '' : 'class="row-off"' })}
     <div class="note" style="padding-top:10px">${icon('info')} 各国独立选择计入在途的批次，不限最近五批；取消选择不删除批次与原发货历史。原发货量只作历史，不再计入；下表单元格为“当前值／原量”，负数=多收。</div>
     <div class="panel-h" style="border-top:0.5px solid var(--line)"><h2>按 Listing 的批次明细</h2><span class="hint">筛选条件作用于此表</span></div>
   ` + pagedTable('batch-' + cc, `tbl-${cc}-batch`, cols, lines, { emptyTitle: '筛选条件下没有出现在批次中的 Listing' });
@@ -1635,7 +1702,7 @@ const compact = v => v >= 10000 ? (v / 1000).toFixed(0) + 'K' : v >= 1000 ? (v /
 function drawCharts() {
   Object.keys(CHARTS).forEach(id => {
     const el = document.getElementById(id); if (!el) { delete CHARTS[id]; return; }
-    drawYoy(el, CHARTS[id]);
+    if (CHARTS[id].type === 'proj') drawProj(el, CHARTS[id]); else drawYoy(el, CHARTS[id]);
   });
 }
 function drawYoy(el, spec) {
@@ -1712,7 +1779,7 @@ function heatLevel(v, max) { if (!isNum(v) || !max) return 0; return Math.min(5,
 /* 主题切换或窗口变化时重绘（颜色随主题取值，宽度随容器） */
 let chartFrame = 0;
 function scheduleCharts() { if (chartFrame) return; chartFrame = requestAnimationFrame(() => { chartFrame = 0; drawCharts(); }); }
-function drawChartsThemed() { Object.keys(CHARTS).forEach(id => { const sp = CHARTS[id]; const grays = YOY_GRAYS[isDark() ? 'dark' : 'light']; const accent = getComputedStyle(document.documentElement).getPropertyValue('--link').trim(); let gi = 0; sp.series.slice().sort((a, b) => b.year - a.year).forEach(s => { s.color = s.cur ? accent : grays[Math.min(gi++, grays.length - 1)]; }); }); drawCharts(); }
+function drawChartsThemed() { Object.keys(CHARTS).forEach(id => { const sp = CHARTS[id]; if (!sp.series) return; const grays = YOY_GRAYS[isDark() ? 'dark' : 'light']; const accent = getComputedStyle(document.documentElement).getPropertyValue('--link').trim(); let gi = 0; sp.series.slice().sort((a, b) => b.year - a.year).forEach(s => { s.color = s.cur ? accent : grays[Math.min(gi++, grays.length - 1)]; }); }); drawCharts(); }
 try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => drawChartsThemed()); } catch (e) { /* 旧浏览器忽略 */ }
 
 /* ========== 列配置（参照领星 ERP：分组勾选 + 已选排序 + 固定列 + 模板） ========== */
@@ -1751,6 +1818,7 @@ function colCatalog(cc, listAttr) {
     { key: 'a2', g: '库存', label: '180–365天', render: l => V(l.aging.m180_365) },
     { key: 'a3', g: '库存', label: '365天以上', render: l => V(l.aging.gt365) },
     { key: 'v180', g: '库存', label: '180+库龄货值', sub: '原值回查', render: l => V(l.value180) },
+    { key: 'cover', g: '库存', label: '可撑天数', sub: '演示估算 · FBA+所选在途', title: '条形：深色 = FBA 可撑天数，红色斜纹 = 到仓前断档，浅色 = 在途到仓后可撑；竖线 = 补货线（运输期 + 安全 14 天，示例参数）。演示估算，非原公式', appl: c => c.half, sort: true, cls: 'l cv-c', render: l => coverCell(l) },
     { key: 'daysNow', g: '库存', label: 'FBA当前可售天数', sub: '源值·原公式待接入', appl: c => c.half, render: l => cf(l).half ? (l.daysNow == null ? tag('warn', '均销为0') : V(l.daysNow)) + (S.staleFba ? ' ' + tag('warn', '依赖旧库存') : '') : V('NF') },
     { key: 'daysTotal', g: '库存', label: 'FBA共计可售天数', sub: '源值·原公式待接入', appl: c => c.half, render: l => cf(l).half ? (l.daysTotal == null ? tag('warn', '均销为0') : V(l.daysTotal)) : V('NF') },
     { key: 'awd', g: '库存', label: 'AWD可用库存', sub: 'AG · 可用+预留+转FBA', appl: c => c.awd, render: l => l.awd ? `${V(l.awd.available + l.awd.reserved + l.awd.outbound)} <button class="link small" data-act="awd" data-lid="${l.lid}">组成</button>` : V('NF') },
@@ -1783,17 +1851,17 @@ function colCatalog(cc, listAttr) {
   return cfg ? C.filter(c => !c.appl || c.appl(cfg)) : C;
 }
 const COL_DEFAULTS = {
-  overview: { cols: ['sku', 'name', 'owner', 'trend', 'fba', 'transit', 'dom', 'avg4', 'm9', 'm10', 'half', 'plan', 'st'], pin: ['sku', 'name'] },
+  overview: { cols: ['sku', 'name', 'owner', 'trend', 'cover', 'fba', 'transit', 'dom', 'avg4', 'm10', 'plan', 'st'], pin: ['sku', 'name'] },
   plan: { cols: ['sku', 'name', 'msku', 'pack', 'plan', 'box', 'note', 'dom', 'enough', 'avg4', 'td', 'sea', 'hx', 'me', 'med', 'sug', 'st'], pin: ['sku', 'name'] },
   stock: { cols: ['sku', 'name', 'fba', 'a1', 'a2', 'a3', 'v180', 'dom', 'transfer', 'daysNow', 'daysTotal', 'transit', 'awd', 'overseas', 'awdU'], pin: ['sku', 'name'] },
   info: { cols: ['sku', 'name', 'row', 'asin', 'msku', 'owner', 'variant', 'size', 'pack', 'box', 'grade', 'labels'], pin: ['sku', 'name'] },
-  people: { cols: ['country', 'sku', 'name', 'msku', 'owner', 'fba', 'transit', 'plan', 'st'], pin: ['country', 'sku'] },
+  people: { cols: ['country', 'sku', 'name', 'msku', 'owner', 'cover', 'fba', 'transit', 'plan', 'st'], pin: ['country', 'sku'] },
 };
 const COL_VIEWS = Object.keys(COL_DEFAULTS);
 const COL_VIEW_NAME = { overview: '综合总览', plan: '发货计划', stock: '库存明细', info: '商品资料', people: '运营人员视图' };
 const BUILTIN_TPL = [
   { name: '库存核对', cols: ['sku', 'name', 'fba', 'transit', 'dom', 'transfer', 'a1', 'a2', 'a3', 'daysNow', 'daysTotal', 'awd'], pin: ['sku'] },
-  { name: '发货决策', cols: ['sku', 'name', 'trend', 'avg4', 'fba', 'transit', 'dom', 'half', 'plan', 'box', 'hx', 'enough', 'note', 'st'], pin: ['sku', 'name'] },
+  { name: '发货决策', cols: ['sku', 'name', 'cover', 'trend', 'avg4', 'fba', 'transit', 'dom', 'half', 'plan', 'box', 'hx', 'enough', 'note', 'st'], pin: ['sku', 'name'] },
   { name: '销量对比', cols: ['sku', 'name', 'owner', 'trend', 'avg4', 'weight', 'wLatest', 'm9', 'm10', 'y2025', 'y2026'], pin: ['sku', 'name'] },
 ];
 const ALL_COL_KEYS = new Set(colCatalog(null, '').map(c => c.key));
@@ -1921,6 +1989,224 @@ function applyPins() {
     });
   });
 }
+
+/* ========== 可撑天数（断货风险）、库存推演、批次时间线、库龄构成 ==========
+   口径（演示估算，非原公式）：
+   - 日均销量 = 近4周均销 ÷ 7；只对有该字段的五国（US/CA/AU/UK/EU）计算，AE/SA 显示“不适用”。
+   - 到仓日：已发货批次 = 最晚实际发货日 + 本国运输提前期 D1（示例参数）；新建待发批次 = 预计发货日（基准日后 3 天）+ D1；
+     接收中 / 已完成批次视为已到仓。只计入国家页所选的在途批次，数量取批次行“当前值”（正数）。
+   - 补货线 = D1 + 安全天数 14（示例参数）；可撑天数低于补货线 = 需尽快发货；到仓前 FBA 已卖完 = 断档；超过 120 天 = 偏多。 */
+const SAFETY_DAYS = 14, PLAN_LEAD = 7, OVER_DAYS = 120, PROJ_DAYS = 140;
+const ymdMs = s => Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10));
+const dDiff = (a, b) => Math.round((ymdMs(b) - ymdMs(a)) / 864e5);
+const dAdd = (s, n) => new Date(ymdMs(s) + Math.round(n) * 864e5).toISOString().slice(0, 10);
+const mdOf = s => `${Number(s.slice(5, 7))}/${Number(s.slice(8, 10))}`;
+const tdOf = cc => D.CMAP[cc].transitDays || 40;
+
+/** 批次的发货日与预计到仓日（示例推算，不是货件系统的预计日） */
+function batchEta(b) {
+  const td = tdOf(b.country);
+  const created = b.ships.map(x => x.created).sort();
+  const shipped = b.ships.map(x => x.shipped).filter(Boolean).sort().pop();
+  let ship = shipped, est = false;
+  if (!ship) { const c = created[created.length - 1] || b.bizDate; ship = dAdd(c > S.baseDate ? c : S.baseDate, 3); est = true; }
+  const eta = dAdd(ship, td);
+  const arrived = b.status === 'receiving' || b.status === 'closed';
+  return { first: created[0] || b.bizDate, ship, shipEst: est, eta, td, arrived, overdue: !arrived && eta < S.baseDate };
+}
+function arrivalsOf(l) {
+  const out = [];
+  batchesOf(l.country).forEach(b => {
+    if (!isSelected(b)) return;
+    b.lines.forEach(ln => {
+      if (ln.lid !== l.lid || !(ln.current > 0)) return;
+      const e = batchEta(b);
+      out.push({ day: e.arrived ? 0 : Math.max(0, dDiff(S.baseDate, e.eta)), qty: ln.current, label: b.label, eta: e.arrived ? S.baseDate : e.eta });
+    });
+  });
+  return out.sort((a, b) => a.day - b.day);
+}
+/** 逐批模拟：FBA 按日均销量消耗，批次到仓补入。返回可撑天数、首次断档区间与状态 */
+function simCover(fba, daily, arr) {
+  let t = 0, stock = fba, gapFrom = null, gapTo = null;
+  arr.forEach(a => {
+    const out = t + stock / daily;
+    if (out < a.day) { if (gapFrom == null) { gapFrom = out; gapTo = a.day; } stock = a.qty; } else stock = stock - (a.day - t) * daily + a.qty;
+    t = a.day;
+  });
+  return { total: t + stock / daily, gapFrom, gapTo };
+}
+const COVER_MEMO = new Map();
+function coverOf(l) {
+  const cfg = D.CMAP[l.country];
+  if (!cfg.half) return { na: true };
+  const sig = `${S.baseDate}|${l.fba}|${l.avg4}|${String(selOf(l.country))}`;
+  const hit = COVER_MEMO.get(l.lid); if (hit && hit.sig === sig) return hit.v;
+  const arr = arrivalsOf(l); const daily = isNum(l.avg4) && l.avg4 > 0 ? l.avg4 / 7 : 0;
+  let v;
+  if (!daily) v = { none: true, arr };
+  else {
+    const s = simCover(l.fba, daily, arr); const line = tdOf(l.country) + SAFETY_DAYS;
+    const gap = s.gapFrom == null ? 0 : Math.round(s.gapTo - s.gapFrom);
+    const st = gap > 0 ? 'bad' : s.total < line ? 'warn' : s.total > OVER_DAYS ? 'mute' : 'ok';
+    v = { daily, arr, fbaDays: l.fba / daily, total: s.total, gap, gapFrom: s.gapFrom, gapTo: s.gapTo, line, st };
+  }
+  COVER_MEMO.set(l.lid, { sig, v }); return v;
+}
+const COVER_ST = { bad: '断档', warn: '需发货', mute: '偏多', ok: '正常' };
+function coverWord(c) { return c.st === 'bad' ? `断档${c.gap}天` : COVER_ST[c.st]; }
+/** 排序：越急越靠前（升序）。断档按“卖完的那天”，其余按可撑天数；无销量与不适用排最后 */
+function coverSortKey(l) { const c = coverOf(l); return c.na || c.none ? 1e9 : c.st === 'bad' ? c.gapFrom - 1000 : c.total; }
+
+/* —— ① 断货风险条（表格单元格） —— */
+function coverCell(l) {
+  const c = coverOf(l);
+  if (c.na) return V('NF');
+  if (c.none) return `<span class="na" title="近4周均销为 0，无法估算可撑天数">无销量</span>`;
+  const W = 60, H = 12, MAX = OVER_DAYS; const x = d => Math.min(d, MAX) / MAX * W;
+  const fbaEnd = x(c.fbaDays);
+  let g = `<rect class="cv-fba" x="0" y="2" width="${Math.max(1, fbaEnd).toFixed(1)}" height="8" rx="2"/>`;
+  let softFrom = c.fbaDays;
+  if (c.gap > 0) { g += `<rect class="cv-gap" x="${(x(c.gapFrom) + 1).toFixed(1)}" y="2" width="${Math.max(1.5, x(c.gapTo) - x(c.gapFrom) - 2).toFixed(1)}" height="8"/>`; softFrom = c.gapTo; }
+  if (c.total > softFrom + 0.5) g += `<rect class="cv-soft" x="${(x(softFrom) + 1).toFixed(1)}" y="2" width="${Math.max(1, x(c.total) - x(softFrom) - 1).toFixed(1)}" height="8" rx="2"/>`;
+  g += `<line class="cv-line" x1="${x(c.line).toFixed(1)}" x2="${x(c.line).toFixed(1)}" y1="0" y2="${H}"/>`;
+  const next = c.arr.find(a => a.day > 0);
+  const desc = `可撑约 ${Math.round(c.total)} 天（FBA ${Math.round(c.fbaDays)} 天${c.arr.length ? ` + 在途 ${c.arr.length} 批` : ''}）；${c.gap > 0 ? `${mdOf(dAdd(S.baseDate, c.gapFrom))} 卖完，${mdOf(dAdd(S.baseDate, c.gapTo))} 才到仓，断档 ${c.gap} 天` : COVER_ST[c.st]}${next ? `；下一批 ${next.label} 预计 ${mdOf(next.eta)} 到仓` : ''}；补货线 ${c.line} 天。演示估算，非原公式`;
+  return `<span class="cv" title="${esc(desc)}"><svg class="cv-bar" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(desc)}">${g}</svg><span class="cv-n">${Math.round(c.total)}</span>${c.st === 'ok' ? '' : `<span class="cv-w cv-${c.st}">${esc(coverWord(c))}</span>`}</span>`;
+}
+
+/* —— ② 库存推演图（SKU 详情 · 发货计划） —— */
+function projSlot(id, lid) { CHARTS[id] = { type: 'proj', lid }; return `<div class="yoy proj" id="${id}" tabindex="0" role="group" aria-label="未来 20 周 FBA 库存推演，左右方向键按周查看"></div>`; }
+function projSeries(l, extra) {
+  const c = coverOf(l); const daily = c.daily; const arr = c.arr.slice(); if (extra) { arr.push(extra); arr.sort((a, b) => a.day - b.day); }
+  const pts = []; let stock = l.fba;
+  for (let t = 0; t <= PROJ_DAYS; t++) {
+    if (t > 0) stock = Math.max(0, stock - daily);
+    arr.forEach(a => { if (a.day === t) stock += a.qty; });
+    pts.push(stock);
+  }
+  return { pts, arr };
+}
+function projPlan(l) { const q = planQty(l.lid); return q > 0 ? { day: PLAN_LEAD + tdOf(l.country), qty: q, label: '本次发货', eta: dAdd(S.baseDate, PLAN_LEAD + tdOf(l.country)), plan: true } : null; }
+function projText(l) {
+  const c = coverOf(l); const p = projPlan(l);
+  const base = c.gap > 0 ? `只靠现有在途：${mdOf(dAdd(S.baseDate, c.gapFrom))} 卖完，${mdOf(dAdd(S.baseDate, c.gapTo))} 才有货到仓（断档 ${c.gap} 天），之后可撑到 ${mdOf(dAdd(S.baseDate, c.total))}`
+    : `只靠现有在途：可撑到 ${mdOf(dAdd(S.baseDate, c.total))}（约 ${Math.round(c.total)} 天）`;
+  if (!p) return `${base}。填写本次发货量后，图中会加一条“含本次发货”的推演线。`;
+  const s = simCover(l.fba, c.daily, [...c.arr, p].sort((a, b) => a.day - b.day));
+  return `${base}。加上本次发货 ${fmt(p.qty)} 件（预计 ${mdOf(p.eta)} 到仓）：${s.gapFrom != null && s.gapFrom < p.day ? `仍会在 ${mdOf(dAdd(S.baseDate, s.gapFrom))} 卖完、断档到 ${mdOf(dAdd(S.baseDate, s.gapTo))}，之后` : ''}可撑到 ${mdOf(dAdd(S.baseDate, s.total))}（约 ${Math.round(s.total)} 天）。`;
+}
+function drawProj(el, spec) {
+  const l = L(spec.lid); const c = coverOf(l);
+  const txt = el.parentElement && el.parentElement.querySelector(`[data-derived="projtxt-${l.lid}"]`); if (txt) txt.textContent = projText(l);
+  const W = Math.max(280, Math.round(el.clientWidth)); const narrow = W < 560;
+  const H = narrow ? 210 : 240; const m = { l: 44, r: narrow ? 12 : 128, t: 14, b: 26 };
+  const iw = W - m.l - m.r, ih = H - m.t - m.b;
+  const p = projPlan(l); const A = projSeries(l, null); const B = p ? projSeries(l, p) : null;
+  const safety = c.daily * SAFETY_DAYS;
+  const ymax = niceMax(Math.max(...A.pts, ...(B ? B.pts : []), safety, 1));
+  const X = t => m.l + t / PROJ_DAYS * iw, Y = v => m.t + ih - v / ymax * ih;
+  const path = (pts, from = 0) => pts.map((v, t) => t < from ? '' : `${t === from ? 'M' : 'L'}${X(t).toFixed(1)} ${Y(v).toFixed(1)}`).join('');
+  let svg = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="width:${W}px;height:${H}px" aria-hidden="true">`;
+  // 断货区间（只靠现有在途）
+  let zs = null; A.pts.forEach((v, t) => { if (v === 0 && zs == null && t > 0) zs = t; if (v > 0 && zs != null) { svg += `<rect class="pz" x="${X(zs - 1).toFixed(1)}" y="${m.t}" width="${(X(t) - X(zs - 1)).toFixed(1)}" height="${ih}"/>`; zs = null; } });
+  if (zs != null) svg += `<rect class="pz" x="${X(zs - 1).toFixed(1)}" y="${m.t}" width="${(X(PROJ_DAYS) - X(zs - 1)).toFixed(1)}" height="${ih}"/>`;
+  [0, 0.25, 0.5, 0.75, 1].forEach(f => { const v = f * ymax; svg += `<line class="grid" x1="${m.l}" x2="${W - m.r}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}"/><text class="tick" x="${m.l - 6}" y="${(Y(v) + 3.5).toFixed(1)}" text-anchor="end">${compact(v)}</text>`; });
+  for (let t = 0; t <= PROJ_DAYS; t += narrow ? 56 : 28) svg += `<text class="tick" x="${X(t).toFixed(1)}" y="${H - 8}" text-anchor="${t === 0 ? 'start' : t === PROJ_DAYS ? 'end' : 'middle'}">${t === 0 ? '基准日 ' : ''}${mdOf(dAdd(S.baseDate, t))}</text>`;
+  svg += `<line class="psafe" x1="${m.l}" x2="${W - m.r}" y1="${Y(safety).toFixed(1)}" y2="${Y(safety).toFixed(1)}"/>`;
+  if (!narrow) svg += `<text class="tick" x="${W - m.r + 6}" y="${(Y(safety) + 3.5).toFixed(1)}">安全库存 ${fmt(Math.round(safety))}</text>`;
+  svg += `<line class="xhair" id="${el.id}-x" x1="0" x2="0" y1="${m.t}" y2="${m.t + ih}" style="display:none"/>`;
+  svg += `<path class="pl-base" d="${path(A.pts)}"/>`;
+  if (B) svg += `<path class="pl-plan" d="${path(B.pts, Math.max(0, p.day - 1))}"/>`;
+  A.arr.filter(a => a.day > 0 && a.day <= PROJ_DAYS).forEach(a => { svg += `<circle class="pdot" cx="${X(a.day).toFixed(1)}" cy="${Y(A.pts[a.day]).toFixed(1)}" r="4"/>`; });
+  if (B && p.day <= PROJ_DAYS) svg += `<circle class="pdot plan" cx="${X(p.day).toFixed(1)}" cy="${Y(B.pts[p.day]).toFixed(1)}" r="4.5"/>`;
+  if (!narrow) {
+    const ends = [{ y: Y(A.pts[PROJ_DAYS]), t: '只靠现有在途', cls: '' }]; if (B) ends.push({ y: Y(B.pts[PROJ_DAYS]), t: '含本次发货', cls: ' cur' });
+    if (ends.length === 2 && Math.abs(ends[0].y - ends[1].y) < 13) ends[ends[0].y < ends[1].y ? 0 : 1].y -= 13 - Math.abs(ends[0].y - ends[1].y);
+    ends.forEach(e => { svg += `<text class="endlab${e.cls}" x="${(X(PROJ_DAYS) + 6).toFixed(1)}" y="${(e.y + 4).toFixed(1)}">${e.t}</text>`; });
+  }
+  svg += `<rect class="hit" x="${m.l}" y="${m.t}" width="${iw}" height="${ih}"/></svg>`;
+  const legend = `<div class="yoy-legend"><span><i class="lg-base"></i>只靠现有在途</span>${B ? `<span><i class="lg-plan"></i>含本次发货 ${fmt(p.qty)} 件（预计 ${mdOf(p.eta)} 到仓）</span>` : ''}<span><i class="lg-dot"></i>在途批次到仓</span><span><i class="lg-zone"></i>断货区间（只靠现有在途）</span></div>`;
+  el.innerHTML = legend + `<div class="yoy-plot">${svg}<div class="yoy-tip" hidden></div></div>`;
+  const plot = el.querySelector('.yoy-plot'), tip = el.querySelector('.yoy-tip'), xh = el.querySelector(`#${CSS.escape(el.id)}-x`);
+  const show = t => {
+    if (t == null) { tip.hidden = true; xh.style.display = 'none'; return; }
+    xh.setAttribute('x1', X(t)); xh.setAttribute('x2', X(t)); xh.style.display = '';
+    tip.textContent = '';
+    const h = document.createElement('div'); h.className = 'tt-h'; h.textContent = `${mdOf(dAdd(S.baseDate, t))}（第 ${t} 天）`; tip.appendChild(h);
+    [[A, 'lg-base', '现有在途'], ...(B ? [[B, 'lg-plan', '含本次发货']] : [])].forEach(([s, cls, name]) => { const r = document.createElement('div'); r.className = 'tt-r'; const k = document.createElement('i'); k.className = cls; r.appendChild(k); const v = document.createElement('b'); v.textContent = s.pts[t] > 0 ? fmt(Math.round(s.pts[t])) : '断货'; r.appendChild(v); const n = document.createElement('span'); n.textContent = name; r.appendChild(n); tip.appendChild(r); });
+    const hits = [...A.arr, ...(p ? [p] : [])].filter(a => a.day === t); hits.forEach(a => { const r = document.createElement('div'); r.className = 'tt-r'; const n = document.createElement('span'); n.textContent = `${a.label} 到仓 +${fmt(a.qty)}`; r.appendChild(n); tip.appendChild(r); });
+    tip.hidden = false; const tx = X(t) + 12, tw = tip.offsetWidth; tip.style.left = (tx + tw > W ? X(t) - tw - 12 : tx) + 'px'; tip.style.top = m.t + 'px';
+  };
+  const tAt = cx => { const r = plot.getBoundingClientRect(); const t = Math.round((cx - r.left - m.l) / iw * PROJ_DAYS); return t >= 0 && t <= PROJ_DAYS ? t : null; };
+  plot.onpointermove = ev => show(tAt(ev.clientX)); plot.onpointerleave = () => show(null);
+  el.onkeydown = ev => { if (ev.key !== 'ArrowLeft' && ev.key !== 'ArrowRight') return; ev.preventDefault(); el._i = el._i == null ? 0 : Math.min(PROJ_DAYS, Math.max(0, el._i + (ev.key === 'ArrowRight' ? 7 : -7))); show(el._i); };
+  el.onblur = () => { el._i = null; show(null); };
+}
+/** 编辑计划量后只重画对应推演图，不整页重绘 */
+function redrawProj(lid) { Object.keys(CHARTS).forEach(id => { const sp = CHARTS[id]; if (sp.type === 'proj' && sp.lid === lid) { const el = document.getElementById(id); if (el) drawProj(el, sp); } }); }
+function projSection(p, ls, d) {
+  const cand = ls.filter(l => D.CMAP[l.country].half);
+  if (!cand.length) return '';
+  let l = (d.projLid && cand.find(x => x.lid === d.projLid)) || (d.lid && cand.find(x => x.lid === d.lid));
+  if (!l && d.country !== 'ALL') l = cand.find(x => x.country === d.country);
+  if (!l) l = cand.slice().sort((a, b) => coverSortKey(a) - coverSortKey(b))[0];
+  const c = coverOf(l);
+  const pick = cand.length > 1 ? `<label class="grp small muted">推演对象 <select class="sel" id="projlid" data-in="projlid" aria-label="选择推演的 Listing">${cand.map(x => `<option value="${x.lid}" ${x.lid === l.lid ? 'selected' : ''}>${x.country} · ${esc(x.msku)}</option>`).join('')}</select></label>` : '';
+  const head = `<div class="panel-h"><h3>库存推演 · ${l.country} ${esc(l.msku)}</h3>${tag('demo', '演示估算')}<span class="spacer"></span>${pick}</div>`;
+  if (c.none) return `<div class="panel proj-panel">${head}<div class="empty small"><h2>近4周均销为 0</h2><div>没有销量就无法推演库存消耗。</div></div></div>`;
+  return `<div class="panel proj-panel">${head}<div class="panel-b"><p class="proj-txt" data-derived="projtxt-${l.lid}">${esc(projText(l))}</p>${projSlot('proj-d', l.lid)}
+    <div class="note">${icon('info')} 演示估算，非原公式：日均销量 = 近4周均销 ÷ 7；在途按所选批次、到仓日 = 发货日 + 运输期 ${tdOf(l.country)} 天（示例参数）；本次发货假设 ${PLAN_LEAD} 天后发出。改上方计划量时图会立即更新。</div></div></div>`;
+}
+
+/* —— ⑤ 批次时间线（批次与在途 · 另一种查看方式） —— */
+function batchTimeline(cc, bs) {
+  const es = bs.map(b => ({ b, e: batchEta(b) }));
+  const lo = dAdd(es.map(x => x.e.ship < x.e.first ? x.e.ship : x.e.first).sort()[0], -4);
+  const hi = dAdd([...es.map(x => x.e.eta), S.baseDate].sort().pop(), 8);
+  const span = dDiff(lo, hi); const pct = s => (dDiff(lo, s) / span * 100).toFixed(2) + '%';
+  const months = []; for (let y = +lo.slice(0, 4), mo = +lo.slice(5, 7); ; mo++) { if (mo > 12) { mo = 1; y++; } const s = `${y}-${String(mo).padStart(2, '0')}-01`; if (s > hi) break; if (s >= lo && dDiff(lo, s) / span < 0.95) months.push(s); }
+  const base = pct(S.baseDate);
+  const stText = ({ b, e }) => {
+    if (b.status === 'closed') return '已完成';
+    if (b.status === 'receiving') return '接收中';
+    if (b.status === 'created') return `新建待发 · 预计 ${mdOf(e.eta)} 到`;
+    if (e.overdue) return `超期 ${dDiff(e.eta, S.baseDate)} 天未到`;
+    return `在途 · ${dDiff(S.baseDate, e.eta)} 天后到`;
+  };
+  const cls = ({ b, e }) => b.status === 'closed' ? 'done' : b.status === 'receiving' ? 'recv' : b.status === 'created' ? 'new' : e.overdue ? 'late' : 'transit';
+  const rows = es.map(x => {
+    const { b, e } = x; const on = isSelected(b);
+    const tip = `${cc} ${b.label}：${e.shipEst ? '预计发货' : '发货'} ${e.ship} → 预计到仓 ${e.eta}（发货日 + 运输期 ${e.td} 天，示例推算）${on ? '' : '；未计入在途'}`;
+    return `<div class="tl-row${on ? '' : ' off'}"><div class="tl-lab"><button class="link mono" data-act="batch" data-bid="${b.bid}">${esc(b.label)}</button></div>
+      <div class="tl-track"><span class="tl-base" style="left:${base}"></span><span class="tl-bar ${cls(x)}${b.kind === 'SY' ? ' sy' : ''}" style="left:${pct(e.ship)};width:max(6px, calc(${pct(e.eta)} - ${pct(e.ship)}))" title="${esc(tip)}"></span><span class="tl-eta" style="left:${pct(e.eta)}">${mdOf(e.eta)}</span></div>
+      <div class="tl-st"><span class="dot-s ${cls(x)}"></span>${esc(stText(x))}${on ? '' : ' <span class="tiny muted">未计入</span>'}</div></div>`;
+  }).join('');
+  return `<div class="tl" role="group" aria-label="${cc} 批次时间线：每行从发货日到预计到仓日">
+    <div class="tl-row tl-axis" aria-hidden="true"><div class="tl-lab"></div><div class="tl-track">${months.map(s => `<span class="tl-m" style="left:${pct(s)}">${Number(s.slice(5, 7))}月</span>`).join('')}<span class="tl-base-lab" style="left:${base}">基准日 ${mdOf(S.baseDate)}</span></div><div class="tl-st"></div></div>
+    ${rows}
+    <div class="tl-legend"><span><i class="done"></i>已完成</span><span><i class="recv"></i>接收中</span><span><i class="transit"></i>在途</span><span><i class="late"></i>超期未到</span><span><i class="new"></i>新建待发</span><span>到仓日为示例推算：发货日 + 运输期 ${tdOf(cc)} 天</span></div></div>`;
+}
+
+/* —— ⑥ 库龄构成条 —— */
+const agingParts = l => [l.aging.lt180, l.aging.m180_365, l.aging.gt365];
+const agingOldShare = l => { const t = sumNums(agingParts(l)); return t ? l.aging.gt365 / t : 0; };
+function agingMixCell(l) {
+  const v = agingParts(l); const t = sumNums(v); if (!t) return V(null);
+  const W = 110; let x = 0; const segs = v.map((n, k) => { const w = n / t * W; const r = n ? `<rect class="ag${k + 1}" x="${(x + (k && x > 0 ? 1 : 0)).toFixed(1)}" y="1" width="${Math.max(0, w - (k && x > 0 ? 1 : 0)).toFixed(1)}" height="10"/>` : ''; x += w; return r; }).join('');
+  const desc = `180 天以内 ${fmt(v[0])}，180–365 天 ${fmt(v[1])}，365 天以上 ${fmt(v[2])}（${Math.round(v[2] / t * 100)}%）`;
+  return `<span class="cv" title="${esc(desc)}"><svg class="ag-bar" width="${W}" height="12" viewBox="0 0 ${W} 12" role="img" aria-label="${esc(desc)}">${segs}</svg><span class="cv-n">${Math.round(v[2] / t * 100)}%</span></span>`;
+}
+function agingTop(n = 8) {
+  const rows = D.LISTINGS.filter(l => sumNums(agingParts(l)) > 0).sort((a, b) => agingOldShare(b) - agingOldShare(a) || b.aging.gt365 - a.aging.gt365).slice(0, n);
+  return `<div class="ag-top"><div class="ag-legend"><span><i class="ag1"></i>180 天以内</span><span><i class="ag2"></i>180–365 天</span><span><i class="ag3"></i>365 天以上</span></div>
+    ${rows.map(l => { const v = agingParts(l), t = sumNums(v); const desc = `${l.country} ${l.sku}：180 天以内 ${fmt(v[0])}，180–365 天 ${fmt(v[1])}，365 天以上 ${fmt(v[2])}`; return `<div class="ag-row"><div class="ag-lab"><button class="sku-btn" data-act="sku" data-pid="${l.pid}" data-cc="${l.country}" data-lid="${l.lid}">${esc(l.sku)}</button> <span class="tiny muted">${l.country} · ${esc(P(l.pid).name)}</span></div>
+      <div class="ag-track" role="img" aria-label="${esc(desc)}" title="${esc(desc)}">${v.map((x, k) => x ? `<span class="ag${k + 1}" style="flex:${x} 1 0"></span>` : '').join('')}</div>
+      <div class="ag-v"><b>${Math.round(v[2] / t * 100)}%</b> <span class="tiny muted">365+ ${fmt(v[2])} 件</span></div></div>`; }).join('')}</div>`;
+}
+
+Object.assign(ACT_EXTRA, { bmode: t => { cui(S.country).bmode = t.dataset.v; rerenderKeep(); } });
+Object.assign(INP_EXTRA, { projlid: t => { S.detail.projLid = t.value; rerenderKeep(); } });
 
 /* ========== SKU 统一详情 ========== */
 const SECS = [['sec-ov', '总览'], ['sec-hist', '历史销量'], ['sec-fut', '未来计划/目标'], ['sec-plan', '发货计划'], ['sec-batch', '批次/在途'], ['sec-stock', '库存明细'], ['sec-src', '资料/来源']];
@@ -2075,7 +2361,8 @@ function secPlan(p, ls, d) {
       <div class="metric"><div class="k">计划不会改变</div><div class="v" style="font-size:14px;font-weight:500;line-height:1.5">FBA · 国内真实库存 · 实际在途 · 真实货件</div></div>
     </div>
     <div class="panel">${scope.length ? table('tbl-d-plan', cols, scope, { wrapCls: 'auto-h' }) : '<div class="empty">该 SKU 所在国家没有可编辑的计划字段（SA 原表未设补货数量区）</div>'}
-      <div class="note">${icon('info')} “计划→已建货件待发→已发→接收差异”分开显示：新建批次按申报量导入，不等于实际已发货。计划何时冲销、如何对应部分执行仍待业务确认。</div></div></section>`;
+      <div class="note">${icon('info')} “计划→已建货件待发→已发→接收差异”分开显示：新建批次按申报量导入，不等于实际已发货。计划何时冲销、如何对应部分执行仍待业务确认。</div></div>
+    ${projSection(p, ls, d)}</section>`;
 }
 function planStatusTag(lid) { const p = planOf(lid); if (!p) return ''; const m = { draft: ['mute', '草稿'], confirmed: ['ok', '已确认（示例状态）'], partial: ['info', '部分执行（示例）'] }[p.status] || ['mute', p.status]; return tag(m[0], m[1]) + (isDirtyPlan(lid) ? ' ' + tag('warn', '未保存', 'edit') : '') + (S.remote[lid] ? ' ' + tag('bad', '同事已改', 'people') : ''); }
 
@@ -2329,9 +2616,9 @@ PAGES.stock = function () {
     const cols = [{ key: 'cc', label: '业务国家', cls: 'l', render: r => `<b>${L(r.lid).country}</b>` }, { key: 'site', label: 'ERP站点', cls: 'l', render: r => esc(r.site) }, { key: 'phy', label: '物理库存池', cls: 'l', render: r => esc(r.physical) }, { key: 'sku', label: 'SKU', cls: 'l', render: r => skuCell(L(r.lid)) }, { key: 'asin', label: 'ASIN', cls: 'l mono', render: r => esc(r.asin) }, { key: 'msku', label: 'MSKU', cls: 'l mono', render: r => esc(r.msku) }, { key: 'v', label: 'FBA可用库存', sub: '→ 原“FBA可售库存”', render: r => V(r.fbaAvail) }, { key: 'u', label: '采用', cls: 'l', render: r => r.used ? tag('ok', '采用') : tag('mute', 'EU池重复·不相加') }];
     body = `<div class="panel-b"><div class="callout info">${icon('info')}<div>源“FBA可用库存”（或允许的“FBA可用”别名）映射到原“FBA可售库存”；不混用实际在途、标发在途、计划入库、入库中字段。EU 共享池在 DE/FR/IT/ES 重复呈现，业务只取 DE。</div></div></div>${pagedTable('st-fba', 'tbl-stock-fba', cols, D.FBA_RAW)}`;
   } else if (st.tab === 'aging') {
-    const cols = [{ key: 'cc', label: '国家', cls: 'l', render: l => `<b>${l.country}</b>` }, { key: 'sku', label: 'SKU', cls: 'l', render: l => skuCell(l) }, { key: 'm', label: 'MSKU', cls: 'l mono', render: l => esc(l.msku) }, { key: 'a', label: '180天以内', render: l => V(l.aging.lt180) }, { key: 'b', label: '180–365天', render: l => V(l.aging.m180_365) }, { key: 'c', label: '365天以上', render: l => V(l.aging.gt365) }, { key: 'v', label: '180+库龄货值', render: l => V(l.value180) }];
+    const cols = [{ key: 'cc', label: '国家', cls: 'l', render: l => `<b>${l.country}</b>` }, { key: 'sku', label: 'SKU', cls: 'l', render: l => skuCell(l) }, { key: 'm', label: 'MSKU', cls: 'l mono', render: l => esc(l.msku) }, { key: 'a', label: '180天以内', render: l => V(l.aging.lt180) }, { key: 'b', label: '180–365天', render: l => V(l.aging.m180_365) }, { key: 'c', label: '365天以上', render: l => V(l.aging.gt365) }, { key: 'mix', label: '库龄构成', sub: '右侧为 365 天以上占比', cls: 'l', render: l => agingMixCell(l) }, { key: 'v', label: '180+库龄货值', render: l => V(l.value180) }];
     const r = D.AGING_RAW; const mx = k => Math.max(...r.map(x => x[k])); const sm = k => sumNums(r.map(x => x[k]));
-    body = `<div class="panel-b"><div class="callout warn">${icon('warn')}<div><b>重复 MSKU 示例</b>（${esc(L(r[0].lid).sku)}，ASIN ${esc(r[0].asin)}）：两行 MSKU（${r.map(x => esc(x.msku)).join('、')}）。按最大值口径：180内 ${mx('lt180')}、180–365 ${mx('m180_365')}、365+ ${mx('gt365')}；若直接累加会得到 ${sm('lt180')} / ${sm('m180_365')} / ${sm('gt365')}（错误）。</div></div></div>${pagedTable('st-aging', 'tbl-stock-aging', cols, D.LISTINGS)}`;
+    body = `<div class="panel-b"><div class="callout warn">${icon('warn')}<div><b>重复 MSKU 示例</b>（${esc(L(r[0].lid).sku)}，ASIN ${esc(r[0].asin)}）：两行 MSKU（${r.map(x => esc(x.msku)).join('、')}）。按最大值口径：180内 ${mx('lt180')}、180–365 ${mx('m180_365')}、365+ ${mx('gt365')}；若直接累加会得到 ${sm('lt180')} / ${sm('m180_365')} / ${sm('gt365')}（错误）。</div></div></div><div class="panel-h"><h2>压货最多的 Listing</h2><span class="hint">按 365 天以上占比排序，前 8 条</span></div><div class="panel-b">${agingTop(8)}</div><div class="panel-h" style="border-top:0.5px solid var(--line)"><h2>全部 Listing</h2></div>${pagedTable('st-aging', 'tbl-stock-aging', cols, D.LISTINGS)}`;
   } else {
     const us = listingsOf('US');
     const cols = [{ key: 'sku', label: 'SKU', fz: 1, cls: 'l', render: l => skuCell(l) }, { key: 'm', label: 'MSKU', cls: 'l mono', render: l => esc(l.msku) }, { key: 'a', label: 'Available', render: l => V(l.awd.available, { keepZero: true }) }, { key: 'r', label: 'Reserved', render: l => V(l.awd.reserved, { keepZero: true }) }, { key: 'o', label: 'Outbound to FBA', render: l => V(l.awd.outbound, { keepZero: true }) }, { key: 's', label: 'AWD合计', sub: 'AG', render: l => `<b>${fmt(l.awd.available + l.awd.reserved + l.awd.outbound)}</b>` }, { key: 'h', label: '海外仓', sub: 'AH', render: l => V(l.overseas, { keepZero: true }) }, { key: 'u', label: 'U列源值', render: l => { const s = l.awd.available + l.awd.reserved + l.awd.outbound + l.overseas; return `${fmt(l.awdOverseasSrc)}${s !== l.awdOverseasSrc ? ' ' + tag('warn', '小计差异·待核对', 'warn') : ''}`; } }];
@@ -2597,6 +2884,7 @@ PAGES.notes = function () {
     <div class="panel"><div class="panel-h"><h2>状态说明</h2></div><div class="panel-b small">
       <p><b>真实可交互（前端本地状态）：</b>国家/视图切换与各国筛选保留；全局与多 SKU 搜索；人员×国家组合；SKU 详情与返回恢复；月份高亮；周范围切换；编辑发货量/备注/半月计划并实时联动箱数（US）、补货后天数（US）、计划汇总、总销量 DL:EE 汇总；批次选入在途（各国独立、空选、恢复原范围）；保存/放弃；模拟同事冲突与解决；只读身份；更新流程模拟（预检、阻断、预览、版本变化、应用）；主题与密度切换。</p>
       <p><b>第四版新增：</b>列配置（分组勾选、排序、固定列、模版）、年份多选、版本记录与对比、运营人员卡片布局。</p>
+      <p><b>第六版：</b>综合总览加“可撑天数”断货风险条（按最急排序），SKU 详情加库存推演图（随计划量实时变化），批次与在途可切换时间线，库龄页加构成条。天数均为演示估算，非原公式（待确认项 #20）。</p>
       <p><b>第五版（开发前检查）：</b>代码审查与补充审查共 27 项问题已修复；大表全部分页；综合总览增加趋势小图列，SKU 详情增加逐年同月对比图，月历史可开色阶，批次改为一行一批的清单；无障碍扫描 0 项违规；按真实规模（约 550 个 SKU、2,600 条 Listing）实测，多数页面渲染在 0.1 秒内。详见 docs/05-开发前检查报告。</p>
       <p><b>设计占位（未实现）：</b>登录与权限、真实多人同步与版本服务、文件读取与导入、数据库持久化、原公式结果接口、审计存储、通知。所有“保存/应用”只写本页内存，刷新即重置。</p></div></div>
   </div>
@@ -2754,6 +3042,7 @@ function refreshPlanDerived(lid) {
   setDerived('pchk-' + p.pid, tot > p.domestic.avail ? tag('warn', `超出现货 ${fmt(tot - p.domestic.avail)}`, 'warn') : tag('ok', '现货可覆盖'));
   setDerived('pcheck-' + p.pid, tot > p.domestic.avail ? `计划超出现货 ${fmt(tot - p.domestic.avail)}（演示核对，非原 HW 公式）` : '现货可覆盖计划合计（演示核对）');
   setDerived('pgrand', fmt(sumNums(D.LISTINGS.map(x => planQty(x.lid)))));
+  redrawProj(lid);
   renderSavebar();
 }
 

@@ -239,7 +239,7 @@ const check = (id, name, ok, detail = '') => { results.push({ id, name, ok: !!ok
   check('R2', '恢复“全部”年份', (await text('#tbl-US-month')).includes('2022'));
   await act('[data-act="cview"][data-v="overview"]');
   await act('[data-act="colcfg"][data-view="overview"]');
-  check('R3', '列配置弹层：分组、已选列表、模板', (await page.locator('.cc-group').count()) === 5 && (await page.locator('.cc-list li').count()) === 13 && (await page.locator('#cc-tpl').count()) === 1);
+  check('R3', '列配置弹层：分组、已选列表、模板', (await page.locator('.cc-group').count()) === 5 && (await page.locator('.cc-list li').count()) === 12 && (await page.locator('#cc-tpl').count()) === 1);
   await page.check('input[data-in="cccol"][data-key="asin"]'); await page.waitForTimeout(60);
   await page.uncheck('input[data-in="cccol"][data-key="avg4"]'); await page.waitForTimeout(60);
   await act('[data-act="ccpin"][data-key="asin"]');
@@ -323,6 +323,40 @@ const check = (id, name, ok, detail = '') => { results.push({ id, name, ok: !!ok
   check('F4', '版本详情跳转过程记录时关闭弹层', (await page.locator('.modal').count()) === 0 && (await page.evaluate(() => S.page)) === 'update');
   const ime = await page.evaluate(async () => { S.country = 'US'; cui('US').view = 'overview'; cui('US').q = ''; go('country'); const el = document.getElementById('cq-US'); el.focus(); el.value = 'ac'; el.dispatchEvent(new InputEvent('input', { bubbles: true, isComposing: true })); await new Promise(r => setTimeout(r, 400)); const kept = document.getElementById('cq-US') === el; el.value = 'acr'; el.dispatchEvent(new CompositionEvent('compositionend', { bubbles: true })); await new Promise(r => setTimeout(r, 400)); return kept && cui('US').q === 'acr'; });
   check('F5', '输入法拼写中不重绘，结束后才筛选', ime);
+  // 第六版：可撑天数 / 库存推演 / 批次时间线 / 库龄构成
+  await page.evaluate(() => { S.colcfg = {}; S.country = 'US'; const c = cui('US'); c.view = 'overview'; c.q = ''; c.sort = null; c.page = 1; c.size = 12; go('country'); });
+  const fit = await page.evaluate(() => { const w = document.getElementById('tbl-US-overview'); return w.scrollWidth - w.clientWidth; });
+  check('P1', '综合总览默认含“可撑天数”条形列，1440 宽无需横向滚动', (await page.locator('#tbl-US-overview svg.cv-bar').count()) >= 10 && fit <= 0, `溢出 ${fit}px`);
+  await act('#tbl-US-overview th[data-key="cover"]');
+  const keys = await page.evaluate(() => filteredListings('US').map(coverSortKey));
+  const firstW = await page.locator('#tbl-US-overview tbody tr').first().innerText();
+  check('P1', '按可撑天数排序：最急的（断档）排最前', keys.every((k, i) => !i || k >= keys[i - 1]) && firstW.includes('断档'), firstW.replace(/\s+/g, ' ').slice(0, 60));
+  await page.screenshot({ path: path.join(OUT, '19-cover-sort.png') });
+  const model = await page.evaluate(() => { const l = listingsOf('US').find(x => coverOf(x).st === 'bad'); const before = coverOf(l); const keep = S.transitSel.US; S.transitSel.US = []; const c = coverOf(l); S.transitSel.US = keep; const back = coverOf(l); return { gapBefore: before.gap, noTransit: Math.abs(c.total - c.fbaDays) < 0.01 && c.gap === 0 && !c.arr.length, restored: back.gap === before.gap }; });
+  check('P2', '在途明确空选后只剩 FBA 天数，恢复选择后断档复现（随批次选择联动）', model.gapBefore > 0 && model.noTransit && model.restored, JSON.stringify(model));
+  const pl = await page.evaluate(() => { const l = listingsOf('US').find(x => coverOf(x).st === 'bad' && planOf(x.lid)); openSku(l.pid, { country: 'US' }); return l.lid; });
+  await page.waitForTimeout(150);
+  check('P3', 'SKU 详情显示库存推演图（现有在途线 + 断货区间）', (await page.locator('#proj-d path.pl-base').count()) === 1 && (await page.locator('#proj-d rect.pz').count()) >= 1);
+  await page.fill(`#sec-plan input[data-in="plan"][data-lid="${pl}"]`, '500'); await page.waitForTimeout(120);
+  const ptxt = await text(`[data-derived="projtxt-${pl}"]`);
+  check('P3', '改计划量后推演图立即加出“含本次发货”线，文字同步', (await page.locator('#proj-d path.pl-plan').count()) === 1 && ptxt.includes('本次发货 500'), ptxt.slice(0, 60));
+  await page.evaluate(() => document.getElementById('sec-plan').scrollIntoView());
+  await page.locator('#proj-d').focus(); await page.keyboard.press('ArrowRight'); await page.keyboard.press('ArrowRight');
+  check('P3', '推演图键盘左右键按周查看', !(await page.locator('#proj-d .yoy-tip').isHidden()) && (await page.locator('#proj-d .yoy-tip').innerText()).includes('第 7 天'));
+  await page.screenshot({ path: path.join(OUT, '20-projection.png') });
+  await act('[data-act="discard"]').catch(() => {});
+  await page.evaluate(() => { S.country = 'US'; cui('US').view = 'batch'; go('country'); });
+  await act('[data-act="bmode"][data-v="time"]');
+  check('P4', '批次时间线：每批一条，标出基准日', (await page.locator('.tl .tl-bar').count()) === (await page.evaluate(() => batchesOf('US').length)) && (await text('.tl')).includes('基准日'));
+  check('P4', '时间线里点批次仍可打开批次详情', await (async () => { await act('.tl [data-act="batch"]'); const ok = (await page.locator('.modal').count()) === 1; await act('.modal [data-act="close"]'); return ok; })());
+  await page.screenshot({ path: path.join(OUT, '21-batch-timeline.png') });
+  await act('[data-act="bmode"][data-v="list"]');
+  check('P4', '切回清单', (await page.locator('#tbl-US-batches').count()) === 1);
+  await page.evaluate(() => { S.stock.tab = 'aging'; go('stock'); });
+  const ag = await page.evaluate(() => [...document.querySelectorAll('.ag-top .ag-v b')].map(b => parseInt(b.textContent)));
+  check('P5', '库龄构成：压货最多的 8 条按 365 天以上占比降序', ag.length === 8 && ag.every((v, i) => !i || v <= ag[i - 1]), ag.join(','));
+  check('P5', '库龄表每行有构成条', (await page.locator('#tbl-stock-aging svg.ag-bar').count()) >= 10);
+  await page.screenshot({ path: path.join(OUT, '22-aging-mix.png') });
   check('ERR', '无脚本错误', errors.length === 0, errors.slice(0, 3).join(' | '));
 
   // 宽度 × 主题

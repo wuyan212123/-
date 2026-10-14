@@ -27,6 +27,9 @@ const VIEWS = [
   ['版本记录', "go('versions');"],
   ['原表覆盖', "go('coverage');"],
   ['方案说明', "go('notes');"],
+  ['国家·批次时间线', "S.country='US'; cui('US').view='batch'; cui('US').bmode='time'; go('country');"],
+  ['库存汇总·库龄构成', "cui('US').bmode='list'; S.stock.tab='aging'; go('stock');"],
+  ['SKU 详情·库存推演', "openSku('P-008',{country:'US'}); document.getElementById('sec-plan').scrollIntoView();"],
   ['弹层·列配置', "S.country='US'; cui('US').view='overview'; go('country'); openColCfg('overview');"],
   ['弹层·批次详情', "closeModal(); batchModal('B-US-2026-07-20');"],
 ];

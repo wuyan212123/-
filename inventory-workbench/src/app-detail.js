@@ -151,7 +151,8 @@ function secPlan(p, ls, d) {
       <div class="metric"><div class="k">计划不会改变</div><div class="v" style="font-size:14px;font-weight:500;line-height:1.5">FBA · 国内真实库存 · 实际在途 · 真实货件</div></div>
     </div>
     <div class="panel">${scope.length ? table('tbl-d-plan', cols, scope, { wrapCls: 'auto-h' }) : '<div class="empty">该 SKU 所在国家没有可编辑的计划字段（SA 原表未设补货数量区）</div>'}
-      <div class="note">${icon('info')} “计划→已建货件待发→已发→接收差异”分开显示：新建批次按申报量导入，不等于实际已发货。计划何时冲销、如何对应部分执行仍待业务确认。</div></div></section>`;
+      <div class="note">${icon('info')} “计划→已建货件待发→已发→接收差异”分开显示：新建批次按申报量导入，不等于实际已发货。计划何时冲销、如何对应部分执行仍待业务确认。</div></div>
+    ${projSection(p, ls, d)}</section>`;
 }
 function planStatusTag(lid) { const p = planOf(lid); if (!p) return ''; const m = { draft: ['mute', '草稿'], confirmed: ['ok', '已确认（示例状态）'], partial: ['info', '部分执行（示例）'] }[p.status] || ['mute', p.status]; return tag(m[0], m[1]) + (isDirtyPlan(lid) ? ' ' + tag('warn', '未保存', 'edit') : '') + (S.remote[lid] ? ' ' + tag('bad', '同事已改', 'people') : ''); }
 
