@@ -1,0 +1,24 @@
+<div id="app" class="app">
+  <aside id="sidebar" class="sidebar" aria-label="侧栏"></aside>
+  <div class="overlay-scrim" data-act="scrim" aria-hidden="true"></div>
+  <div class="main-col">
+    <header class="toolbar">
+      <button class="icon-btn" id="menuBtn" data-act="collapse" aria-label="展开或收起侧栏" title="展开或收起侧栏"></button>
+      <div class="gsearch" role="search">
+        <div class="field"><span id="gsIcon"></span><input id="gq" type="search" autocomplete="off" placeholder="搜索 SKU / 品名 / ASIN / MSKU" aria-label="全局搜索 SKU、品名、ASIN、MSKU" aria-controls="gpop" aria-expanded="false"><kbd aria-hidden="true">/</kbd></div>
+        <div id="gpop" class="pop" role="listbox" aria-label="搜索建议" hidden></div>
+      </div>
+      <div class="tb-right">
+        <label class="hide-sm small muted" for="role">演示身份</label>
+        <select id="role" class="sel" data-in="role" aria-label="演示身份（不是真实权限）"></select>
+        <button class="icon-btn" id="densBtn" data-act="density"></button>
+        <button class="icon-btn" id="themeBtn" data-act="theme"></button>
+      </div>
+    </header>
+    <div class="srcbar" id="srcbar" aria-label="逐模块来源日期"></div>
+    <main id="main" class="main" tabindex="-1"></main>
+  </div>
+</div>
+<div id="savebar"></div>
+<div id="modal-root"></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>

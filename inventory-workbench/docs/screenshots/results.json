@@ -1,0 +1,576 @@
+{
+ "pass": 95,
+ "total": 95,
+ "results": [
+  {
+   "id": "A02",
+   "name": "SA 页面显示简表覆盖说明",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-15",
+   "name": "SA 周历史显示“不适用”而非0",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A06",
+   "name": "SA 月表：2025部分月份“无字段”，2026仅年总量",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A06",
+   "name": "AE 月表从2025起，无2024行",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-04",
+   "name": "EU 不补造2022/2023早年字段",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-02",
+   "name": "US 月表同时展开2022/2023(仅年总量)与2024—2026",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-03",
+   "name": "“截至10/11”只标在 2026×10 记录（每个 Listing 一处）",
+   "ok": true,
+   "detail": "cut=12 groups=12"
+  },
+  {
+   "id": "UI-03",
+   "name": "点击10月表头高亮所有年份同月，且表头有文字标记",
+   "ok": true,
+   "detail": "hl cells=36"
+  },
+  {
+   "id": "A06",
+   "name": "缺报月份显示“未提供”而不是0",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A07",
+   "name": "周历史显示起止日期与“最新完整周”",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A07",
+   "name": "“全部”年份可访问全部已有周",
+   "ok": true,
+   "detail": "周列=125"
+  },
+  {
+   "id": "A07",
+   "name": "跨年周标注",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A07",
+   "name": "最近8周范围切换",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-01",
+   "name": "点击SKU进入统一详情，含全部分区",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A04",
+   "name": "详情默认定位来源国家 US",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-08",
+   "name": "返回后恢复关键词/页码/横向位置",
+   "ok": true,
+   "detail": "{\"left\":140,\"q\":\"DEMO\",\"pg\":\"共 23 条\\n每页\\n8\\n12\\n25\\n50\\n第 2 / 2 页\"} set=140"
+  },
+  {
+   "id": "UI-10",
+   "name": "修改US计划后CA计划、FBA与在途不变",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A23",
+   "name": "未保存修改出现保存条",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A12",
+   "name": "US 箱数按 J=HT/I 联动（无取整）",
+   "ok": true,
+   "detail": "box=10.0 pack=48"
+  },
+  {
+   "id": "UI-11",
+   "name": "编辑半月计划不改实际销量与发货计划",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A09",
+   "name": "财年 APR—MAR 默认不对照，年份待确认",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-17",
+   "name": "同一记录被同事更新后保存出现冲突对话框",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A21",
+   "name": "冲突处理后保存为演示状态（无同步宣称）",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A16",
+   "name": "批次详情含原量100与差异4/−4/0",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-12",
+   "name": "已报72接收74显示-2，原报72保留",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A17",
+   "name": "CA 明确空选 → 在途0，US 选择不受影响，批次未删",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-05",
+   "name": "容错搜 cup500 命中 DEMO-CUP-500*",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-05",
+   "name": "ASIN 精确命中",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-05",
+   "name": "MSKU 精确命中",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-05",
+   "name": "中文品名命中 3 个 SKU",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-09",
+   "name": "同SKU多Listing保留（US 2个）",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-06",
+   "name": "国家+负责人组合筛选生效",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A23",
+   "name": "空结果状态可恢复",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-06",
+   "name": "多SKU粘贴：找到2个，未找到1个",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A05",
+   "name": "未分配入口可查",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A13",
+   "name": "全部人员时国内现货按SKU去重只计一次",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A15",
+   "name": "原总库存注明五国+US AWD，AE/SA单列",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A14",
+   "name": "EU 多站点重复不相加",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A14",
+   "name": "库龄重复MSKU取最大值说明",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A22",
+   "name": "采购在途仅展示，无采购计算入口",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-04",
+   "name": "总销量 2023 月历史完整可达",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A08",
+   "name": "总销量 20期汇总旧期显示“空”",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A08",
+   "name": "15期保存预测单独展示",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A10",
+   "name": "AU LED 变体零分母显示待核对",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A01",
+   "name": "16 张原表均有映射，Craft&Fresh/Sheet1 角色待确认",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A19",
+   "name": "重复文件识别为重复不相加",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A20",
+   "name": "FBA 未提供沿用旧周期，销量更新到10/13",
+   "ok": true,
+   "detail": "sales:updated:2026-10-13,fba:stale:2026-10-11,domestic:updated:2026-10-13,awd:stale:2026-10-04,ship:updated:2026-10-13,aging:updated:2026-10-11"
+  },
+  {
+   "id": "UI-16",
+   "name": "应用结果明确为演示，人工计划保留",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A19",
+   "name": "严格日期检查阻断销量模块",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "A21",
+   "name": "只读身份下计划输入禁用",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-19",
+   "name": "按 / 聚焦全局搜索",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-19",
+   "name": "搜索浮层出现候选",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-19",
+   "name": "键盘选择候选打开SKU详情",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "ERR",
+   "name": "无脚本错误",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "light 1440px country 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "light 1440px detail 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "light 1440px update 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "light 1440px plan 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "light 1024px country 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "light 1024px detail 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "light 1024px update 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "light 1024px plan 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "light 768px country 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "light 768px detail 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "light 768px update 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "light 768px plan 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "light 375px country 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "light 375px detail 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "light 375px update 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "light 375px plan 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "light 320px country 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "light 320px detail 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "light 320px update 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "light 320px plan 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "dark 1440px country 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "dark 1440px detail 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "dark 1440px update 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "dark 1440px plan 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "dark 1024px country 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "dark 1024px detail 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "dark 1024px update 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "dark 1024px plan 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "dark 768px country 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "dark 768px detail 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "dark 768px update 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "dark 768px plan 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "dark 375px country 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "dark 375px detail 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "dark 375px update 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "dark 375px plan 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "dark 320px country 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "dark 320px detail 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "dark 320px update 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "dark 320px plan 无外层横向溢出",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "UI-18",
+   "name": "375px 横向滚动后 SKU 列仍冻结可读",
+   "ok": true,
+   "detail": ""
+  }
+ ]
+}
