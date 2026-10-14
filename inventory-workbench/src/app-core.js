@@ -155,6 +155,7 @@ const NAV = [
 function renderSidebar() {
   const cur = S.page === 'detail' ? (S.detail.from?.page || 'country') : S.page;
   $('#sidebar').innerHTML = `
+    <div class="traffic" aria-hidden="true"><i></i><i></i><i></i></div>
     <div class="brand"><div class="brand-mark">${icon('layers')}</div><div class="brand-txt"><div class="brand-t">进销存协作工作台</div><div class="brand-s">前端方案 · 演示版</div></div></div>
     <nav aria-label="主导航">${NAV.map(n => n.sec ? `<div class="nav-sec">${n.sec}</div>` : `<button class="nav-btn" data-act="nav" data-page="${n.id}" ${cur === n.id ? 'aria-current="page"' : ''} title="${n.label}" aria-label="${n.label}">${icon(n.ic)}<span class="nav-label">${n.label}</span>${n.count ? `<span class="nav-count">${n.count()}</span>` : ''}</button>`).join('')}</nav>
     <div class="side-foot">
@@ -162,8 +163,11 @@ function renderSidebar() {
       <button class="nav-btn" data-act="collapse" aria-label="${S.collapsed ? '展开侧栏' : '收起侧栏'}" title="${S.collapsed ? '展开侧栏' : '收起侧栏'}">${icon('sidebar')}<span class="nav-label">${S.collapsed ? '展开侧栏' : '收起侧栏'}</span></button>
     </div>`;
 }
+const PAGE_TITLE = { country: '国家进销存', people: '运营人员视图', search: '全局搜索', total: '总销量', stock: '库存汇总', plan: '发货计划', update: '数据更新与异常', coverage: '原表覆盖与验收', notes: '方案说明' };
 function renderToolbarState() {
   $('#role').value = S.role;
+  if (S.page === 'detail' && S.detail) { $('#tbTitle').textContent = P(S.detail.pid).sku; $('#tbSub').textContent = `SKU 统一详情 · 来自 ${S.detail.from ? S.detail.from.label : '国家主表'}`; }
+  else { $('#tbTitle').textContent = PAGE_TITLE[S.page] || '进销存协作工作台'; $('#tbSub').textContent = S.page === 'country' ? `${D.CMAP[S.country].name} ${S.country} · ${viewName(cui(S.country).view)} · 演示数据` : '进销存协作工作台 · 演示数据'; }
   const th = { system: ['auto', '主题：跟随系统'], light: ['sun', '主题：浅色'], dark: ['moon', '主题：深色'] }[S.theme];
   $('#themeBtn').innerHTML = icon(th[0]); $('#themeBtn').title = th[1] + '（点击切换）'; $('#themeBtn').setAttribute('aria-label', th[1] + '，点击切换');
   $('#densBtn').title = S.density === 'compact' ? '密度：紧凑（点击切换为舒适）' : '密度：舒适（点击切换为紧凑）';
@@ -183,7 +187,12 @@ function renderSavebar() {
   if (!n) { el.innerHTML = ''; return; }
   el.innerHTML = `<div class="savebar" role="region" aria-label="未保存修改"><span class="dot" aria-hidden="true"></span><span><b>${n}</b> 项未保存的演示修改</span><span class="muted small">保存只写入本页内存，不会同步给同事</span><button class="btn sm" data-act="discard">放弃修改</button><button class="btn sm primary" data-act="save">保存到本次演示</button></div>`;
 }
-function toast(msg, kind) { const el = document.createElement('div'); el.innerHTML = msg; if (kind) el.style.borderColor = `var(--${kind})`; $('#toast').appendChild(el); setTimeout(() => el.remove(), 4200); }
+function toast(msg, kind) {
+  const el = document.createElement('div');
+  el.innerHTML = `<div class="t-ic" style="${kind === 'warn' ? 'background:linear-gradient(180deg,#ffb340,#ff9500)' : ''}">${icon(kind === 'warn' ? 'warn' : 'layers')}</div><div style="min-width:0"><div class="t-ttl">进销存工作台<span>现在</span></div><div>${msg}</div></div>`;
+  const box = $('#toast'); box.appendChild(el); while (box.children.length > 3) box.firstElementChild.remove();
+  setTimeout(() => el.remove(), 4200);
+}
 function modal(html, cls = '') { $('#modal-root').innerHTML = `<div class="modal-back" data-act="modal-bg"><div class="modal ${cls}" role="dialog" aria-modal="true">${html}</div></div>`; const f = $('#modal-root [autofocus], #modal-root button, #modal-root input'); f && f.focus(); }
 function closeModal() { $('#modal-root').innerHTML = ''; }
 

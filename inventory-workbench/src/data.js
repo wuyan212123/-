@@ -31,8 +31,8 @@ const DEMO = (() => {
       src: { id: 'A:J', inv: 'K:T', transit: 'U', batch: 'V:AI', m2024: 'AK:AV / AW', m2025: 'AX:BI / BJ', m2026: 'BK:BV / BW', w2024: 'BY:DC', w2025: 'DE:FD', w2026: 'FE:GR（年份证据：FE2/GR2 引用 US!FZ2/HM2）', avg: 'GS / GT', monthEnd: 'GU:GW', sea: 'GX', plan: 'GY:HB', days: 'HC:HF', grade: 'HH:HJ', fiscal: 'HK:HV', half: 'HW:IP' } }),
     C({ code: 'AE', name: '阿联酋', ownerField: '销售负责人', tier: 'ae', monthYears: [2025, 2026], annualOnly: [], weeks: false, half: false, fiscal: false, variant: false, domestic: true, inTotalStock: false, stocking: true,
       src: { id: 'A:F', inv: 'G/H', aging: 'J:M', stocking: 'I 备货数量', transit: 'N', batch: 'O:P', domestic: 'Q', m2025: 'R:AC / AD', m2026: 'AE:AP / AQ' } }),
-    C({ code: 'SA', name: '沙特', ownerField: '销售负责人', tier: 'sa', monthYears: [2025], annualOnly: [2026], saMonths: [8, 9, 10, 11, 12], weeks: false, half: false, fiscal: false, variant: false, domestic: false, inTotalStock: false,
-      src: { id: 'A:F', inv: 'G/H', aging: 'I:L', transit: 'M', batch: 'N', m2025: '部分月份标题（无法确认完整12个月区）', annual: 'Y（2025）/ Z（2026）' } }),
+    C({ code: 'SA', name: '沙特', ownerField: '销售负责人', tier: 'sa', monthYears: [2025], annualOnly: [2026], saMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9], weeks: false, half: false, fiscal: false, variant: false, domestic: false, inTotalStock: false,
+      src: { id: 'A:F', inv: 'G/H', aging: 'I:L', transit: 'M', batch: 'N', m2025: 'P:X（2025-JAN 至 SEP，无 OCT—DEC 列）', annual: 'Y（2025）/ Z（2026）' } }),
   ];
   const CMAP = Object.fromEntries(COUNTRIES.map(c => [c.code, c]));
   const FIVE = ['US', 'CA', 'AU', 'UK', 'EU'];
@@ -40,28 +40,28 @@ const DEMO = (() => {
   // ——— 商品（纯虚构） ———
   // [sku, 品名, 装率, 等级, 尺寸分段, 标签, 变体组, 国家, 月销基数]
   const P_RAW = [
-    ['DEMO-CUP-500BK', '示例·真空保温杯 500ml 黑', 48, 'A', '标准-小', '常规', 'G-CUP', 'US CA AU UK EU AE SA', 620],
-    ['DEMO-CUP-500WH', '示例·真空保温杯 500ml 白', 48, 'A', '标准-小', '常规', 'G-CUP', 'US CA UK EU AE', 410],
-    ['DEMO-CUP-750BK', '示例·真空保温杯 750ml 黑', 36, 'B', '标准-小', '常规', 'G-CUP', 'US CA UK EU', 260],
-    ['DEMO-MAT-6PU', '示例·瑜伽垫 6mm 紫', 10, 'A', '标准-大', '季节性', 'G-MAT', 'US CA AU UK EU', 330],
-    ['DEMO-MAT-6BL', '示例·瑜伽垫 6mm 蓝', 10, 'B', '标准-大', '季节性', 'G-MAT', 'US AU UK EU', 210],
-    ['DEMO-LED-5M', '示例·LED 灯带 5m', 60, 'B', '标准-小', '常规', 'G-LED', 'US CA AU UK EU AE', 290],
-    ['DEMO-LED-10M', '示例·LED 灯带 10m', 40, 'C', '标准-小', '常规', 'G-LED', 'US AU UK', 120],
-    ['DEMO-BOX-LGGR', '示例·收纳盒 大号 灰', 12, 'A', '大件', '常规', null, 'US CA AU UK EU SA', 380],
-    ['DEMO-PET-2L', '示例·宠物饮水机 2L', 16, 'A', '标准-大', '常规', null, 'US CA UK EU AE', 450],
-    ['DEMO-LMP-FOLD', '示例·折叠桌面台灯', 20, 'B', '标准-大', '常规', null, 'US CA AU EU', 240],
-    ['DEMO-BAG-6SET', '示例·旅行收纳袋 6件套', 50, 'B', '标准-小', '常规', null, 'US UK EU AE SA', 300],
-    ['DEMO-KIT-TIMER', '示例·厨房计时器', 100, 'C', '标准-小', '清货', null, 'US CA AU', 90],
-    ['DEMO-BTH-MAT', '示例·浴室防滑垫', 24, 'B', '标准-大', '常规', null, 'US CA AU UK EU', 200],
-    ['DEMO-CAR-MOUNT', '示例·车载手机支架', 80, 'A', '标准-小', '常规', null, 'US CA AU UK EU AE SA', 520],
-    ['DEMO-KID-TABLE', '示例·儿童餐具套装', 30, 'B', '标准-小', '新品', null, 'US UK EU', 140],
-    ['DEMO-LINT-RMV', '示例·衣物除毛器', 72, 'A', '标准-小', '常规', null, 'US CA AU UK EU AE', 360],
-    ['DEMO-BELL-WL', '示例·无线门铃', 40, 'C', '标准-小', '常规', null, 'US CA UK', 110],
-    ['DEMO-BRUSH-8', '示例·电动牙刷头 8支', 120, 'A', '标准-小', '常规', null, 'US CA AU UK EU SA', 480],
-    ['DEMO-CAT-SCR', '示例·瓦楞猫抓板', null, 'B', '大件', '常规', null, 'US CA EU', 170],
-    ['DEMO-DRY-RACK', '示例·折叠晾衣架', 8, 'C', '大件', '季节性', null, 'US AU UK', 95],
-    ['DEMO-ARO-300', '示例·香薰机 300ml', 24, '新品', '标准-小', '新品', null, 'US CA UK EU AE SA', 160],
-    ['DEMO-GLV-WRK', '示例·园艺手套 3双', 100, 'C', '标准-小', '季节性', null, 'US CA AU UK EU', 130],
+    ['DEMO-ACR-24', '示例·丙烯颜料 24色 60ml', 48, 'A', '标准-小', '常规', 'G-ACR', 'US CA AU UK EU AE SA', 620],
+    ['DEMO-ACR-12', '示例·丙烯颜料 12色 60ml', 48, 'A', '标准-小', '常规', 'G-ACR', 'US CA UK EU AE', 410],
+    ['DEMO-ACR-48', '示例·丙烯颜料 48色 22ml', 36, 'B', '标准-小', '常规', 'G-ACR', 'US CA UK EU', 260],
+    ['DEMO-PAD-16K', '示例·水彩本 16K 粗纹', 10, 'A', '标准-大', '季节性', 'G-PAD', 'US CA AU UK EU', 330],
+    ['DEMO-PAD-32K', '示例·水彩本 32K 粗纹', 10, 'B', '标准-大', '季节性', 'G-PAD', 'US AU UK EU', 210],
+    ['DEMO-BRS-10', '示例·尼龙画笔 10支', 60, 'B', '标准-小', '常规', 'G-BRS', 'US CA AU UK EU AE', 290],
+    ['DEMO-BRS-20', '示例·尼龙画笔 20支', 40, 'C', '标准-小', '常规', 'G-BRS', 'US AU UK', 120],
+    ['DEMO-BAG-A2', '示例·软边作品袋 A2', 12, 'A', '大件', '常规', null, 'US CA AU UK EU SA', 380],
+    ['DEMO-OIL-24', '示例·油画颜料 22ml 24色', 16, 'A', '标准-大', '常规', null, 'US CA UK EU AE', 450],
+    ['DEMO-EAS-FOLD', '示例·折叠画架', 20, 'B', '标准-大', '常规', null, 'US CA AU EU', 240],
+    ['DEMO-SKB-A4', '示例·素描本 A4', 50, 'B', '标准-小', '常规', null, 'US UK EU AE SA', 300],
+    ['DEMO-PAL-WOOD', '示例·木质调色板', 100, 'C', '标准-小', '清货', null, 'US CA AU', 90],
+    ['DEMO-CNV-3040', '示例·画布板 30×40cm', 24, 'B', '标准-大', '常规', null, 'US CA AU UK EU', 200],
+    ['DEMO-MKR-60', '示例·酒精马克笔 60色', 80, 'A', '标准-小', '常规', null, 'US CA AU UK EU AE SA', 520],
+    ['DEMO-CLY-KID', '示例·儿童超轻黏土', 30, 'B', '标准-小', '新品', null, 'US UK EU', 140],
+    ['DEMO-WC-36', '示例·固体水彩 36色', 72, 'A', '标准-小', '常规', null, 'US CA AU UK EU AE', 360],
+    ['DEMO-TAPE-MSK', '示例·美纹纸胶带', 40, 'C', '标准-小', '常规', null, 'US CA UK', 110],
+    ['DEMO-PCL-72', '示例·油性彩铅 72色', 120, 'A', '标准-小', '常规', null, 'US CA AU UK EU SA', 480],
+    ['DEMO-EAS-XL', '示例·落地画架 大号', null, 'B', '大件', '常规', null, 'US CA EU', 170],
+    ['DEMO-DRY-RACK', '示例·画作晾干架', 8, 'C', '大件', '季节性', null, 'US AU UK', 95],
+    ['DEMO-KNF-5', '示例·油画刮刀 5件套', 24, '新品', '标准-小', '新品', null, 'US CA UK EU AE SA', 160],
+    ['DEMO-GES-1L', '示例·石膏底料 1L', 100, 'C', '标准-小', '季节性', null, 'US CA AU UK EU', 130],
   ];
 
   const PRODUCTS = [];
@@ -108,7 +108,7 @@ const DEMO = (() => {
       weight: [1, 1.1, 0.9, 1.2][pi % 4], turnover: ri(35, 160),
       srcRowTotal: pi + 3,
     };
-    if (sku === 'DEMO-BOX-LGGR') p.domestic.avail = 0; // 国内现货真实0
+    if (sku === 'DEMO-BAG-A2') p.domestic.avail = 0; // 国内现货真实0
     const mth = p.total.monthly[2026];
     p.avg3 = Math.round(((mth[6] + mth[7] + mth[8]) / 3) * p.weight);
     p.netGap = HALF.map(() => ri(-400, 900));              // CR:DK 采购关联区：仅回查
@@ -117,16 +117,16 @@ const DEMO = (() => {
 
     countries.forEach(cc => {
       const cfg = CMAP[cc];
-      const nList = (sku === 'DEMO-CUP-500BK' && cc === 'US') || (sku === 'DEMO-MAT-6PU' && cc === 'UK') ? 2 : 1;
+      const nList = (sku === 'DEMO-ACR-24' && cc === 'US') || (sku === 'DEMO-PAD-16K' && cc === 'UK') ? 2 : 1;
       for (let li = 0; li < nList; li++) {
         rowCounter[cc] = (rowCounter[cc] || 0) + 1;
         const lid = `L-${cc}-${String(rowCounter[cc]).padStart(3, '0')}`;
         const cL = Math.max(8, Math.round(L * { US: 1, CA: 0.35, AU: 0.3, UK: 0.45, EU: 0.55, AE: 0.15, SA: 0.12 }[cc] * (li ? 0.45 : 1)));
         const owner = (() => {
-          if (sku === 'DEMO-CUP-500BK' && cc === 'US') return li ? '运营乙' : '运营甲';
-          if (sku === 'DEMO-GLV-WRK' && (cc === 'CA' || cc === 'UK')) return null;
-          if (sku === 'DEMO-ARO-300' && cc === 'SA') return null;
-          if (sku === 'DEMO-KID-TABLE' && cc === 'EU') return null;
+          if (sku === 'DEMO-ACR-24' && cc === 'US') return li ? '运营乙' : '运营甲';
+          if (sku === 'DEMO-GES-1L' && (cc === 'CA' || cc === 'UK')) return null;
+          if (sku === 'DEMO-KNF-5' && cc === 'SA') return null;
+          if (sku === 'DEMO-CLY-KID' && cc === 'EU') return null;
           return OWNERS[(pi + FIVE.indexOf(cc) + 4 + (cc === 'AE' ? 2 : 0) + (cc === 'SA' ? 3 : 0)) % 4];
         })();
         const asin = `B0DEMO${String(1000 + pi * 3 + li).padStart(4, '0')}`;
@@ -180,30 +180,30 @@ const DEMO = (() => {
   const ISSUES = []; // {id, lid|pid, module, level, title, detail, source}
   const issue = (o) => { o.id = `ISS-${String(ISSUES.length + 1).padStart(3, '0')}`; ISSUES.push(o); };
   // 1) 缺报月份（不是0）
-  { const l = findL('DEMO-PET-2L', 'US'); l.monthly[2025][2] = 'NP'; l.annual[2025] += 0; l.annualSrcDiff = { year: 2025 }; l.annual[2025] = l.monthly[2025].reduce((a, v) => a + (typeof v === 'number' ? v : 0), 0) + 37;
+  { const l = findL('DEMO-OIL-24', 'US'); l.monthly[2025][2] = 'NP'; l.annual[2025] += 0; l.annualSrcDiff = { year: 2025 }; l.annual[2025] = l.monthly[2025].reduce((a, v) => a + (typeof v === 'number' ? v : 0), 0) + 37;
     issue({ lid: l.lid, module: '月历史', level: 'review', title: '2025年3月缺报；年度源值与月合计相差 37', detail: '年度字段为源表原值，月份缺报显示“未提供”，不补0、不反推。', source: 'US!BR:CC / CD' }); }
   // 2) AU LED 组：真实0销量 → 零分母
-  ['DEMO-LED-5M', 'DEMO-LED-10M'].forEach(s => { const l = findL(s, 'AU'); l.monthly[2025] = l.monthly[2025].map(() => 0); l.annual[2025] = 0; l.weekly = l.weekly.map((v, i) => WEEKS[i].isoYear === 2025 || (WEEKS[i].isoYear === 2026 && WEEKS[i].week > 30) ? 0 : v); l.avg4 = 0; l.daysNow = null; l.daysTotal = null; l.monthEndDays = [null, null, null]; });
+  ['DEMO-BRS-10', 'DEMO-BRS-20'].forEach(s => { const l = findL(s, 'AU'); l.monthly[2025] = l.monthly[2025].map(() => 0); l.annual[2025] = 0; l.weekly = l.weekly.map((v, i) => WEEKS[i].isoYear === 2025 || (WEEKS[i].isoYear === 2026 && WEEKS[i].week > 30) ? 0 : v); l.avg4 = 0; l.daysNow = null; l.daysTotal = null; l.monthEndDays = [null, null, null]; });
   // 3) 漏周：无完整来源，不补
-  { const l = findL('DEMO-BRUSH-8', 'CA'); const k = WEEKS.findIndex(w => w.key === '2025-W33'); l.weekly[k] = 'NP';
+  { const l = findL('DEMO-PCL-72', 'CA'); const k = WEEKS.findIndex(w => w.key === '2025-W33'); l.weekly[k] = 'NP';
     issue({ lid: l.lid, module: '周历史', level: 'review', title: '2025-W33 遗漏周，无完整来源未补齐', detail: '只有完整周来源才能补；已有非空历史周、真实0、含公式历史周不当缺口。', source: 'CA!DK:FJ' }); }
   // 4) 海外仓小计与组成不一致（模板检查）
-  { const l = findL('DEMO-LMP-FOLD', 'US'); l.awdOverseasSrc += 25;
+  { const l = findL('DEMO-EAS-FOLD', 'US'); l.awdOverseasSrc += 25;
     issue({ lid: l.lid, module: '库存', level: 'review', title: 'US U列“AWD&海外仓总数量”比 AG+AH 多 25', detail: '模板检查发现小计差异，仅展示待核对，不改源值追平。', source: 'US!U / AG / AH' }); }
   // 5) 国内字段空白
-  { const l = findL('DEMO-ARO-300', 'AE'); l.domesticBlank = true;
+  { const l = findL('DEMO-KNF-5', 'AE'); l.domesticBlank = true;
     issue({ lid: l.lid, module: '国内库存', level: 'review', title: 'AE Q列国内库存为空白', detail: '空白不是0；共享国内库存池在SKU详情仍可查，本行显示待核对。', source: 'AE!Q' }); }
   // 6) 变体：手工比例 / 组外引用 / 上游错误 / 零分母
   const variantSpecial = {};
-  ['DEMO-MAT-6PU', 'DEMO-MAT-6BL'].forEach((s, i) => { variantSpecial[findL(s, 'EU').lid] = { kind: 'manual', ratio: i ? 0.4 : 0.6 }; });
-  variantSpecial[findL('DEMO-CUP-750BK', 'UK').lid] = { kind: 'outgroup' };
-  variantSpecial[findL('DEMO-CUP-500WH', 'CA').lid] = { kind: 'referr' };
-  ['DEMO-LED-5M', 'DEMO-LED-10M'].forEach(s => { variantSpecial[findL(s, 'AU').lid] = { kind: 'zeroden' }; });
-  issue({ lid: findL('DEMO-LED-5M', 'AU').lid, module: '变体比例', level: 'review', title: 'AU G-LED 组年销量合计为0（零分母）', detail: '组内真实0销量；不均分、不填0掩盖，标待核对。', source: 'AU!G' });
-  issue({ lid: findL('DEMO-CUP-750BK', 'UK').lid, module: '变体比例', level: 'review', title: 'UK 变体比例分子引用组外行', detail: '原公式引用了组外行，按待核对展示，不自动重组分组。', source: 'UK!G' });
-  issue({ lid: findL('DEMO-CUP-500WH', 'CA').lid, module: '变体比例', level: 'error', title: 'CA 变体比例上游 #REF!', detail: '上游错误值不当作0或未知数参与计算。', source: 'CA!G' });
+  ['DEMO-PAD-16K', 'DEMO-PAD-32K'].forEach((s, i) => { variantSpecial[findL(s, 'EU').lid] = { kind: 'manual', ratio: i ? 0.4 : 0.6 }; });
+  variantSpecial[findL('DEMO-ACR-48', 'UK').lid] = { kind: 'outgroup' };
+  variantSpecial[findL('DEMO-ACR-12', 'CA').lid] = { kind: 'referr' };
+  ['DEMO-BRS-10', 'DEMO-BRS-20'].forEach(s => { variantSpecial[findL(s, 'AU').lid] = { kind: 'zeroden' }; });
+  issue({ lid: findL('DEMO-BRS-10', 'AU').lid, module: '变体比例', level: 'review', title: 'AU G-BRS 组年销量合计为0（零分母）', detail: '组内真实0销量；不均分、不填0掩盖，标待核对。', source: 'AU!G' });
+  issue({ lid: findL('DEMO-ACR-48', 'UK').lid, module: '变体比例', level: 'review', title: 'UK 变体比例分子引用组外行', detail: '原公式引用了组外行，按待核对展示，不自动重组分组。', source: 'UK!G' });
+  issue({ lid: findL('DEMO-ACR-12', 'CA').lid, module: '变体比例', level: 'error', title: 'CA 变体比例上游 #REF!', detail: '上游错误值不当作0或未知数参与计算。', source: 'CA!G' });
   // 7) 缺装率
-  issue({ pid: pById['P-019'].pid, module: '发货计划', level: 'review', title: 'DEMO-CAT-SCR 缺装率', detail: '箱数无法计算，显示“缺装率”；不按品名猜包装。', source: '箱规!B/L' });
+  issue({ pid: pById['P-019'].pid, module: '发货计划', level: 'review', title: 'DEMO-EAS-XL 缺装率', detail: '箱数无法计算，显示“缺装率”；不按品名猜包装。', source: '箱规!B/L' });
 
   // 变体比例计算（国家层：按原分组；演示引用2025年合计）
   LISTINGS.forEach(l => {
@@ -243,9 +243,9 @@ const DEMO = (() => {
   });
   // 库龄：同 ASIN 重复 MSKU 行按最大值
   const AGING_RAW = [];
-  { const l = findL('DEMO-CAR-MOUNT', 'US');
+  { const l = findL('DEMO-MKR-60', 'US');
     AGING_RAW.push({ lid: l.lid, asin: l.asin, msku: l.msku, lt180: l.aging.lt180, m180_365: l.aging.m180_365, gt365: l.aging.gt365 });
-    AGING_RAW.push({ lid: l.lid, asin: l.asin, msku: 'US-CARMOUNT-OLD', lt180: Math.round(l.aging.lt180 * 0.6), m180_365: l.aging.m180_365, gt365: Math.max(0, l.aging.gt365 - 3) }); }
+    AGING_RAW.push({ lid: l.lid, asin: l.asin, msku: 'US-MKR60-OLD', lt180: Math.round(l.aging.lt180 * 0.6), m180_365: l.aging.m180_365, gt365: Math.max(0, l.aging.gt365 - 3) }); }
 
   // ——— 发货批次（业务批次日人工指定，含多货件） ———
   const BATCHES = [];
@@ -254,7 +254,7 @@ const DEMO = (() => {
     const lst = LISTINGS.filter(l => l.country === cc);
     const take = opts.lids ? opts.lids.map(x => byId[x]) : lst.filter((_, i) => (i + bizDate.length + Number(bizDate.slice(8))) % (opts.every || 3) === 0).slice(0, opts.max || 8);
     const ships = (opts.ships || [bizDate]).map(cd => ({ shipId: `FBA-DEMO-${cc}${String(++shipSeq).padStart(4, '0')}`, created: cd, shipped: ['shipped', 'receiving', 'closed'].includes(status) ? iso(addDays(new Date(cd + 'T00:00:00Z'), 2)) : null }));
-    const b = { bid: `B-${cc}-${bizDate}`, country: cc, bizDate, label: `${Number(bizDate.slice(5, 7))}.${Number(bizDate.slice(8))}批次`, status, ships, evidence: opts.evidence !== false, note: opts.note || '', lines: [] };
+    const b = { bid: `B-${cc}-${bizDate}`, country: cc, bizDate, label: `${bizDate.slice(5, 7)}${bizDate.slice(8)}${opts.sy ? ' SY' : ''}`, kind: opts.sy ? 'SY' : 'FBA', status, ships, evidence: opts.evidence !== false, note: opts.note || '', lines: [] };
     take.forEach((l, i) => {
       const declared = Math.max(12, Math.round(l.fba * (0.3 + rnd() * 0.5) / 4) * 4);
       const line = { lid: l.lid, shipId: ships[i % ships.length].shipId, declared, received: null, diffField: '接收差异', diffRaw: null, srcRow: 2 + i };
@@ -271,8 +271,8 @@ const DEMO = (() => {
   usB1.lines[1].declared = 100; usB1.lines[1].received = 104; usB1.lines[1].diffRaw = -4;
   usB1.lines[2].declared = 100; usB1.lines[2].received = 100; usB1.lines[2].diffRaw = 0;
   mkBatch('US', '2026-08-15', 'receiving', { ships: ['2026-08-10', '2026-08-12', '2026-08-14'] });
-  mkBatch('US', '2026-09-15', 'shipped', { ships: ['2026-09-10', '2026-09-11', '2026-09-14'], note: '9/10–9/14 创建的货件统一归属 9.15 批次（人工指定）' });
-  mkBatch('US', '2026-09-28', 'shipped', { every: 4 });
+  mkBatch('US', '2026-09-15', 'shipped', { ships: ['2026-09-10', '2026-09-11', '2026-09-14'], note: '9/10–9/14 创建的货件统一归属 0915 批次（人工指定）' });
+  mkBatch('US', '2026-09-28', 'shipped', { every: 4, sy: true, note: '列标题带 SY：海外仓批次（与 FBA 批次区分，是否计入 FBA 在途待确认）' });
   mkBatch('US', '2026-10-08', 'created', { every: 5, note: '新建货件按申报量导入，尚未 SHIPPED' });
   // CA
   const caB1 = mkBatch('CA', '2026-08-02', 'receiving', { every: 2 });
@@ -286,7 +286,7 @@ const DEMO = (() => {
   mkBatch('AU', '2026-10-05', 'shipped', { every: 3 });
   // UK
   mkBatch('UK', '2026-08-20', 'receiving', { every: 2 });
-  mkBatch('UK', '2026-09-24', 'shipped', { every: 3 });
+  mkBatch('UK', '2026-09-24', 'shipped', { every: 3, sy: true, note: '列标题带 SY：海外仓批次' });
   // EU
   mkBatch('EU', '2026-08-09', 'receiving', { every: 2 });
   mkBatch('EU', '2026-09-03', 'shipped', { every: 3, evidence: false, note: '只有日期表头，无本国原发货依据：本次接收快照对该批跳过' });
@@ -311,9 +311,9 @@ const DEMO = (() => {
     AE: ['B-AE-2026-08-25', 'B-AE-2026-09-26'],
     SA: null, // 本次未上传货件：保留原范围
   };
-  issue({ lid: null, country: 'EU', module: '批次接收', level: 'skip', title: 'EU 9.3批次无原发货依据，接收快照整批跳过', detail: '只有日期标题不足以核销；不用其他国家记录证明本国归属。', source: '货件详情 · EU' });
+  issue({ lid: null, country: 'EU', module: '批次接收', level: 'skip', title: 'EU 0903 批次无原发货依据，接收快照整批跳过', detail: '只有日期标题不足以核销；不用其他国家记录证明本国归属。', source: '货件详情 · EU' });
   issue({ lid: null, country: 'UK', module: '批次接收', level: 'isolated', title: 'UK 接收快照含未知SKU（DEMO-XXX-UNK）1行，已隔离', detail: '无法唯一匹配，不并入任何商品；同批其他SKU正常更新。', source: '货件详情 · UK 第14行' });
-  issue({ lid: null, country: 'CA', module: '批次接收', level: 'skip', title: 'CA 8.2批次存在两份接收快照（数量不同）', detail: '同一国家/同一批次多份快照不相加；冲突全部跳过并保持旧值。', source: '货件详情_a.xlsx / 货件详情_b.xlsx' });
+  issue({ lid: null, country: 'CA', module: '批次接收', level: 'skip', title: 'CA 0802 批次存在两份接收快照（数量不同）', detail: '同一国家/同一批次多份快照不相加；冲突全部跳过并保持旧值。', source: '货件详情_a.xlsx / 货件详情_b.xlsx' });
   issue({ lid: null, country: 'US', module: '批次接收', level: 'isolated', title: 'US 正负差异无法归属：+3 与 −3 未抵消', detail: '隔离项保留各自符号，不相抵掩盖归属问题。', source: '货件详情 · US 第22/23行' });
 
   // ——— 发货计划初始值（演示） ———
@@ -325,7 +325,7 @@ const DEMO = (() => {
     let qty = null;
     if (cfg.stocking) qty = l.stocking;
     else if (i % 3 === 0) qty = (p.packRate || 10) * ri(1, 6);
-    PLANS[l.lid] = { planId: `PL-${l.lid.slice(2)}`, qty, note: i % 7 === 0 ? '示例备注：跟随9.15批次' : '', status: qty ? (i % 5 === 0 ? 'confirmed' : 'draft') : 'draft', version: 1, editedBy: qty ? pick(OWNERS) : null, updatedAt: '2026-10-12 16:20' };
+    PLANS[l.lid] = { planId: `PL-${l.lid.slice(2)}`, qty, note: i % 7 === 0 ? '示例备注：跟随0915批次' : '', status: qty ? (i % 5 === 0 ? 'confirmed' : 'draft') : 'draft', version: 1, editedBy: qty ? pick(OWNERS) : null, updatedAt: '2026-10-12 16:20' };
   });
 
   // ——— 数据来源更新状态（逐模块） ———

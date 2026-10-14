@@ -141,20 +141,20 @@ const check = (id, name, ok, detail = '') => { results.push({ id, name, ok: !!ok
   // 搜索
   await act('[data-act="nav"][data-page="search"]');
   const sq = async q => { await page.fill('#sq', q); await page.waitForTimeout(420); return page.locator('#tbl-search .sku-btn').allInnerTexts().catch(() => []); };
-  let r = await sq('cup500'); check('UI-05', '容错搜 cup500 命中 DEMO-CUP-500*', r.length && r[0].startsWith('DEMO-CUP-500'));
-  r = await sq('B0DEMO1001'); check('UI-05', 'ASIN 精确命中', r[0] === 'DEMO-CUP-500BK');
-  r = await sq('US-LINTRMV-FBA'); check('UI-05', 'MSKU 精确命中', r[0] === 'DEMO-LINT-RMV');
-  r = await sq('保温杯'); check('UI-05', '中文品名命中 3 个 SKU', r.length === 3);
-  r = await sq('DEMO-CUP-500BK'); check('UI-09', '同SKU多Listing保留（US 2个）', (await text('#tbl-search')).includes('B0DEMO1000') && (await text('#tbl-search')).includes('B0DEMO1001'));
+  let r = await sq('acr'); check('UI-05', '容错搜 acr 命中 DEMO-ACR-*', r.length && r[0].startsWith('DEMO-ACR'));
+  r = await sq('B0DEMO1001'); check('UI-05', 'ASIN 精确命中', r[0] === 'DEMO-ACR-24');
+  r = await sq('US-WC36-FBA'); check('UI-05', 'MSKU 精确命中', r[0] === 'DEMO-WC-36');
+  r = await sq('丙烯颜料'); check('UI-05', '中文品名命中 3 个 SKU', r.length === 3);
+  r = await sq('DEMO-ACR-24'); check('UI-09', '同SKU多Listing保留（US 2个）', (await text('#tbl-search')).includes('B0DEMO1000') && (await text('#tbl-search')).includes('B0DEMO1001'));
   await page.selectOption('#sc', 'US'); await page.selectOption('#so', '运营乙'); await page.waitForTimeout(80);
   check('UI-06', '国家+负责人组合筛选生效', (await text('#tbl-search')).includes('运营乙') && !(await text('#tbl-search')).includes('运营甲'));
   r = await sq('zzz-无结果'); check('A23', '空结果状态可恢复', (await text('#main')).includes('没有找到'));
   await page.screenshot({ path: path.join(OUT, '10-search-empty.png') });
   await act('[data-act="sclearq"]'); await act('[data-act="sclearf"]');
   await act('[data-act="smode"][data-v="multi"]');
-  await page.fill('#smulti', 'DEMO-CUP-500BK\nDEMO-PET-2L, DEMO-NOPE'); await act('[data-act="smultigo"]');
+  await page.fill('#smulti', 'DEMO-ACR-24\nDEMO-OIL-24, DEMO-NOPE'); await act('[data-act="smultigo"]');
   const multi = await text('#main');
-  check('UI-06', '多SKU粘贴：找到2个，未找到1个', multi.includes('DEMO-PET-2L') && multi.includes('未找到 1 个'));
+  check('UI-06', '多SKU粘贴：找到2个，未找到1个', multi.includes('DEMO-OIL-24') && multi.includes('未找到 1 个'));
   await page.screenshot({ path: path.join(OUT, '11-search-multi.png') });
 
   // 人员
@@ -189,7 +189,7 @@ const check = (id, name, ok, detail = '') => { results.push({ id, name, ok: !!ok
   // 详情：变体零分母
   await act('[data-act="nav"][data-page="coverage"]');
   await act('[data-act="covtab"][data-v="accept"]');
-  await act('[data-act="goto"][data-t="sku:DEMO-LED-5M:AU"]');
+  await act('[data-act="goto"][data-t="sku:DEMO-BRS-10:AU"]');
   check('A10', 'AU LED 变体零分母显示待核对', (await text('#main')).includes('零分母'));
   await act('[data-act="back"]');
   await act('[data-act="covtab"][data-v="sheets"]');
@@ -219,7 +219,7 @@ const check = (id, name, ok, detail = '') => { results.push({ id, name, ok: !!ok
   await page.evaluate(() => document.activeElement.blur());
   await page.keyboard.press('/');
   check('UI-19', '按 / 聚焦全局搜索', await page.evaluate(() => document.activeElement.id === 'gq'));
-  await page.keyboard.type('pet'); await page.waitForTimeout(80);
+  await page.keyboard.type('oil'); await page.waitForTimeout(80);
   check('UI-19', '搜索浮层出现候选', (await page.locator('#gpop .pop-item').count()) >= 2);
   await page.keyboard.press('ArrowDown'); await page.keyboard.press('Enter'); await page.waitForTimeout(100);
   check('UI-19', '键盘选择候选打开SKU详情', (await page.evaluate(() => S.page)) === 'detail');

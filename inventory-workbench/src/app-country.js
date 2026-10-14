@@ -25,7 +25,7 @@ function monthMatrix(id, groups, o = {}) {
     const yc = `<td class="year-c ${ident ? '' : 'fz1 last'}">${r.y}</td>`;
     if (r.type === 'annual') return `<tr class="${ri ? '' : 'g-start'}">${idc}${yc}<td colspan="12" class="l dim">${tag('mute', r.note || '仅年总量')} 源表该年没有月份字段：不拆分、不平均、不反推月份</td><td class="sum-c">${V(r.total)}</td><td class="l"></td></tr>`;
     const cells = r.arr.map((v, i) => `<td class="${hm === i ? 'hl' : ''}">${V(v)}${r.cutM === i + 1 && isNum(v) ? `<span class="cut" title="该记录只统计到 ${S.baseDate}，与往年完整月不可直接同比">${curMonthLabel()}</span>` : ''}</td>`).join('');
-    const tn = r.cutM ? `<span class="th-sub" style="display:block;font-weight:400" title="截至基准日累计，非全年">${curMonthLabel()}累计</span>` : '';
+    const tn = r.cutM ? `<span class="cut-sum" title="截至基准日累计，非全年合计">累计</span>` : '';
     return `<tr class="${ri ? '' : 'g-start'}">${idc}${yc}${cells}<td class="sum-c">${V(r.total)}${tn}</td><td class="l">${r.flag || ''}</td></tr>`;
   }).join('')).join('');
   return `<div class="tbl-wrap ${o.wrapCls || ''}" id="${id}" style="--fz1w:${o.fz1w || 150}px"><table class="t">${head}<tbody>${body || `<tr><td colspan="16"><div class="empty"><h3>没有匹配的记录</h3></div></td></tr>`}</tbody></table></div>`;
@@ -112,8 +112,8 @@ PAGES.country = function () {
       <label class="grp">${esc(cfg.ownerField)} <select class="sel" id="co-${cc}" data-in="cowner" aria-label="负责人筛选"><option value="ALL">全部</option>${owners.map(o => `<option ${c.owner === o ? 'selected' : ''}>${o}</option>`).join('')}${hasNone ? `<option value="__none" ${c.owner === '__none' ? 'selected' : ''}>未分配</option>` : ''}</select></label>
       <label class="grp">等级 <select class="sel" id="cg-${cc}" data-in="cgrade" aria-label="产品等级"><option value="ALL">全部</option>${['A', 'B', 'C', '新品'].map(g => `<option ${c.grade === g ? 'selected' : ''}>${g}</option>`).join('')}</select></label>
       <label class="grp">标签 <select class="sel" id="cl-${cc}" data-in="clabel" aria-label="产品标签"><option value="ALL">全部</option>${['常规', '季节性', '清货', '新品'].map(g => `<option ${c.label === g ? 'selected' : ''}>${g}</option>`).join('')}</select></label>
-      <label class="chk"><input type="checkbox" id="ci-${cc}" data-in="cissue" ${c.issue ? 'checked' : ''}> 仅看待核对</label>
-      <label class="chk" title="显示选项：真实0显示为空白，底层仍为0；未知/缺失仍显示文字"><input type="checkbox" id="hz" data-in="hidezero" ${S.hideZero ? 'checked' : ''}> 零值显示为空白</label>
+      <label class="chk"><input type="checkbox" class="sw" id="ci-${cc}" data-in="cissue" ${c.issue ? 'checked' : ''}> 仅看待核对</label>
+      <label class="chk" title="显示选项：真实0显示为空白，底层仍为0；未知/缺失仍显示文字"><input type="checkbox" class="sw" id="hz" data-in="hidezero" ${S.hideZero ? 'checked' : ''}> 零值显示为空白</label>
       <span class="spacer"></span>
       <span class="small muted">当前筛选 <b>${rows.length}</b> / ${all.length} 条 Listing</span>
       ${filtersOn ? `<button class="btn sm" data-act="cclear">清空筛选</button>` : ''}
@@ -301,7 +301,7 @@ function batchView(cc, c) {
     const on = isSelected(b); const st = BSTATUS[b.status];
     const remind = b.lines.some(ln => ln.received != null && ln.current !== 0);
     return `<div class="metric" style="min-width:210px;flex:0 1 240px">
-      <div class="row"><b>${esc(b.label)}</b><span class="mono small muted">${b.bizDate}</span><span class="spacer"></span>${tag(st[0], st[1])}</div>
+      <div class="row"><b class="mono">${esc(b.label)}</b>${b.kind === 'SY' ? tag('line', '海外仓 SY') : ''}<span class="mono small muted">${b.bizDate}</span><span class="spacer"></span>${tag(st[0], st[1])}</div>
       <div class="small muted" style="margin:4px 0">${b.ships.length} 个货件 · 创建 ${b.ships.map(s => s.created.slice(5)).join(', ')}${remind ? ' · ' + tag('warn', '接收差异提醒', 'warn') : ''}${b.evidence ? '' : ' · ' + tag('bad', '无原发货依据', 'warn')}</div>
       <div class="row"><label class="chk"><input type="checkbox" id="bs-${b.bid}" data-in="bsel" data-bid="${b.bid}" ${on && sel != null ? 'checked' : ''} ${!canEdit() ? 'disabled' : ''}> 计入在途</label><span class="spacer"></span><button class="btn sm" data-act="batch" data-bid="${b.bid}">批次详情</button></div>
     </div>`;
@@ -309,7 +309,7 @@ function batchView(cc, c) {
   const lines = lsts.filter(l => bs.some(b => b.lines.some(x => x.lid === l.lid)));
   const cols = [
     { key: 'sku', label: 'SKU', fz: 1, cls: 'l', render: l => skuCell(l) }, { key: 'msku', label: 'MSKU', fz: 2, cls: 'l mono', render: l => esc(l.msku) },
-    ...bs.map(b => ({ key: b.bid, label: `${b.label}`, sub: `${isSelected(b) ? (sel == null ? '原范围' : '✓ 计入') : '未计入'} · 当前值/原量`, cls: isSelected(b) ? '' : 'batch-off', tdCls: () => isSelected(b) ? '' : 'batch-off', render: l => { const ln = b.lines.find(x => x.lid === l.lid); if (!ln) return ''; const rem = ln.received != null && ln.current !== 0; return `${V(ln.current, { keepZero: true, signed: false })}${rem ? ' <span title="已开始接收且差异非0" aria-label="差异提醒">⚑</span>' : ''}<span class="tiny muted"> ／${fmt(ln.declared)}</span>`; } })),
+    ...bs.map(b => ({ key: b.bid, label: `${b.label}`, sub: (b.kind === 'SY' ? '海外仓SY · ' : '') + `${isSelected(b) ? (sel == null ? '原范围' : '✓ 计入') : '未计入'} · 当前值/原量`, cls: isSelected(b) ? '' : 'batch-off', tdCls: () => isSelected(b) ? '' : 'batch-off', render: l => { const ln = b.lines.find(x => x.lid === l.lid); if (!ln) return ''; const rem = ln.received != null && ln.current !== 0; return `${V(ln.current, { keepZero: true, signed: false })}${rem ? ' <span title="已开始接收且差异非0" aria-label="差异提醒">⚑</span>' : ''}<span class="tiny muted"> ／${fmt(ln.declared)}</span>`; } })),
     { key: 'sum', label: '当前在途合计', sub: sel == null ? '保留原范围' : `所选 ${sel.length} 批`, render: l => `<b>${V(transitOf(l.lid), { keepZero: true })}</b>` },
   ];
   const tot = lines.reduce((a, l) => a + transitOf(l.lid), 0);
@@ -337,7 +337,7 @@ function batchModal(bid) {
     { key: 'rm', label: '提醒', cls: 'c', render: r => r.ln.received != null && r.ln.current !== 0 ? tag(r.ln.current < 0 ? 'bad' : 'warn', r.ln.current < 0 ? '多收' : '少收', 'warn') : '' },
     { key: 'src', label: '来源', cls: 'l', render: r => `<span class="mono small">货件详情 · 第${r.ln.srcRow}行</span>` },
   ];
-  modal(`<div class="modal-h"><h2>${esc(b.country)} · ${esc(b.label)}</h2>${tag(st[0], st[1])}${DEMO_TAG}<span class="spacer"></span><button class="icon-btn" data-act="close" aria-label="关闭">${icon('close')}</button></div>
+  modal(`<div class="modal-h"><h2>${esc(b.country)} · 批次 ${esc(b.label)}</h2>${b.kind === 'SY' ? tag('line', '海外仓 SY') : ''}${tag(st[0], st[1])}${DEMO_TAG}<span class="spacer"></span><button class="icon-btn" data-act="close" aria-label="关闭">${icon('close')}</button></div>
     <div class="modal-b stack">
       <dl class="kv"><dt>业务批次日期</dt><dd>${b.bizDate}（人工指定，不等于创建日或实际发货日）</dd><dt>货件</dt><dd>${b.ships.map(s => `<span class="mono">${s.shipId}</span>（创建 ${s.created}${s.shipped ? '，发货 ' + s.shipped : '，未 SHIPPED'}）`).join('；')}</dd><dt>计入在途</dt><dd>${isSelected(b) ? (selOf(b.country) == null ? '是（保留原范围）' : '是（本次选择）') : '否（批次与原量历史仍保留）'}</dd><dt>原发货依据</dt><dd>${b.evidence ? '有：同国同批次原量记录' : tag('bad', '无：只有日期表头，接收快照整批跳过', 'warn')}</dd>${b.note ? `<dt>说明</dt><dd>${esc(b.note)}</dd>` : ''}</dl>
       ${table('tbl-batch-modal', cols, rows, { wrapCls: 'auto-h' })}

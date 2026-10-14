@@ -150,6 +150,7 @@ const INP = {
   unbd: t => { S.upd.nbDate = t.value; }, unbf: t => { S.upd.nbFrom = t.value; }, unbt: t => { S.upd.nbTo = t.value; },
   uvc: t => { S.upd.versionChanged = t.checked; },
   umode: null,
+  rectab: t => { S.recTab = t.value; rerenderKeep(); },
   role: t => { S.role = t.value; rerenderKeep(); toast(ROLES[S.role].canEdit ? '演示身份：运营甲，可编辑计划（不是真实权限）' : '演示身份：查看者，所有输入只读（不是真实权限）'); },
 };
 ACT.umode = t => { S.upd.salesMode = t.dataset.v; rerenderKeep(); };
