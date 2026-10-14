@@ -20,7 +20,7 @@ const S = {
   page: 'country', country: 'US', cui: {}, detail: null,
   baseDate: D.BASE_DATE, baseDay: D.BASE.d,
   theme: store.get('theme', 'system'), density: store.get('density', 'comfortable'), collapsed: store.get('collapsed', false), expanded: false,
-  role: 'editor', hideZero: false, hl: {}, showInfo: store.get('showInfo', false), allCols: false, moreF: false,
+  role: 'editor', hideZero: false, hl: {}, showInfo: store.get('showInfo', false), moreF: false, years: null,
   plans: clone(D.PLANS), plansSaved: clone(D.PLANS),
   half: Object.fromEntries(D.LISTINGS.filter(l => l.half).map(l => [l.lid, l.half.slice()])),
   halfSaved: Object.fromEntries(D.LISTINGS.filter(l => l.half).map(l => [l.lid, l.half.slice()])),
@@ -63,6 +63,10 @@ const ICONS = {
   density: '<path d="M4 6h16M4 10h16M4 14h16M4 18h16"/>',
   flask: '<path d="M9 3h6M10 3v6L5 19a1.5 1.5 0 0 0 1.3 2h11.4A1.5 1.5 0 0 0 19 19l-5-10V3"/><path d="M7.5 15h9"/>',
   layers: '<path d="M12 4l9 5-9 5-9-5 9-5z"/><path d="M3 14l9 5 9-5"/>',
+  columns: '<rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M9.5 4.5v15M14.5 4.5v15"/>',
+  pin: '<path d="M9 3.5h6l-1 5 3.5 3.5H6.5L10 8.5z"/><path d="M12 12v8.5"/>',
+  clock: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  history: '<path d="M4 12a8 8 0 1 0 2.4-5.7L4 8.5"/><path d="M4 4v4.5h4.5M12 8v4l3 2"/>',
 };
 const icon = (n, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n] || ''}</svg>`;
 
@@ -150,6 +154,7 @@ const NAV = [
   { id: 'plan', label: '发货计划', ic: 'truck' },
   { sec: '数据与核对' },
   { id: 'update', label: '数据更新与异常', ic: 'refresh', count: () => D.ISSUES.length },
+  { id: 'versions', label: '版本记录', ic: 'history' },
   { id: 'coverage', label: '原表覆盖与验收', ic: 'checklist' },
   { id: 'notes', label: '方案说明', ic: 'doc' },
 ];
@@ -164,7 +169,7 @@ function renderSidebar() {
       <button class="nav-btn" data-act="collapse" aria-label="${S.collapsed ? '展开侧栏' : '收起侧栏'}" title="${S.collapsed ? '展开侧栏' : '收起侧栏'}">${icon('sidebar')}<span class="nav-label">${S.collapsed ? '展开侧栏' : '收起侧栏'}</span></button>
     </div>`;
 }
-const PAGE_TITLE = { country: '国家进销存', people: '运营人员视图', search: '全局搜索', total: '总销量', stock: '库存汇总', plan: '发货计划', update: '数据更新与异常', coverage: '原表覆盖与验收', notes: '方案说明' };
+const PAGE_TITLE = { country: '国家进销存', people: '运营人员视图', search: '全局搜索', total: '总销量', stock: '库存汇总', plan: '发货计划', update: '数据更新与异常', versions: '版本记录', coverage: '原表覆盖与验收', notes: '方案说明' };
 function renderToolbarState() {
   $('#role').value = S.role;
   if (S.page === 'detail' && S.detail) { $('#tbTitle').textContent = P(S.detail.pid).sku; $('#tbSub').textContent = `SKU 统一详情 · 来自 ${S.detail.from ? S.detail.from.label : '国家主表'}`; }
@@ -201,6 +206,7 @@ function closeModal() { $('#modal-root').innerHTML = ''; }
 
 /* ========== 渲染调度 ========== */
 const PAGES = {};
+const ACT_EXTRA = {}, INP_EXTRA = {};
 function render(opts = {}) {
   renderSidebar(); renderToolbarState(); renderSrcbar();
   const main = $('#main');
@@ -221,6 +227,7 @@ function restoreTables(o) { Object.entries(o || {}).forEach(([id, [x, y]]) => { 
 function afterRender() {
   // 二级表头偏移
   $$('table.t').forEach(t => { const r = t.tHead && t.tHead.rows[0]; if (r && t.tHead.rows.length > 1) t.style.setProperty('--th1', r.getBoundingClientRect().height + 'px'); });
+  applyPins();
   if (S.page === 'detail') setupAnchors();
 }
 
@@ -235,7 +242,7 @@ function contextLabel() {
     case 'country': { const c = cui(S.country); return `${D.CMAP[S.country].name} ${S.country} · ${viewName(c.view)}${c.page > 1 ? `（第${c.page}页）` : ''}`; }
     case 'people': return `运营人员视图 · ${S.people.person === '__none' ? '未分配' : S.people.person}${S.people.page > 1 ? `（第${S.people.page}页）` : ''}`;
     case 'search': return `搜索结果${S.search.q ? `“${S.search.q}”` : ''}${S.search.page > 1 ? `（第${S.search.page}页）` : ''}`;
-    case 'total': return '总销量'; case 'stock': return '库存汇总'; case 'plan': return '发货计划'; case 'update': return '数据更新与异常'; case 'coverage': return '原表覆盖与验收';
+    case 'total': return '总销量'; case 'versions': return '版本记录'; case 'stock': return '库存汇总'; case 'plan': return '发货计划'; case 'update': return '数据更新与异常'; case 'coverage': return '原表覆盖与验收';
     default: return '上一页';
   }
 }
@@ -264,13 +271,13 @@ function th(c, sort, sortKey) {
   const s = c.sort ? ` sortable" data-act="sort" data-key="${c.key}" data-scope="${sortKey}` : '';
   const ind = sort && sort.key === c.key ? `<span class="sort-ind" aria-hidden="true">${sort.dir > 0 ? '▲' : '▼'}</span>` : '';
   const aria = c.sort ? ` aria-sort="${sort && sort.key === c.key ? (sort.dir > 0 ? 'ascending' : 'descending') : 'none'}" tabindex="0" role="columnheader"` : '';
-  return `<th class="${c.cls || ''} ${c.fz ? 'fz' + c.fz : ''}${s}"${aria} ${c.w ? `style="min-width:${c.w}px"` : ''} ${c.title ? `title="${esc(c.title)}"` : ''}>${c.label}${ind}${c.flag ? `<span class="th-flag">${c.flag}</span>` : ''}${c.sub ? `<span class="th-sub">${c.sub}</span>` : ''}</th>`;
+  return `<th class="${c.cls || ''} ${c.fz ? 'fz' + c.fz : ''}${c.pin != null ? ` pin pin-${c.pin}${c.pinLast ? ' pin-last' : ''}` : ''}${s}"${aria} ${c.w ? `style="min-width:${c.w}px"` : ''} ${c.title ? `title="${esc(c.title)}"` : ''}>${c.label}${ind}${c.flag ? `<span class="th-flag">${c.flag}</span>` : ''}${c.sub ? `<span class="th-sub">${c.sub}</span>` : ''}</th>`;
 }
 function table(id, cols, rows, o = {}) {
   const fz1w = o.fz1w || 172;
   const head = `<thead><tr>${cols.map(c => th(c, o.sort, o.sortKey || id)).join('')}</tr></thead>`;
-  const body = rows.length ? rows.map(r => `<tr ${o.rowAttr ? o.rowAttr(r) : ''}>${cols.map(c => `<td class="${c.cls || ''} ${c.fz ? 'fz' + c.fz : ''} ${c.tdCls ? c.tdCls(r) : ''}">${c.render(r)}</td>`).join('')}</tr>`).join('') : `<tr><td colspan="${cols.length}" class="l"><div class="empty"><h3>${o.emptyTitle || '没有匹配的记录'}</h3><div>${o.emptyText || '调整或清空筛选条件后重试。'}</div></div></td></tr>`;
-  return `<div class="tbl-wrap ${o.wrapCls || ''}" id="${id}" style="--fz1w:${fz1w}px"><table class="t">${head}<tbody>${body}</tbody>${o.foot || ''}</table></div>`;
+  const body = rows.length ? rows.map(r => `<tr ${o.rowAttr ? o.rowAttr(r) : ''}>${cols.map(c => `<td class="${c.cls || ''} ${c.fz ? 'fz' + c.fz : ''}${c.pin != null ? ` pin pin-${c.pin}${c.pinLast ? ' pin-last' : ''}` : ''} ${c.tdCls ? c.tdCls(r) : ''}">${c.render(r)}</td>`).join('')}</tr>`).join('') : `<tr><td colspan="${cols.length}" class="l"><div class="empty"><h3>${o.emptyTitle || '没有匹配的记录'}</h3><div>${o.emptyText || '调整或清空筛选条件后重试。'}</div></div></td></tr>`;
+  return `<div class="tbl-wrap ${o.wrapCls || ''}" id="${id}" style="--fz1w:${fz1w}px"><table class="t" data-pins="${cols.filter(c => c.pin != null).length}">${head}<tbody>${body}</tbody>${o.foot || ''}</table></div>`;
 }
 function sortRows(rows, sort, getters) {
   if (!sort || !getters[sort.key]) return rows;

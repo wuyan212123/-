@@ -71,7 +71,7 @@ function secHistory(p, ls, d, cur) {
   const wk = scope.filter(l => l.weekly);
   const st = d;
   return `<section class="sec" id="sec-hist"><h2 class="sec-title">历史销量 ${layerTag(d.country === 'ALL' ? 'listing' : 'country')}<span class="small muted" style="font-weight:400">全部可用年份同时展开 · 年份为行、1—12月为列</span></h2>
-    <div class="panel"><div class="panel-h"><h3>月销量 · ${d.country === 'ALL' ? '全部国家/Listing' : ccName(d.country)}</h3><span class="hint">点击月份表头高亮所有年份的同一月；${curMonthLabel()} 只标在 2026×10 这一格</span></div>
+    <div class="panel"><div class="panel-h"><h3>月销量 · ${d.country === 'ALL' ? '全部国家/Listing' : ccName(d.country)}</h3><span class="spacer"></span>${yearPicker([...new Set(scope.flatMap(l => D.CMAP[l.country].annualOnly.concat(D.CMAP[l.country].monthYears))), 2023])}<span class="hint">点击月份表头高亮所有年份的同一月；${curMonthLabel()} 只标在 2026×10 这一格</span></div>
       ${monthMatrix('tbl-d-month', groups, { hlKey: 'dm', c1: '国家 / 负责人', c2: 'MSKU', fz1w: 190, wrapCls: 'auto-h' })}
       <div class="note">${icon('info')} US/CA/AU/UK 的 2022/2023 只有年总量，单独成行标“仅年总量”；EU 未设早年字段；AE 从 2025 起；SA 仅部分 2025 月份。缺失与真实 0 分开显示。未生成不等期同比。</div></div>
     <div class="panel"><div class="panel-h"><h3>总销量 · 月历史 2023—2026</h3>${layerTag('sku')}${tag('warn', '汇总覆盖国家待逐公式核验', 'warn')}<span class="hint">总销量 L:BK；2023 有月历史，不按“仅年总量”处理</span></div>

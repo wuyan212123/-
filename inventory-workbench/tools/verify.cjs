@@ -61,7 +61,7 @@ const check = (id, name, ok, detail = '') => { results.push({ id, name, ok: !!ok
   await page.screenshot({ path: path.join(OUT, '03-us-week-range.png') });
 
   // UI-08 第2页进入详情再返回
-  await page.evaluate(() => { S.allCols = true; });
+  await page.evaluate(() => { S.colcfg.overview = { cols: colCatalog('US', '').map(c => c.key).filter(k => k !== 'country'), pin: ['sku', 'name'] }; });
   await act('[data-act="cview"][data-v="overview"]');
   await page.fill('#cq-US', 'DEMO'); await page.waitForTimeout(400);
   await act('[data-act="page"][data-scope="country"][data-p="2"]');
@@ -225,6 +225,43 @@ const check = (id, name, ok, detail = '') => { results.push({ id, name, ok: !!ok
   await page.keyboard.press('ArrowDown'); await page.keyboard.press('Enter'); await page.waitForTimeout(100);
   check('UI-19', '键盘选择候选打开SKU详情', (await page.evaluate(() => S.page)) === 'detail');
 
+
+  // 第四版：年份多选 / 列配置 / 人员卡片 / 版本记录 / 不显示“累计”
+  await page.evaluate(() => { S.colcfg = {}; S.country = 'US'; cui('US').view = 'month'; S.years = null; go('country'); });
+  check('R1', '月表不出现“累计”字样', !(await text('#tbl-US-month')).includes('累计'));
+  await act('[data-act="ytoggle"][data-y="2025"]'); await act('[data-act="ytoggle"][data-y="2026"]');
+  const ym = await text('#tbl-US-month');
+  check('R2', '年份多选：只显示 2025、2026', ym.includes('2025') && ym.includes('2026') && !ym.includes('2024') && !ym.includes('2022'));
+  await page.screenshot({ path: path.join(OUT, '14-year-filter.png') });
+  await act('[data-act="yall"]');
+  check('R2', '恢复“全部”年份', (await text('#tbl-US-month')).includes('2022'));
+  await act('[data-act="cview"][data-v="overview"]');
+  await act('[data-act="colcfg"][data-view="overview"]');
+  check('R3', '列配置弹层：分组、已选列表、模板', (await page.locator('.cc-group').count()) === 5 && (await page.locator('.cc-list li').count()) === 12 && (await page.locator('#cc-tpl').count()) === 1);
+  await page.check('input[data-in="cccol"][data-key="asin"]'); await page.waitForTimeout(60);
+  await page.uncheck('input[data-in="cccol"][data-key="avg4"]'); await page.waitForTimeout(60);
+  await act('[data-act="ccpin"][data-key="asin"]');
+  await page.screenshot({ path: path.join(OUT, '15-column-config.png') });
+  await act('[data-act="ccapply"]');
+  const hdr = await page.locator('#tbl-US-overview thead th').allInnerTexts();
+  check('R3', '保存并应用：ASIN 固定为第3列，近4周均销隐藏', hdr[2].startsWith('ASIN') && !hdr.some(h => h.startsWith('近4周均销')), hdr.slice(0, 4).join('/'));
+  const pinOk = await page.evaluate(() => { const w = document.getElementById('tbl-US-overview'); w.scrollLeft = 300; const c = w.querySelector('tbody td.pin-2'); return Math.abs(c.getBoundingClientRect().left - (w.getBoundingClientRect().left + parseFloat(c.style.left))) < 2; });
+  check('R3', '固定列横向滚动时保持在左侧', pinOk);
+  await act('[data-act="colcfg"][data-view="overview"]');
+  await page.selectOption('#cc-tpl', '0'); await page.waitForTimeout(60); await act('[data-act="ccapply"]');
+  check('R3', '内置模版“库存核对”可一键应用', (await page.locator('#tbl-US-overview thead th').allInnerTexts()).some(h => h.startsWith('180天以内')));
+  await act('[data-act="cview"][data-v="plan"]');
+  check('R3', '发货计划视图也有列配置', (await page.locator('[data-act="colcfg"][data-view="plan"]').count()) === 1);
+  await page.evaluate(() => { S.colcfg = {}; go('people'); });
+  check('R4', '人员卡片布局（6 张）', (await page.locator('.pcard').count()) === 6);
+  await page.screenshot({ path: path.join(OUT, '16-people-cards.png') });
+  await page.evaluate(() => go('versions'));
+  const vtxt = await text('#main');
+  check('R5', '版本记录：列表与默认对比', (await page.locator('#tbl-versions tbody tr').count()) >= 7 && (await page.locator('#tbl-vcmp').count()) === 1 && vtxt.includes('已作废'));
+  await page.screenshot({ path: path.join(OUT, '17-versions.png') });
+  await act('[data-act="vdetail"][data-id="V-1012"]');
+  check('R5', '版本详情弹层', (await page.locator('.modal').innerText()).includes('数据基准日'));
+  await act('[data-act="close"]');
   check('ERR', '无脚本错误', errors.length === 0, errors.slice(0, 3).join(' | '));
 
   // 宽度 × 主题

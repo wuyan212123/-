@@ -76,7 +76,7 @@ const ACT = {
   info: () => { S.showInfo = !S.showInfo; store.set('showInfo', S.showInfo); renderToolbarState(); afterRender(); toast(S.showInfo ? '已显示说明与字段来源' : '已隐藏说明与字段来源（右上角 ⓘ 可再打开）'); },
   morefilters: () => { S.moreF = !S.moreF; rerenderKeep(); },
   theme: () => { S.theme = { system: 'light', light: 'dark', dark: 'system' }[S.theme]; store.set('theme', S.theme); renderToolbarState(); toast({ system: '主题：跟随系统', light: '主题：浅色', dark: '主题：深色' }[S.theme]); },
-  density: () => { S.density = S.density === 'compact' ? 'comfortable' : 'compact'; store.set('density', S.density); renderToolbarState(); },
+  density: () => { S.density = S.density === 'compact' ? 'comfortable' : 'compact'; store.set('density', S.density); renderToolbarState(); applyPins(); },
   country: t => { const v = cui(S.country).view, f = cui(S.country).fut; S.country = t.dataset.v; cui(S.country).view = v; cui(S.country).fut = f; go('country'); },
   cview: t => { cui(S.country).view = t.dataset.v; rerenderKeep(); },
   cclear: () => { Object.assign(cui(S.country), { q: '', owner: 'ALL', grade: 'ALL', label: 'ALL', issue: false, page: 1 }); rerenderKeep(); },
@@ -132,7 +132,6 @@ const INP = {
   clabel: t => { cui(S.country).label = t.value; cui(S.country).page = 1; rerenderKeep(); },
   cissue: t => { cui(S.country).issue = t.checked; cui(S.country).page = 1; rerenderKeep(); },
   dlid: t => { const l = L(t.value); S.detail.lid = l.lid; S.detail.country = l.country; rerenderKeep(); },
-  allcols: t => { S.allCols = t.checked; rerenderKeep(); },
   hidezero: t => { S.hideZero = t.checked; rerenderKeep(); },
   pagesize: t => { const sc = t.dataset.scope; const st = sc === 'country' ? cui(S.country) : S[sc]; st.size = Number(t.value); st.page = 1; rerenderKeep(); },
   wfrom: t => { const st = t.dataset.scope === 'detail' ? S.detail : cui(S.country); st.wfrom = t.value || null; rerenderKeep(); },
@@ -158,7 +157,8 @@ const INP = {
   role: t => { S.role = t.value; rerenderKeep(); toast(ROLES[S.role].canEdit ? '演示身份：运营甲，可编辑计划（不是真实权限）' : '演示身份：查看者，所有输入只读（不是真实权限）'); },
 };
 ACT.umode = t => { S.upd.salesMode = t.dataset.v; rerenderKeep(); };
-const LIVE = new Set(['plan', 'note', 'half', 'smulti']);          // 每次输入都处理
+Object.assign(ACT, ACT_EXTRA); Object.assign(INP, INP_EXTRA);
+const LIVE = new Set(['plan', 'note', 'half', 'smulti', 'ccq']);          // 每次输入都处理
 const DEBOUNCE = new Set(['cq', 'sq', 'tq', 'plq']);                // 文本筛选：输入停止后再重绘
 
 /* ========== 全局搜索浮层 ========== */
@@ -198,7 +198,7 @@ function boot() {
     }
   });
   window.addEventListener('beforeunload', e => { if (dirtyCount()) { e.preventDefault(); e.returnValue = ''; } });
-  window.addEventListener('resize', () => { if (window.innerWidth > 1100 && S.expanded) { S.expanded = false; renderToolbarState(); } });
+  window.addEventListener('resize', () => { applyPins(); if (window.innerWidth > 1100 && S.expanded) { S.expanded = false; renderToolbarState(); } });
   render({ top: true });
 }
 boot();

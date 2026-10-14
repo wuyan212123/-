@@ -265,7 +265,7 @@ table.t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; width
 .na.np { color: var(--warn); }
 .na.err { color: var(--bad); }
 .zero-hidden { display: inline-block; min-width: 1em; }
-.cut, .cut-sum { display: inline-block; font-size: 9.5px; line-height: 1; padding: 2px 4px; border-radius: 4px; background: var(--warn-soft); color: var(--warn); margin-left: 4px; vertical-align: 1px; font-weight: 500; }
+sup.cut { color: #ff9500; font-size: 14px; line-height: 0; margin-left: 1px; margin-right: -6px; vertical-align: 2px; cursor: help; }
 .sku-btn { font-weight: 600; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; font-size: 12px; font-family: var(--mono); }
 .sku-btn:hover { text-decoration: underline; }
 .cell-name { max-width: 190px; overflow: hidden; text-overflow: ellipsis; display: inline-block; vertical-align: middle; }
@@ -352,7 +352,7 @@ kbd { font-family: var(--font); font-size: 11px; border: 0.5px solid var(--line-
 
 .bar { height: 6px; border-radius: 3px; background: var(--fill); overflow: hidden; min-width: 60px; }
 .bar > i { display: block; height: 100%; background: var(--accent); border-radius: 3px; }
-.matrix-cell { min-width: 44px; }
+.matrix-cell { min-width: 60px; width: 60px; }
 .people-list { padding: 6px; }
 .people-list button { display: flex; width: 100%; justify-content: space-between; align-items: center; gap: 8px; border: 0; background: transparent; padding: 0 8px; height: 28px; border-radius: 6px; cursor: default; text-align: left; }
 .people-list button[aria-pressed="true"] { background: var(--accent); color: #fff; }
@@ -421,3 +421,58 @@ body.show-info .panel-h .hint { display: inline; }
 .page-h + .callout { margin-bottom: 20px; }
 .note-inline { display: none; color: var(--text-3); font-size: 11.5px; }
 body.show-info .note-inline { display: inline; }
+
+/* 固定列（列配置） */
+.t .pin { position: sticky; z-index: 2; }
+.t th.pin { z-index: 4; }
+.t .pin-last { box-shadow: inset -0.5px 0 0 var(--line-strong), 4px 0 6px -4px rgba(0, 0, 0, .12); }
+@media (max-width: 720px) { .t .pin:not(.pin-0) { position: static; box-shadow: none; } .t .pin-0 { box-shadow: inset -0.5px 0 0 var(--line-strong), 4px 0 6px -4px rgba(0, 0, 0, .12); } }
+/* 年份多选 */
+.ypick { display: inline-flex; align-items: center; gap: 8px; }
+/* 列配置弹层 */
+.modal.colcfg { width: min(980px, 100%); }
+.cc-top { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-bottom: 0.5px solid var(--line); flex-wrap: wrap; }
+.cc-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; min-height: 0; }
+.cc-left { padding: 14px 18px; max-height: min(60vh, 560px); overflow: auto; border-right: 0.5px solid var(--line); }
+.cc-right { padding: 14px 12px 14px 14px; max-height: min(60vh, 560px); overflow: auto; background: var(--panel-2); }
+.cc-search { position: relative; margin-bottom: 14px; }
+.cc-search svg { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; color: var(--text-3); }
+.cc-search .inp { width: 100%; padding-left: 28px; height: 30px; }
+.cc-group + .cc-group { margin-top: 18px; }
+.cc-gh { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 13px; }
+.cc-gh::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--text-3); }
+.cc-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 9px 14px; }
+.cc-item { font-size: 13px; white-space: normal; }
+.cc-item.locked { color: var(--text-2); }
+.cc-rh { display: flex; flex-direction: column; gap: 2px; margin: 0 4px 10px; }
+.cc-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.cc-list li { display: flex; align-items: center; gap: 6px; height: 32px; padding: 0 2px 0 6px; border-radius: 7px; background: var(--panel); box-shadow: var(--shadow); font-size: 13px; cursor: grab; }
+.cc-list li.pinned { cursor: default; background: var(--accent-soft); box-shadow: none; }
+.cc-list li.dragging { opacity: .4; }
+.cc-list li.over { box-shadow: 0 -2px 0 var(--accent); }
+.cc-handle { color: var(--text-3); width: 12px; }
+.cc-list li.pinned .cc-handle { visibility: hidden; }
+.cc-idx { color: var(--text-3); font-size: 11px; width: 18px; text-align: right; font-variant-numeric: tabular-nums; }
+.cc-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cc-acts { display: inline-flex; }
+.cc-acts .icon-btn { width: 24px; height: 24px; }
+.cc-acts .icon-btn svg { width: 14px; height: 14px; }
+.cc-acts .icon-btn.on { color: var(--accent); }
+.cc-list li:not(:hover):not(:focus-within) .cc-acts .icon-btn:not(.on) { opacity: .35; }
+@media (max-width: 720px) { .cc-grid { grid-template-columns: 1fr; } .cc-left { border-right: 0; max-height: 40vh; } .cc-right { max-height: 34vh; } }
+
+/* 运营人员卡片 */
+.pcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.pcard { display: flex; gap: 10px; align-items: flex-start; text-align: left; border: 0; border-radius: var(--r-page); background: var(--panel); box-shadow: var(--shadow); padding: 14px; cursor: default; min-width: 0; }
+.pcard:hover { box-shadow: var(--shadow), 0 0 0 1px var(--line-strong); }
+.pcard.on { box-shadow: 0 0 0 2px var(--accent); }
+.pav { width: 30px; height: 30px; font-size: 13px; border-radius: 50%; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); font-weight: 600; flex: none; }
+.pav.warn { background: var(--warn-soft); color: var(--warn); }
+.pc-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.pc-main b { font-size: 14px; }
+.pc-dist { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pm-wrap { border-top: 0.5px solid var(--line); border-bottom: 0.5px solid var(--line); }
+.sumstrip { display: flex; flex-wrap: wrap; gap: 6px 22px; align-items: baseline; padding: 0 16px 12px; font-size: 12.5px; color: var(--text-2); }
+.sumstrip b { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
+.pm-wrap + .sumstrip { padding-top: 12px; }
+.t tr.vcur td { background-image: linear-gradient(var(--accent-soft), var(--accent-soft)); }
