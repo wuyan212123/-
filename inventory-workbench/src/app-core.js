@@ -14,13 +14,13 @@ const sumNums = arr => arr.reduce((a, v) => a + (isNum(v) ? v : 0), 0);
 const norm = s => String(s ?? '').toLowerCase().replace(/[\s\-_./·]/g, '');
 const store = { get(k, d) { try { const v = localStorage.getItem('ivw:' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem('ivw:' + k, JSON.stringify(v)); } catch (e) { /* 存储不可用时忽略 */ } } };
 
-const ROLES = { editor: { name: '运营甲', label: '运营甲（演示·可编辑计划）', canEdit: true }, viewer: { name: '查看者', label: '查看者（演示·只读）', canEdit: false } };
+const ROLES = { editor: { name: '运营甲', label: '运营甲 · 可编辑', canEdit: true }, viewer: { name: '查看者', label: '查看者 · 只读', canEdit: false } };
 
 const S = {
   page: 'country', country: 'US', cui: {}, detail: null,
   baseDate: D.BASE_DATE, baseDay: D.BASE.d,
   theme: store.get('theme', 'system'), density: store.get('density', 'comfortable'), collapsed: store.get('collapsed', false), expanded: false,
-  role: 'editor', hideZero: false, hl: {},
+  role: 'editor', hideZero: false, hl: {}, showInfo: store.get('showInfo', false), allCols: false, moreF: false,
   plans: clone(D.PLANS), plansSaved: clone(D.PLANS),
   half: Object.fromEntries(D.LISTINGS.filter(l => l.half).map(l => [l.lid, l.half.slice()])),
   halfSaved: Object.fromEntries(D.LISTINGS.filter(l => l.half).map(l => [l.lid, l.half.slice()])),
@@ -86,7 +86,8 @@ function V(v, o = {}) {
   }
 }
 const tag = (cls, txt, ic, title) => `<span class="tag ${cls}"${title ? ` title="${esc(title)}"` : ''}>${ic ? icon(ic) : ''}${esc(txt)}</span>`;
-const DEMO_TAG = tag('demo', '演示数据', 'flask', '纯虚构演示数据，非真实业务');
+const DEMO_PILL = tag('demo', '演示数据', 'flask', '纯虚构演示数据，非真实业务');
+const DEMO_TAG = ''; // 演示标识统一放在侧栏、工具栏副标题与底部状态栏，避免每块重复
 const layerTag = l => tag('layer', { sku: 'SKU聚合层', country: '国家层', listing: 'Listing层', product: '商品层' }[l] || l);
 const ownerHtml = (l) => l.owner ? esc(l.owner) : tag('warn', '未分配', 'warn', '源记录负责人为空；不沿用上一行、不从其他国家补人');
 const ownerFieldOf = cc => D.CMAP[cc].ownerField;
@@ -175,12 +176,14 @@ function renderToolbarState() {
   document.documentElement.toggleAttribute('data-theme', S.theme !== 'system');
   if (S.theme !== 'system') document.documentElement.setAttribute('data-theme', S.theme);
   document.body.classList.toggle('density-compact', S.density === 'compact');
+  document.body.classList.toggle('show-info', !!S.showInfo);
+  const ib = $('#infoBtn'); if (ib) { ib.innerHTML = icon('info'); ib.setAttribute('aria-pressed', String(!!S.showInfo)); ib.title = S.showInfo ? '隐藏说明与字段来源' : '显示说明与字段来源'; ib.setAttribute('aria-label', ib.title); }
   const app = $('#app'); app.classList.toggle('collapsed', !!S.collapsed); app.classList.toggle('expanded', !!S.expanded);
 }
 function renderSrcbar() {
   const today = new Date(); const td = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
   const chips = S.freshness.map(f => `<span title="${esc(f.note || '')}">${esc(f.label)} <b>${f.date}</b>${f.state === 'stale' ? ' ' + tag('warn', '沿用旧周期', 'warn') : ''}${f.state === 'blocked' ? ' ' + tag('bad', '本次阻断', 'warn') : ''}</span>`).join('<span aria-hidden="true">·</span>');
-  $('#srcbar').innerHTML = `${DEMO_TAG}<span>数据基准日 <b>${S.baseDate}</b></span><span aria-hidden="true">·</span>${chips}<span aria-hidden="true">·</span><span title="浏览器当天日期，与数据基准日分开">今天 <b>${td}</b></span>`;
+  $('#srcbar').innerHTML = `${DEMO_PILL}<span>数据基准日 <b>${S.baseDate}</b></span><span aria-hidden="true">·</span>${chips}<span aria-hidden="true">·</span><span title="浏览器当天日期，与数据基准日分开">今天 <b>${td}</b></span>`;
 }
 function renderSavebar() {
   const n = dirtyCount(); const el = $('#savebar');
@@ -190,8 +193,8 @@ function renderSavebar() {
 function toast(msg, kind) {
   const el = document.createElement('div');
   el.innerHTML = `<div class="t-ic" style="${kind === 'warn' ? 'background:linear-gradient(180deg,#ffb340,#ff9500)' : ''}">${icon(kind === 'warn' ? 'warn' : 'layers')}</div><div style="min-width:0"><div class="t-ttl">进销存工作台<span>现在</span></div><div>${msg}</div></div>`;
-  const box = $('#toast'); box.appendChild(el); while (box.children.length > 3) box.firstElementChild.remove();
-  setTimeout(() => el.remove(), 4200);
+  const box = $('#toast'); box.appendChild(el); const max = window.innerWidth < 720 ? 1 : 2; while (box.children.length > max) box.firstElementChild.remove();
+  setTimeout(() => el.remove(), 3200);
 }
 function modal(html, cls = '') { $('#modal-root').innerHTML = `<div class="modal-back" data-act="modal-bg"><div class="modal ${cls}" role="dialog" aria-modal="true">${html}</div></div>`; const f = $('#modal-root [autofocus], #modal-root button, #modal-root input'); f && f.focus(); }
 function closeModal() { $('#modal-root').innerHTML = ''; }
@@ -261,10 +264,10 @@ function th(c, sort, sortKey) {
   const s = c.sort ? ` sortable" data-act="sort" data-key="${c.key}" data-scope="${sortKey}` : '';
   const ind = sort && sort.key === c.key ? `<span class="sort-ind" aria-hidden="true">${sort.dir > 0 ? '▲' : '▼'}</span>` : '';
   const aria = c.sort ? ` aria-sort="${sort && sort.key === c.key ? (sort.dir > 0 ? 'ascending' : 'descending') : 'none'}" tabindex="0" role="columnheader"` : '';
-  return `<th class="${c.cls || ''} ${c.fz ? 'fz' + c.fz : ''}${s}"${aria} ${c.w ? `style="min-width:${c.w}px"` : ''} ${c.title ? `title="${esc(c.title)}"` : ''}>${c.label}${ind}${c.sub ? `<span class="th-sub">${c.sub}</span>` : ''}</th>`;
+  return `<th class="${c.cls || ''} ${c.fz ? 'fz' + c.fz : ''}${s}"${aria} ${c.w ? `style="min-width:${c.w}px"` : ''} ${c.title ? `title="${esc(c.title)}"` : ''}>${c.label}${ind}${c.flag ? `<span class="th-flag">${c.flag}</span>` : ''}${c.sub ? `<span class="th-sub">${c.sub}</span>` : ''}</th>`;
 }
 function table(id, cols, rows, o = {}) {
-  const fz1w = o.fz1w || 150;
+  const fz1w = o.fz1w || 172;
   const head = `<thead><tr>${cols.map(c => th(c, o.sort, o.sortKey || id)).join('')}</tr></thead>`;
   const body = rows.length ? rows.map(r => `<tr ${o.rowAttr ? o.rowAttr(r) : ''}>${cols.map(c => `<td class="${c.cls || ''} ${c.fz ? 'fz' + c.fz : ''} ${c.tdCls ? c.tdCls(r) : ''}">${c.render(r)}</td>`).join('')}</tr>`).join('') : `<tr><td colspan="${cols.length}" class="l"><div class="empty"><h3>${o.emptyTitle || '没有匹配的记录'}</h3><div>${o.emptyText || '调整或清空筛选条件后重试。'}</div></div></td></tr>`;
   return `<div class="tbl-wrap ${o.wrapCls || ''}" id="${id}" style="--fz1w:${fz1w}px"><table class="t">${head}<tbody>${body}</tbody>${o.foot || ''}</table></div>`;

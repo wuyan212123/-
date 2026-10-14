@@ -61,6 +61,7 @@ const check = (id, name, ok, detail = '') => { results.push({ id, name, ok: !!ok
   await page.screenshot({ path: path.join(OUT, '03-us-week-range.png') });
 
   // UI-08 第2页进入详情再返回
+  await page.evaluate(() => { S.allCols = true; });
   await act('[data-act="cview"][data-v="overview"]');
   await page.fill('#cq-US', 'DEMO'); await page.waitForTimeout(400);
   await act('[data-act="page"][data-scope="country"][data-p="2"]');

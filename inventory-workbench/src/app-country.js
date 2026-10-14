@@ -18,17 +18,17 @@ function yearRowsForProduct(p) {
 function monthMatrix(id, groups, o = {}) {
   const hk = o.hlKey || id; const hm = S.hl[hk];
   const ident = o.ident !== false;
-  const mh = D.MONTHS.map((m, i) => `<th class="c matrix-cell sortable ${hm === i ? 'hl' : ''}" data-act="hlmonth" data-hk="${hk}" data-m="${i}" tabindex="0" title="点击高亮所有年份的${m}" aria-pressed="${hm === i}">${m}${hm === i ? '<span class="th-sub">● 已高亮</span>' : ''}</th>`).join('');
-  const head = `<thead><tr>${ident ? `<th class="l fz1" style="min-width:${o.fz1w || 150}px">${o.c1 || 'SKU'}</th><th class="l fz2" style="min-width:170px">${o.c2 || '品名 / Listing'}</th>` : ''}<th class="l ${ident ? '' : 'fz1 last'}" style="min-width:64px">年份</th>${mh}<th style="min-width:96px">年合计<span class="th-sub">年度源值</span></th><th class="l" style="min-width:120px">核对</th></tr></thead>`;
+  const mh = D.MONTHS.map((m, i) => `<th class="c matrix-cell sortable ${hm === i ? 'hl' : ''}" data-act="hlmonth" data-hk="${hk}" data-m="${i}" tabindex="0" title="点击高亮所有年份的${m}" aria-pressed="${hm === i}">${m}${hm === i ? '<span class="th-flag">● 已高亮</span>' : ''}</th>`).join('');
+  const head = `<thead><tr>${ident ? `<th class="l fz1" style="min-width:${o.fz1w || 172}px">${o.c1 || 'SKU'}</th><th class="l fz2" style="min-width:170px">${o.c2 || '品名 / Listing'}</th>` : ''}<th class="l ${ident ? '' : 'fz1 last'}" style="min-width:64px">年份</th>${mh}<th style="min-width:96px">年合计<span class="th-sub">年度源值</span></th><th class="l" style="min-width:120px">核对</th></tr></thead>`;
   const body = groups.map(g => g.rows.map((r, ri) => {
     const idc = ident ? `<td class="l fz1 ${ri ? 'ghost-cell' : ''}">${ri ? '' : g.c1}</td><td class="l fz2">${ri ? '' : g.c2}</td>` : '';
     const yc = `<td class="year-c ${ident ? '' : 'fz1 last'}">${r.y}</td>`;
-    if (r.type === 'annual') return `<tr class="${ri ? '' : 'g-start'}">${idc}${yc}<td colspan="12" class="l dim">${tag('mute', r.note || '仅年总量')} 源表该年没有月份字段：不拆分、不平均、不反推月份</td><td class="sum-c">${V(r.total)}</td><td class="l"></td></tr>`;
+    if (r.type === 'annual') return `<tr class="${ri ? '' : 'g-start'}">${idc}${yc}<td colspan="12" class="l dim" title="源表该年没有月份字段：不拆分、不平均、不反推月份">${tag('mute', r.note || '仅年总量')}<span class="note-inline"> 源表该年无月份字段，不拆分</span></td><td class="sum-c">${V(r.total)}</td><td class="l"></td></tr>`;
     const cells = r.arr.map((v, i) => `<td class="${hm === i ? 'hl' : ''}">${V(v)}${r.cutM === i + 1 && isNum(v) ? `<span class="cut" title="该记录只统计到 ${S.baseDate}，与往年完整月不可直接同比">${curMonthLabel()}</span>` : ''}</td>`).join('');
     const tn = r.cutM ? `<span class="cut-sum" title="截至基准日累计，非全年合计">累计</span>` : '';
     return `<tr class="${ri ? '' : 'g-start'}">${idc}${yc}${cells}<td class="sum-c">${V(r.total)}${tn}</td><td class="l">${r.flag || ''}</td></tr>`;
   }).join('')).join('');
-  return `<div class="tbl-wrap ${o.wrapCls || ''}" id="${id}" style="--fz1w:${o.fz1w || 150}px"><table class="t">${head}<tbody>${body || `<tr><td colspan="16"><div class="empty"><h3>没有匹配的记录</h3></div></td></tr>`}</tbody></table></div>`;
+  return `<div class="tbl-wrap ${o.wrapCls || ''}" id="${id}" style="--fz1w:${o.fz1w || 172}px"><table class="t">${head}<tbody>${body || `<tr><td colspan="16"><div class="empty"><h3>没有匹配的记录</h3></div></td></tr>`}</tbody></table></div>`;
 }
 function weekIdx(st) {
   let idx = D.WEEKS.map((w, i) => i).filter(i => st.wyear === 'ALL' || String(D.WEEKS[i].srcYear) === st.wyear);
@@ -48,21 +48,21 @@ function weekControls(scope, st) {
 }
 function weekHead(i) {
   const w = D.WEEKS[i];
-  return `<th class="c" style="min-width:86px" title="${w.start} ~ ${w.end}；ISO ${w.isoYear}-W${String(w.week).padStart(2, '0')}">${w.key}<span class="th-sub">${w.start.slice(2).replace(/-/g, '/')}–${w.end.slice(5).replace('-', '/')}</span>${w.crossYear ? '<span class="th-sub">跨年周</span>' : ''}${w.latest ? '<span class="th-sub">最新完整周</span>' : ''}</th>`;
+  return `<th class="c" style="min-width:86px" title="${w.start} ~ ${w.end}；ISO ${w.isoYear}-W${String(w.week).padStart(2, '0')}">${w.key}<span class="th-flag">${w.start.slice(2).replace(/-/g, '/')}–${w.end.slice(5).replace('-', '/')}</span>${w.crossYear ? '<span class="th-flag">跨年周</span>' : ''}${w.latest ? '<span class="th-flag">最新完整周</span>' : ''}</th>`;
 }
 function weekTable(id, items, st, o = {}) {
   const idx = weekIdx(st);
   if (!idx.length) return `<div class="empty"><h3>所选范围没有周期</h3><div>调整起止周。</div></div>`;
-  const head = `<thead><tr><th class="l fz1" style="min-width:${o.fz1w || 150}px">${o.c1 || 'SKU'}</th><th class="l fz2" style="min-width:150px">${o.c2 || 'MSKU'}</th>${idx.map(weekHead).join('')}<th style="min-width:90px">区间合计<span class="th-sub">仅数值周</span></th></tr></thead>`;
+  const head = `<thead><tr><th class="l fz1" style="min-width:${o.fz1w || 172}px">${o.c1 || 'SKU'}</th><th class="l fz2" style="min-width:150px">${o.c2 || 'MSKU'}</th>${idx.map(weekHead).join('')}<th style="min-width:90px">区间合计<span class="th-sub">仅数值周</span></th></tr></thead>`;
   const body = items.map(it => `<tr><td class="l fz1">${it.c1}</td><td class="l fz2">${it.c2}</td>${idx.map(i => `<td>${it.vals ? V(it.vals[i]) : V('NF')}</td>`).join('')}<td class="sum-c">${it.vals ? fmt(sumNums(idx.map(i => it.vals[i]))) : ''}</td></tr>`).join('');
-  return `<div class="tbl-wrap" id="${id}" style="--fz1w:${o.fz1w || 150}px"><table class="t">${head}<tbody>${body}</tbody></table></div>`;
+  return `<div class="tbl-wrap" id="${id}" style="--fz1w:${o.fz1w || 172}px"><table class="t">${head}<tbody>${body}</tbody></table></div>`;
 }
 function arrivalIdx(cc, shipDate) {
   const cfg = D.CMAP[cc]; if (!cfg.transitDays || !shipDate) return -1;
   const d = new Date(shipDate + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + cfg.transitDays); const ds = d.toISOString().slice(0, 10);
   let k = -1; D.HALF.forEach((h, i) => { if (h.start <= ds) k = i; }); return { k, date: ds };
 }
-function halfHead(i, arr) { const h = D.HALF[i]; return `<th class="c ${arr === i ? 'arrive' : ''}" style="min-width:84px" title="${h.y}年${h.m}月${h.h}半月">${h.label}${arr === i ? '<span class="th-sub">◆ 预计到仓</span>' : ''}</th>`; }
+function halfHead(i, arr) { const h = D.HALF[i]; return `<th class="c ${arr === i ? 'arrive' : ''}" style="min-width:84px" title="${h.y}年${h.m}月${h.h}半月">${h.label}${arr === i ? '<span class="th-flag">◆ 预计到仓</span>' : ''}</th>`; }
 
 /* ========== 国家主表 ========== */
 function filteredListings(cc) {
@@ -94,30 +94,28 @@ PAGES.country = function () {
   const owners = [...new Set(all.map(l => l.owner).filter(Boolean))].sort();
   const hasNone = all.some(l => !l.owner);
   const v = VIEWS.find(x => x.id === c.view) || VIEWS[0];
+  const moreCount = (c.grade !== 'ALL') + (c.label !== 'ALL') + !!c.issue + !!S.hideZero;
   const filtersOn = c.q || c.owner !== 'ALL' || c.grade !== 'ALL' || c.label !== 'ALL' || c.issue;
   const covMissing = cfg.tier === 'ae' ? ['周历史', '运输期', '变体比例', '20期半月计划', '财年月目标', '五国发货推演'] : cfg.tier === 'sa' ? ['完整12个月区', '周历史', '国内库存字段', '补货数量区', '半月计划', '财年月目标', '变体比例'] : [];
   return `
   <div class="page-h"><div class="grow"><h1>${cfg.name} ${cc} · 国家进销存</h1>
-    <div class="sub">SKU 行为主体；点击 SKU 打开统一详情。负责人原字段：<b>${esc(cfg.ownerField)}</b>${cc === 'EU' ? '（发货角色，非销售负责人）' : ''}。${cfg.fbaPool ? ' FBA 共享库存池取 DE。' : ''}</div></div>
+    <div class="sub">${listingsOf(cc).length} 条 Listing · 点击 SKU 查看统一详情${cfg.fbaPool ? ' · FBA 共享库存池取 DE' : ''}</div></div>
     <div class="seg country-tabs" role="tablist" aria-label="国家">${D.COUNTRIES.map(x => `<button role="tab" aria-selected="${x.code === cc}" data-act="country" data-v="${x.code}" title="${x.name} · ${TIER_TXT[x.tier]}">${x.code}${x.tier !== 'full' ? ` <span class="cov">${x.tier === 'ae' ? '部分' : '简表'}</span>` : ''}</button>`).join('')}</div>
   </div>
-  ${covMissing.length ? `<div class="callout warn" style="margin-bottom:12px">${icon('warn')}<div><b>${TIER_TXT[cfg.tier]}：</b>本国原表未设 ${covMissing.join('、')}。缺项显示“不适用/无字段”，不以 0 或通用结构补造。${cc === 'AE' ? ' AE 另有“备货数量”（I列）。' : ''}${cc === 'SA' ? ' 2025 年仅部分月份标题，2025/2026 年总量为年度字段。' : ''}</div></div>` : ''}
+  ${covMissing.length ? `<div class="callout warn" style="margin-bottom:12px">${icon('warn')}<div><b>${TIER_TXT[cfg.tier]}</b>　原表未设${covMissing.join('、')}，这些位置显示“不适用”，不补 0。</div></div>` : ''}
   <div class="panel">
     <div class="panel-h">
       <div class="seg" role="tablist" aria-label="工作视图">${VIEWS.map(x => `<button role="tab" aria-selected="${x.id === c.view}" data-act="cview" data-v="${x.id}">${x.label}${viewAvailable(cc, x) ? '' : ' <span class="cnt">未设</span>'}</button>`).join('')}</div>
-      <span class="spacer"></span>${DEMO_TAG}
     </div>
     <div class="filters">
       <input class="inp" id="cq-${cc}" data-in="cq" placeholder="本国内筛选 SKU / 品名 / ASIN / MSKU" value="${esc(c.q)}" style="flex:1 1 220px;min-width:0;max-width:320px" aria-label="本国内筛选">
-      <label class="grp">${esc(cfg.ownerField)} <select class="sel" id="co-${cc}" data-in="cowner" aria-label="负责人筛选"><option value="ALL">全部</option>${owners.map(o => `<option ${c.owner === o ? 'selected' : ''}>${o}</option>`).join('')}${hasNone ? `<option value="__none" ${c.owner === '__none' ? 'selected' : ''}>未分配</option>` : ''}</select></label>
-      <label class="grp">等级 <select class="sel" id="cg-${cc}" data-in="cgrade" aria-label="产品等级"><option value="ALL">全部</option>${['A', 'B', 'C', '新品'].map(g => `<option ${c.grade === g ? 'selected' : ''}>${g}</option>`).join('')}</select></label>
-      <label class="grp">标签 <select class="sel" id="cl-${cc}" data-in="clabel" aria-label="产品标签"><option value="ALL">全部</option>${['常规', '季节性', '清货', '新品'].map(g => `<option ${c.label === g ? 'selected' : ''}>${g}</option>`).join('')}</select></label>
-      <label class="chk"><input type="checkbox" class="sw" id="ci-${cc}" data-in="cissue" ${c.issue ? 'checked' : ''}> 仅看待核对</label>
-      <label class="chk" title="显示选项：真实0显示为空白，底层仍为0；未知/缺失仍显示文字"><input type="checkbox" class="sw" id="hz" data-in="hidezero" ${S.hideZero ? 'checked' : ''}> 零值显示为空白</label>
+      <label class="grp" title="原字段：${esc(cfg.ownerField)}">${esc(cfg.ownerField)} <select class="sel" id="co-${cc}" data-in="cowner" aria-label="负责人筛选"><option value="ALL">全部</option>${owners.map(o => `<option ${c.owner === o ? 'selected' : ''}>${o}</option>`).join('')}${hasNone ? `<option value="__none" ${c.owner === '__none' ? 'selected' : ''}>未分配</option>` : ''}</select></label>
+      <button class="btn sm${S.moreF ? ' on' : ''}" data-act="morefilters" aria-expanded="${S.moreF}">${icon('density')} 更多筛选${moreCount ? ` <span class="badge">${moreCount}</span>` : ''}</button>
       <span class="spacer"></span>
-      <span class="small muted">当前筛选 <b>${rows.length}</b> / ${all.length} 条 Listing</span>
-      ${filtersOn ? `<button class="btn sm" data-act="cclear">清空筛选</button>` : ''}
+      <span class="small muted">${rows.length === all.length ? `${all.length} 条` : `筛选出 <b>${rows.length}</b> / ${all.length} 条`}</span>
+      ${filtersOn ? `<button class="link small" data-act="cclear">清空筛选</button>` : ''}
     </div>
+    ${S.moreF ? `<div class="filters more"><label class="grp">等级 <select class="sel" id="cg-${cc}" data-in="cgrade" aria-label="产品等级"><option value="ALL">全部</option>${['A', 'B', 'C', '新品'].map(g => `<option ${c.grade === g ? 'selected' : ''}>${g}</option>`).join('')}</select></label><label class="grp">标签 <select class="sel" id="cl-${cc}" data-in="clabel" aria-label="产品标签"><option value="ALL">全部</option>${['常规', '季节性', '清货', '新品'].map(g => `<option ${c.label === g ? 'selected' : ''}>${g}</option>`).join('')}</select></label><label class="chk"><input type="checkbox" class="sw" id="ci-${cc}" data-in="cissue" ${c.issue ? 'checked' : ''}> 仅看待核对</label><label class="chk" title="显示选项：真实0显示为空白，底层仍为0；未知/缺失仍显示文字"><input type="checkbox" class="sw" id="hz" data-in="hidezero" ${S.hideZero ? 'checked' : ''}> 零值显示为空白</label><label class="chk" title="显示 ASIN、MSKU、等级、箱数等全部列"><input type="checkbox" class="sw" id="ac" data-in="allcols" ${S.allCols ? 'checked' : ''}> 显示全部列</label></div>` : ''}
     ${viewAvailable(cc, v) ? countryView(cc, c, pageRows, rows) : notApplicable(cc, v)}
     ${['overview', 'month', 'week', 'future', 'plan', 'stock', 'info'].includes(c.view) && viewAvailable(cc, v) ? pager('country', rows.length, c.page, c.size, [8, 12, 25, 50]) : ''}
   </div>`;
@@ -126,17 +124,18 @@ function notApplicable(cc, v) {
   const why = { week: '本国原表没有周销量区', future: '本国原表没有 20 期半月计划与 APR—MAR 财年月目标区', plan: '本国原表未设补货数量区（发货推演）' }[v.id];
   return `<div class="empty" style="border-top:1px solid var(--line)"><h3>${esc(v.label)}：不适用</h3><div>${why}。这里不补造同样结构，也不用 0 代替。该国已有的数据可在“综合总览 / 月历史 / 批次与在途 / 库存明细”及 SKU 统一详情中查看。</div></div>`;
 }
-const skuCell = (l, list) => `<button class="sku-btn" data-act="sku" data-pid="${l.pid}" data-cc="${l.country}" data-lid="${l.lid}" ${list ? `data-list="${list}"` : ''} title="打开 ${esc(l.sku)} 统一详情">${esc(l.sku)}</button>${listingsOfP(l.pid).filter(x => x.country === l.country).length > 1 ? ` ${tag('info', listingsOfP(l.pid).filter(x => x.country === l.country).length + '个Listing', null, '同国同SKU存在多个 ASIN/MSKU 记录，保持独立')}` : ''}`;
+const skuCell = (l, list) => `<button class="sku-btn" data-act="sku" data-pid="${l.pid}" data-cc="${l.country}" data-lid="${l.lid}" ${list ? `data-list="${list}"` : ''} title="打开 ${esc(l.sku)} 统一详情">${esc(l.sku)}</button>${listingsOfP(l.pid).filter(x => x.country === l.country).length > 1 ? `<span class="multi" title="同国同 SKU 有 ${listingsOfP(l.pid).filter(x => x.country === l.country).length} 个 Listing（ASIN/MSKU 各自独立）">×${listingsOfP(l.pid).filter(x => x.country === l.country).length}</span>` : ''}`;
 const nameCell = l => `<span class="cell-name" title="${esc(P(l.pid).name)}">${esc(P(l.pid).name)}</span>`;
 function statusCell(l) {
   const out = []; const iss = issuesOfL(l.lid);
-  if (iss.length) out.push(tag('warn', `待核对 ${iss.length}`, 'warn', iss.map(i => i.title).join('；')));
-  if (l.variant && ['zeroden', 'outgroup', 'referr'].includes(l.variant.kind) && !iss.length) out.push(tag('warn', '变体待核对', 'warn'));
-  if (!l.owner) out.push(tag('warn', '未分配', 'warn'));
-  if (isDirtyPlan(l.lid)) out.push(tag('warn', '未保存', 'edit'));
-  if (S.remote[l.lid]) out.push(tag('bad', '同事已改', 'people', '模拟：另一位同事已更新该计划记录'));
-  if (!out.length) out.push(tag('ok', '正常', 'check'));
-  return out.join(' ');
+  if (S.remote[l.lid]) out.push(['bad', '同事已改', '模拟：另一位同事已更新该计划记录']);
+  if (isDirtyPlan(l.lid)) out.push(['warn', '未保存', '计划修改尚未保存']);
+  if (iss.length) out.push(['warn', '待核对', iss.map(i => i.title).join('；')]);
+  else if (l.variant && ['zeroden', 'outgroup', 'referr'].includes(l.variant.kind)) out.push(['warn', '待核对', '变体比例待核对']);
+  if (!l.owner) out.push(['warn', '未分配', '负责人为空']);
+  if (!out.length) return `<span class="st ok">正常</span>`;
+  const [k, t, tip] = out[0];
+  return `<span class="st ${k}" title="${esc(out.map(x => x[2]).join('；'))}">${t}${out.length > 1 ? `<span class="tiny muted"> +${out.length - 1}</span>` : ''}</span>`;
 }
 function listCtx(rows) { return rows.map(r => r.pid).filter((v, i, a) => a.indexOf(v) === i).join(','); }
 
@@ -151,21 +150,21 @@ function countryView(cc, c, rows, allRows) {
   switch (c.view) {
     case 'overview': {
       const cols = [...ID,
-        { key: 'asin', label: 'ASIN', cls: 'l mono', render: l => esc(l.asin) },
-        { key: 'msku', label: 'MSKU', cls: 'l mono', render: l => esc(l.msku) },
-        { key: 'owner', label: '负责人', sub: esc(cfg.ownerField), cls: 'l', sort: true, render: ownerHtml },
-        { key: 'grade', label: '等级', cls: 'c', render: l => esc(l.grade) },
+        { key: 'asin', opt: 1, label: 'ASIN', cls: 'l mono', render: l => esc(l.asin) },
+        { key: 'msku', opt: 1, label: 'MSKU', cls: 'l mono', render: l => esc(l.msku) },
+        { key: 'owner', label: esc(cfg.ownerField), cls: 'l', sort: true, render: ownerHtml },
+        { key: 'grade', opt: 1, label: '等级', cls: 'c', render: l => esc(l.grade) },
         { key: 'fba', label: 'FBA可售', sub: cfg.fbaPool ? 'EU池·取DE' : 'L/H列', sort: true, render: l => V(l.fba) },
         { key: 'transit', label: '当前在途', sub: sel == null ? '保留原范围' : `所选 ${sel.length} 批`, sort: true, render: l => V(transitOf(l.lid), { keepZero: true }) },
         { key: 'dom', label: '国内现货', sub: cfg.domestic ? '共享池·引用' : '本表无字段', render: l => !cfg.domestic ? V('NF') : (l.domesticBlank ? `${V(null, { nullText: '空白' })} ${tag('warn', '待核对')}` : `${V(P(l.pid).domestic.avail, { keepZero: true })}`), title: '国内库存是跨国共享的SKU库存池：此处只是引用，全局汇总只计一次' },
         { key: 'avg4', label: '近4周均销', sub: cfg.half ? '源值' : '', sort: true, render: l => cfg.half ? V(l.avg4, { keepZero: true }) : V('NF') },
         { key: 'm9', label: '2026-09', sub: '月实际', sort: true, render: l => V(l.monthly[2026] ? l.monthly[2026][8] : 'NF') },
-        { key: 'm10', label: '2026-10', sub: curMonthLabel(), render: l => V(l.monthly[2026] ? l.monthly[2026][9] : 'NF') },
-        { key: 'h', label: cfg.half ? D.HALF[nextHalf].label : '半月计划', sub: '下一期销售计划', render: l => cfg.half ? V(S.half[l.lid][nextHalf], { nullText: '未设置' }) : V('NF') },
+        { key: 'm10', label: '2026-10', flag: curMonthLabel(), render: l => V(l.monthly[2026] ? l.monthly[2026][9] : 'NF') },
+        { key: 'h', label: cfg.half ? D.HALF[nextHalf].label + ' 计划' : '半月计划', sub: '下一期销售计划', render: l => cfg.half ? V(S.half[l.lid][nextHalf], { nullText: '未设置' }) : V('NF') },
         { key: 'plan', label: cfg.stocking ? '备货数量' : '本次发货量', sub: cfg.stocking ? 'AE·I列' : '人工计划', sort: true, tdCls: () => (cfg.half || cfg.stocking) ? 'edit-c' : '', render: l => (cfg.half || cfg.stocking) ? editNum('plan', l.lid, planQty(l.lid), { dirty: isDirtyPlan(l.lid), aria: `${l.sku} ${l.msku} 本次发货量` }) : `${V(null, { nullText: '未设' })}` },
-        { key: 'box', label: '箱数', sub: cc === 'US' ? 'US局部公式 J=HT/I' : '示例·未核验', render: l => boxCell(l) },
+        { key: 'box', opt: 1, label: '箱数', sub: cc === 'US' ? 'US局部公式 J=HT/I' : '示例·未核验', render: l => boxCell(l) },
         { key: 'st', label: '状态', cls: 'l', render: statusCell },
-      ];
+      ].filter(x => S.allCols || !x.opt);
       return table(`tbl-${cc}-overview`, cols, rows, { sort: c.sort, sortKey: 'country' }) + legendRow(['edit']);
     }
     case 'month': {
@@ -247,7 +246,7 @@ function futureView(cc, c, rows, listAttr) {
   const ai = arrivalIdx(cc, c.shipDate);
   const cols = [
     { key: 'sku', label: 'SKU', fz: 1, cls: 'l', render: l => skuCell(l, listAttr) }, { key: 'msku', label: 'MSKU', fz: 2, cls: 'l mono', render: l => esc(l.msku) },
-    ...D.HALF.map((h, k) => ({ key: 'h' + k, label: h.label, sub: ai.k === k ? '◆ 预计到仓' : (halfPast(k) ? '已过期间' : halfCur(k) ? '当前期间' : ''), cls: ai.k === k ? 'arrive' : '', tdCls: () => 'edit-c' + (ai.k === k ? ' arrive' : ''), render: l => editNum('half', l.lid, S.half[l.lid][k], { k, dirty: isDirtyHalf(l.lid, k), ph: '未设置', aria: `${l.sku} ${h.label} 销售计划` }) })),
+    ...D.HALF.map((h, k) => ({ key: 'h' + k, label: h.label, flag: ai.k === k ? '◆ 预计到仓' : (halfPast(k) ? '已过期间' : halfCur(k) ? '当前期间' : ''), cls: ai.k === k ? 'arrive' : '', tdCls: () => 'edit-c' + (ai.k === k ? ' arrive' : ''), render: l => editNum('half', l.lid, S.half[l.lid][k], { k, dirty: isDirtyHalf(l.lid, k), ph: '未设置', aria: `${l.sku} ${h.label} 销售计划` }) })),
     { key: 'sum', label: '20期合计', render: l => `<span data-derived="hsum-${l.lid}">${fmt(sumNums(S.half[l.lid]))}</span>` },
   ];
   return `<div class="filters" style="padding-top:0">${sub}<span class="spacer"></span>
@@ -337,7 +336,7 @@ function batchModal(bid) {
     { key: 'rm', label: '提醒', cls: 'c', render: r => r.ln.received != null && r.ln.current !== 0 ? tag(r.ln.current < 0 ? 'bad' : 'warn', r.ln.current < 0 ? '多收' : '少收', 'warn') : '' },
     { key: 'src', label: '来源', cls: 'l', render: r => `<span class="mono small">货件详情 · 第${r.ln.srcRow}行</span>` },
   ];
-  modal(`<div class="modal-h"><h2>${esc(b.country)} · 批次 ${esc(b.label)}</h2>${b.kind === 'SY' ? tag('line', '海外仓 SY') : ''}${tag(st[0], st[1])}${DEMO_TAG}<span class="spacer"></span><button class="icon-btn" data-act="close" aria-label="关闭">${icon('close')}</button></div>
+  modal(`<div class="modal-h"><h2>${esc(b.country)} · 批次 ${esc(b.label)}</h2>${b.kind === 'SY' ? tag('line', '海外仓 SY') : ''}${tag(st[0], st[1])}<span class="spacer"></span><button class="icon-btn" data-act="close" aria-label="关闭">${icon('close')}</button></div>
     <div class="modal-b stack">
       <dl class="kv"><dt>业务批次日期</dt><dd>${b.bizDate}（人工指定，不等于创建日或实际发货日）</dd><dt>货件</dt><dd>${b.ships.map(s => `<span class="mono">${s.shipId}</span>（创建 ${s.created}${s.shipped ? '，发货 ' + s.shipped : '，未 SHIPPED'}）`).join('；')}</dd><dt>计入在途</dt><dd>${isSelected(b) ? (selOf(b.country) == null ? '是（保留原范围）' : '是（本次选择）') : '否（批次与原量历史仍保留）'}</dd><dt>原发货依据</dt><dd>${b.evidence ? '有：同国同批次原量记录' : tag('bad', '无：只有日期表头，接收快照整批跳过', 'warn')}</dd>${b.note ? `<dt>说明</dt><dd>${esc(b.note)}</dd>` : ''}</dl>
       ${table('tbl-batch-modal', cols, rows, { wrapCls: 'auto-h' })}

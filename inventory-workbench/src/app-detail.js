@@ -8,24 +8,19 @@ PAGES.detail = function () {
   const cur = d.lid ? L(d.lid) : null;
   const iss = issuesOfP(d.pid);
   return `
-  <div class="detail-top">
-    <div class="row" style="margin-bottom:8px">
-      <button class="btn" data-act="back">${icon('left')} 返回 ${esc(d.from ? d.from.label : '国家主表')}</button>
-      <span class="spacer"></span>
-      <span class="small muted">${idx >= 0 ? `来源列表第 ${idx + 1} / ${d.list.length} 个 SKU` : ''}</span>
-      <button class="btn sm" data-act="pn" data-pid="${prev || ''}" ${prev ? '' : 'disabled'} aria-label="上一个 SKU">${icon('up')} 上一个</button>
-      <button class="btn sm" data-act="pn" data-pid="${next || ''}" ${next ? '' : 'disabled'} aria-label="下一个 SKU">${icon('down')} 下一个</button>
-    </div>
-    <div class="detail-head">
-      <h1>${esc(p.sku)}</h1><div class="grow" style="min-width:0"><div style="font-size:15px;font-weight:600">${esc(p.name)}</div><div class="small muted">${ls.length} 条国家/Listing 记录 · ${[...new Set(ls.map(l => l.country))].length} 个国家 · 装率 ${p.packRate ?? '缺'} · 等级 ${esc(p.grade)}</div></div>
-      ${iss.length ? tag('warn', `待核对 ${iss.length}`, 'warn') : tag('ok', '无待核对', 'check')} ${DEMO_TAG}
-    </div>
-    <div class="row" style="margin-top:10px" role="group" aria-label="国家切换">
-      <div class="seg">${[{ id: 'ALL', label: '全部国家', cnt: ls.length }, ...ccs.map(c => ({ id: c, label: c, cnt: ls.filter(l => l.country === c).length || null }))].map(it => `<button aria-pressed="${it.id === d.country}" data-act="dcountry" data-v="${it.id}" ${it.id !== 'ALL' && !it.cnt ? `disabled title="该SKU在${it.id}没有记录"` : ''}>${it.label}${it.cnt && it.id !== 'ALL' ? '' : (it.id === 'ALL' ? ` <span class="cnt">${it.cnt}</span>` : ' <span class="cnt">无</span>')}</button>`).join('')}</div>
-      ${d.country !== 'ALL' && inC.length > 1 ? `<span class="small muted">本国 ${inC.length} 个 Listing：</span>${inC.map(l => `<button class="listing-chip" aria-pressed="${l.lid === d.lid}" data-act="dlisting" data-lid="${l.lid}"><span>${esc(l.owner || '未分配')}</span><span class="mono">${esc(l.asin)} · ${esc(l.msku)}</span></button>`).join('')}` : ''}
-    </div>
-    <nav class="anchors" aria-label="详情分区">${SECS.map(([id, t]) => `<button data-act="anchor" data-id="${id}">${t}</button>`).join('')}</nav>
+  <div class="detail-head">
+    <button class="btn" data-act="back" title="返回 ${esc(d.from ? d.from.label : '国家主表')}">${icon('left')} 返回</button>
+    <div class="grow" style="min-width:0"><h1>${esc(p.sku)} <span class="h1-name">${esc(p.name)}</span></h1>
+      <div class="small muted">${[...new Set(ls.map(l => l.country))].length} 个国家 · ${ls.length} 条 Listing · 装率 ${p.packRate ?? '缺'} · 等级 ${esc(p.grade)}${iss.length ? ` · <span class="st warn">待核对 ${iss.length}</span>` : ''}</div></div>
+    <div class="row" style="gap:4px"><span class="small muted">${idx >= 0 ? `${idx + 1} / ${d.list.length}` : ''}</span>
+      <button class="icon-btn" data-act="pn" data-pid="${prev || ''}" ${prev ? '' : 'disabled'} aria-label="上一个 SKU" title="上一个 SKU">${icon('up')}</button>
+      <button class="icon-btn" data-act="pn" data-pid="${next || ''}" ${next ? '' : 'disabled'} aria-label="下一个 SKU" title="下一个 SKU">${icon('down')}</button></div>
   </div>
+  <div class="row" style="margin:14px 0 4px" role="group" aria-label="国家切换">
+    <div class="seg">${[{ id: 'ALL', label: '全部国家' }, ...ccs.map(c => ({ id: c, label: c, cnt: ls.filter(l => l.country === c).length }))].map(it => `<button aria-pressed="${it.id === d.country}" data-act="dcountry" data-v="${it.id}" ${it.id !== 'ALL' && !it.cnt ? `disabled title="该SKU在${it.id}没有记录"` : ''}>${it.label}</button>`).join('')}</div>
+    ${d.country !== 'ALL' && inC.length > 1 ? `<label class="grp small muted">Listing <select class="sel" id="dlid" data-in="dlid" aria-label="选择 Listing">${inC.map(l => `<option value="${l.lid}" ${l.lid === d.lid ? 'selected' : ''}>${esc(l.msku)} · ${esc(l.owner || '未分配')}</option>`).join('')}</select></label>` : ''}
+  </div>
+  <nav class="anchors" aria-label="详情分区">${SECS.map(([id, t]) => `<button data-act="anchor" data-id="${id}">${t}</button>`).join('')}</nav>
   ${secOverview(p, ls, d)}
   ${secHistory(p, ls, d, cur)}
   ${secFuture(p, ls, d, cur)}
@@ -80,7 +75,7 @@ function secHistory(p, ls, d, cur) {
       ${monthMatrix('tbl-d-month', groups, { hlKey: 'dm', c1: '国家 / 负责人', c2: 'MSKU', fz1w: 190, wrapCls: 'auto-h' })}
       <div class="note">${icon('info')} US/CA/AU/UK 的 2022/2023 只有年总量，单独成行标“仅年总量”；EU 未设早年字段；AE 从 2025 起；SA 仅部分 2025 月份。缺失与真实 0 分开显示。未生成不等期同比。</div></div>
     <div class="panel"><div class="panel-h"><h3>总销量 · 月历史 2023—2026</h3>${layerTag('sku')}${tag('warn', '汇总覆盖国家待逐公式核验', 'warn')}<span class="hint">总销量 L:BK；2023 有月历史，不按“仅年总量”处理</span></div>
-      ${monthMatrix('tbl-d-total', [{ c1: '', c2: '', rows: yearRowsForProduct(p) }], { hlKey: 'dm', ident: false, wrapCls: 'auto-h' })}</div>
+      ${monthMatrix('tbl-d-total', [{ c1: '', c2: '', rows: yearRowsForProduct(p) }], { hlKey: 'dm', ident: false, wrapCls: 'auto-h', fz1w: 72 })}</div>
     <div class="panel"><div class="panel-h"><h3>周历史</h3><span class="hint">按源周区年份/周范围切换；显示真实起止日期与 ISO 周</span></div>
       ${wk.length ? `<div class="filters">${weekControls('detail', st)}</div>${weekTable('tbl-d-week', wk.map(l => ({ c1: `<b>${l.country}</b>`, c2: `<span class="mono small">${esc(l.msku)}</span>`, vals: l.weekly })), st, { c1: '国家', c2: 'MSKU', fz1w: 70 })}` : `<div class="empty"><h3>所选国家没有周历史区</h3><div>${d.country === 'ALL' ? '' : `${d.country} 原表未设周销量区；不补造。`}</div></div>`}
     </div></section>`;
@@ -101,7 +96,7 @@ function secFuture(p, ls, d, cur) {
   // 总销量右侧：DL:EE 20期（DL:DQ 空，DR:EE 按源公式描述汇总五国同名半月字段）
   const fiveLs = ls.filter(l => l.half);
   const dlee = D.HALF.map((h, k) => k < 6 ? 'EMPTY' : sumNums(fiveLs.map(l => S.half[l.lid][k])));
-  const tblRow = (label, sub, vals, heads, cls = '') => `<div class="tbl-wrap auto-h" id="tbl-d-${label.slice(0, 2)}${heads.length}"><table class="t"><thead><tr><th class="l fz1" style="min-width:130px">${label}<span class="th-sub">${sub}</span></th>${heads.map(h => `<th class="c" style="min-width:74px">${h.label}</th>`).join('')}</tr></thead><tbody><tr><td class="l fz1 last">${esc(p.sku)}</td>${vals.map(v => `<td class="${cls}">${V(v, { nullText: '未设置' })}</td>`).join('')}</tr></tbody></table></div>`;
+  const tblRow = (label, sub, vals, heads, cls = '') => `<div class="tbl-wrap auto-h" id="tbl-d-${label.slice(0, 2)}${heads.length}" style="--fz1w:140px"><table class="t"><thead><tr><th class="l fz1" style="min-width:130px">${label}<span class="th-sub">${sub}</span></th>${heads.map(h => `<th class="c" style="min-width:74px">${h.label}</th>`).join('')}</tr></thead><tbody><tr><td class="l fz1 last">${esc(p.sku)}</td>${vals.map(v => `<td class="${cls}">${V(v, { nullText: '未设置' })}</td>`).join('')}</tr></tbody></table></div>`;
   const vRows = ls.filter(l => D.CMAP[l.country].variant).map(l => ({ l }));
   const vCols = [
     { key: 'cc', label: '国家', cls: 'l', render: r => `<b>${r.l.country}</b>` }, { key: 'msku', label: 'MSKU', cls: 'l mono', render: r => esc(r.l.msku) },

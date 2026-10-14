@@ -8,7 +8,7 @@ PAGES.people = function () {
   const skus = [...new Set(rows.map(l => l.pid))];
   const domOnce = sumNums(skus.map(pid => P(pid).domestic.avail));
   const pname = x => x === '__none' ? '未分配' : x === 'ALL' ? '全部人员' : x;
-  const matrix = `<div class="tbl-wrap auto-h" id="tbl-pm"><table class="t"><thead><tr><th class="l fz1" style="min-width:110px">人员 \\ 国家</th>${D.COUNTRIES.map(c => `<th class="c" title="${esc(c.ownerField)}">${c.code}<span class="th-sub">${esc(c.ownerField)}</span></th>`).join('')}<th>合计</th></tr></thead><tbody>${persons.map(pp => `<tr><td class="l fz1 last"><b>${pname(pp)}</b></td>${D.COUNTRIES.map(c => { const n = D.LISTINGS.filter(l => match(l, pp, c.code)).length; return `<td class="c ${st.person === pp && st.country === c.code ? 'hl' : ''}">${n ? `<button class="link" data-act="pcell" data-p="${pp}" data-c="${c.code}" aria-label="${pname(pp)} ${c.code} ${n} 条">${n}</button>` : '<span class="na">0</span>'}</td>`; }).join('')}<td class="sum-c">${D.LISTINGS.filter(l => match(l, pp, 'ALL')).length}</td></tr>`).join('')}</tbody></table></div>`;
+  const matrix = `<div class="tbl-wrap auto-h" id="tbl-pm" style="--fz1w:110px"><table class="t"><thead><tr><th class="l fz1" style="min-width:110px">人员 \\ 国家</th>${D.COUNTRIES.map(c => `<th class="c" title="${esc(c.ownerField)}">${c.code}<span class="th-sub">${esc(c.ownerField)}</span></th>`).join('')}<th>合计</th></tr></thead><tbody>${persons.map(pp => `<tr><td class="l fz1 last"><b>${pname(pp)}</b></td>${D.COUNTRIES.map(c => { const n = D.LISTINGS.filter(l => match(l, pp, c.code)).length; return `<td class="c ${st.person === pp && st.country === c.code ? 'hl' : ''}">${n ? `<button class="link" data-act="pcell" data-p="${pp}" data-c="${c.code}" aria-label="${pname(pp)} ${c.code} ${n} 条">${n}</button>` : '<span class="na">0</span>'}</td>`; }).join('')}<td class="sum-c">${D.LISTINGS.filter(l => match(l, pp, 'ALL')).length}</td></tr>`).join('')}</tbody></table></div>`;
   const cols = [
     { key: 'cc', label: '国家', cls: 'l fz1', render: l => `<b>${l.country}</b>` },
     { key: 'sku', label: 'SKU', cls: 'l', render: l => skuCell(l, listCtx(rows)) },
@@ -18,7 +18,7 @@ PAGES.people = function () {
     { key: 'plan', label: '本次计划', tdCls: l => planOf(l.lid) ? 'edit-c' : '', render: l => planOf(l.lid) ? editNum('plan', l.lid, planQty(l.lid), { dirty: isDirtyPlan(l.lid), aria: `${l.country} ${l.sku} 本次计划` }) : V(null, { nullText: '原表未设' }) },
     { key: 'st', label: '状态', cls: 'l', render: statusCell },
   ];
-  return `<div class="page-h"><div class="grow"><h1>运营人员视图</h1><div class="sub">归属按国家/Listing 记录保存原字段与角色。按人员筛选只是查询条件（如“运营甲的商品”），不代表登录身份，也不是访问权限。</div></div>${DEMO_TAG}</div>
+  return `<div class="page-h"><div class="grow"><h1>运营人员视图</h1><div class="sub">负责人按国家记录保存；按人员筛选只是查询条件，不是权限。</div></div>${DEMO_TAG}</div>
   <div class="grid2" style="grid-template-columns:minmax(0,220px) minmax(0,1fr)">
     <div class="panel" style="align-self:start"><div class="panel-h"><h3>人员</h3></div><div class="panel-b people-list">${['ALL', ...persons].map(pp => `<button aria-pressed="${st.person === pp}" data-act="person" data-v="${pp}"><span>${pp === '__none' ? tag('warn', '未分配', 'warn') : pname(pp)}</span><span class="small muted">${D.LISTINGS.filter(l => match(l, pp, 'ALL')).length}</span></button>`).join('')}</div></div>
     <div class="stack" style="min-width:0">
@@ -27,7 +27,7 @@ PAGES.people = function () {
         <div class="filters">${seg([{ id: 'ALL', label: '全部国家' }, ...D.COUNTRIES.map(c => ({ id: c.code, label: c.code }))], st.country, 'pcountry')}
           ${seg([{ id: 'all', label: '全部状态' }, { id: 'plan', label: '有本次计划' }, { id: 'transit', label: '在途>0' }, { id: 'issue', label: '待核对' }], st.status, 'pstatus')}</div>
         <div class="filters small" style="padding-top:0"><span><b>当前筛选</b>：${rows.length} 条 Listing · ${skus.length} 个 SKU</span><span class="muted">FBA 小计 ${fmt(sumNums(rows.map(l => l.fba)))}</span><span class="muted">本次计划小计 ${fmt(sumNums(rows.map(l => planQty(l.lid))))}</span><span class="muted" title="国内库存是SKU共享池：按SKU去重只计一次">国内现货（按SKU去重计一次）${fmt(domOnce)}</span></div>
-        ${table('tbl-people', cols, paginate(rows, st.page, st.size), { emptyTitle: '该组合下没有记录', emptyText: '换一个人员或国家，或清空状态筛选。' })}
+        ${table('tbl-people', cols, paginate(rows, st.page, st.size), { fz1w: 64, emptyTitle: '该组合下没有记录', emptyText: '换一个人员或国家，或清空状态筛选。' })}
         ${pager('people', rows.length, st.page, st.size)}
       </div>
     </div>
@@ -81,14 +81,14 @@ PAGES.search = function () {
       <td class="l wrap">${ls.map(l => `<button class="link small" data-act="sku" data-pid="${l.pid}" data-cc="${l.country}" data-lid="${l.lid}" data-list="${list}"><b>${l.country}</b> · ${esc(l.owner || '未分配')} · <span class="mono">${markHit(l.asin, q)} / ${markHit(l.msku, q)}</span></button>`).join('<br>')}</td></tr>`;
   }).join('');
   const searched = st.mode === 'multi' ? st.multi.trim() : st.q.trim();
-  return `<div class="page-h"><div class="grow"><h1>全局搜索</h1><div class="sub">搜索 SKU / 品名 / ASIN / MSKU；部分匹配，精确标识优先；忽略大小写与常见分隔符（只用于候选匹配，不改业务主键）。</div></div>${DEMO_TAG}</div>
+  return `<div class="page-h"><div class="grow"><h1>全局搜索</h1><div class="sub">搜索 SKU、品名、ASIN、MSKU，精确标识优先。</div></div>${DEMO_TAG}</div>
   <div class="panel">
     <div class="filters">${seg([{ id: 'text', label: '关键词' }, { id: 'multi', label: '多个 SKU 粘贴' }], st.mode, 'smode')}
       ${st.mode === 'text' ? `<input class="inp" id="sq" data-in="sq" value="${esc(st.q)}" placeholder="如 acr、B0DEMO1001、US-ACR24-FBA、丙烯颜料" style="flex:1 1 260px;min-width:0" aria-label="搜索关键词">` : `<textarea class="inp" id="smulti" data-in="smulti" rows="3" style="flex:1 1 260px;min-width:0" placeholder="每行或用逗号分隔一个 SKU，例如：\nDEMO-ACR-24\nDEMO-OIL-24" aria-label="多个SKU">${esc(st.multi)}</textarea><button class="btn primary" data-act="smultigo">查找</button>`}
       <label class="grp">国家 <select class="sel" id="sc" data-in="scountry" aria-label="国家"><option value="ALL">全部</option>${D.COUNTRIES.map(c => `<option ${st.country === c.code ? 'selected' : ''} value="${c.code}">${c.code}</option>`).join('')}</select></label>
       <label class="grp">负责人 <select class="sel" id="so" data-in="sowner" aria-label="负责人"><option value="ALL">全部</option>${owners.map(o => `<option ${st.owner === o ? 'selected' : ''}>${o}</option>`).join('')}<option value="__none" ${st.owner === '__none' ? 'selected' : ''}>未分配</option></select></label>
     </div>
-    <div class="note">条件共同生效：关键词 ∧ 国家 ∧ 负责人。清空某一条件时其他条件保持。${searched ? `结果 <b>${results.length}</b> 个 SKU。` : ''}
+    <div class="filters small muted" style="padding-top:0">${searched ? `结果 <b>${results.length}</b> 个 SKU。` : ''}
       ${st.q || st.multi ? `<button class="btn sm" data-act="sclearq">清空关键词</button>` : ''}${st.country !== 'ALL' || st.owner !== 'ALL' ? `<button class="btn sm" data-act="sclearf">清空国家/负责人</button>` : ''}</div>
     ${missing.length ? `<div class="filters" style="padding-top:0"><div class="callout warn" style="flex:1">${icon('warn')}<div>未找到 ${missing.length} 个：${missing.map(esc).join('、')}（在当前国家/负责人条件下没有精确匹配）</div></div></div>` : ''}
     ${!searched ? `<div class="empty"><h3>输入关键词开始搜索</h3><div>也可在顶部工具栏随时按 <kbd>/</kbd> 搜索。试试：<button class="link" data-act="try" data-q="acr">acr</button> · <button class="link" data-act="try" data-q="B0DEMO1001">B0DEMO1001</button> · <button class="link" data-act="try" data-q="丙烯颜料">丙烯颜料</button> · <button class="link" data-act="try" data-q="US-WC36-FBA">US-WC36-FBA</button></div></div>` :
@@ -140,7 +140,7 @@ PAGES.total = function () {
     const cols = [{ key: 'sku', label: 'SKU', fz: 1, cls: 'l', render: skuB }, { key: 'g', label: '原分组', cls: 'l', render: p => p.group || '—' }, { key: 'k', label: '变体比例', sub: 'K列', cls: 'l', render: p => variantHtml(p.variant) }, { key: 'dep', label: '依赖', cls: 'l wrap', render: p => p.variant.kind === 'formula' ? `2025年合计 ${fmt(p.variant.num)} ÷ 组合计 ${fmt(p.variant.den)}（引用年度待核验）` : '独立商品 100%' }];
     body = table('tbl-total-var', cols, pr);
   }
-  return `<div class="page-h"><div class="grow"><h1>总销量</h1><div class="sub">跨国 SKU 销量、库存周转与右侧计划区块。月历史从 2023 年起，年份为行。</div></div>${DEMO_TAG}</div>
+  return `<div class="page-h"><div class="grow"><h1>总销量</h1><div class="sub">跨国 SKU 的月历史、库存周转与右侧计划区块。</div></div>${DEMO_TAG}</div>
   <div class="callout warn" style="margin-bottom:12px">${icon('warn')}<div>总销量各历史指标实际汇总了哪些国家/Listing 尚待逐公式核验：不套用总库存的五国口径，也不宣称七国全量。演示月销量为独立虚构值，不由国家页加总。</div></div>
   <div class="panel"><div class="panel-h">${seg([{ id: 'month', label: '月历史 2023—2026' }, { id: 'stock', label: '库存·周转·货值' }, { id: 'blocks', label: '右侧计划区块' }, { id: 'var', label: '变体比例 K' }], st.tab, 'ttab')}<span class="spacer"></span>
     <input class="inp" id="tq" data-in="tq" value="${esc(st.q)}" placeholder="筛选 SKU / 品名" aria-label="筛选SKU" style="width:180px">
@@ -185,7 +185,7 @@ PAGES.stock = function () {
     const f = S.freshness.find(x => x.key === 'awd');
     body = `<div class="panel-b"><div class="callout ${f.state === 'stale' ? 'warn' : 'info'}">${icon(f.state === 'stale' ? 'warn' : 'info')}<div>AWD 来源日期 <b>${f.date}</b>${f.state === 'stale' ? '（本次未提供 AWD 文件，沿用旧周期；依赖 AWD 的总库存合计同样使用旧来源）' : ''}。AWD = Available + Reserved + Outbound to FBA；不把 AWD 代替全部海外仓。</div></div></div>${table('tbl-stock-awd', cols, us)}`;
   }
-  return `<div class="page-h"><div class="grow"><h1>库存汇总</h1><div class="sub">每项合计可回到组成与来源；FBA、所选在途、AWD、海外仓、国内库存分别呈现。</div></div>${DEMO_TAG}</div>
+  return `<div class="page-h"><div class="grow"><h1>库存汇总</h1><div class="sub">FBA、在途、AWD、海外仓与国内库存分开汇总，每项都能回到组成。</div></div>${DEMO_TAG}</div>
   <div class="panel"><div class="panel-h">${seg([{ id: 'total', label: '原总库存（五国+US AWD）' }, { id: 'domestic', label: '国内库存' }, { id: 'fba', label: 'FBA · ERP导出' }, { id: 'aging', label: '库龄' }, { id: 'awd', label: 'US AWD / 海外仓' }], st.tab, 'stab')}</div>${body}</div>`;
 };
 
@@ -217,7 +217,7 @@ PAGES.plan = function () {
     return head + sub;
   }).join('');
   const grand = sumNums(D.LISTINGS.map(l => planQty(l.lid)));
-  return `<div class="page-h"><div class="grow"><h1>发货计划</h1><div class="sub">按 SKU 汇总各国计划量，对同一份国内现货核对（共享池只计一次）。计划只改变计划记录，不改 FBA、国内真实库存、真实货件或实际在途。</div></div>${DEMO_TAG}</div>
+  return `<div class="page-h"><div class="grow"><h1>发货计划</h1><div class="sub">按 SKU 汇总各国计划，对同一份国内现货核对；计划不改变实际库存与在途。</div></div>${DEMO_TAG}</div>
   <div class="panel">
     <div class="filters"><input class="inp" id="plq" data-in="plq" value="${esc(st.q)}" placeholder="SKU / 品名 / ASIN / MSKU" style="flex:1 1 200px;min-width:0;max-width:280px" aria-label="筛选">
       ${seg([{ id: 'ALL', label: '全部国家' }, ...planCcs.map(c => ({ id: c, label: c }))], st.country, 'plcountry')}
@@ -297,7 +297,7 @@ PAGES.update = function () {
   const LV = { review: ['warn', '待核对'], error: ['bad', '错误值'], skip: ['warn', '跳过·保持旧值'], isolated: ['bad', '隔离'] };
   const icols = [{ key: 'id', label: '编号', cls: 'l mono', render: i => i.id }, { key: 'm', label: '模块', cls: 'l', render: i => esc(i.module) }, { key: 'lv', label: '处理结果', cls: 'l', render: i => tag(LV[i.level][0], LV[i.level][1]) }, { key: 't', label: '问题', cls: 'l wrap', render: i => `<b>${esc(i.title)}</b><div class="small muted">${esc(i.detail)}</div>` }, { key: 'sc', label: '受影响范围', cls: 'l', render: i => i.lid ? skuCell(L(i.lid)) + ` <span class="small muted">${L(i.lid).country}</span>` : i.pid ? `<button class="sku-btn" data-act="sku" data-pid="${i.pid}">${esc(P(i.pid).sku)}</button>` : esc(i.country || '') }, { key: 's', label: '来源', cls: 'l small', render: i => esc(i.source) }];
   const fcols = [{ key: 'm', label: '模块', cls: 'l', render: f => `<b>${esc(f.label)}</b>` }, { key: 'd', label: '来源日期', cls: 'l mono', render: f => f.date }, { key: 's', label: '状态', cls: 'l', render: f => f.state === 'stale' ? tag('warn', '沿用旧周期', 'warn') : f.state === 'blocked' ? tag('bad', '本次阻断') : tag('ok', '已更新', 'check') }, { key: 'n', label: '说明', cls: 'l', render: f => esc(f.note || '') }];
-  return `<div class="page-h"><div class="grow"><h1>数据更新与异常</h1><div class="sub">保留“导入源报表 → 核对候选变化 → 确认更新”的流程；本页全部为前端模拟。</div></div>${DEMO_TAG}</div>
+  return `<div class="page-h"><div class="grow"><h1>数据更新与异常</h1><div class="sub">导入源报表 → 核对候选变化 → 确认更新（本页为前端模拟）。</div></div>${DEMO_TAG}</div>
   <div class="panel"><div class="panel-h"><div class="steps">${steps.map((s, i) => `<button class="${u.step === i + 1 ? 'on' : u.step > i + 1 ? 'done' : ''}" data-act="ustep" data-s="${i + 1}"><span class="n">${u.step > i + 1 ? '✓' : i + 1}</span>${s}</button>`).join('')}</div><span class="spacer"></span><button class="btn sm" data-act="ureset">重新开始</button></div>
     <div class="panel-b stack">${body}<div class="row"><button class="btn" data-act="ustep" data-s="${u.step - 1}" ${u.step <= 1 ? 'disabled' : ''}>上一步</button><span class="spacer"></span>${u.step < 5 ? `<button class="btn primary" data-act="ustep" data-s="${u.step + 1}">下一步</button>` : ''}</div></div></div>
   <div class="grid2" style="margin-top:14px">
