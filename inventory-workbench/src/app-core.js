@@ -14,13 +14,15 @@ const sumNums = arr => arr.reduce((a, v) => a + (isNum(v) ? v : 0), 0);
 const norm = s => String(s ?? '').toLowerCase().replace(/[\s\-_./·]/g, '');
 const store = { get(k, d) { try { const v = localStorage.getItem('ivw:' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem('ivw:' + k, JSON.stringify(v)); } catch (e) { /* 存储不可用时忽略 */ } } };
 
+/** 偏好读回时只接受已知取值，坏值回到默认 */
+const pick = (v, ok, d) => ok.includes(v) ? v : d;
 const ROLES = { editor: { name: '运营甲', label: '运营甲 · 可编辑', canEdit: true }, viewer: { name: '查看者', label: '查看者 · 只读', canEdit: false } };
 
 const S = {
   page: 'country', country: 'US', cui: {}, detail: null,
   baseDate: D.BASE_DATE, baseDay: D.BASE.d,
-  theme: store.get('theme', 'system'), density: store.get('density', 'comfortable'), collapsed: store.get('collapsed', false), expanded: false,
-  role: 'editor', hideZero: false, hl: {}, tp: {}, showInfo: store.get('showInfo', false), moreF: false, years: null, heat: false,
+  theme: pick(store.get('theme', 'system'), ['system', 'light', 'dark'], 'system'), density: pick(store.get('density', 'comfortable'), ['comfortable', 'compact'], 'comfortable'), collapsed: store.get('collapsed', false) === true, expanded: false,
+  role: 'editor', hideZero: false, hl: {}, tp: {}, showInfo: store.get('showInfo', false) === true, moreF: false, years: null, heat: false,
   plans: clone(D.PLANS), plansSaved: clone(D.PLANS),
   half: Object.fromEntries(D.LISTINGS.filter(l => l.half).map(l => [l.lid, l.half.slice()])),
   halfSaved: Object.fromEntries(D.LISTINGS.filter(l => l.half).map(l => [l.lid, l.half.slice()])),
@@ -252,7 +254,8 @@ function rerenderKeep() {
   const main = $('#main'); const st = main.scrollTop; const sc = captureTables();
   const sig = focusSig(document.activeElement);
   render(); main.scrollTop = st; restoreTables(sc);
-  const el = sig && $(sig);
+  let el = sig && $(sig);
+  if (el && el.disabled) el = el.closest('.pager, .row, .detail-head') && el.closest('.pager, .row, .detail-head').querySelector('button:not(:disabled)') || $('#main');
   if (el) { el.focus({ preventScroll: true }); if (el.setSelectionRange && el.type === 'text') { const n = el.value.length; el.setSelectionRange(n, n); } }
 }
 function captureTables() { const o = {}; $$('.tbl-wrap[id]').forEach(w => { o[w.id] = [w.scrollLeft, w.scrollTop]; }); return o; }
@@ -305,6 +308,7 @@ function goBack() {
   const f = S.nav[0]; if (!f) { go('country'); return; }
   S.page = f.page; S.detail = null; render();
   requestAnimationFrame(() => { $('#main').scrollTop = f.scroll; restoreTables(f.tables); });
+  $('#main').focus({ preventScroll: true });
   toast(`已返回 ${esc(f.label)}，搜索/筛选/页码/排序与表格滚动位置已恢复`);
 }
 function viewName(v) { return { overview: '综合总览', month: '月历史', week: '周历史', future: '未来计划/目标', plan: '发货计划', batch: '批次与在途', stock: '库存明细', info: '商品资料' }[v] || v; }
@@ -331,9 +335,9 @@ function pager(scope, total, page, size, sizes = [8, 12, 25, 50]) {
   const pages = Math.max(1, Math.ceil(total / size));
   return `<div class="pager"><span>共 <b>${total}</b> 条</span><span class="spacer"></span>
     <label class="row">每页 <select class="sel" data-in="pagesize" data-scope="${scope}" id="ps-${scope}" aria-label="每页条数">${sizes.map(s => `<option ${s === size ? 'selected' : ''}>${s}</option>`).join('')}</select></label>
-    <button class="btn sm" data-act="page" data-scope="${scope}" data-p="${page - 1}" ${page <= 1 ? 'disabled' : ''} aria-label="上一页">${icon('left')}</button>
+    <button class="btn sm" id="pg-${scope}-prev" data-act="page" data-scope="${scope}" data-p="${page - 1}" ${page <= 1 ? 'disabled' : ''} aria-label="上一页">${icon('left')}</button>
     <span>第 ${page} / ${pages} 页</span>
-    <button class="btn sm" data-act="page" data-scope="${scope}" data-p="${page + 1}" ${page >= pages ? 'disabled' : ''} aria-label="下一页">${icon('right')}</button></div>`;
+    <button class="btn sm" id="pg-${scope}-next" data-act="page" data-scope="${scope}" data-p="${page + 1}" ${page >= pages ? 'disabled' : ''} aria-label="下一页">${icon('right')}</button></div>`;
 }
 const paginate = (rows, page, size) => rows.slice((page - 1) * size, page * size);
 /** 分页状态：主列表沿用各自的状态，其余表格（库存明细、过程记录等）按表格键各自记住页码 */

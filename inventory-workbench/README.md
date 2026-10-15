@@ -29,7 +29,7 @@
 | `src/app-main.js` | 事件处理、保存/冲突模拟、全局搜索浮层、启动 |
 | `src/app-test.js` | 测试钩子 `window.wbTest`：37 个界面状态，供一比一视觉对比 |
 | `tools/build.py` | 内联生成 `index.html` 与 `dist/workbench.html` |
-| `tools/verify.cjs` | Playwright 交互验证与截图（134 项） |
+| `tools/verify.cjs` | Playwright 交互验证与截图（143 项） |
 | `tools/perf.cjs` | 按真实规模测量各页面的渲染耗时 |
 | `tools/visual.cjs` | 视觉逐像素对比：原型与新实现在同一浏览器里按同一状态截图对比 |
 | `tools/a11y.cjs` | axe-core 无障碍扫描（24 个页面/弹层，浅色和深色各一次） |

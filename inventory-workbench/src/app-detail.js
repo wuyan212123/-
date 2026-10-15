@@ -13,8 +13,8 @@ PAGES.detail = function () {
     <div class="grow" style="min-width:0"><h1>${esc(p.sku)} <span class="h1-name">${esc(p.name)}</span></h1>
       <div class="small muted">${[...new Set(ls.map(l => l.country))].length} 个国家 · ${ls.length} 条 Listing · 装率 ${p.packRate ?? '缺'} · 等级 ${esc(p.grade)}${iss.length ? ` · <span class="st warn">待核对 ${iss.length}</span>` : ''}</div></div>
     <div class="row" style="gap:4px"><span class="small muted">${idx >= 0 ? `${idx + 1} / ${d.list.length}` : ''}</span>
-      <button class="icon-btn" data-act="pn" data-pid="${prev || ''}" ${prev ? '' : 'disabled'} aria-label="上一个 SKU" title="上一个 SKU">${icon('up')}</button>
-      <button class="icon-btn" data-act="pn" data-pid="${next || ''}" ${next ? '' : 'disabled'} aria-label="下一个 SKU" title="下一个 SKU">${icon('down')}</button></div>
+      <button class="icon-btn" id="pn-prev" data-act="pn" data-pid="${prev || ''}" ${prev ? '' : 'disabled'} aria-label="上一个 SKU" title="上一个 SKU">${icon('up')}</button>
+      <button class="icon-btn" id="pn-next" data-act="pn" data-pid="${next || ''}" ${next ? '' : 'disabled'} aria-label="下一个 SKU" title="下一个 SKU">${icon('down')}</button></div>
   </div>
   <div class="row" style="margin:14px 0 4px" role="group" aria-label="国家切换">
     <div class="seg">${[{ id: 'ALL', label: '全部国家' }, ...ccs.map(c => ({ id: c, label: c, cnt: ls.filter(l => l.country === c).length }))].map(it => `<button aria-pressed="${it.id === d.country}" data-act="dcountry" data-v="${it.id}" ${it.id !== 'ALL' && !it.cnt ? `disabled title="该SKU在${it.id}没有记录"` : ''}>${it.label}</button>`).join('')}</div>
@@ -103,7 +103,7 @@ function secFuture(p, ls, d, cur) {
   // 总销量右侧：DL:EE 20期（DL:DQ 空，DR:EE 按源公式描述汇总五国同名半月字段）
   const fiveLs = ls.filter(l => l.half);
   const dlee = D.HALF.map((h, k) => k < 6 ? 'EMPTY' : sumNums(fiveLs.map(l => S.half[l.lid][k])));
-  const tblRow = (label, sub, vals, heads, cls = '') => `<div class="tbl-wrap auto-h" id="tbl-d-${label.slice(0, 2)}${heads.length}" style="--fz1w:140px"><table class="t"><thead><tr><th class="l fz1" style="min-width:130px">${label}<span class="th-sub">${sub}</span></th>${heads.map(h => `<th class="c" style="min-width:74px">${h.label}</th>`).join('')}</tr></thead><tbody><tr><td class="l fz1 last">${esc(p.sku)}</td>${vals.map(v => `<td class="${cls}">${V(v, { nullText: '未设置' })}</td>`).join('')}</tr></tbody></table></div>`;
+  const tblRow = (label, sub, vals, heads, cls = '', dk = null) => `<div class="tbl-wrap auto-h" id="tbl-d-${label.slice(0, 2)}${heads.length}" style="--fz1w:140px"><table class="t"><thead><tr><th class="l fz1" style="min-width:130px">${label}<span class="th-sub">${sub}</span></th>${heads.map(h => `<th class="c" style="min-width:74px">${h.label}</th>`).join('')}</tr></thead><tbody><tr><td class="l fz1 last">${esc(p.sku)}</td>${vals.map((v, i) => `<td class="${cls}">${dk ? `<span data-derived="${dk}-${i}">` : ''}${V(v, { nullText: '未设置' })}${dk ? '</span>' : ''}</td>`).join('')}</tr></tbody></table></div>`;
   const vRows = ls.filter(l => D.CMAP[l.country].variant).map(l => ({ l }));
   const vCols = [
     { key: 'cc', label: '国家', cls: 'l', render: r => `<b>${r.l.country}</b>` }, { key: 'msku', label: 'MSKU', cls: 'l mono', render: r => esc(r.l.msku) },
@@ -117,7 +117,7 @@ function secFuture(p, ls, d, cur) {
       ${scope.length ? table('tbl-d-fiscal', fiscalCols, scope, { wrapCls: 'auto-h', fz1w: 60 }) : `<div class="empty"><h2>所选国家没有财年月目标区</h2></div>`}</div>
     <div class="panel"><div class="panel-h"><h3>总销量右侧区块</h3>${layerTag('sku')}<span class="hint">三块分别展示，不合并成一组 40 期</span></div>
       <div class="panel-b stack">
-        <div><div class="row small" style="margin-bottom:6px"><b>DL:EE · 20期国家半月计划汇总</b><span class="muted">DL:DQ 旧期源表为空（显示“空”，不补0）；DR:EE 按源公式描述汇总 US/CA/EU/UK/AU 同名半月字段，随上方编辑实时变化</span></div>${tblRow('国家预测汇总', 'DL:EE', dlee, D.HALF)}</div>
+        <div><div class="row small" style="margin-bottom:6px"><b>DL:EE · 20期国家半月计划汇总</b><span class="muted">DL:DQ 旧期源表为空（显示“空”，不补0）；DR:EE 按源公式描述汇总 US/CA/EU/UK/AU 同名半月字段，随上方编辑实时变化</span></div>${tblRow('国家预测汇总', 'DL:EE', dlee, D.HALF, '', 'dlee-' + p.pid)}</div>
         <div><div class="row small" style="margin-bottom:6px"><b>EG:EU · 另15期保存预测（至27年2月上）</b><span class="muted">保存数值，不是机器预测，不与上一块互相覆盖</span></div>${tblRow('保存预测', 'EG:EU', p.saved15, D.HALF15)}</div>
         <details><summary class="small"><b>CR:DK · 20期净缺口</b> <span class="muted">采购计算关联区，本轮排除，仅回查源值</span></summary><div style="margin-top:6px">${tblRow('净缺口(回查)', 'CR:DK · 不重算', p.netGap, D.HALF, 'excluded')}</div></details>
       </div></div>
@@ -154,7 +154,8 @@ function secPlan(p, ls, d) {
       <div class="note">${icon('info')} “计划→已建货件待发→已发→接收差异”分开显示：新建批次按申报量导入，不等于实际已发货。计划何时冲销、如何对应部分执行仍待业务确认。</div></div>
     ${projSection(p, ls, d)}</section>`;
 }
-function planStatusTag(lid) { const p = planOf(lid); if (!p) return ''; const m = { draft: ['mute', '草稿'], confirmed: ['ok', '已确认（示例状态）'], partial: ['info', '部分执行（示例）'] }[p.status] || ['mute', p.status]; return tag(m[0], m[1]) + (isDirtyPlan(lid) ? ' ' + tag('warn', '未保存', 'edit') : '') + (S.remote[lid] ? ' ' + tag('bad', '同事已改', 'people') : ''); }
+function planStatusTag(lid) { const p = planOf(lid); if (!p) return ''; return `<span data-derived="pst-${lid}">${planStatusInner(lid)}</span>`; }
+function planStatusInner(lid) { const p = planOf(lid); const m = { draft: ['mute', '草稿'], confirmed: ['ok', '已确认（示例状态）'], partial: ['info', '部分执行（示例）'] }[p.status] || ['mute', p.status]; return tag(m[0], m[1]) + (isDirtyPlan(lid) ? ' ' + tag('warn', '未保存', 'edit') : '') + (S.remote[lid] ? ' ' + tag('bad', '同事已改', 'people') : ''); }
 
 function secBatch(p, ls, d) {
   const rows = []; ls.forEach(l => batchLinesOf(l.lid).forEach(x => rows.push({ ...x, l })));

@@ -207,7 +207,8 @@ PAGES.plan = function () {
       <td class="sum-c"><span data-derived="ptot-${p.pid}">${fmt(tot)}</span></td><td>${V(p.domestic.avail, { keepZero: true })}</td>
       <td class="l"><span data-derived="pchk-${p.pid}">${tot > p.domestic.avail ? tag('warn', `超出现货 ${fmt(tot - p.domestic.avail)}`, 'warn') : tag('ok', '现货可覆盖')}</span></td>
       <td>${V(pipe.created, { keepZero: true })}</td><td>${V(pipe.shipped, { keepZero: true })}</td><td>${V(pipe.diff, { keepZero: true })}</td></tr>`;
-    const sub = open ? ls.map(l => `<tr><td class="l fz1 sub-row" style="padding-left:34px"><b>${l.country}</b> <span class="mono small">${esc(l.msku)}</span></td><td class="l small">${ownerHtml(l)} · <span class="mono">${planOf(l.lid).planId} v${planOf(l.lid).version}</span></td><td class="edit-c">${editNum('plan', l.lid, planQty(l.lid), { dirty: isDirtyPlan(l.lid), aria: `${l.country} ${l.sku} 计划量` })}</td><td colspan="${planCcs.length}" class="l edit-c">${noteInput(l)} ${planStatusTag(l.lid)} <span class="tiny muted">${esc(planOf(l.lid).editedBy || '')} ${esc(planOf(l.lid).updatedAt)}</span></td><td>${boxCell(l)}</td><td colspan="5" class="l small muted">${S.remote[l.lid] ? tag('bad', `同事 v${S.remote[l.lid].version}：${S.remote[l.lid].qty}`, 'people') : ''}</td></tr>`).join('') : '';
+    // 展开行与表头对齐：箱数在“装率”列下，计划量输入在本国列下，状态在“计划合计”列下，备注跨“国内现货/核对”，修改人与同事版本跨后三列
+    const sub = open ? ls.map(l => `<tr><td class="l fz1 sub-row" style="padding-left:34px"><b>${l.country}</b> <span class="mono small">${esc(l.msku)}</span></td><td class="l small">${ownerHtml(l)} · <span class="mono">${planOf(l.lid).planId} v${planOf(l.lid).version}</span></td><td title="箱数">${boxCell(l)}</td>${planCcs.map(cc => cc === l.country ? `<td class="edit-c">${editNum('plan', l.lid, planQty(l.lid), { dirty: isDirtyPlan(l.lid), aria: `${l.country} ${l.sku} 计划量` })}</td>` : '<td></td>').join('')}<td class="l">${planStatusTag(l.lid)}</td><td colspan="2" class="l edit-c">${noteInput(l)}</td><td colspan="3" class="l small muted">${esc(planOf(l.lid).editedBy || '')} ${esc(planOf(l.lid).updatedAt)}${S.remote[l.lid] ? ' ' + tag('bad', `同事 v${S.remote[l.lid].version}：${S.remote[l.lid].qty}`, 'people') : ''}</td></tr>`).join('') : '';
     return head + sub;
   }).join('');
   const grand = sumNums(D.LISTINGS.map(l => planQty(l.lid)));
@@ -219,7 +220,7 @@ PAGES.plan = function () {
       <label class="chk"><input type="checkbox" class="sw" id="plonly" data-in="plonly" ${st.onlyPlanned ? 'checked' : ''}> 仅看已填计划</label>
       <span class="spacer"></span><button class="btn sm" data-act="simremote" title="模拟另一位同事先保存了同一条计划记录">${icon('people')} 模拟同事修改同一记录</button><button class="btn sm" data-act="pexpand">${Object.keys(st.open).length ? '全部收起' : '全部展开'}</button></div>
     <div class="filters small" style="padding-top:0"><span>全部计划量合计 <b class="num" data-derived="pgrand">${fmt(grand)}</b>（含未保存）</span><span class="muted">SA 原表未设补货数量区，不出现在计划列；AE 使用“备货数量”。计划状态（草稿/已确认/部分执行）为建议规则的示例。</span></div>
-    <div class="tbl-wrap" id="tbl-plan" style="--fz1w:200px"><table class="t"><thead><tr><th class="l fz1" style="min-width:200px">SKU</th><th class="l">品名</th><th>装率</th>${planCcs.map(cc => `<th>${cc}${cc === 'AE' ? '<span class="th-sub">备货数量</span>' : '<span class="th-sub">本次发货量</span>'}</th>`).join('')}<th>计划合计</th><th>国内现货<span class="th-sub">共享·一次</span></th><th class="l">核对<span class="th-sub">演示·非原HW公式</span></th><th>已建货件待发<span class="th-sub">申报量</span></th><th>已发未接收</th><th>接收差异<span class="th-sub">带符号</span></th></tr></thead><tbody>${rows || `<tr><td colspan="14"><div class="empty"><h2>没有匹配的计划</h2><div>清空筛选后重试。</div></div></td></tr>`}</tbody></table></div>${pager('plan', ps.length, pst.page, pst.size, [25, 50, 100])}
+    <div class="tbl-wrap" id="tbl-plan" style="--fz1w:200px"><table class="t"><thead><tr><th class="l fz1" style="min-width:200px">SKU</th><th class="l">品名</th><th>装率</th>${planCcs.map(cc => `<th>${cc}${cc === 'AE' ? '<span class="th-sub">备货数量</span>' : '<span class="th-sub">本次发货量</span>'}</th>`).join('')}<th>计划合计</th><th>国内现货<span class="th-sub">共享·一次</span></th><th class="l">核对<span class="th-sub">演示·非原HW公式</span></th><th>已建货件待发<span class="th-sub">申报量</span></th><th>已发未接收</th><th>接收差异<span class="th-sub">带符号</span></th></tr></thead><tbody>${rows || `<tr><td colspan="${9 + planCcs.length}"><div class="empty"><h2>没有匹配的计划</h2><div>清空筛选后重试。</div></div></td></tr>`}</tbody></table></div>${pager('plan', ps.length, pst.page, pst.size, [25, 50, 100])}
   </div>`;
 };
 
@@ -466,7 +467,7 @@ function takeSnap() { const o = {}; const k = D.WEEKS.length - 1; D.LISTINGS.for
 const VER_SNAP_CUR = takeSnap();
 function versions() {
   const cur = { id: 'V-1012', file: '博达-1012进销存.xlsx', base: D.BASE_DATE, at: '2026-10-12 18:30', by: '运营甲', status: 'cur', issues: D.ISSUES.length, inputs: 10, scope: 'FBA、国内、销量、货件；AWD 沿用 10-04', age: 0, snap: VER_SNAP_CUR };
-  const runs = S.runs.slice().reverse().map(r => ({ id: r.id, file: `博达-${r.base.slice(5).replace('-', '')}进销存（演示）`, base: r.base, at: `2026-10-14 ${r.at}`, by: r.by, status: 'demo', issues: D.ISSUES.length, inputs: r.inputs, scope: r.summary, age: -1, snap: r.snap }));
+  const runs = S.runs.map(r => ({ id: r.id, file: `博达-${r.base.slice(5).replace('-', '')}进销存（演示）`, base: r.base, at: `2026-10-14 ${r.at}`, by: r.by, status: 'demo', issues: D.ISSUES.length, inputs: r.inputs, scope: r.summary, age: -1, snap: r.snap }));
   return [...runs, cur, ...VER_HIST.slice().reverse()];
 }
 /** 某版本下某 Listing 的指标：有快照的版本读快照；历史版本在 V-1012 快照基础上按版本与 Listing 生成确定性的虚构偏移 */

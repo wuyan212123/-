@@ -122,7 +122,7 @@ PAGES.country = function () {
       <input class="inp" id="cq-${cc}" data-in="cq" placeholder="本国内筛选 SKU / 品名 / ASIN / MSKU" value="${esc(c.q)}" style="flex:1 1 220px;min-width:0;max-width:320px" aria-label="本国内筛选">
       <label class="grp" title="原字段：${esc(cfg.ownerField)}">${esc(cfg.ownerField)} <select class="sel" id="co-${cc}" data-in="cowner" aria-label="负责人筛选"><option value="ALL">全部</option>${owners.map(o => `<option ${c.owner === o ? 'selected' : ''}>${o}</option>`).join('')}${hasNone ? `<option value="__none" ${c.owner === '__none' ? 'selected' : ''}>未分配</option>` : ''}</select></label>
       <button class="btn sm${S.moreF ? ' on' : ''}" data-act="morefilters" aria-expanded="${S.moreF}">${icon('density')} 更多筛选${moreCount ? ` <span class="badge">${moreCount}</span>` : ''}</button>
-      ${COL_VIEWS.includes(c.view) && viewAvailable(cc, v) ? colBtn(c.view) : ''}${c.view === 'month' ? yearPicker(cfg.annualOnly.concat(cfg.monthYears)) + heatSwitch() : ''}
+      ${COL_VIEWS.includes(c.view) && viewAvailable(cc, v) ? colBtn(c.view, cc) : ''}${c.view === 'month' ? yearPicker(cfg.annualOnly.concat(cfg.monthYears)) + heatSwitch() : ''}
       <span class="spacer"></span>
       <span class="small muted">${rows.length === all.length ? `${all.length} 条` : `筛选出 <b>${rows.length}</b> / ${all.length} 条`}</span>
       ${filtersOn ? `<button class="link small" data-act="cclear">清空筛选</button>` : ''}
@@ -138,7 +138,8 @@ function notApplicable(cc, v) {
 }
 const skuCell = (l, list) => `<button class="sku-btn" data-act="sku" data-pid="${l.pid}" data-cc="${l.country}" data-lid="${l.lid}" ${list ? `data-list="${list}"` : ''} title="打开 ${esc(l.sku)} 统一详情">${esc(l.sku)}</button>${listingsOfP(l.pid).filter(x => x.country === l.country).length > 1 ? `<span class="multi" title="同国同 SKU 有 ${listingsOfP(l.pid).filter(x => x.country === l.country).length} 个 Listing（ASIN/MSKU 各自独立）">×${listingsOfP(l.pid).filter(x => x.country === l.country).length}</span>` : ''}`;
 const nameCell = l => `<span class="cell-name" title="${esc(P(l.pid).name)}">${esc(P(l.pid).name)}</span>`;
-function statusCell(l) {
+function statusCell(l) { return `<span data-derived="st-${l.lid}">${statusInner(l)}</span>`; }
+function statusInner(l) {
   const out = []; const iss = issuesOfL(l.lid);
   if (S.remote[l.lid]) out.push(['bad', '同事已改', '模拟：另一位同事已更新该计划记录']);
   if (isDirtyPlan(l.lid)) out.push(['warn', '未保存', '计划修改尚未保存']);
@@ -175,12 +176,12 @@ function countryView(cc, c, rows, allRows) {
   }
   return '';
 }
+function boxInner(l) { const b = boxesOf(l.lid); return b.v == null ? V(null) : `${fmt1(b.v)}${l.country === 'US' ? '' : ' <span class="tiny muted">示例</span>'}`; }
 function boxCell(l) {
   const cfg = D.CMAP[l.country]; if (!cfg.half && !cfg.stocking) return V('NF');
   const b = boxesOf(l.lid);
   if (b.why) return tag('warn', b.why, 'warn');
-  if (b.v == null) return `<span data-derived="box-${l.lid}">${V(null)}</span>`;
-  return `<span data-derived="box-${l.lid}">${fmt1(b.v)}</span>${l.country === 'US' ? '' : ' <span class="tiny muted">示例</span>'}`;
+  return `<span data-derived="box-${l.lid}">${boxInner(l)}</span>`;
 }
 function legendRow(keys) {
   const m = { edit: '<span><i class="sw-edit"></i>可编辑的人工计划字段（只改计划，不改实际库存/在途）</span>', hl: '<span><i class="sw-hl"></i>高亮月份（表头另有“● 已高亮”文字）</span>', na: '<span>“未提供”=缺报 · “无字段”=源表未设 · “未发生”=期间未到 · 数字0=真实0</span>', ex: '<span><i class="sw-ex"></i>采购关联区：仅回查，本轮不计算</span>', arr: '<span><i class="sw-arr"></i>预计到仓半月（只高亮表头，不改预测值）</span>', heat: '<span><i class="sw-heat"></i>色阶：按本记录最大值分 5 档，越深越多；未完整月不着色</span>' };

@@ -357,6 +357,38 @@ const check = (id, name, ok, detail = '') => { results.push({ id, name, ok: !!ok
   check('P5', '库龄构成：压货最多的 8 条按 365 天以上占比降序', ag.length === 8 && ag.every((v, i) => !i || v <= ag[i - 1]), ag.join(','));
   check('P5', '库龄表每行有构成条', (await page.locator('#tbl-stock-aging svg.ag-bar').count()) >= 10);
   await page.screenshot({ path: path.join(OUT, '22-aging-mix.png') });
+  // 第七版：开发文档审查发现的行为修正
+  await page.evaluate(() => { S.colcfg = {}; S.country = 'US'; Object.assign(cui('US'), { view: 'overview', q: '', sort: null, page: 1, size: 12 }); closeModal(); go('country'); });
+  await page.locator('#pg-country-next').focus(); await page.keyboard.press('Enter'); await page.waitForTimeout(80);
+  check('Q1', '翻页后键盘焦点仍在分页按钮上', await page.evaluate(() => !!document.activeElement.closest('.pager')), await page.evaluate(() => document.activeElement.id));
+  await page.evaluate(() => { cui('US').page = 1; openSku(D.PRODUCTS[0].pid, { country: 'US' }); });
+  await page.locator('#pn-next').focus(); await page.keyboard.press('Enter'); await page.waitForTimeout(80);
+  check('Q2', '上一个/下一个 SKU 后焦点留在同一按钮', await page.evaluate(() => document.activeElement.id === 'pn-next' && S.detail.pid === D.PRODUCTS[1].pid));
+  await act('[data-act="back"]'); await page.waitForTimeout(80);
+  check('Q3', '返回后焦点在主区', await page.evaluate(() => document.activeElement.id === 'main'));
+  const cf = await page.evaluate(async () => {
+    const l = listingsOf('US').find(x => planOf(x.lid)); const lid = l.lid; S.country = 'US'; cui('US').view = 'plan'; go('country');
+    S.plans[lid].qty = 777; S.plans[lid].note = '我的备注'; simRemote(); save();
+    const shown = !!document.querySelector('.modal'); document.querySelector('[data-act="cresolve"]').click();
+    const toastTxt = document.getElementById('toast').innerText;
+    return { shown, qty: S.plans[lid].qty, note: S.plans[lid].note, savedNote: S.plansSaved[lid].note, remote: !!S.remote[lid], toastTxt, dirty: dirtyCount() };
+  });
+  check('Q4', '冲突时“采用同事的值”放弃本人对该记录的全部修改（含备注），提示采用条数', cf.shown && cf.qty !== 777 && cf.note === cf.savedNote && cf.note !== '我的备注' && !cf.remote && cf.dirty === 0 && cf.toastTxt.includes('采用同事的值 1 条'), JSON.stringify(cf).slice(0, 160));
+  const ds = await page.evaluate(() => { simRemote(); const n1 = Object.keys(S.remote).length; ACT.discard(); return { n1, n2: Object.keys(S.remote).length, txt: document.getElementById('toast').innerText }; });
+  check('Q5', '放弃修改时同步同事的新版本，不再挂着“同事已改”', ds.n1 === 1 && ds.n2 === 0 && ds.txt.includes('同步了同事的新版本'), JSON.stringify(ds).slice(0, 120));
+  await page.evaluate(() => { S.country = 'US'; cui('US').view = 'overview'; go('country'); });
+  const lid0 = await page.evaluate(() => document.querySelector('#tbl-US-overview input[data-in="plan"]').dataset.lid);
+  await page.fill(`#tbl-US-overview input[data-in="plan"][data-lid="${lid0}"]`, '123'); await page.waitForTimeout(60);
+  check('Q6', '改计划量后状态列立即显示“未保存”（不整页重绘）', (await text(`[data-derived="st-${lid0}"]`)).includes('未保存') && await page.evaluate(l => document.activeElement.dataset.lid === l, lid0));
+  await page.evaluate(() => ACT.discard());
+  const hv = await page.evaluate(() => { const l = D.LISTINGS.find(x => x.country === 'US' && x.half); openSku(l.pid, { country: 'ALL' }); const k = 8; const el = document.querySelector(`[data-in="half"][data-lid="${l.lid}"][data-k="${k}"]`); el.value = '999'; el.dispatchEvent(new Event('input', { bubbles: true })); const exp = sumNums(listingsOfP(l.pid).filter(x => x.half).map(x => S.half[x.lid][k])); return { dl: document.querySelector(`[data-derived="dlee-${l.pid}-${k}"]`).textContent.replace(/,/g, ''), exp: String(exp) }; });
+  check('Q7', '改半月计划后 DL:EE 汇总立即更新', hv.dl === hv.exp, JSON.stringify(hv));
+  await page.evaluate(() => ACT.discard());
+  const cnt = await page.evaluate(() => { S.colcfg = { overview: { cols: colCatalog(null, '').map(c => c.key).filter(k => k !== 'country'), pin: ['sku', 'name'] } }; S.country = 'AE'; cui('AE').view = 'overview'; go('country'); const n = Number(document.querySelector('[data-act="colcfg"] .muted').textContent); const shown = document.querySelectorAll('#tbl-AE-overview thead th').length; S.colcfg = {}; return { n, shown }; });
+  check('Q8', '列配置按钮计数只算本国适用的列', cnt.n === cnt.shown, JSON.stringify(cnt));
+  const al = await page.evaluate(() => { S.plan.open = {}; go('plan'); const p = D.PRODUCTS.find(x => listingsOfP(x.pid).filter(l => planOf(l.lid)).length >= 2); S.plan.open[p.pid] = true; go('plan'); const ths = [...document.querySelectorAll('#tbl-plan thead th')].map(th => th.firstChild.textContent.trim()); return [...document.querySelectorAll('#tbl-plan input[data-in="plan"]')].map(inp => { const td = inp.closest('td'); let idx = 0; for (const c of [...td.parentElement.children]) { if (c === td) break; idx += c.colSpan; } return ths[idx] === L(inp.dataset.lid).country; }); });
+  check('Q9', '发货计划展开行：计划量输入落在本国列下', al.length >= 2 && al.every(Boolean), JSON.stringify(al));
+  await page.evaluate(() => { S.plan.open = {}; });
   check('ERR', '无脚本错误', errors.length === 0, errors.slice(0, 3).join(' | '));
 
   // 宽度 × 主题

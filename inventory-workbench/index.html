@@ -39,7 +39,7 @@
   --hl: rgba(255, 204, 0, 0.22); --hl-line: #d4a300;
   --row-hover: rgba(0, 100, 209, 0.06);
   --group-line: rgba(0, 0, 0, 0.18);
-  --tint: #a9c8ee; --mark-warn: #e08a00; --ag1: #b9d3f2; --ag2: #5b97de; --ag3: #0b4fa3;
+  --tint: #a9c8ee; --ag1: #b9d3f2; --ag2: #5b97de; --ag3: #0b4fa3;
   --shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-btn: 0 0.5px 1px rgba(0, 0, 0, 0.18), 0 0 0 0.5px rgba(0, 0, 0, 0.1);
   --shadow-pop: 0 0 0 0.5px rgba(0, 0, 0, 0.12), 0 12px 40px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -61,7 +61,7 @@
     --accent: #0a6fd9; --link: #56aaff; --accent-text: #ffffff; --accent-soft: rgba(10, 132, 255, 0.16); --accent-line: rgba(86, 170, 255, 0.6); --focus: rgba(86, 170, 255, 0.55);
     --ok: #30d158; --ok-soft: rgba(48, 209, 88, 0.16); --warn: #ff9f0a; --warn-soft: rgba(255, 159, 10, 0.17); --bad: #ff8a82; --bad-soft: rgba(255, 69, 58, 0.16);
     --demo: #ce82f5; --demo-soft: rgba(191, 90, 242, 0.16); --edit-bg: #23303f; --edit-line: rgba(255, 255, 255, 0.18); --field: #1f1f22;
-    --hl: rgba(255, 214, 10, 0.17); --hl-line: #ffd60a; --row-hover: rgba(10, 132, 255, 0.1); --group-line: rgba(255, 255, 255, 0.2); --tint: #2f5c93; --mark-warn: #ff9f0a; --ag1: #2b4a73; --ag2: #4f8fdc; --ag3: #a8ccff;
+    --hl: rgba(255, 214, 10, 0.17); --hl-line: #ffd60a; --row-hover: rgba(10, 132, 255, 0.1); --group-line: rgba(255, 255, 255, 0.2); --tint: #2f5c93; --ag1: #2b4a73; --ag2: #4f8fdc; --ag3: #a8ccff;
     --shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.06), 0 1px 2px rgba(0, 0, 0, 0.3);
     --shadow-btn: 0 0 0 0.5px rgba(255, 255, 255, 0.1), 0 1px 1px rgba(0, 0, 0, 0.3);
     --shadow-pop: 0 0 0 0.5px rgba(255, 255, 255, 0.12), 0 14px 44px rgba(0, 0, 0, 0.55);
@@ -76,7 +76,7 @@
   --accent: #0a6fd9; --link: #56aaff; --accent-text: #ffffff; --accent-soft: rgba(10, 132, 255, 0.16); --accent-line: rgba(86, 170, 255, 0.6); --focus: rgba(86, 170, 255, 0.55);
   --ok: #30d158; --ok-soft: rgba(48, 209, 88, 0.16); --warn: #ff9f0a; --warn-soft: rgba(255, 159, 10, 0.17); --bad: #ff8a82; --bad-soft: rgba(255, 69, 58, 0.16);
   --demo: #ce82f5; --demo-soft: rgba(191, 90, 242, 0.16); --edit-bg: #23303f; --edit-line: rgba(255, 255, 255, 0.18); --field: #1f1f22;
-  --hl: rgba(255, 214, 10, 0.17); --hl-line: #ffd60a; --row-hover: rgba(10, 132, 255, 0.1); --group-line: rgba(255, 255, 255, 0.2); --tint: #2f5c93; --mark-warn: #ff9f0a; --ag1: #2b4a73; --ag2: #4f8fdc; --ag3: #a8ccff;
+  --hl: rgba(255, 214, 10, 0.17); --hl-line: #ffd60a; --row-hover: rgba(10, 132, 255, 0.1); --group-line: rgba(255, 255, 255, 0.2); --tint: #2f5c93; --ag1: #2b4a73; --ag2: #4f8fdc; --ag3: #a8ccff;
   --shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.06), 0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow-btn: 0 0 0 0.5px rgba(255, 255, 255, 0.1), 0 1px 1px rgba(0, 0, 0, 0.3);
   --shadow-pop: 0 0 0 0.5px rgba(255, 255, 255, 0.12), 0 14px 44px rgba(0, 0, 0, 0.55);
@@ -144,9 +144,8 @@ svg { width: 16px; height: 16px; flex: none; vertical-align: -3px; }
 .gsearch input::-webkit-search-cancel-button { display: none; }
 .gsearch kbd { position: absolute; right: 7px; top: 50%; transform: translateY(-50%); font-size: 10.5px; color: var(--text-2); border: 0.5px solid var(--line-strong); border-radius: 4px; padding: 0 5px; font-family: var(--font); line-height: 16px; }
 .tb-right { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
-.sel, .inp { height: 24px; border-radius: var(--r-ctl); border: 0; background-color: var(--field); box-shadow: var(--shadow-btn); padding: 0 8px; max-width: 100%; font-size: 13px; }
+.sel, .inp { height: 26px; border-radius: var(--r-ctl); border: 0; background-color: var(--field); box-shadow: var(--shadow-btn); padding: 0 8px; max-width: 100%; font-size: 13px; }
 .sel { -webkit-appearance: none; appearance: none; padding-right: 22px; background-image: var(--chev); background-repeat: no-repeat; background-position: right 6px center; cursor: default; }
-.sel, .inp { height: 26px; }
 .inp:focus, .sel:focus { box-shadow: 0 0 0 3px var(--focus), 0 0 0 0.5px var(--accent-line); }
 .inp:disabled, .sel:disabled { opacity: .5; }
 input[type="date"].inp { padding-right: 4px; }
@@ -231,7 +230,7 @@ details summary { cursor: default; }
 .tag.mute { background: var(--fill); color: var(--text-2); }
 .tag.line { border-color: var(--line-strong); color: var(--text-2); background: transparent; }
 .tag.layer { border-color: var(--line-strong); color: var(--text-2); background: transparent; font-size: 10.5px; font-weight: 500; }
-.callout { border-radius: 8px; padding: 9px 12px; font-size: 12.5px; display: flex; gap: 9px; align-items: flex-start; background: var(--fill); }
+.callout { border-radius: 8px; padding: 11px 14px; margin-bottom: 0; font-size: 12.5px; display: flex; gap: 9px; align-items: flex-start; background: var(--fill); }
 .callout svg { width: 15px; height: 15px; flex: none; margin-top: 1px; }
 .callout.warn { background: var(--warn-soft); } .callout.warn svg { color: var(--warn); }
 .callout.info { background: var(--accent-soft); } .callout.info svg { color: var(--link); }
@@ -423,7 +422,6 @@ body.show-info .panel-h .hint { display: inline; }
 .btn.on { background: var(--accent-soft); color: var(--link); box-shadow: none; }
 .filters.more { border-top: 0.5px solid var(--line); background: var(--panel-2); }
 .panel-h .seg button { min-height: 26px; padding: 0 12px; }
-.callout { padding: 11px 14px; margin-bottom: 0; }
 .page-h + .callout { margin-bottom: 20px; }
 .note-inline { display: none; color: var(--text-3); font-size: 11.5px; }
 body.show-info .note-inline { display: inline; }
@@ -1013,13 +1011,15 @@ const sumNums = arr => arr.reduce((a, v) => a + (isNum(v) ? v : 0), 0);
 const norm = s => String(s ?? '').toLowerCase().replace(/[\s\-_./·]/g, '');
 const store = { get(k, d) { try { const v = localStorage.getItem('ivw:' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem('ivw:' + k, JSON.stringify(v)); } catch (e) { /* 存储不可用时忽略 */ } } };
 
+/** 偏好读回时只接受已知取值，坏值回到默认 */
+const pick = (v, ok, d) => ok.includes(v) ? v : d;
 const ROLES = { editor: { name: '运营甲', label: '运营甲 · 可编辑', canEdit: true }, viewer: { name: '查看者', label: '查看者 · 只读', canEdit: false } };
 
 const S = {
   page: 'country', country: 'US', cui: {}, detail: null,
   baseDate: D.BASE_DATE, baseDay: D.BASE.d,
-  theme: store.get('theme', 'system'), density: store.get('density', 'comfortable'), collapsed: store.get('collapsed', false), expanded: false,
-  role: 'editor', hideZero: false, hl: {}, tp: {}, showInfo: store.get('showInfo', false), moreF: false, years: null, heat: false,
+  theme: pick(store.get('theme', 'system'), ['system', 'light', 'dark'], 'system'), density: pick(store.get('density', 'comfortable'), ['comfortable', 'compact'], 'comfortable'), collapsed: store.get('collapsed', false) === true, expanded: false,
+  role: 'editor', hideZero: false, hl: {}, tp: {}, showInfo: store.get('showInfo', false) === true, moreF: false, years: null, heat: false,
   plans: clone(D.PLANS), plansSaved: clone(D.PLANS),
   half: Object.fromEntries(D.LISTINGS.filter(l => l.half).map(l => [l.lid, l.half.slice()])),
   halfSaved: Object.fromEntries(D.LISTINGS.filter(l => l.half).map(l => [l.lid, l.half.slice()])),
@@ -1251,7 +1251,8 @@ function rerenderKeep() {
   const main = $('#main'); const st = main.scrollTop; const sc = captureTables();
   const sig = focusSig(document.activeElement);
   render(); main.scrollTop = st; restoreTables(sc);
-  const el = sig && $(sig);
+  let el = sig && $(sig);
+  if (el && el.disabled) el = el.closest('.pager, .row, .detail-head') && el.closest('.pager, .row, .detail-head').querySelector('button:not(:disabled)') || $('#main');
   if (el) { el.focus({ preventScroll: true }); if (el.setSelectionRange && el.type === 'text') { const n = el.value.length; el.setSelectionRange(n, n); } }
 }
 function captureTables() { const o = {}; $$('.tbl-wrap[id]').forEach(w => { o[w.id] = [w.scrollLeft, w.scrollTop]; }); return o; }
@@ -1304,6 +1305,7 @@ function goBack() {
   const f = S.nav[0]; if (!f) { go('country'); return; }
   S.page = f.page; S.detail = null; render();
   requestAnimationFrame(() => { $('#main').scrollTop = f.scroll; restoreTables(f.tables); });
+  $('#main').focus({ preventScroll: true });
   toast(`已返回 ${esc(f.label)}，搜索/筛选/页码/排序与表格滚动位置已恢复`);
 }
 function viewName(v) { return { overview: '综合总览', month: '月历史', week: '周历史', future: '未来计划/目标', plan: '发货计划', batch: '批次与在途', stock: '库存明细', info: '商品资料' }[v] || v; }
@@ -1330,9 +1332,9 @@ function pager(scope, total, page, size, sizes = [8, 12, 25, 50]) {
   const pages = Math.max(1, Math.ceil(total / size));
   return `<div class="pager"><span>共 <b>${total}</b> 条</span><span class="spacer"></span>
     <label class="row">每页 <select class="sel" data-in="pagesize" data-scope="${scope}" id="ps-${scope}" aria-label="每页条数">${sizes.map(s => `<option ${s === size ? 'selected' : ''}>${s}</option>`).join('')}</select></label>
-    <button class="btn sm" data-act="page" data-scope="${scope}" data-p="${page - 1}" ${page <= 1 ? 'disabled' : ''} aria-label="上一页">${icon('left')}</button>
+    <button class="btn sm" id="pg-${scope}-prev" data-act="page" data-scope="${scope}" data-p="${page - 1}" ${page <= 1 ? 'disabled' : ''} aria-label="上一页">${icon('left')}</button>
     <span>第 ${page} / ${pages} 页</span>
-    <button class="btn sm" data-act="page" data-scope="${scope}" data-p="${page + 1}" ${page >= pages ? 'disabled' : ''} aria-label="下一页">${icon('right')}</button></div>`;
+    <button class="btn sm" id="pg-${scope}-next" data-act="page" data-scope="${scope}" data-p="${page + 1}" ${page >= pages ? 'disabled' : ''} aria-label="下一页">${icon('right')}</button></div>`;
 }
 const paginate = (rows, page, size) => rows.slice((page - 1) * size, page * size);
 /** 分页状态：主列表沿用各自的状态，其余表格（库存明细、过程记录等）按表格键各自记住页码 */
@@ -1477,7 +1479,7 @@ PAGES.country = function () {
       <input class="inp" id="cq-${cc}" data-in="cq" placeholder="本国内筛选 SKU / 品名 / ASIN / MSKU" value="${esc(c.q)}" style="flex:1 1 220px;min-width:0;max-width:320px" aria-label="本国内筛选">
       <label class="grp" title="原字段：${esc(cfg.ownerField)}">${esc(cfg.ownerField)} <select class="sel" id="co-${cc}" data-in="cowner" aria-label="负责人筛选"><option value="ALL">全部</option>${owners.map(o => `<option ${c.owner === o ? 'selected' : ''}>${o}</option>`).join('')}${hasNone ? `<option value="__none" ${c.owner === '__none' ? 'selected' : ''}>未分配</option>` : ''}</select></label>
       <button class="btn sm${S.moreF ? ' on' : ''}" data-act="morefilters" aria-expanded="${S.moreF}">${icon('density')} 更多筛选${moreCount ? ` <span class="badge">${moreCount}</span>` : ''}</button>
-      ${COL_VIEWS.includes(c.view) && viewAvailable(cc, v) ? colBtn(c.view) : ''}${c.view === 'month' ? yearPicker(cfg.annualOnly.concat(cfg.monthYears)) + heatSwitch() : ''}
+      ${COL_VIEWS.includes(c.view) && viewAvailable(cc, v) ? colBtn(c.view, cc) : ''}${c.view === 'month' ? yearPicker(cfg.annualOnly.concat(cfg.monthYears)) + heatSwitch() : ''}
       <span class="spacer"></span>
       <span class="small muted">${rows.length === all.length ? `${all.length} 条` : `筛选出 <b>${rows.length}</b> / ${all.length} 条`}</span>
       ${filtersOn ? `<button class="link small" data-act="cclear">清空筛选</button>` : ''}
@@ -1493,7 +1495,8 @@ function notApplicable(cc, v) {
 }
 const skuCell = (l, list) => `<button class="sku-btn" data-act="sku" data-pid="${l.pid}" data-cc="${l.country}" data-lid="${l.lid}" ${list ? `data-list="${list}"` : ''} title="打开 ${esc(l.sku)} 统一详情">${esc(l.sku)}</button>${listingsOfP(l.pid).filter(x => x.country === l.country).length > 1 ? `<span class="multi" title="同国同 SKU 有 ${listingsOfP(l.pid).filter(x => x.country === l.country).length} 个 Listing（ASIN/MSKU 各自独立）">×${listingsOfP(l.pid).filter(x => x.country === l.country).length}</span>` : ''}`;
 const nameCell = l => `<span class="cell-name" title="${esc(P(l.pid).name)}">${esc(P(l.pid).name)}</span>`;
-function statusCell(l) {
+function statusCell(l) { return `<span data-derived="st-${l.lid}">${statusInner(l)}</span>`; }
+function statusInner(l) {
   const out = []; const iss = issuesOfL(l.lid);
   if (S.remote[l.lid]) out.push(['bad', '同事已改', '模拟：另一位同事已更新该计划记录']);
   if (isDirtyPlan(l.lid)) out.push(['warn', '未保存', '计划修改尚未保存']);
@@ -1530,12 +1533,12 @@ function countryView(cc, c, rows, allRows) {
   }
   return '';
 }
+function boxInner(l) { const b = boxesOf(l.lid); return b.v == null ? V(null) : `${fmt1(b.v)}${l.country === 'US' ? '' : ' <span class="tiny muted">示例</span>'}`; }
 function boxCell(l) {
   const cfg = D.CMAP[l.country]; if (!cfg.half && !cfg.stocking) return V('NF');
   const b = boxesOf(l.lid);
   if (b.why) return tag('warn', b.why, 'warn');
-  if (b.v == null) return `<span data-derived="box-${l.lid}">${V(null)}</span>`;
-  return `<span data-derived="box-${l.lid}">${fmt1(b.v)}</span>${l.country === 'US' ? '' : ' <span class="tiny muted">示例</span>'}`;
+  return `<span data-derived="box-${l.lid}">${boxInner(l)}</span>`;
 }
 function legendRow(keys) {
   const m = { edit: '<span><i class="sw-edit"></i>可编辑的人工计划字段（只改计划，不改实际库存/在途）</span>', hl: '<span><i class="sw-hl"></i>高亮月份（表头另有“● 已高亮”文字）</span>', na: '<span>“未提供”=缺报 · “无字段”=源表未设 · “未发生”=期间未到 · 数字0=真实0</span>', ex: '<span><i class="sw-ex"></i>采购关联区：仅回查，本轮不计算</span>', arr: '<span><i class="sw-arr"></i>预计到仓半月（只高亮表头，不改预测值）</span>', heat: '<span><i class="sw-heat"></i>色阶：按本记录最大值分 5 档，越深越多；未完整月不着色</span>' };
@@ -1818,7 +1821,7 @@ function colCatalog(cc, listAttr) {
     { key: 'a2', g: '库存', label: '180–365天', render: l => V(l.aging.m180_365) },
     { key: 'a3', g: '库存', label: '365天以上', render: l => V(l.aging.gt365) },
     { key: 'v180', g: '库存', label: '180+库龄货值', sub: '原值回查', render: l => V(l.value180) },
-    { key: 'cover', g: '库存', label: '可撑天数', sub: '演示估算 · FBA+所选在途', title: '条形：深色 = FBA 可撑天数，红色斜纹 = 到仓前断档，浅色 = 在途到仓后可撑；竖线 = 补货线（运输期 + 安全 14 天，示例参数）。演示估算，非原公式', appl: c => c.half, sort: true, cls: 'l cv-c', render: l => coverCell(l) },
+    { key: 'cover', g: '库存', label: '可撑天数', sub: '演示估算 · FBA+所选在途', title: '条形：深色 = FBA 可撑天数，红色 = 到仓前断档，浅色 = 在途到仓后可撑；竖线 = 补货线（运输期 + 安全 14 天，示例参数）。演示估算，非原公式', appl: c => c.half, sort: true, cls: 'l cv-c', render: l => coverCell(l) },
     { key: 'daysNow', g: '库存', label: 'FBA当前可售天数', sub: '源值·原公式待接入', appl: c => c.half, render: l => cf(l).half ? (l.daysNow == null ? tag('warn', '均销为0') : V(l.daysNow)) + (S.staleFba ? ' ' + tag('warn', '依赖旧库存') : '') : V('NF') },
     { key: 'daysTotal', g: '库存', label: 'FBA共计可售天数', sub: '源值·原公式待接入', appl: c => c.half, render: l => cf(l).half ? (l.daysTotal == null ? tag('warn', '均销为0') : V(l.daysTotal)) : V('NF') },
     { key: 'awd', g: '库存', label: 'AWD可用库存', sub: 'AG · 可用+预留+转FBA', appl: c => c.awd, render: l => l.awd ? `${V(l.awd.available + l.awd.reserved + l.awd.outbound)} <button class="link small" data-act="awd" data-lid="${l.lid}">组成</button>` : V('NF') },
@@ -1884,7 +1887,7 @@ function configuredCols(view, cc, listAttr) {
   const order = [...pin, ...cfg.cols.filter(k => !pin.includes(k) && by[k])];
   return order.map((k, i) => Object.assign({}, by[k], { pin: i < pin.length ? i : null, pinLast: i === pin.length - 1 }));
 }
-function colBtn(view) { const n = colCfg(view).cols.length; return `<button class="btn sm" data-act="colcfg" data-view="${view}" title="选择、排序和固定要显示的列">${icon('columns')} 列配置 <span class="tiny muted">${n}</span></button>`; }
+function colBtn(view, cc) { const keys = new Set(colCatalog(cc || null, '').map(c => c.key)); const n = colCfg(view).cols.filter(k => keys.has(k)).length; return `<button class="btn sm" data-act="colcfg" data-view="${view}" title="选择、排序和固定要显示的列">${icon('columns')} 列配置 <span class="tiny muted">${n}</span></button>`; }
 
 /* —— 列配置弹层 —— */
 function ccCatalog(e) { return colCatalog(null, '').filter(c => e.view === 'people' || c.key !== 'country'); }
@@ -2223,8 +2226,8 @@ PAGES.detail = function () {
     <div class="grow" style="min-width:0"><h1>${esc(p.sku)} <span class="h1-name">${esc(p.name)}</span></h1>
       <div class="small muted">${[...new Set(ls.map(l => l.country))].length} 个国家 · ${ls.length} 条 Listing · 装率 ${p.packRate ?? '缺'} · 等级 ${esc(p.grade)}${iss.length ? ` · <span class="st warn">待核对 ${iss.length}</span>` : ''}</div></div>
     <div class="row" style="gap:4px"><span class="small muted">${idx >= 0 ? `${idx + 1} / ${d.list.length}` : ''}</span>
-      <button class="icon-btn" data-act="pn" data-pid="${prev || ''}" ${prev ? '' : 'disabled'} aria-label="上一个 SKU" title="上一个 SKU">${icon('up')}</button>
-      <button class="icon-btn" data-act="pn" data-pid="${next || ''}" ${next ? '' : 'disabled'} aria-label="下一个 SKU" title="下一个 SKU">${icon('down')}</button></div>
+      <button class="icon-btn" id="pn-prev" data-act="pn" data-pid="${prev || ''}" ${prev ? '' : 'disabled'} aria-label="上一个 SKU" title="上一个 SKU">${icon('up')}</button>
+      <button class="icon-btn" id="pn-next" data-act="pn" data-pid="${next || ''}" ${next ? '' : 'disabled'} aria-label="下一个 SKU" title="下一个 SKU">${icon('down')}</button></div>
   </div>
   <div class="row" style="margin:14px 0 4px" role="group" aria-label="国家切换">
     <div class="seg">${[{ id: 'ALL', label: '全部国家' }, ...ccs.map(c => ({ id: c, label: c, cnt: ls.filter(l => l.country === c).length }))].map(it => `<button aria-pressed="${it.id === d.country}" data-act="dcountry" data-v="${it.id}" ${it.id !== 'ALL' && !it.cnt ? `disabled title="该SKU在${it.id}没有记录"` : ''}>${it.label}</button>`).join('')}</div>
@@ -2313,7 +2316,7 @@ function secFuture(p, ls, d, cur) {
   // 总销量右侧：DL:EE 20期（DL:DQ 空，DR:EE 按源公式描述汇总五国同名半月字段）
   const fiveLs = ls.filter(l => l.half);
   const dlee = D.HALF.map((h, k) => k < 6 ? 'EMPTY' : sumNums(fiveLs.map(l => S.half[l.lid][k])));
-  const tblRow = (label, sub, vals, heads, cls = '') => `<div class="tbl-wrap auto-h" id="tbl-d-${label.slice(0, 2)}${heads.length}" style="--fz1w:140px"><table class="t"><thead><tr><th class="l fz1" style="min-width:130px">${label}<span class="th-sub">${sub}</span></th>${heads.map(h => `<th class="c" style="min-width:74px">${h.label}</th>`).join('')}</tr></thead><tbody><tr><td class="l fz1 last">${esc(p.sku)}</td>${vals.map(v => `<td class="${cls}">${V(v, { nullText: '未设置' })}</td>`).join('')}</tr></tbody></table></div>`;
+  const tblRow = (label, sub, vals, heads, cls = '', dk = null) => `<div class="tbl-wrap auto-h" id="tbl-d-${label.slice(0, 2)}${heads.length}" style="--fz1w:140px"><table class="t"><thead><tr><th class="l fz1" style="min-width:130px">${label}<span class="th-sub">${sub}</span></th>${heads.map(h => `<th class="c" style="min-width:74px">${h.label}</th>`).join('')}</tr></thead><tbody><tr><td class="l fz1 last">${esc(p.sku)}</td>${vals.map((v, i) => `<td class="${cls}">${dk ? `<span data-derived="${dk}-${i}">` : ''}${V(v, { nullText: '未设置' })}${dk ? '</span>' : ''}</td>`).join('')}</tr></tbody></table></div>`;
   const vRows = ls.filter(l => D.CMAP[l.country].variant).map(l => ({ l }));
   const vCols = [
     { key: 'cc', label: '国家', cls: 'l', render: r => `<b>${r.l.country}</b>` }, { key: 'msku', label: 'MSKU', cls: 'l mono', render: r => esc(r.l.msku) },
@@ -2327,7 +2330,7 @@ function secFuture(p, ls, d, cur) {
       ${scope.length ? table('tbl-d-fiscal', fiscalCols, scope, { wrapCls: 'auto-h', fz1w: 60 }) : `<div class="empty"><h2>所选国家没有财年月目标区</h2></div>`}</div>
     <div class="panel"><div class="panel-h"><h3>总销量右侧区块</h3>${layerTag('sku')}<span class="hint">三块分别展示，不合并成一组 40 期</span></div>
       <div class="panel-b stack">
-        <div><div class="row small" style="margin-bottom:6px"><b>DL:EE · 20期国家半月计划汇总</b><span class="muted">DL:DQ 旧期源表为空（显示“空”，不补0）；DR:EE 按源公式描述汇总 US/CA/EU/UK/AU 同名半月字段，随上方编辑实时变化</span></div>${tblRow('国家预测汇总', 'DL:EE', dlee, D.HALF)}</div>
+        <div><div class="row small" style="margin-bottom:6px"><b>DL:EE · 20期国家半月计划汇总</b><span class="muted">DL:DQ 旧期源表为空（显示“空”，不补0）；DR:EE 按源公式描述汇总 US/CA/EU/UK/AU 同名半月字段，随上方编辑实时变化</span></div>${tblRow('国家预测汇总', 'DL:EE', dlee, D.HALF, '', 'dlee-' + p.pid)}</div>
         <div><div class="row small" style="margin-bottom:6px"><b>EG:EU · 另15期保存预测（至27年2月上）</b><span class="muted">保存数值，不是机器预测，不与上一块互相覆盖</span></div>${tblRow('保存预测', 'EG:EU', p.saved15, D.HALF15)}</div>
         <details><summary class="small"><b>CR:DK · 20期净缺口</b> <span class="muted">采购计算关联区，本轮排除，仅回查源值</span></summary><div style="margin-top:6px">${tblRow('净缺口(回查)', 'CR:DK · 不重算', p.netGap, D.HALF, 'excluded')}</div></details>
       </div></div>
@@ -2364,7 +2367,8 @@ function secPlan(p, ls, d) {
       <div class="note">${icon('info')} “计划→已建货件待发→已发→接收差异”分开显示：新建批次按申报量导入，不等于实际已发货。计划何时冲销、如何对应部分执行仍待业务确认。</div></div>
     ${projSection(p, ls, d)}</section>`;
 }
-function planStatusTag(lid) { const p = planOf(lid); if (!p) return ''; const m = { draft: ['mute', '草稿'], confirmed: ['ok', '已确认（示例状态）'], partial: ['info', '部分执行（示例）'] }[p.status] || ['mute', p.status]; return tag(m[0], m[1]) + (isDirtyPlan(lid) ? ' ' + tag('warn', '未保存', 'edit') : '') + (S.remote[lid] ? ' ' + tag('bad', '同事已改', 'people') : ''); }
+function planStatusTag(lid) { const p = planOf(lid); if (!p) return ''; return `<span data-derived="pst-${lid}">${planStatusInner(lid)}</span>`; }
+function planStatusInner(lid) { const p = planOf(lid); const m = { draft: ['mute', '草稿'], confirmed: ['ok', '已确认（示例状态）'], partial: ['info', '部分执行（示例）'] }[p.status] || ['mute', p.status]; return tag(m[0], m[1]) + (isDirtyPlan(lid) ? ' ' + tag('warn', '未保存', 'edit') : '') + (S.remote[lid] ? ' ' + tag('bad', '同事已改', 'people') : ''); }
 
 function secBatch(p, ls, d) {
   const rows = []; ls.forEach(l => batchLinesOf(l.lid).forEach(x => rows.push({ ...x, l })));
@@ -2654,7 +2658,8 @@ PAGES.plan = function () {
       <td class="sum-c"><span data-derived="ptot-${p.pid}">${fmt(tot)}</span></td><td>${V(p.domestic.avail, { keepZero: true })}</td>
       <td class="l"><span data-derived="pchk-${p.pid}">${tot > p.domestic.avail ? tag('warn', `超出现货 ${fmt(tot - p.domestic.avail)}`, 'warn') : tag('ok', '现货可覆盖')}</span></td>
       <td>${V(pipe.created, { keepZero: true })}</td><td>${V(pipe.shipped, { keepZero: true })}</td><td>${V(pipe.diff, { keepZero: true })}</td></tr>`;
-    const sub = open ? ls.map(l => `<tr><td class="l fz1 sub-row" style="padding-left:34px"><b>${l.country}</b> <span class="mono small">${esc(l.msku)}</span></td><td class="l small">${ownerHtml(l)} · <span class="mono">${planOf(l.lid).planId} v${planOf(l.lid).version}</span></td><td class="edit-c">${editNum('plan', l.lid, planQty(l.lid), { dirty: isDirtyPlan(l.lid), aria: `${l.country} ${l.sku} 计划量` })}</td><td colspan="${planCcs.length}" class="l edit-c">${noteInput(l)} ${planStatusTag(l.lid)} <span class="tiny muted">${esc(planOf(l.lid).editedBy || '')} ${esc(planOf(l.lid).updatedAt)}</span></td><td>${boxCell(l)}</td><td colspan="5" class="l small muted">${S.remote[l.lid] ? tag('bad', `同事 v${S.remote[l.lid].version}：${S.remote[l.lid].qty}`, 'people') : ''}</td></tr>`).join('') : '';
+    // 展开行与表头对齐：箱数在“装率”列下，计划量输入在本国列下，状态在“计划合计”列下，备注跨“国内现货/核对”，修改人与同事版本跨后三列
+    const sub = open ? ls.map(l => `<tr><td class="l fz1 sub-row" style="padding-left:34px"><b>${l.country}</b> <span class="mono small">${esc(l.msku)}</span></td><td class="l small">${ownerHtml(l)} · <span class="mono">${planOf(l.lid).planId} v${planOf(l.lid).version}</span></td><td title="箱数">${boxCell(l)}</td>${planCcs.map(cc => cc === l.country ? `<td class="edit-c">${editNum('plan', l.lid, planQty(l.lid), { dirty: isDirtyPlan(l.lid), aria: `${l.country} ${l.sku} 计划量` })}</td>` : '<td></td>').join('')}<td class="l">${planStatusTag(l.lid)}</td><td colspan="2" class="l edit-c">${noteInput(l)}</td><td colspan="3" class="l small muted">${esc(planOf(l.lid).editedBy || '')} ${esc(planOf(l.lid).updatedAt)}${S.remote[l.lid] ? ' ' + tag('bad', `同事 v${S.remote[l.lid].version}：${S.remote[l.lid].qty}`, 'people') : ''}</td></tr>`).join('') : '';
     return head + sub;
   }).join('');
   const grand = sumNums(D.LISTINGS.map(l => planQty(l.lid)));
@@ -2666,7 +2671,7 @@ PAGES.plan = function () {
       <label class="chk"><input type="checkbox" class="sw" id="plonly" data-in="plonly" ${st.onlyPlanned ? 'checked' : ''}> 仅看已填计划</label>
       <span class="spacer"></span><button class="btn sm" data-act="simremote" title="模拟另一位同事先保存了同一条计划记录">${icon('people')} 模拟同事修改同一记录</button><button class="btn sm" data-act="pexpand">${Object.keys(st.open).length ? '全部收起' : '全部展开'}</button></div>
     <div class="filters small" style="padding-top:0"><span>全部计划量合计 <b class="num" data-derived="pgrand">${fmt(grand)}</b>（含未保存）</span><span class="muted">SA 原表未设补货数量区，不出现在计划列；AE 使用“备货数量”。计划状态（草稿/已确认/部分执行）为建议规则的示例。</span></div>
-    <div class="tbl-wrap" id="tbl-plan" style="--fz1w:200px"><table class="t"><thead><tr><th class="l fz1" style="min-width:200px">SKU</th><th class="l">品名</th><th>装率</th>${planCcs.map(cc => `<th>${cc}${cc === 'AE' ? '<span class="th-sub">备货数量</span>' : '<span class="th-sub">本次发货量</span>'}</th>`).join('')}<th>计划合计</th><th>国内现货<span class="th-sub">共享·一次</span></th><th class="l">核对<span class="th-sub">演示·非原HW公式</span></th><th>已建货件待发<span class="th-sub">申报量</span></th><th>已发未接收</th><th>接收差异<span class="th-sub">带符号</span></th></tr></thead><tbody>${rows || `<tr><td colspan="14"><div class="empty"><h2>没有匹配的计划</h2><div>清空筛选后重试。</div></div></td></tr>`}</tbody></table></div>${pager('plan', ps.length, pst.page, pst.size, [25, 50, 100])}
+    <div class="tbl-wrap" id="tbl-plan" style="--fz1w:200px"><table class="t"><thead><tr><th class="l fz1" style="min-width:200px">SKU</th><th class="l">品名</th><th>装率</th>${planCcs.map(cc => `<th>${cc}${cc === 'AE' ? '<span class="th-sub">备货数量</span>' : '<span class="th-sub">本次发货量</span>'}</th>`).join('')}<th>计划合计</th><th>国内现货<span class="th-sub">共享·一次</span></th><th class="l">核对<span class="th-sub">演示·非原HW公式</span></th><th>已建货件待发<span class="th-sub">申报量</span></th><th>已发未接收</th><th>接收差异<span class="th-sub">带符号</span></th></tr></thead><tbody>${rows || `<tr><td colspan="${9 + planCcs.length}"><div class="empty"><h2>没有匹配的计划</h2><div>清空筛选后重试。</div></div></td></tr>`}</tbody></table></div>${pager('plan', ps.length, pst.page, pst.size, [25, 50, 100])}
   </div>`;
 };
 
@@ -2913,7 +2918,7 @@ function takeSnap() { const o = {}; const k = D.WEEKS.length - 1; D.LISTINGS.for
 const VER_SNAP_CUR = takeSnap();
 function versions() {
   const cur = { id: 'V-1012', file: '博达-1012进销存.xlsx', base: D.BASE_DATE, at: '2026-10-12 18:30', by: '运营甲', status: 'cur', issues: D.ISSUES.length, inputs: 10, scope: 'FBA、国内、销量、货件；AWD 沿用 10-04', age: 0, snap: VER_SNAP_CUR };
-  const runs = S.runs.slice().reverse().map(r => ({ id: r.id, file: `博达-${r.base.slice(5).replace('-', '')}进销存（演示）`, base: r.base, at: `2026-10-14 ${r.at}`, by: r.by, status: 'demo', issues: D.ISSUES.length, inputs: r.inputs, scope: r.summary, age: -1, snap: r.snap }));
+  const runs = S.runs.map(r => ({ id: r.id, file: `博达-${r.base.slice(5).replace('-', '')}进销存（演示）`, base: r.base, at: `2026-10-14 ${r.at}`, by: r.by, status: 'demo', issues: D.ISSUES.length, inputs: r.inputs, scope: r.summary, age: -1, snap: r.snap }));
   return [...runs, cur, ...VER_HIST.slice().reverse()];
 }
 /** 某版本下某 Listing 的指标：有快照的版本读快照；历史版本在 V-1012 快照基础上按版本与 Listing 生成确定性的虚构偏移 */
@@ -2977,8 +2982,10 @@ Object.assign(INP_EXTRA, { vsel: t => { const st = S.ver; const id = t.dataset.i
 
 /* ========== 保存 / 冲突（仅本页内存） ========== */
 const nowStr = () => { const d = new Date(); return `${D.BASE.y}-10-14 ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; };
-function commitAll() {
+function commitAll(adopted = 0) {
   const who = ROLES[S.role].name; let n = 0;
+  // 本地没改、但同事已有新版本的记录：保存时直接同步同事的版本（不是冲突）
+  const synced = pullRemote(lid => !isDirtyPlan(lid));
   Object.keys(S.plans).forEach(lid => {
     if (!isDirtyPlan(lid)) return;
     const a = S.plans[lid], b = S.plansSaved[lid]; const l = L(lid);
@@ -2992,7 +2999,19 @@ function commitAll() {
     S.halfSaved[lid] = S.half[lid].slice(); n += ks.length;
   });
   rerenderKeep();
-  toast(`已保存 ${n} 项到本次演示。<br><span class="muted">只写入当前页面内存，未同步给任何同事；刷新后重置。</span>`);
+  const extra = [adopted ? `采用同事的值 ${adopted} 条` : '', synced ? `同步同事的新版本 ${synced} 条` : ''].filter(Boolean).join('，');
+  toast(`已保存 ${n} 项到本次演示${extra ? `；${extra}` : ''}。<br><span class="muted">只写入当前页面内存，未同步给任何同事；刷新后重置。</span>`);
+}
+/** 把同事的新版本并入本地已保存值（模拟“从服务器拉取”）；返回处理条数 */
+function pullRemote(filter) {
+  let k = 0;
+  Object.keys(S.remote).forEach(lid => {
+    if (!filter(lid)) return; const r = S.remote[lid]; const l = L(lid);
+    S.plans[lid] = Object.assign(clone(S.plansSaved[lid]), { qty: r.qty, version: r.version, editedBy: r.by, updatedAt: r.at }); S.plansSaved[lid] = clone(S.plans[lid]);
+    S.log.unshift({ pid: l.pid, lid, at: nowStr(), who: ROLES[S.role].name, what: `同步同事 v${r.version} 的值 ${r.qty}` });
+    delete S.remote[lid]; k++;
+  });
+  return k;
 }
 function save() {
   if (!canEdit()) { toast('当前为只读演示身份，不能保存。', 'warn'); return; }
@@ -3013,13 +3032,14 @@ function resolveConflicts(lids) {
   const ack = $('#cr-ack') && $('#cr-ack').checked; const choice = {};
   lids.forEach(lid => { const r = $(`input[name="cr-${lid}"]:checked`); choice[lid] = r ? r.value : 'theirs'; });
   if (Object.values(choice).includes('mine') && !ack) { toast('请先勾选“我已核对同事的新版本”。', 'warn'); return; }
+  let adopted = 0;
   lids.forEach(lid => {
     const r = S.remote[lid]; const l = L(lid);
-    if (choice[lid] === 'theirs') { Object.assign(S.plans[lid], { qty: r.qty, version: r.version, editedBy: r.by, updatedAt: r.at }); S.plansSaved[lid] = clone(S.plans[lid]); S.log.unshift({ pid: l.pid, lid, at: nowStr(), who: ROLES[S.role].name, what: `冲突处理：采用同事 v${r.version} 的值 ${r.qty}` }); }
+    if (choice[lid] === 'theirs') { S.plans[lid] = Object.assign(clone(S.plansSaved[lid]), { qty: r.qty, version: r.version, editedBy: r.by, updatedAt: r.at }); S.plansSaved[lid] = clone(S.plans[lid]); S.log.unshift({ pid: l.pid, lid, at: nowStr(), who: ROLES[S.role].name, what: `冲突处理：采用同事 v${r.version} 的值 ${r.qty}（放弃本人对该记录的修改）` }); adopted++; }
     else { S.plans[lid].version = r.version; S.log.unshift({ pid: l.pid, lid, at: nowStr(), who: ROLES[S.role].name, what: `冲突处理：核对 v${r.version} 后以本人值覆盖` }); }
     delete S.remote[lid];
   });
-  closeModal(); commitAll();
+  closeModal(); commitAll(adopted);
 }
 function simRemote() {
   let lid = Object.keys(S.plans).find(isDirtyPlan) || D.LISTINGS.find(l => l.country === 'US' && planOf(l.lid)).lid;
@@ -3034,7 +3054,7 @@ function simRemote() {
 function parseQty(v) { v = String(v).trim().replace(/,/g, ''); if (v === '') return { ok: true, v: null }; if (!/^\d+$/.test(v)) return { ok: false }; return { ok: true, v: Number(v) }; }
 function setDerived(key, html) { $$(`[data-derived="${key}"]`).forEach(el => { el.innerHTML = html; }); }
 function refreshPlanDerived(lid) {
-  const l = L(lid); const b = boxesOf(lid); setDerived('box-' + lid, b.v == null ? V(null) : fmt1(b.v));
+  const l = L(lid); setDerived('box-' + lid, boxInner(l)); setDerived('st-' + lid, statusInner(l)); setDerived('pst-' + lid, planStatusInner(lid));
   const d = daysAfterOf(lid); if (d.v !== 'PENDING' && !d.why) setDerived('hx-' + lid, fmt1(d.v));
   const p = P(l.pid); const ls = listingsOfP(p.pid).filter(x => planOf(x.lid)); const tot = sumNums(ls.map(x => planQty(x.lid)));
   setDerived('ptot-' + p.pid, fmt(tot)); setDerived('ptotal-' + p.pid, fmt(tot));
@@ -3073,7 +3093,7 @@ const ACT = {
   bselorig: t => { S.transitSel[t.dataset.cc] = D.TRANSIT_SEL[t.dataset.cc] ? D.TRANSIT_SEL[t.dataset.cc].slice() : null; rerenderKeep(); },
   sku: t => { closeModal(); openSku(t.dataset.pid, { country: t.dataset.cc, lid: t.dataset.lid, list: t.dataset.list ? t.dataset.list.split(',') : null }); },
   back: () => goBack(),
-  pn: t => { if (!t.dataset.pid) return; const d = S.detail; const ls = listingsOfP(t.dataset.pid); const cc = d.country !== 'ALL' && ls.some(l => l.country === d.country) ? d.country : 'ALL'; Object.assign(d, { pid: t.dataset.pid, country: cc, lid: cc !== 'ALL' ? ls.find(l => l.country === cc).lid : null }); render({ top: true }); },
+  pn: t => { if (!t.dataset.pid) return; const d = S.detail; const ls = listingsOfP(t.dataset.pid); const cc = d.country !== 'ALL' && ls.some(l => l.country === d.country) ? d.country : 'ALL'; Object.assign(d, { pid: t.dataset.pid, country: cc, lid: cc !== 'ALL' ? ls.find(l => l.country === cc).lid : null }); const id = t.id; render({ top: true }); const b = id && document.getElementById(id); (b && !b.disabled ? b : $('#main')).focus({ preventScroll: true }); },
   dcountry: t => { const d = S.detail; d.country = t.dataset.v; d.lid = d.country === 'ALL' ? null : listingsOfP(d.pid).find(l => l.country === d.country).lid; rerenderKeep(); },
   dlisting: t => { const d = S.detail; const l = L(t.dataset.lid); d.lid = l.lid; d.country = l.country; rerenderKeep(); if (t.dataset.setcc) document.getElementById('sec-hist').scrollIntoView({ block: 'start' }); },
   anchor: t => { const el = document.getElementById(t.dataset.id); if (el) el.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); },
@@ -3098,7 +3118,7 @@ const ACT = {
   covtab: t => { S.coverage.tab = t.dataset.v; rerenderKeep(); },
   goto: t => { closeModal(); gotoTarget(t.dataset.t); },
   save: () => save(),
-  discard: () => { S.plans = clone(S.plansSaved); Object.keys(S.halfSaved).forEach(k => { S.half[k] = S.halfSaved[k].slice(); }); rerenderKeep(); toast('已放弃未保存的演示修改，恢复为上次保存的值。'); },
+  discard: () => { S.plans = clone(S.plansSaved); Object.keys(S.halfSaved).forEach(k => { S.half[k] = S.halfSaved[k].slice(); }); const n = pullRemote(() => true); rerenderKeep(); toast(`已放弃未保存的演示修改，恢复为上次保存的值${n ? `，并同步了同事的新版本 ${n} 条` : ''}。`); },
   cresolve: t => resolveConflicts(t.dataset.lids.split(',')),
   popsku: t => { hidePop(); $('#gq').blur(); openSku(t.dataset.pid, { country: t.dataset.cc, lid: t.dataset.lid }); },
   popall: () => { hidePop(); S.search.mode = 'text'; S.search.q = $('#gq').value; S.search.page = 1; go('search'); },
@@ -3116,7 +3136,7 @@ const INP = {
   wto: t => { const st = t.dataset.scope === 'detail' ? S.detail : cui(S.country); st.wto = t.value || null; rerenderKeep(); },
   plan: t => { const r = parseQty(t.value); t.setCustomValidity(r.ok ? '' : '请输入非负整数'); t.style.borderColor = r.ok ? '' : 'var(--bad)'; t.title = r.ok ? '人工计划字段：可编辑' : '请输入非负整数；未写入'; if (!r.ok) return; S.plans[t.dataset.lid].qty = r.v; t.classList.toggle('dirty', isDirtyPlan(t.dataset.lid)); $$(`[data-in="plan"][data-lid="${t.dataset.lid}"]`).forEach(x => { if (x !== t) { x.value = t.value; x.classList.toggle('dirty', isDirtyPlan(t.dataset.lid)); } }); refreshPlanDerived(t.dataset.lid); },
   note: t => { S.plans[t.dataset.lid].note = t.value; t.classList.toggle('dirty', S.plans[t.dataset.lid].note !== S.plansSaved[t.dataset.lid].note); renderSavebar(); },
-  half: t => { const r = parseQty(t.value); t.style.borderColor = r.ok ? '' : 'var(--bad)'; if (!r.ok) return; const lid = t.dataset.lid, k = Number(t.dataset.k); S.half[lid][k] = r.v; t.classList.toggle('dirty', isDirtyHalf(lid, k)); setDerived('hsum-' + lid, fmt(sumNums(S.half[lid]))); renderSavebar(); },
+  half: t => { const r = parseQty(t.value); t.style.borderColor = r.ok ? '' : 'var(--bad)'; if (!r.ok) return; const lid = t.dataset.lid, k = Number(t.dataset.k); S.half[lid][k] = r.v; t.classList.toggle('dirty', isDirtyHalf(lid, k)); setDerived('hsum-' + lid, fmt(sumNums(S.half[lid]))); $$(`[data-in="half"][data-lid="${lid}"][data-k="${k}"]`).forEach(x => { if (x !== t) { x.value = t.value; x.classList.toggle('dirty', isDirtyHalf(lid, k)); } }); const pid = L(lid).pid; if (k >= 6) setDerived(`dlee-${pid}-${k}`, V(sumNums(listingsOfP(pid).filter(x => x.half).map(x => S.half[x.lid][k])), { nullText: '未设置' })); renderSavebar(); },
   shipdate: t => { cui(S.country).shipDate = t.value; rerenderKeep(); },
   fassume: t => { S.fiscalAssume[S.country] = t.value; rerenderKeep(); },
   bsel: t => { const b = D.BATCHES.find(x => x.bid === t.dataset.bid); let s = selOf(b.country); if (s == null) s = batchesOf(b.country).map(x => x.bid); s = t.checked ? [...new Set([...s, b.bid])] : s.filter(x => x !== b.bid); S.transitSel[b.country] = s; rerenderKeep(); toast(`${b.country} ${b.label}：${t.checked ? '已计入在途' : '已取消计入（批次与原量历史保留）'}`); },
@@ -3157,12 +3177,12 @@ function boot() {
     const t = e.target.closest('[data-act]'); if (!t) { if (!e.target.closest('.gsearch')) hidePop(); return; }
     if (t.disabled) return; const fn = ACT[t.dataset.act]; if (fn) fn(t, e);
   });
-  let deb = null;
+  const deb = {}; // 每个输入框各自的防抖计时器
   // 中文输入法拼写过程中（isComposing）不处理，等 compositionend 再处理，避免重绘打断输入
   const onText = t => {
     if (t.id === 'gq') { showPop(); return; }
     const k = t.dataset && t.dataset.in; if (!k || !INP[k]) return;
-    if (LIVE.has(k)) INP[k](t); else if (DEBOUNCE.has(k)) { clearTimeout(deb); deb = setTimeout(() => INP[k](t), 260); }
+    if (LIVE.has(k)) INP[k](t); else if (DEBOUNCE.has(k)) { clearTimeout(deb[k]); deb[k] = setTimeout(() => INP[k](t), 260); }
   };
   document.addEventListener('input', e => { if (e.isComposing) return; onText(e.target); });
   document.addEventListener('compositionend', e => onText(e.target));

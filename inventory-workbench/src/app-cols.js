@@ -34,7 +34,7 @@ function colCatalog(cc, listAttr) {
     { key: 'a2', g: '库存', label: '180–365天', render: l => V(l.aging.m180_365) },
     { key: 'a3', g: '库存', label: '365天以上', render: l => V(l.aging.gt365) },
     { key: 'v180', g: '库存', label: '180+库龄货值', sub: '原值回查', render: l => V(l.value180) },
-    { key: 'cover', g: '库存', label: '可撑天数', sub: '演示估算 · FBA+所选在途', title: '条形：深色 = FBA 可撑天数，红色斜纹 = 到仓前断档，浅色 = 在途到仓后可撑；竖线 = 补货线（运输期 + 安全 14 天，示例参数）。演示估算，非原公式', appl: c => c.half, sort: true, cls: 'l cv-c', render: l => coverCell(l) },
+    { key: 'cover', g: '库存', label: '可撑天数', sub: '演示估算 · FBA+所选在途', title: '条形：深色 = FBA 可撑天数，红色 = 到仓前断档，浅色 = 在途到仓后可撑；竖线 = 补货线（运输期 + 安全 14 天，示例参数）。演示估算，非原公式', appl: c => c.half, sort: true, cls: 'l cv-c', render: l => coverCell(l) },
     { key: 'daysNow', g: '库存', label: 'FBA当前可售天数', sub: '源值·原公式待接入', appl: c => c.half, render: l => cf(l).half ? (l.daysNow == null ? tag('warn', '均销为0') : V(l.daysNow)) + (S.staleFba ? ' ' + tag('warn', '依赖旧库存') : '') : V('NF') },
     { key: 'daysTotal', g: '库存', label: 'FBA共计可售天数', sub: '源值·原公式待接入', appl: c => c.half, render: l => cf(l).half ? (l.daysTotal == null ? tag('warn', '均销为0') : V(l.daysTotal)) : V('NF') },
     { key: 'awd', g: '库存', label: 'AWD可用库存', sub: 'AG · 可用+预留+转FBA', appl: c => c.awd, render: l => l.awd ? `${V(l.awd.available + l.awd.reserved + l.awd.outbound)} <button class="link small" data-act="awd" data-lid="${l.lid}">组成</button>` : V('NF') },
@@ -100,7 +100,7 @@ function configuredCols(view, cc, listAttr) {
   const order = [...pin, ...cfg.cols.filter(k => !pin.includes(k) && by[k])];
   return order.map((k, i) => Object.assign({}, by[k], { pin: i < pin.length ? i : null, pinLast: i === pin.length - 1 }));
 }
-function colBtn(view) { const n = colCfg(view).cols.length; return `<button class="btn sm" data-act="colcfg" data-view="${view}" title="选择、排序和固定要显示的列">${icon('columns')} 列配置 <span class="tiny muted">${n}</span></button>`; }
+function colBtn(view, cc) { const keys = new Set(colCatalog(cc || null, '').map(c => c.key)); const n = colCfg(view).cols.filter(k => keys.has(k)).length; return `<button class="btn sm" data-act="colcfg" data-view="${view}" title="选择、排序和固定要显示的列">${icon('columns')} 列配置 <span class="tiny muted">${n}</span></button>`; }
 
 /* —— 列配置弹层 —— */
 function ccCatalog(e) { return colCatalog(null, '').filter(c => e.view === 'people' || c.key !== 'country'); }

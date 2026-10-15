@@ -1,7 +1,9 @@
 /* ========== 保存 / 冲突（仅本页内存） ========== */
 const nowStr = () => { const d = new Date(); return `${D.BASE.y}-10-14 ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; };
-function commitAll() {
+function commitAll(adopted = 0) {
   const who = ROLES[S.role].name; let n = 0;
+  // 本地没改、但同事已有新版本的记录：保存时直接同步同事的版本（不是冲突）
+  const synced = pullRemote(lid => !isDirtyPlan(lid));
   Object.keys(S.plans).forEach(lid => {
     if (!isDirtyPlan(lid)) return;
     const a = S.plans[lid], b = S.plansSaved[lid]; const l = L(lid);
@@ -15,7 +17,19 @@ function commitAll() {
     S.halfSaved[lid] = S.half[lid].slice(); n += ks.length;
   });
   rerenderKeep();
-  toast(`已保存 ${n} 项到本次演示。<br><span class="muted">只写入当前页面内存，未同步给任何同事；刷新后重置。</span>`);
+  const extra = [adopted ? `采用同事的值 ${adopted} 条` : '', synced ? `同步同事的新版本 ${synced} 条` : ''].filter(Boolean).join('，');
+  toast(`已保存 ${n} 项到本次演示${extra ? `；${extra}` : ''}。<br><span class="muted">只写入当前页面内存，未同步给任何同事；刷新后重置。</span>`);
+}
+/** 把同事的新版本并入本地已保存值（模拟“从服务器拉取”）；返回处理条数 */
+function pullRemote(filter) {
+  let k = 0;
+  Object.keys(S.remote).forEach(lid => {
+    if (!filter(lid)) return; const r = S.remote[lid]; const l = L(lid);
+    S.plans[lid] = Object.assign(clone(S.plansSaved[lid]), { qty: r.qty, version: r.version, editedBy: r.by, updatedAt: r.at }); S.plansSaved[lid] = clone(S.plans[lid]);
+    S.log.unshift({ pid: l.pid, lid, at: nowStr(), who: ROLES[S.role].name, what: `同步同事 v${r.version} 的值 ${r.qty}` });
+    delete S.remote[lid]; k++;
+  });
+  return k;
 }
 function save() {
   if (!canEdit()) { toast('当前为只读演示身份，不能保存。', 'warn'); return; }
@@ -36,13 +50,14 @@ function resolveConflicts(lids) {
   const ack = $('#cr-ack') && $('#cr-ack').checked; const choice = {};
   lids.forEach(lid => { const r = $(`input[name="cr-${lid}"]:checked`); choice[lid] = r ? r.value : 'theirs'; });
   if (Object.values(choice).includes('mine') && !ack) { toast('请先勾选“我已核对同事的新版本”。', 'warn'); return; }
+  let adopted = 0;
   lids.forEach(lid => {
     const r = S.remote[lid]; const l = L(lid);
-    if (choice[lid] === 'theirs') { Object.assign(S.plans[lid], { qty: r.qty, version: r.version, editedBy: r.by, updatedAt: r.at }); S.plansSaved[lid] = clone(S.plans[lid]); S.log.unshift({ pid: l.pid, lid, at: nowStr(), who: ROLES[S.role].name, what: `冲突处理：采用同事 v${r.version} 的值 ${r.qty}` }); }
+    if (choice[lid] === 'theirs') { S.plans[lid] = Object.assign(clone(S.plansSaved[lid]), { qty: r.qty, version: r.version, editedBy: r.by, updatedAt: r.at }); S.plansSaved[lid] = clone(S.plans[lid]); S.log.unshift({ pid: l.pid, lid, at: nowStr(), who: ROLES[S.role].name, what: `冲突处理：采用同事 v${r.version} 的值 ${r.qty}（放弃本人对该记录的修改）` }); adopted++; }
     else { S.plans[lid].version = r.version; S.log.unshift({ pid: l.pid, lid, at: nowStr(), who: ROLES[S.role].name, what: `冲突处理：核对 v${r.version} 后以本人值覆盖` }); }
     delete S.remote[lid];
   });
-  closeModal(); commitAll();
+  closeModal(); commitAll(adopted);
 }
 function simRemote() {
   let lid = Object.keys(S.plans).find(isDirtyPlan) || D.LISTINGS.find(l => l.country === 'US' && planOf(l.lid)).lid;
@@ -57,7 +72,7 @@ function simRemote() {
 function parseQty(v) { v = String(v).trim().replace(/,/g, ''); if (v === '') return { ok: true, v: null }; if (!/^\d+$/.test(v)) return { ok: false }; return { ok: true, v: Number(v) }; }
 function setDerived(key, html) { $$(`[data-derived="${key}"]`).forEach(el => { el.innerHTML = html; }); }
 function refreshPlanDerived(lid) {
-  const l = L(lid); const b = boxesOf(lid); setDerived('box-' + lid, b.v == null ? V(null) : fmt1(b.v));
+  const l = L(lid); setDerived('box-' + lid, boxInner(l)); setDerived('st-' + lid, statusInner(l)); setDerived('pst-' + lid, planStatusInner(lid));
   const d = daysAfterOf(lid); if (d.v !== 'PENDING' && !d.why) setDerived('hx-' + lid, fmt1(d.v));
   const p = P(l.pid); const ls = listingsOfP(p.pid).filter(x => planOf(x.lid)); const tot = sumNums(ls.map(x => planQty(x.lid)));
   setDerived('ptot-' + p.pid, fmt(tot)); setDerived('ptotal-' + p.pid, fmt(tot));
@@ -96,7 +111,7 @@ const ACT = {
   bselorig: t => { S.transitSel[t.dataset.cc] = D.TRANSIT_SEL[t.dataset.cc] ? D.TRANSIT_SEL[t.dataset.cc].slice() : null; rerenderKeep(); },
   sku: t => { closeModal(); openSku(t.dataset.pid, { country: t.dataset.cc, lid: t.dataset.lid, list: t.dataset.list ? t.dataset.list.split(',') : null }); },
   back: () => goBack(),
-  pn: t => { if (!t.dataset.pid) return; const d = S.detail; const ls = listingsOfP(t.dataset.pid); const cc = d.country !== 'ALL' && ls.some(l => l.country === d.country) ? d.country : 'ALL'; Object.assign(d, { pid: t.dataset.pid, country: cc, lid: cc !== 'ALL' ? ls.find(l => l.country === cc).lid : null }); render({ top: true }); },
+  pn: t => { if (!t.dataset.pid) return; const d = S.detail; const ls = listingsOfP(t.dataset.pid); const cc = d.country !== 'ALL' && ls.some(l => l.country === d.country) ? d.country : 'ALL'; Object.assign(d, { pid: t.dataset.pid, country: cc, lid: cc !== 'ALL' ? ls.find(l => l.country === cc).lid : null }); const id = t.id; render({ top: true }); const b = id && document.getElementById(id); (b && !b.disabled ? b : $('#main')).focus({ preventScroll: true }); },
   dcountry: t => { const d = S.detail; d.country = t.dataset.v; d.lid = d.country === 'ALL' ? null : listingsOfP(d.pid).find(l => l.country === d.country).lid; rerenderKeep(); },
   dlisting: t => { const d = S.detail; const l = L(t.dataset.lid); d.lid = l.lid; d.country = l.country; rerenderKeep(); if (t.dataset.setcc) document.getElementById('sec-hist').scrollIntoView({ block: 'start' }); },
   anchor: t => { const el = document.getElementById(t.dataset.id); if (el) el.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); },
@@ -121,7 +136,7 @@ const ACT = {
   covtab: t => { S.coverage.tab = t.dataset.v; rerenderKeep(); },
   goto: t => { closeModal(); gotoTarget(t.dataset.t); },
   save: () => save(),
-  discard: () => { S.plans = clone(S.plansSaved); Object.keys(S.halfSaved).forEach(k => { S.half[k] = S.halfSaved[k].slice(); }); rerenderKeep(); toast('已放弃未保存的演示修改，恢复为上次保存的值。'); },
+  discard: () => { S.plans = clone(S.plansSaved); Object.keys(S.halfSaved).forEach(k => { S.half[k] = S.halfSaved[k].slice(); }); const n = pullRemote(() => true); rerenderKeep(); toast(`已放弃未保存的演示修改，恢复为上次保存的值${n ? `，并同步了同事的新版本 ${n} 条` : ''}。`); },
   cresolve: t => resolveConflicts(t.dataset.lids.split(',')),
   popsku: t => { hidePop(); $('#gq').blur(); openSku(t.dataset.pid, { country: t.dataset.cc, lid: t.dataset.lid }); },
   popall: () => { hidePop(); S.search.mode = 'text'; S.search.q = $('#gq').value; S.search.page = 1; go('search'); },
@@ -139,7 +154,7 @@ const INP = {
   wto: t => { const st = t.dataset.scope === 'detail' ? S.detail : cui(S.country); st.wto = t.value || null; rerenderKeep(); },
   plan: t => { const r = parseQty(t.value); t.setCustomValidity(r.ok ? '' : '请输入非负整数'); t.style.borderColor = r.ok ? '' : 'var(--bad)'; t.title = r.ok ? '人工计划字段：可编辑' : '请输入非负整数；未写入'; if (!r.ok) return; S.plans[t.dataset.lid].qty = r.v; t.classList.toggle('dirty', isDirtyPlan(t.dataset.lid)); $$(`[data-in="plan"][data-lid="${t.dataset.lid}"]`).forEach(x => { if (x !== t) { x.value = t.value; x.classList.toggle('dirty', isDirtyPlan(t.dataset.lid)); } }); refreshPlanDerived(t.dataset.lid); },
   note: t => { S.plans[t.dataset.lid].note = t.value; t.classList.toggle('dirty', S.plans[t.dataset.lid].note !== S.plansSaved[t.dataset.lid].note); renderSavebar(); },
-  half: t => { const r = parseQty(t.value); t.style.borderColor = r.ok ? '' : 'var(--bad)'; if (!r.ok) return; const lid = t.dataset.lid, k = Number(t.dataset.k); S.half[lid][k] = r.v; t.classList.toggle('dirty', isDirtyHalf(lid, k)); setDerived('hsum-' + lid, fmt(sumNums(S.half[lid]))); renderSavebar(); },
+  half: t => { const r = parseQty(t.value); t.style.borderColor = r.ok ? '' : 'var(--bad)'; if (!r.ok) return; const lid = t.dataset.lid, k = Number(t.dataset.k); S.half[lid][k] = r.v; t.classList.toggle('dirty', isDirtyHalf(lid, k)); setDerived('hsum-' + lid, fmt(sumNums(S.half[lid]))); $$(`[data-in="half"][data-lid="${lid}"][data-k="${k}"]`).forEach(x => { if (x !== t) { x.value = t.value; x.classList.toggle('dirty', isDirtyHalf(lid, k)); } }); const pid = L(lid).pid; if (k >= 6) setDerived(`dlee-${pid}-${k}`, V(sumNums(listingsOfP(pid).filter(x => x.half).map(x => S.half[x.lid][k])), { nullText: '未设置' })); renderSavebar(); },
   shipdate: t => { cui(S.country).shipDate = t.value; rerenderKeep(); },
   fassume: t => { S.fiscalAssume[S.country] = t.value; rerenderKeep(); },
   bsel: t => { const b = D.BATCHES.find(x => x.bid === t.dataset.bid); let s = selOf(b.country); if (s == null) s = batchesOf(b.country).map(x => x.bid); s = t.checked ? [...new Set([...s, b.bid])] : s.filter(x => x !== b.bid); S.transitSel[b.country] = s; rerenderKeep(); toast(`${b.country} ${b.label}：${t.checked ? '已计入在途' : '已取消计入（批次与原量历史保留）'}`); },
@@ -180,12 +195,12 @@ function boot() {
     const t = e.target.closest('[data-act]'); if (!t) { if (!e.target.closest('.gsearch')) hidePop(); return; }
     if (t.disabled) return; const fn = ACT[t.dataset.act]; if (fn) fn(t, e);
   });
-  let deb = null;
+  const deb = {}; // 每个输入框各自的防抖计时器
   // 中文输入法拼写过程中（isComposing）不处理，等 compositionend 再处理，避免重绘打断输入
   const onText = t => {
     if (t.id === 'gq') { showPop(); return; }
     const k = t.dataset && t.dataset.in; if (!k || !INP[k]) return;
-    if (LIVE.has(k)) INP[k](t); else if (DEBOUNCE.has(k)) { clearTimeout(deb); deb = setTimeout(() => INP[k](t), 260); }
+    if (LIVE.has(k)) INP[k](t); else if (DEBOUNCE.has(k)) { clearTimeout(deb[k]); deb[k] = setTimeout(() => INP[k](t), 260); }
   };
   document.addEventListener('input', e => { if (e.isComposing) return; onText(e.target); });
   document.addEventListener('compositionend', e => onText(e.target));
