@@ -1,0 +1,446 @@
+[
+ {
+  "id": "country-us-overview",
+  "title": "国家主表 · US · 综合总览",
+  "variant": "desktop-light",
+  "file": "country-us-overview@desktop-light.png"
+ },
+ {
+  "id": "country-us-overview",
+  "title": "国家主表 · US · 综合总览",
+  "variant": "mobile-light",
+  "file": "country-us-overview@mobile-light.png"
+ },
+ {
+  "id": "country-us-overview-cover-sort",
+  "title": "国家主表 · US · 按可撑天数排序",
+  "variant": "desktop-light",
+  "file": "country-us-overview-cover-sort@desktop-light.png"
+ },
+ {
+  "id": "country-us-overview-cover-sort",
+  "title": "国家主表 · US · 按可撑天数排序",
+  "variant": "mobile-light",
+  "file": "country-us-overview-cover-sort@mobile-light.png"
+ },
+ {
+  "id": "country-us-month",
+  "title": "国家主表 · US · 月历史",
+  "variant": "desktop-light",
+  "file": "country-us-month@desktop-light.png"
+ },
+ {
+  "id": "country-us-month",
+  "title": "国家主表 · US · 月历史",
+  "variant": "mobile-light",
+  "file": "country-us-month@mobile-light.png"
+ },
+ {
+  "id": "country-us-month-heat-hl",
+  "title": "国家主表 · US · 月历史（色阶 + 高亮 10 月）",
+  "variant": "desktop-light",
+  "file": "country-us-month-heat-hl@desktop-light.png"
+ },
+ {
+  "id": "country-us-month-heat-hl",
+  "title": "国家主表 · US · 月历史（色阶 + 高亮 10 月）",
+  "variant": "mobile-light",
+  "file": "country-us-month-heat-hl@mobile-light.png"
+ },
+ {
+  "id": "country-us-week",
+  "title": "国家主表 · US · 周历史",
+  "variant": "desktop-light",
+  "file": "country-us-week@desktop-light.png"
+ },
+ {
+  "id": "country-us-week",
+  "title": "国家主表 · US · 周历史",
+  "variant": "mobile-light",
+  "file": "country-us-week@mobile-light.png"
+ },
+ {
+  "id": "country-us-future",
+  "title": "国家主表 · US · 未来计划/目标",
+  "variant": "desktop-light",
+  "file": "country-us-future@desktop-light.png"
+ },
+ {
+  "id": "country-us-future",
+  "title": "国家主表 · US · 未来计划/目标",
+  "variant": "mobile-light",
+  "file": "country-us-future@mobile-light.png"
+ },
+ {
+  "id": "country-us-plan",
+  "title": "国家主表 · US · 发货计划",
+  "variant": "desktop-light",
+  "file": "country-us-plan@desktop-light.png"
+ },
+ {
+  "id": "country-us-plan",
+  "title": "国家主表 · US · 发货计划",
+  "variant": "mobile-light",
+  "file": "country-us-plan@mobile-light.png"
+ },
+ {
+  "id": "country-us-batch-list",
+  "title": "国家主表 · US · 批次与在途（清单）",
+  "variant": "desktop-light",
+  "file": "country-us-batch-list@desktop-light.png"
+ },
+ {
+  "id": "country-us-batch-list",
+  "title": "国家主表 · US · 批次与在途（清单）",
+  "variant": "mobile-light",
+  "file": "country-us-batch-list@mobile-light.png"
+ },
+ {
+  "id": "country-us-batch-time",
+  "title": "国家主表 · US · 批次与在途（时间线）",
+  "variant": "desktop-light",
+  "file": "country-us-batch-time@desktop-light.png"
+ },
+ {
+  "id": "country-us-batch-time",
+  "title": "国家主表 · US · 批次与在途（时间线）",
+  "variant": "mobile-light",
+  "file": "country-us-batch-time@mobile-light.png"
+ },
+ {
+  "id": "country-us-stock",
+  "title": "国家主表 · US · 库存明细",
+  "variant": "desktop-light",
+  "file": "country-us-stock@desktop-light.png"
+ },
+ {
+  "id": "country-us-stock",
+  "title": "国家主表 · US · 库存明细",
+  "variant": "mobile-light",
+  "file": "country-us-stock@mobile-light.png"
+ },
+ {
+  "id": "country-us-info",
+  "title": "国家主表 · US · 商品资料",
+  "variant": "desktop-light",
+  "file": "country-us-info@desktop-light.png"
+ },
+ {
+  "id": "country-us-info",
+  "title": "国家主表 · US · 商品资料",
+  "variant": "mobile-light",
+  "file": "country-us-info@mobile-light.png"
+ },
+ {
+  "id": "country-ca-batch-empty",
+  "title": "国家主表 · CA · 批次明确空选",
+  "variant": "desktop-light",
+  "file": "country-ca-batch-empty@desktop-light.png"
+ },
+ {
+  "id": "country-ca-batch-empty",
+  "title": "国家主表 · CA · 批次明确空选",
+  "variant": "mobile-light",
+  "file": "country-ca-batch-empty@mobile-light.png"
+ },
+ {
+  "id": "country-ae-plan",
+  "title": "国家主表 · AE · 发货计划（部分结构）",
+  "variant": "desktop-light",
+  "file": "country-ae-plan@desktop-light.png"
+ },
+ {
+  "id": "country-ae-plan",
+  "title": "国家主表 · AE · 发货计划（部分结构）",
+  "variant": "mobile-light",
+  "file": "country-ae-plan@mobile-light.png"
+ },
+ {
+  "id": "country-sa-week",
+  "title": "国家主表 · SA · 周历史（简表）",
+  "variant": "desktop-light",
+  "file": "country-sa-week@desktop-light.png"
+ },
+ {
+  "id": "country-sa-week",
+  "title": "国家主表 · SA · 周历史（简表）",
+  "variant": "mobile-light",
+  "file": "country-sa-week@mobile-light.png"
+ },
+ {
+  "id": "modal-colcfg",
+  "title": "弹层 · 列配置（综合总览）",
+  "variant": "desktop-light",
+  "file": "modal-colcfg@desktop-light.png"
+ },
+ {
+  "id": "modal-colcfg",
+  "title": "弹层 · 列配置（综合总览）",
+  "variant": "mobile-light",
+  "file": "modal-colcfg@mobile-light.png"
+ },
+ {
+  "id": "modal-batch",
+  "title": "弹层 · 批次详情 US 0720",
+  "variant": "desktop-light",
+  "file": "modal-batch@desktop-light.png"
+ },
+ {
+  "id": "modal-batch",
+  "title": "弹层 · 批次详情 US 0720",
+  "variant": "mobile-light",
+  "file": "modal-batch@mobile-light.png"
+ },
+ {
+  "id": "detail-top",
+  "title": "SKU 详情 · 顶部（DEMO-ACR-24 · US）",
+  "variant": "desktop-light",
+  "file": "detail-top@desktop-light.png"
+ },
+ {
+  "id": "detail-top",
+  "title": "SKU 详情 · 顶部（DEMO-ACR-24 · US）",
+  "variant": "mobile-light",
+  "file": "detail-top@mobile-light.png"
+ },
+ {
+  "id": "detail-history",
+  "title": "SKU 详情 · 历史销量",
+  "variant": "desktop-light",
+  "file": "detail-history@desktop-light.png"
+ },
+ {
+  "id": "detail-history",
+  "title": "SKU 详情 · 历史销量",
+  "variant": "mobile-light",
+  "file": "detail-history@mobile-light.png"
+ },
+ {
+  "id": "detail-plan",
+  "title": "SKU 详情 · 发货计划与库存推演（DEMO-BRS-20 · US）",
+  "variant": "desktop-light",
+  "file": "detail-plan@desktop-light.png"
+ },
+ {
+  "id": "detail-plan",
+  "title": "SKU 详情 · 发货计划与库存推演（DEMO-BRS-20 · US）",
+  "variant": "mobile-light",
+  "file": "detail-plan@mobile-light.png"
+ },
+ {
+  "id": "detail-batch",
+  "title": "SKU 详情 · 批次/在途",
+  "variant": "desktop-light",
+  "file": "detail-batch@desktop-light.png"
+ },
+ {
+  "id": "detail-batch",
+  "title": "SKU 详情 · 批次/在途",
+  "variant": "mobile-light",
+  "file": "detail-batch@mobile-light.png"
+ },
+ {
+  "id": "people",
+  "title": "运营人员视图",
+  "variant": "desktop-light",
+  "file": "people@desktop-light.png"
+ },
+ {
+  "id": "people",
+  "title": "运营人员视图",
+  "variant": "mobile-light",
+  "file": "people@mobile-light.png"
+ },
+ {
+  "id": "people-matrix",
+  "title": "运营人员视图 · 人员 × 国家矩阵",
+  "variant": "desktop-light",
+  "file": "people-matrix@desktop-light.png"
+ },
+ {
+  "id": "people-matrix",
+  "title": "运营人员视图 · 人员 × 国家矩阵",
+  "variant": "mobile-light",
+  "file": "people-matrix@mobile-light.png"
+ },
+ {
+  "id": "search-acr",
+  "title": "全局搜索 · acr",
+  "variant": "desktop-light",
+  "file": "search-acr@desktop-light.png"
+ },
+ {
+  "id": "search-acr",
+  "title": "全局搜索 · acr",
+  "variant": "mobile-light",
+  "file": "search-acr@mobile-light.png"
+ },
+ {
+  "id": "search-empty",
+  "title": "全局搜索 · 空结果",
+  "variant": "desktop-light",
+  "file": "search-empty@desktop-light.png"
+ },
+ {
+  "id": "search-empty",
+  "title": "全局搜索 · 空结果",
+  "variant": "mobile-light",
+  "file": "search-empty@mobile-light.png"
+ },
+ {
+  "id": "total-month",
+  "title": "总销量 · 月历史",
+  "variant": "desktop-light",
+  "file": "total-month@desktop-light.png"
+ },
+ {
+  "id": "total-month",
+  "title": "总销量 · 月历史",
+  "variant": "mobile-light",
+  "file": "total-month@mobile-light.png"
+ },
+ {
+  "id": "total-stock",
+  "title": "总销量 · 库存·周转·货值",
+  "variant": "desktop-light",
+  "file": "total-stock@desktop-light.png"
+ },
+ {
+  "id": "total-stock",
+  "title": "总销量 · 库存·周转·货值",
+  "variant": "mobile-light",
+  "file": "total-stock@mobile-light.png"
+ },
+ {
+  "id": "total-blocks",
+  "title": "总销量 · 右侧区块",
+  "variant": "desktop-light",
+  "file": "total-blocks@desktop-light.png"
+ },
+ {
+  "id": "total-blocks",
+  "title": "总销量 · 右侧区块",
+  "variant": "mobile-light",
+  "file": "total-blocks@mobile-light.png"
+ },
+ {
+  "id": "stock-total",
+  "title": "库存汇总 · 原总库存",
+  "variant": "desktop-light",
+  "file": "stock-total@desktop-light.png"
+ },
+ {
+  "id": "stock-total",
+  "title": "库存汇总 · 原总库存",
+  "variant": "mobile-light",
+  "file": "stock-total@mobile-light.png"
+ },
+ {
+  "id": "stock-domestic",
+  "title": "库存汇总 · 国内库存",
+  "variant": "desktop-light",
+  "file": "stock-domestic@desktop-light.png"
+ },
+ {
+  "id": "stock-domestic",
+  "title": "库存汇总 · 国内库存",
+  "variant": "mobile-light",
+  "file": "stock-domestic@mobile-light.png"
+ },
+ {
+  "id": "stock-fba",
+  "title": "库存汇总 · FBA·ERP导出",
+  "variant": "desktop-light",
+  "file": "stock-fba@desktop-light.png"
+ },
+ {
+  "id": "stock-fba",
+  "title": "库存汇总 · FBA·ERP导出",
+  "variant": "mobile-light",
+  "file": "stock-fba@mobile-light.png"
+ },
+ {
+  "id": "stock-aging",
+  "title": "库存汇总 · 库龄",
+  "variant": "desktop-light",
+  "file": "stock-aging@desktop-light.png"
+ },
+ {
+  "id": "stock-aging",
+  "title": "库存汇总 · 库龄",
+  "variant": "mobile-light",
+  "file": "stock-aging@mobile-light.png"
+ },
+ {
+  "id": "stock-awd",
+  "title": "库存汇总 · AWD",
+  "variant": "desktop-light",
+  "file": "stock-awd@desktop-light.png"
+ },
+ {
+  "id": "stock-awd",
+  "title": "库存汇总 · AWD",
+  "variant": "mobile-light",
+  "file": "stock-awd@mobile-light.png"
+ },
+ {
+  "id": "plan",
+  "title": "发货计划",
+  "variant": "desktop-light",
+  "file": "plan@desktop-light.png"
+ },
+ {
+  "id": "plan",
+  "title": "发货计划",
+  "variant": "mobile-light",
+  "file": "plan@mobile-light.png"
+ },
+ {
+  "id": "update",
+  "title": "数据更新与异常",
+  "variant": "desktop-light",
+  "file": "update@desktop-light.png"
+ },
+ {
+  "id": "update",
+  "title": "数据更新与异常",
+  "variant": "mobile-light",
+  "file": "update@mobile-light.png"
+ },
+ {
+  "id": "versions",
+  "title": "版本记录",
+  "variant": "desktop-light",
+  "file": "versions@desktop-light.png"
+ },
+ {
+  "id": "versions",
+  "title": "版本记录",
+  "variant": "mobile-light",
+  "file": "versions@mobile-light.png"
+ },
+ {
+  "id": "coverage",
+  "title": "原表覆盖与验收",
+  "variant": "desktop-light",
+  "file": "coverage@desktop-light.png"
+ },
+ {
+  "id": "coverage",
+  "title": "原表覆盖与验收",
+  "variant": "mobile-light",
+  "file": "coverage@mobile-light.png"
+ },
+ {
+  "id": "notes",
+  "title": "方案说明",
+  "variant": "desktop-light",
+  "file": "notes@desktop-light.png"
+ },
+ {
+  "id": "notes",
+  "title": "方案说明",
+  "variant": "mobile-light",
+  "file": "notes@mobile-light.png"
+ }
+]

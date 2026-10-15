@@ -27,11 +27,14 @@
 | `src/app-detail.js` | SKU 统一详情的 7 个分区 |
 | `src/app-pages.js` | 人员、搜索、总销量、库存汇总、发货计划、更新、版本记录、覆盖、说明 |
 | `src/app-main.js` | 事件处理、保存/冲突模拟、全局搜索浮层、启动 |
+| `src/app-test.js` | 测试钩子 `window.wbTest`：37 个界面状态，供一比一视觉对比 |
 | `tools/build.py` | 内联生成 `index.html` 与 `dist/workbench.html` |
 | `tools/verify.cjs` | Playwright 交互验证与截图（134 项） |
 | `tools/perf.cjs` | 按真实规模测量各页面的渲染耗时 |
+| `tools/visual.cjs` | 视觉逐像素对比：原型与新实现在同一浏览器里按同一状态截图对比 |
 | `tools/a11y.cjs` | axe-core 无障碍扫描（24 个页面/弹层，浅色和深色各一次） |
 | `docs/` | 设计说明、状态说明、覆盖与验证记录、待确认项、开发前检查报告、截图 |
+| `docs/dev/` | **正式开发文档**（给 Codex 等编码代理）：架构、设计系统、页面规格、数据与规则、接口契约、状态与交互、验收、任务清单；`baseline/` 为参照截图 |
 
 ## 构建与验证
 
@@ -40,6 +43,7 @@ python3 tools/build.py            # 修改 src/ 后重新生成
 node tools/verify.cjs             # 需要 playwright；截图与 results.json 写入 docs/screenshots
 node tools/perf.cjs 25            # 真实规模性能，结果写入 docs/screenshots/perf.json
 npm i axe-core && node tools/a11y.cjs   # 无障碍扫描，结果写入 docs/screenshots/a11y.json
+node tools/visual.cjs compare <URL>     # 与新实现逐像素对比，报告写入 docs/dev/visual-report/
 ```
 
 `a11y.cjs` 也可以直接接收 `axe.min.js` 的路径作为参数。
@@ -51,3 +55,4 @@ npm i axe-core && node tools/a11y.cjs   # 无障碍扫描，结果写入 docs/sc
 3. [功能覆盖与验证记录](docs/03-功能覆盖与验证记录.md)
 4. [待确认项](docs/04-待确认项.md)
 5. [开发前检查报告](docs/05-开发前检查报告.md)
+6. [正式开发文档](docs/dev/00-开发总览.md)（入口；仓库根目录另有 `AGENTS.md`）

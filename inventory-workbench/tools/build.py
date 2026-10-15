@@ -8,7 +8,7 @@ root = pathlib.Path(__file__).resolve().parent.parent
 src = root / 'src'
 css = (src / 'styles.css').read_text(encoding='utf-8')
 shell = (src / 'shell.html').read_text(encoding='utf-8')
-js = '\n'.join((src / f).read_text(encoding='utf-8') for f in ['data.js', 'app-core.js', 'app-country.js', 'app-viz.js', 'app-cols.js', 'app-cover.js', 'app-detail.js', 'app-pages.js', 'app-main.js'])
+js = '\n'.join((src / f).read_text(encoding='utf-8') for f in ['data.js', 'app-core.js', 'app-country.js', 'app-viz.js', 'app-cols.js', 'app-cover.js', 'app-detail.js', 'app-pages.js', 'app-main.js', 'app-test.js'])
 head = '<title>进销存协作工作台</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n'
 frag = f'{head}<style>\n{css}\n</style>\n{shell}\n<script>\n{js}\n</script>\n'
 (root / 'dist').mkdir(exist_ok=True)
