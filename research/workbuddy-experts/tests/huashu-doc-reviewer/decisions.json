@@ -1,0 +1,32 @@
+{
+  "mode": "contract",
+  "author": "花叔 AI 审稿",
+  "decisions": [
+    {"id": "P1", "severity": "CRITICAL", "type": "comment+revision",
+     "match_text": "人民币50万元",
+     "replace_with": "人民币伍拾万元整（¥500,000.00，含6%增值税）",
+     "comment": "金额条款未明确含税口径与大写金额，开票与结算时易产生争议。建议写明是否含税、税率及大小写金额。"},
+    {"id": "P2", "severity": "CRITICAL", "type": "comment+revision",
+     "match_text": "尽快付款",
+     "replace_with": "15个工作日内付款；逾期每日按未付金额的0.05%支付违约金",
+     "comment": "「尽快」无法执行，账期不明且缺少逾期违约责任。"},
+    {"id": "P3", "severity": "MAJOR", "type": "comment+revision",
+     "match_text": "保证系统稳定运行，出现故障时及时处理",
+     "replace_with": "保证系统月可用性不低于99.5%，P1级故障2小时内响应、24小时内修复；未达标的，按当月服务费的5%/次扣减",
+     "comment": "SLA 未量化，「稳定」「及时」无法验收，也无对应赔偿。"},
+    {"id": "P4", "severity": "MAJOR", "type": "comment",
+     "match_text": "双方应对合作中知悉的对方信息保密",
+     "comment": "保密条款缺少保密信息范围、除外情形、保密期限（建议合同终止后3年）及违约责任。"},
+    {"id": "P5", "severity": "MAJOR", "type": "comment+revision",
+     "match_text": "可向法院起诉",
+     "replace_with": "可向甲方所在地有管辖权的人民法院起诉",
+     "comment": "未约定管辖法院，诉讼时可能被动。建议明确管辖地。"},
+    {"id": "P6", "severity": "MINOR", "type": "revision",
+     "match_text": "根据本合同约定",
+     "replace_with": "依据本合同约定",
+     "comment": "公文规范：引用合同条款时用「依据」。"},
+    {"id": "P7", "severity": "MINOR", "type": "comment",
+     "match_text": "第七条 知识产权",
+     "comment": "（故意构造的失配项，用于检验第3层「单条失败隔离」）"}
+  ]
+}

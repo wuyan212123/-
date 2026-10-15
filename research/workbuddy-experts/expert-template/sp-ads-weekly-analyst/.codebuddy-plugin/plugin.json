@@ -1,0 +1,32 @@
+{
+  "name": "sp-ads-weekly-analyst",
+  "version": "0.1.0",
+  "description": "Amazon Sponsored Products weekly review: compares search-term and targeting reports week over week, tags keywords, and delivers an Excel action list plus a weekly report.",
+  "agents": ["./agents/sp-ads-weekly-analyst.md"],
+  "expertType": "agent",
+  "agentName": "sp-ads-weekly-analyst",
+  "displayName": { "zh": "词明白", "en": "Ward" },
+  "profession": { "zh": "亚马逊SP广告周度复盘师", "en": "Amazon SP Ads Weekly Analyst" },
+  "displayDescription": {
+    "zh": "上传本周和上周的 SP 搜索词报表，10 分钟拿到一张按“否定 / 转Exact / 调竞价”分好类的 Excel 行动清单和一份周报。",
+    "en": "Upload this week's and last week's SP search-term reports and get an Excel action list (negate / move to Exact / bid changes) plus a weekly report in minutes."
+  },
+  "avatar": "avatars/expert.png",
+  "categoryId": "05-MarketingGrowth",
+  "defaultInitPrompt": {
+    "zh": "帮我复盘这周的 SP 广告：我上传本周和上周的 Search Term Report，目标 ACOS 30%。",
+    "en": "Review this week's SP ads: I'll upload this week's and last week's Search Term Reports, target ACOS 30%."
+  },
+  "tags": [
+    { "zh": "亚马逊广告", "en": "Amazon Ads" },
+    { "zh": "周度复盘", "en": "Weekly Review" },
+    { "zh": "否词与竞价", "en": "Negatives & Bids" }
+  ],
+  "quickPrompts": [
+    { "zh": "帮我复盘这周的 SP 广告：我上传本周和上周的 Search Term Report，目标 ACOS 30%。", "en": "Review this week's SP ads against last week, target ACOS 30%." },
+    { "zh": "找出这周点击多但没出单、该否定的词，导出 Excel。", "en": "Find this week's high-click, zero-order terms to negate and export to Excel." },
+    { "zh": "这周 ACOS 突然变高了，帮我定位是哪些词、哪个广告活动拉高的。", "en": "ACOS spiked this week — find which terms and campaigns drove it." }
+  ],
+  "skills": ["./skills/sp-ads-weekly-analysis"],
+  "author": { "zh": "（你的署名）", "en": "(your name)" }
+}
