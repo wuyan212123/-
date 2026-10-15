@@ -381,6 +381,11 @@ const check = (id, name, ok, detail = '') => { results.push({ id, name, ok: !!ok
   await page.fill(`#tbl-US-overview input[data-in="plan"][data-lid="${lid0}"]`, '123'); await page.waitForTimeout(60);
   check('Q6', '改计划量后状态列立即显示“未保存”（不整页重绘）', (await text(`[data-derived="st-${lid0}"]`)).includes('未保存') && await page.evaluate(l => document.activeElement.dataset.lid === l, lid0));
   await page.evaluate(() => ACT.discard());
+  const lidN = await page.evaluate(() => document.querySelector('#tbl-US-overview input[data-in="plan"]').dataset.lid);
+  await page.evaluate(() => { cui('US').view = 'plan'; go('country'); });
+  await page.fill(`#tbl-US-plan input[data-in="note"][data-lid="${lidN}"]`, '只改备注'); await page.waitForTimeout(60);
+  check('Q6', '只改备注后状态列也立即显示“未保存”', (await text(`[data-derived="st-${lidN}"]`)).includes('未保存'));
+  await page.evaluate(() => ACT.discard());
   const hv = await page.evaluate(() => { const l = D.LISTINGS.find(x => x.country === 'US' && x.half); openSku(l.pid, { country: 'ALL' }); const k = 8; const el = document.querySelector(`[data-in="half"][data-lid="${l.lid}"][data-k="${k}"]`); el.value = '999'; el.dispatchEvent(new Event('input', { bubbles: true })); const exp = sumNums(listingsOfP(l.pid).filter(x => x.half).map(x => S.half[x.lid][k])); return { dl: document.querySelector(`[data-derived="dlee-${l.pid}-${k}"]`).textContent.replace(/,/g, ''), exp: String(exp) }; });
   check('Q7', '改半月计划后 DL:EE 汇总立即更新', hv.dl === hv.exp, JSON.stringify(hv));
   await page.evaluate(() => ACT.discard());
