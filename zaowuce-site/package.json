@@ -1,0 +1,19 @@
+{
+  "name": "zaowuce-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "造物册：团队的工具工作台与知识库",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node --watch server.mjs",
+    "check": "node scripts/check-content.mjs",
+    "test": "node --test \"test/*.test.mjs\"",
+    "user": "node scripts/create-user.mjs",
+    "release": "node scripts/register-release.mjs",
+    "demo": "node scripts/build-demo.mjs"
+  }
+}

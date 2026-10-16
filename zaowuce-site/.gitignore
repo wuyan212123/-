@@ -1,0 +1,9 @@
+# 账号、会话日志等运行数据，只在服务器上
+/data/
+# 下载包体积大，单独同步，不进 Git
+downloads/*
+!downloads/.gitkeep
+# 演示构建产物
+/demo/
+node_modules/
+.DS_Store

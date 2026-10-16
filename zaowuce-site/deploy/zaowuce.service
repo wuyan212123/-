@@ -1,0 +1,34 @@
+# /etc/systemd/system/zaowuce.service
+[Unit]
+Description=造物册网站
+After=network.target
+
+[Service]
+Type=simple
+User=zaowuce
+Group=zaowuce
+WorkingDirectory=/opt/zaowuce/current
+ExecStart=/usr/local/bin/node server.mjs
+# systemctl reload zaowuce：重新读取内容和发布清单，已登录的成员不受影响
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=3
+
+Environment=NODE_ENV=production
+Environment=HOST=127.0.0.1
+Environment=PORT=8080
+Environment=COOKIE_SECURE=1
+Environment=TRUST_PROXY=1
+Environment=DATA_DIR=/var/lib/zaowuce
+Environment=DOWNLOAD_DIR=/var/lib/zaowuce/downloads
+
+# 服务只能写自己的数据目录
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/zaowuce
+MemoryMax=512M
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,70 @@
+{
+  "tool": "inventory-table-update",
+  "recommended": null,
+  "versions": {
+    "source": "1.0.11",
+    "package": "1.0.10",
+    "deployed": null,
+    "tutorial": "1.0.10"
+  },
+  "notice": "推荐版本尚未确定。源码已到 v1.0.11，当前下载包为 v1.0.10；「在途批次成组并默认展开」只在 v1.0.11 源码中。",
+  "known_limits": [
+    "未在所有 Windows／WPS 组合上实机验证，未验证的组合请先用练习样表试一次。"
+  ],
+  "releases": [
+    {
+      "version": "1.0.10",
+      "status": "current",
+      "date": null,
+      "notes": "当前下载包版本。",
+      "verified_on": [],
+      "assets": [
+        {
+          "id": "inventory-1.0.10-win",
+          "label": "Windows · 普通版",
+          "os": "windows",
+          "variant": "standard",
+          "file": "inventory-table-update-1.0.10-windows.zip",
+          "size": null,
+          "sha256": null
+        },
+        {
+          "id": "inventory-1.0.10-win-annotated",
+          "label": "Windows · 注释版",
+          "os": "windows",
+          "variant": "annotated",
+          "file": "inventory-table-update-1.0.10-windows-annotated.zip",
+          "size": null,
+          "sha256": null
+        },
+        {
+          "id": "inventory-1.0.10-mac",
+          "label": "macOS · 普通版",
+          "os": "macos",
+          "variant": "standard",
+          "file": "inventory-table-update-1.0.10-macos.zip",
+          "size": null,
+          "sha256": null
+        },
+        {
+          "id": "inventory-1.0.10-mac-annotated",
+          "label": "macOS · 注释版",
+          "os": "macos",
+          "variant": "annotated",
+          "file": "inventory-table-update-1.0.10-macos-annotated.zip",
+          "size": null,
+          "sha256": null
+        }
+      ]
+    }
+  ],
+  "attachments": [
+    {
+      "id": "inventory-sample-01",
+      "label": "练习样表 SAMPLE-01",
+      "file": "inventory-sample-01.zip",
+      "size": null,
+      "sha256": null
+    }
+  ]
+}
