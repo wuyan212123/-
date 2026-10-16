@@ -1,0 +1,835 @@
+<title>造物册工作台</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* 布局：安静的工作资料册。桌面为轻侧栏＋内容区，手机为顶栏＋抽屉菜单；首页以任务为入口，详情页按「准备→运行→核对→下次」组织。 */
+:root {
+  --paper: #f3f5f4;
+  --surface: #ffffff;
+  --sunken: #e9edec;
+  --ink: #1b2330;
+  --ink-2: #485263;
+  --ink-3: #737d8c;
+  --rule: #d7dde0;
+  --accent: #2c4f9e;
+  --accent-ink: #ffffff;
+  --accent-soft: #e5ebf7;
+  --ok: #2c7a4d;
+  --ok-soft: #e2f1e8;
+  --warn: #9a620f;
+  --warn-soft: #f8eedb;
+  --bad: #b03636;
+  --bad-soft: #f7e3e3;
+  --focus: #2c4f9e;
+  --f-display: "Noto Serif SC", "Songti SC", "STSong", serif;
+  --f-body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  --r: 10px;
+  --side: 236px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #13171c; --surface: #1a1f26; --sunken: #20262e; --ink: #e5e8ec; --ink-2: #b1b8c3; --ink-3: #848c99;
+    --rule: #2c333c; --accent: #8ea8ea; --accent-ink: #10162a; --accent-soft: #222d47;
+    --ok: #6cc590; --ok-soft: #1b3326; --warn: #e2a94c; --warn-soft: #382a14; --bad: #e77d7d; --bad-soft: #3a1d1d; --focus: #8ea8ea;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #13171c; --surface: #1a1f26; --sunken: #20262e; --ink: #e5e8ec; --ink-2: #b1b8c3; --ink-3: #848c99;
+  --rule: #2c333c; --accent: #8ea8ea; --accent-ink: #10162a; --accent-soft: #222d47;
+  --ok: #6cc590; --ok-soft: #1b3326; --warn: #e2a94c; --warn-soft: #382a14; --bad: #e77d7d; --bad-soft: #3a1d1d; --focus: #8ea8ea;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper); color: var(--ink);
+  font-family: var(--f-body); font-size: 15px; line-height: 1.65;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+h1 { font-family: var(--f-display); font-size: 1.9rem; line-height: 1.3; font-weight: 700; letter-spacing: .01em; }
+h2 { font-family: var(--f-display); font-size: 1.3rem; line-height: 1.4; font-weight: 600; }
+h3 { font-size: 1rem; font-weight: 700; line-height: 1.5; }
+p { margin: 0; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+.mono { font-family: var(--f-mono); font-size: .86em; font-variant-numeric: tabular-nums; }
+.muted { color: var(--ink-3); }
+.small { font-size: .86rem; }
+.eyebrow { font-size: .76rem; letter-spacing: .12em; color: var(--ink-3); font-weight: 500; }
+
+/* 框架 */
+.app { display: grid; grid-template-columns: var(--side) minmax(0, 1fr); gap: 32px; max-width: 1240px; margin: 0 auto; min-height: 100vh; }
+.side { position: sticky; top: env(safe-area-inset-top, 0px); align-self: start; height: 100vh; display: flex; flex-direction: column; gap: 20px; padding-block: 28px 20px; }
+.brand { display: flex; flex-direction: column; gap: 2px; padding-inline: 10px; }
+.brand b { font-family: var(--f-display); font-size: 1.55rem; letter-spacing: .08em; color: var(--ink); }
+.brand span { font-family: var(--f-mono); font-size: .76rem; color: var(--ink-3); }
+.nav { display: flex; flex-direction: column; gap: 2px; }
+.nav a { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: 8px; color: var(--ink-2); font-weight: 500; }
+.nav a:hover { background: var(--sunken); text-decoration: none; }
+.nav a[aria-current="page"] { background: var(--surface); color: var(--ink); box-shadow: inset 0 0 0 1px var(--rule); }
+.nav .sep { height: 1px; background: var(--rule); margin: 10px 10px; }
+.nav .count { font-family: var(--f-mono); font-size: .76rem; color: var(--ink-3); }
+.who { margin-top: auto; display: flex; flex-direction: column; gap: 6px; padding: 12px 10px 0; border-top: 1px solid var(--rule); }
+.who b { font-weight: 500; }
+.linkbtn { background: none; border: 0; padding: 0; font: inherit; color: var(--accent); cursor: pointer; text-align: left; }
+
+.main { min-width: 0; padding-block: 24px 64px; display: flex; flex-direction: column; gap: 28px; }
+.topbar { display: flex; gap: 12px; align-items: center; }
+.topbar .menu-btn { display: none; }
+.search { flex: 1; display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--rule); border-radius: 999px; padding: 4px 6px 4px 16px; max-width: 560px; }
+.search input { flex: 1; min-width: 0; border: 0; background: transparent; font: inherit; color: var(--ink); padding: 6px 0; }
+.search input:focus { outline: none; }
+.search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.topbar .feedback { margin-left: auto; white-space: nowrap; }
+.proto-note { font-size: .8rem; color: var(--warn); background: var(--warn-soft); border-radius: 8px; padding: 6px 12px; }
+
+/* 通用部件 */
+.btn { display: inline-flex; align-items: center; gap: 8px; border-radius: 8px; padding: 9px 16px; font: inherit; font-weight: 500; cursor: pointer; border: 1px solid var(--rule); background: var(--surface); color: var(--ink); text-decoration: none; }
+.btn:hover { text-decoration: none; border-color: var(--ink-3); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.small { padding: 5px 12px; font-size: .86rem; }
+.btn[disabled] { opacity: .5; cursor: not-allowed; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: .78rem; font-weight: 500; padding: 2px 10px; border-radius: 999px; background: var(--sunken); color: var(--ink-2); white-space: nowrap; }
+.pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.pill.ok { background: var(--ok-soft); color: var(--ok); }
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+.pill.bad { background: var(--bad-soft); color: var(--bad); }
+.pill.info { background: var(--accent-soft); color: var(--accent); }
+.pill.plain::before { display: none; }
+.panel { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--r); padding: 20px 22px; }
+.notice { display: flex; gap: 12px; border-radius: var(--r); padding: 14px 16px; background: var(--accent-soft); color: var(--ink); }
+.notice.warn { background: var(--warn-soft); }
+.notice.bad { background: var(--bad-soft); }
+.notice .k { font-weight: 700; white-space: nowrap; }
+.notice.warn .k { color: var(--warn); }
+.notice.bad .k { color: var(--bad); }
+.notice .k.info { color: var(--accent); }
+.stack { display: flex; flex-direction: column; gap: 12px; }
+.stack.lg { gap: 20px; }
+.crumb { font-size: .86rem; color: var(--ink-3); }
+.crumb a { color: var(--ink-3); }
+.table-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: var(--r); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: .92rem; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-weight: 500; color: var(--ink-3); font-size: .8rem; letter-spacing: .04em; background: var(--sunken); white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+.section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+/* 首页 */
+.hero { display: flex; flex-direction: column; gap: 10px; padding-top: 4px; }
+.hero p { color: var(--ink-2); max-width: 46em; }
+.tasks { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 14px; }
+.task { display: flex; flex-direction: column; gap: 10px; padding: 20px; border-radius: var(--r); background: var(--surface); border: 1px solid var(--rule); color: var(--ink); text-decoration: none; }
+.task:hover { border-color: var(--accent); text-decoration: none; }
+.task .go { margin-top: auto; color: var(--accent); font-weight: 500; font-size: .92rem; }
+.task.lead { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.task.lead .eyebrow, .task.lead p, .task.lead .go { color: var(--accent-ink); opacity: .92; }
+.task h3 { font-family: var(--f-display); font-size: 1.2rem; font-weight: 600; }
+.task p { font-size: .9rem; color: var(--ink-2); }
+.trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1px solid var(--rule); border-radius: var(--r); background: var(--surface); overflow: hidden; }
+.trio > div { padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; border-left: 1px solid var(--rule); }
+.trio > div:first-child { border-left: 0; }
+.trio .rec { background: var(--accent-soft); }
+.two { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px; }
+.list { display: flex; flex-direction: column; border-top: 1px solid var(--rule); }
+.list > * { display: flex; gap: 12px; justify-content: space-between; align-items: baseline; padding: 11px 2px; border-bottom: 1px solid var(--rule); color: var(--ink); }
+.list > a:hover { text-decoration: none; background: var(--sunken); }
+.list .date { font-family: var(--f-mono); font-size: .8rem; color: var(--ink-3); white-space: nowrap; }
+
+/* 目录 */
+.filters { display: flex; gap: 18px; flex-wrap: wrap; }
+.fgroup { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.fgroup > span { font-size: .8rem; color: var(--ink-3); margin-right: 4px; }
+.chip { font: inherit; font-size: .85rem; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--rule); background: var(--surface); color: var(--ink-2); cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.catalog { display: flex; flex-direction: column; gap: 10px; }
+.item { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 20px; padding: 16px 20px; background: var(--surface); border: 1px solid var(--rule); border-radius: var(--r); color: var(--ink); }
+.item:hover { border-color: var(--accent); text-decoration: none; }
+.item .meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.item .side-info { grid-row: span 2; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; text-align: right; font-size: .82rem; color: var(--ink-3); }
+.item h3 { font-size: 1.05rem; }
+.item p { color: var(--ink-2); font-size: .92rem; }
+.empty { text-align: center; padding: 40px 20px; display: flex; flex-direction: column; gap: 10px; align-items: center; color: var(--ink-2); border: 1px dashed var(--rule); border-radius: var(--r); }
+.empty b { color: var(--ink); font-size: 1.05rem; }
+
+/* 详情 */
+.detail-head { display: flex; flex-direction: column; gap: 12px; }
+.detail-head .aliases { color: var(--ink-3); font-size: .9rem; }
+.detail { display: grid; grid-template-columns: 168px minmax(0, 1fr); gap: 28px; align-items: start; }
+.rail { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 20px); display: flex; flex-direction: column; gap: 2px; border-left: 2px solid var(--rule); }
+.rail button { all: unset; cursor: pointer; padding: 6px 12px; margin-left: -2px; border-left: 2px solid transparent; color: var(--ink-2); font-size: .92rem; display: flex; gap: 8px; }
+.rail button .n { font-family: var(--f-mono); color: var(--ink-3); font-size: .8rem; padding-top: 2px; }
+.rail button:hover { color: var(--ink); }
+.rail button.on { border-left-color: var(--accent); color: var(--ink); font-weight: 500; }
+.rail button:focus-visible { outline: 2px solid var(--focus); }
+.steps { display: flex; flex-direction: column; gap: 36px; min-width: 0; }
+.step { display: flex; flex-direction: column; gap: 14px; scroll-margin-top: 24px; }
+.step-title { display: flex; gap: 12px; align-items: baseline; }
+.step-title .n { font-family: var(--f-mono); font-size: .82rem; color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 0 8px; }
+ol.plain { margin: 0; padding-left: 1.3em; display: flex; flex-direction: column; gap: 6px; }
+.checks { display: flex; flex-direction: column; gap: 2px; }
+.checks label { display: flex; gap: 10px; align-items: flex-start; padding: 8px 4px; border-bottom: 1px solid var(--rule); cursor: pointer; }
+.checks label:last-child { border-bottom: 0; }
+.checks input { margin-top: 5px; accent-color: var(--accent); }
+.status3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.status3 > div { padding: 14px; border-radius: var(--r); display: flex; flex-direction: column; gap: 6px; background: var(--surface); border: 1px solid var(--rule); }
+.carry { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 12px; align-items: center; }
+.carry .f { padding: 14px; border-radius: var(--r); background: var(--surface); border: 1px solid var(--rule); display: flex; flex-direction: column; gap: 2px; }
+.carry .arrow { color: var(--ink-3); font-family: var(--f-mono); }
+.related { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.related a { display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border-radius: var(--r); background: var(--surface); border: 1px solid var(--rule); color: var(--ink); }
+.related a:hover { border-color: var(--accent); text-decoration: none; }
+.prose { max-width: 42em; display: flex; flex-direction: column; gap: 14px; color: var(--ink); }
+.prose h2 { margin-top: 10px; }
+pre.prompt { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: var(--f-mono); font-size: .84rem; line-height: 1.7; background: var(--sunken); border-radius: var(--r); padding: 16px 18px; max-height: 320px; overflow: auto; }
+textarea { width: 100%; min-height: 160px; font: inherit; font-family: var(--f-mono); font-size: .88rem; color: var(--ink); background: var(--surface); border: 1px solid var(--rule); border-radius: var(--r); padding: 12px; resize: vertical; }
+.split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+
+/* 表单与管理 */
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: .86rem; color: var(--ink-2); font-weight: 500; }
+.field input, .field select { font: inherit; padding: 9px 12px; border: 1px solid var(--rule); border-radius: 8px; background: var(--surface); color: var(--ink); }
+.login-wrap { min-height: 100vh; display: grid; place-items: center; padding-block: 40px; }
+.login { width: min(400px, 100%); display: flex; flex-direction: column; gap: 18px; }
+.login .brand { padding: 0; }
+.states { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.states .panel { display: flex; flex-direction: column; gap: 10px; }
+.code-big { font-family: var(--f-mono); font-size: 2rem; color: var(--ink-3); line-height: 1; }
+
+mark { background: var(--warn-soft); color: var(--ink); border-radius: 3px; padding: 0 2px; }
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--paper); padding: 10px 18px; border-radius: 999px; font-size: .9rem; z-index: 30; max-width: calc(100% - 32px); }
+.scrim { display: none; }
+
+@media (max-width: 1020px) {
+  .tasks { grid-template-columns: 1fr 1fr; }
+  .tasks .lead { grid-column: 1 / -1; }
+  .two { grid-template-columns: 1fr; }
+  .related { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 860px) {
+  .app { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .side { position: fixed; z-index: 20; top: 0; bottom: 0; left: 0; width: min(280px, 84vw); height: auto; background: var(--paper); border-right: 1px solid var(--rule); padding: calc(20px + env(safe-area-inset-top, 0px)) 14px calc(20px + env(safe-area-inset-bottom, 0px)) max(14px, env(safe-area-inset-left, 0px)); transform: translateX(-102%); transition: transform .2s ease; }
+  .side.open { transform: none; }
+  .scrim.open { display: block; position: fixed; inset: 0; z-index: 15; background: rgba(0,0,0,.35); }
+  .topbar .menu-btn { display: inline-flex; }
+  .topbar .feedback { display: none; }
+  .detail { grid-template-columns: minmax(0, 1fr); }
+  .rail { position: static; flex-direction: row; overflow-x: auto; border-left: 0; border-bottom: 2px solid var(--rule); }
+  .rail button { margin: 0 0 -2px; border-left: 0; border-bottom: 2px solid transparent; white-space: nowrap; }
+  .rail button.on { border-bottom-color: var(--accent); }
+}
+@media (max-width: 620px) {
+  h1 { font-size: 1.55rem; }
+  .tasks, .related, .status3, .states, .split { grid-template-columns: 1fr; }
+  .trio { grid-template-columns: 1fr; }
+  .trio > div { border-left: 0; border-top: 1px solid var(--rule); }
+  .trio > div:first-child { border-top: 0; }
+  .item { grid-template-columns: 1fr; }
+  .item .side-info { grid-row: auto; align-items: flex-start; text-align: left; flex-direction: row; flex-wrap: wrap; }
+  .carry { grid-template-columns: 1fr; }
+  .carry .arrow { transform: rotate(90deg); justify-self: center; }
+  .panel { padding: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+</style>
+
+<div id="root"></div>
+<div id="toast" class="toast" role="status" hidden></div>
+
+<script>
+(() => {
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  const MAT = { formal: ['正式', 'ok'], trial: ['试用', 'info'], sample: ['示例', 'warn'], history: ['历史', ''], upcoming: ['待开放', 'info'] };
+  const RUN = { download: '下载后本机', browser: '浏览器内', online: '在线服务', doc: '仅文档' };
+  const pill = m => `<span class="pill ${MAT[m][1]}">${MAT[m][0]}</span>`;
+
+  const tools = [
+    { id: 'inventory', name: '进销存表格更新', aliases: ['报表更新器', '进销存制作程序', 'local-app'], summary: '选择主表、更新记录和本期源报表，生成新版进销存表格与配套更新记录。', output: '新版进销存表格＋更新记录', run: 'download', maturity: 'formal', version: '包 v1.0.10 · 推荐版本待定', scene: '进销存' },
+    { id: 'visualizer', name: '进销存可视化程序', aliases: ['进销存协作工作台', 'workspace-app'], summary: '团队按 SKU、国家、人员查看库存、销量与计划，并在权限内修改保存。', output: '在线协作视图', run: 'doc', maturity: 'upcoming', version: '尚未上线', scene: '进销存' },
+    { id: 'dedupe', name: '文本去重整理', aliases: ['去重', '文本整理'], summary: '按行去掉首尾空白和重复项，保留原有顺序。', output: '整理后的文本', run: 'browser', maturity: 'formal', version: '随网站更新', scene: '轻量整理' },
+    { id: 'script', name: '脚本更新', aliases: ['WPS 更新脚本', 'V2.10.7'], summary: '原有 WPS 脚本流程，保留作对照。新同事请使用「进销存表格更新」。', output: '—', run: 'doc', maturity: 'history', version: 'V2.10.7 系列', scene: '进销存' }
+  ];
+  const skills = [
+    { id: 'inv-check', name: '进销存结果核验', topic: '进销存核验', maturity: 'formal', env: 'Claude、ChatGPT 等对话式 AI', ver: 'v1.0', summary: '对照更新记录与核对清单，逐项检查新版进销存表格中的汇总值、缺失项和待核对范围。' },
+    { id: 'listing-compare', name: '竞品 Listing 对比', topic: 'Listing 与内容', maturity: 'sample', env: '对话式 AI', ver: 'v0.3', summary: '把 3～5 个竞品的标题、五点和图片要点整理成对比表，并指出自家 Listing 的缺口。' },
+    { id: 'keyword-tier', name: '关键词分层整理', topic: '关键词与广告', maturity: 'sample', env: '对话式 AI，需导出的关键词表', ver: 'v0.2', summary: '把反查词表按核心词、长尾词、否定词分层，输出可直接用于广告分组的表格。' },
+    { id: 'review-digest', name: '评论问题归纳', topic: '评论与买家问题', maturity: 'sample', env: '对话式 AI', ver: 'v0.2', summary: '把一批买家评论归纳为问题类别、出现频次和可改进点。' }
+  ];
+  const docs = [
+    { id: 'first-update', kind: '教程', name: '第一次更新进销存表格', applies: 'v1.0.10', tool: 'inventory', summary: '用练习样表 SAMPLE-01 走完一次完整更新，并学会核对结果。' },
+    { id: 'prepare-files', kind: '教程', name: '准备三类文件', applies: 'v1.0.10', tool: 'inventory', summary: '主表、更新记录、源报表分别是什么，从哪里拿。' },
+    { id: 'which-tool', kind: '入门', name: '三个进销存程序怎么选', applies: '—', tool: 'inventory', summary: '脚本更新、进销存表格更新、进销存可视化程序的区别。' },
+    { id: 'faq-precheck', kind: '常见问题', name: '预检提示「缺少字段」怎么办', applies: 'v1.0.10', tool: 'inventory', summary: '先看提示中的文件名和字段名，再对照准备清单补齐。' },
+    { id: 'faq-partial', kind: '常见问题', name: '部分完成的结果还能交付吗', applies: 'v1.0.10', tool: 'inventory', summary: '可以继续使用已处理的范围，但被隔离的部分必须单独核对。' },
+    { id: 'faq-next', kind: '常见问题', name: '下次更新要带哪些文件', applies: 'v1.0.10', tool: 'inventory', summary: '本次的主结果和更新记录，两者缺一不可。' }
+  ];
+  const recent = [
+    { d: '示例', t: '「进销存表格更新」详情页改为按步骤阅读', to: 'tool-inventory' },
+    { d: '示例', t: '新增教程《第一次更新进销存表格》', to: 'doc-first-update' },
+    { d: '示例', t: '发布 SKILL「进销存结果核验」v1.0', to: 'skill-inv-check' }
+  ];
+  let members = [
+    { name: '你', account: 'owner', role: '所有者', on: true },
+    { name: '示例成员 A', account: 'member-a', role: '成员', on: true },
+    { name: '示例成员 B', account: 'member-b', role: '成员', on: true },
+    { name: '示例成员 C', account: 'member-c', role: '成员', on: false }
+  ];
+
+  const state = { q: '', run: 'all', mat: 'all', kind: 'all', loggedIn: true };
+  const root = document.getElementById('root');
+
+  function toast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.hidden = false;
+    clearTimeout(toast.h); toast.h = setTimeout(() => { t.hidden = true; }, 2600);
+  }
+
+  function shell(active, body) {
+    const nav = [
+      ['home', '工作台', ''], ['tools', '工具', tools.length], ['skills', 'SKILL', skills.length], ['knowledge', '知识库', docs.length]
+    ];
+    return `
+    <div class="app">
+      <div class="scrim" id="scrim"></div>
+      <aside class="side" id="side" aria-label="主导航">
+        <div class="brand"><b>造物册</b><span>zaowuce.com</span></div>
+        <nav class="nav">
+          ${nav.map(([id, label, n]) => `<a href="#${id}" ${active === id ? 'aria-current="page"' : ''}><span>${label}</span><span class="count">${n}</span></a>`).join('')}
+          <div class="sep"></div>
+          <a href="#admin" ${active === 'admin' ? 'aria-current="page"' : ''}><span>成员管理</span><span class="count">仅所有者</span></a>
+          <a href="#states" ${active === 'states' ? 'aria-current="page"' : ''}><span>页面状态样例</span><span class="count">评审用</span></a>
+        </nav>
+        <div class="who small">
+          <span class="muted">已登录</span>
+          <b>你（所有者）</b>
+          <button class="linkbtn" data-act="logout">退出登录</button>
+        </div>
+      </aside>
+      <main class="main">
+        <div class="topbar">
+          <button class="btn small menu-btn" data-act="menu" aria-label="打开菜单">菜单</button>
+          <form class="search" role="search" id="search-form">
+            <input id="q" type="search" placeholder="搜索工具、SKILL、教程，也可以用旧称" value="${esc(state.q)}" aria-label="全站搜索">
+            <button class="btn small primary" type="submit">搜索</button>
+          </form>
+          <a class="feedback small" href="#states" data-act="feedback">问题反馈</a>
+        </div>
+        <div class="proto-note">布局原型：页面中的版本、成员、更新记录均为布局示例，不代表已发布内容。</div>
+        ${body}
+      </main>
+    </div>`;
+  }
+
+  /* ---------- 页面 ---------- */
+  const pages = {};
+
+  pages.home = () => shell('home', `
+    <section class="hero">
+      <span class="eyebrow">工作台</span>
+      <h1>今天要做什么？</h1>
+      <p>造物册收集团队常用的工具、AI 工作方法和操作教程。从下面的任务开始，或在上方搜索。</p>
+    </section>
+
+    <section class="tasks" aria-label="任务入口">
+      <a class="task lead" href="#tool-inventory">
+        <span class="eyebrow">最常用</span>
+        <h3>更新进销存表格</h3>
+        <p>准备主表、更新记录和本期源报表，在自己电脑上生成新版表格，并按清单核对。</p>
+        <span class="go">开始：准备文件 →</span>
+      </a>
+      <a class="task" href="#skills">
+        <span class="eyebrow">AI 工作方法</span>
+        <h3>找一个 SKILL</h3>
+        <p>复制到自己的 AI 工具里使用，每份都写明输入和检查方法。</p>
+        <span class="go">浏览 SKILL →</span>
+      </a>
+      <a class="task" href="#doc-which-tool">
+        <span class="eyebrow">新同事</span>
+        <h3>第一次使用</h3>
+        <p>先弄清三个进销存程序的区别，再用练习样表走一遍。</p>
+        <span class="go">阅读入门 →</span>
+      </a>
+    </section>
+
+    <section class="stack">
+      <div class="section-head"><h2>三个进销存程序，用哪个？</h2><a class="small" href="#doc-which-tool">详细对比</a></div>
+      <div class="trio">
+        <div><div class="row">${pill('history')}</div><h3>脚本更新</h3><p class="small muted">原有 WPS 脚本流程，仅作对照。</p></div>
+        <div class="rec"><div class="row">${pill('formal')}<span class="pill info plain">推荐</span></div><h3><a href="#tool-inventory">进销存表格更新</a></h3><p class="small muted">更新进销存，请用这个。下载后在电脑上运行。</p></div>
+        <div><div class="row">${pill('upcoming')}</div><h3><a href="#tool-visualizer">进销存可视化程序</a></h3><p class="small muted">团队在线查看库存与计划，尚未开放。</p></div>
+      </div>
+    </section>
+
+    <section class="two">
+      <div class="stack">
+        <div class="section-head"><h2>最近更新</h2><span class="small muted">来自发布记录</span></div>
+        <div class="list">${recent.map(r => `<a href="#${r.to}"><span>${esc(r.t)}</span><span class="date">${r.d}</span></a>`).join('')}</div>
+      </div>
+      <div class="stack">
+        <div class="section-head"><h2>其他工具</h2><a class="small" href="#tools">全部工具</a></div>
+        <div class="list">
+          <a href="#tool-dedupe"><span>文本去重整理</span><span class="small muted">浏览器内</span></a>
+          <a href="#doc-first-update"><span>教程：第一次更新进销存表格</span><span class="small muted">教程</span></a>
+        </div>
+      </div>
+    </section>`);
+
+  pages.tools = () => {
+    const list = tools.filter(t => (state.run === 'all' || t.run === state.run) && (state.mat === 'all' || t.maturity === state.mat));
+    const chips = (key, opts) => opts.map(([v, l]) => `<button class="chip" data-filter="${key}" data-v="${v}" aria-pressed="${state[key] === v}">${l}</button>`).join('');
+    return shell('tools', `
+      <section class="stack">
+        <span class="eyebrow">工具</span>
+        <h1>工具目录</h1>
+        <p class="muted">同一个工具的不同版本和安装包都在它的详情页里，不单独列出。</p>
+      </section>
+      <div class="filters">
+        <div class="fgroup"><span>运行方式</span>${chips('run', [['all', '全部'], ['download', '下载后本机'], ['browser', '浏览器内'], ['doc', '仅文档']])}</div>
+        <div class="fgroup"><span>状态</span>${chips('mat', [['all', '全部'], ['formal', '正式'], ['upcoming', '待开放'], ['history', '历史']])}</div>
+      </div>
+      <div class="catalog">
+        ${list.length ? list.map(t => `
+          <a class="item" href="#tool-${t.id}">
+            <div class="meta"><h3>${t.name}</h3>${pill(t.maturity)}</div>
+            <div class="side-info"><span>${RUN[t.run]}</span><span class="mono">${t.version}</span></div>
+            <p>${t.summary}${t.output !== '—' ? ` <span class="muted">输出：${t.output}</span>` : ''}</p>
+          </a>`).join('') : `
+          <div class="empty"><b>没有符合条件的工具</b><span>换一个筛选条件，或查看全部工具。</span><button class="btn small" data-act="clear-filters">清除筛选</button></div>`}
+      </div>`);
+  };
+
+  pages['tool-inventory'] = () => shell('tools', `
+    <div class="crumb"><a href="#tools">工具</a> / 进销存表格更新</div>
+    <section class="detail-head">
+      <div class="row">${pill('formal')}<span class="pill plain">下载后本机</span><span class="pill plain">Windows · Mac</span></div>
+      <h1>进销存表格更新</h1>
+      <p class="aliases">也叫：报表更新器、进销存制作程序</p>
+      <p>选择主表、更新记录和本期源报表，生成新版进销存表格与配套更新记录。</p>
+      <div class="row">
+        <button class="btn primary" data-jump="s-release">下载并在电脑运行</button>
+        <button class="btn" data-act="sample">下载练习样表 SAMPLE-01</button>
+      </div>
+      <div class="notice"><span class="k info">文件去向</span><span>表格只在你自己的电脑上处理，造物册不会收到你的 Excel 文件。</span></div>
+      <div class="notice warn"><span class="k">版本提示</span><span>推荐版本尚未确定。源码已到 <span class="mono">v1.0.11</span>，当前下载包为 <span class="mono">v1.0.10</span>；「在途批次成组并默认展开」只在 v1.0.11 源码中。</span></div>
+    </section>
+
+    <div class="detail">
+      <nav class="rail" aria-label="本页步骤">
+        <button data-jump="s-prepare" class="on"><span class="n">1</span>准备文件</button>
+        <button data-jump="s-run"><span class="n">2</span>运行</button>
+        <button data-jump="s-check"><span class="n">3</span>核对结果</button>
+        <button data-jump="s-next"><span class="n">4</span>下次更新</button>
+        <button data-jump="s-release"><span class="n">5</span>版本与下载</button>
+      </nav>
+      <div class="steps">
+        <section class="step" id="s-prepare">
+          <div class="step-title"><span class="n">1</span><h2>准备三类文件</h2></div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>文件</th><th>是什么</th><th>从哪里来</th></tr></thead>
+            <tbody>
+              <tr><td><b>主表</b></td><td>上一次更新得到的进销存表格</td><td>上次运行的主结果</td></tr>
+              <tr><td><b>更新记录</b></td><td>与主表配套的过程记录，本次更新要读取它</td><td>上次运行时一并生成</td></tr>
+              <tr><td><b>源报表</b></td><td>本期导出的各类业务报表</td><td>按《准备三类文件》逐类导出</td></tr>
+            </tbody>
+          </table></div>
+          <p class="small muted">第一次使用请先用练习样表 SAMPLE-01，不要直接用正式表格。<a href="#doc-prepare-files">怎样准备文件</a></p>
+        </section>
+
+        <section class="step" id="s-run">
+          <div class="step-title"><span class="n">2</span><h2>运行</h2></div>
+          <ol class="plain">
+            <li>解压下载包，双击启动程序，浏览器会打开操作页面。</li>
+            <li>依次选择主表、更新记录和源报表。</li>
+            <li>点击「预检」，查看问题清单。预检不通过时，程序不会修改任何正式结果。</li>
+            <li>预检通过后点击「生成」，等待完成，期间不要重复点击。</li>
+            <li>分别下载主结果和更新记录，两个文件放在同一个文件夹里。</li>
+          </ol>
+        </section>
+
+        <section class="step" id="s-check">
+          <div class="step-title"><span class="n">3</span><h2>核对结果</h2></div>
+          <p>页面显示「完成」不等于结果可交付。先看完成状态，再按清单核对。</p>
+          <div class="status3">
+            <div><span class="pill ok">成功</span><span class="small">所有范围都已处理，按清单抽查后即可使用。</span></div>
+            <div><span class="pill warn">部分完成</span><span class="small">部分范围被隔离，结果标有「待核对」，被隔离的部分要单独处理。</span></div>
+            <div><span class="pill bad">失败</span><span class="small">没有生成正式结果。查看原因，修正后重新运行。</span></div>
+          </div>
+          <div class="panel"><div class="checks" role="group" aria-label="核对清单">
+            <label><input type="checkbox" id="c1"> 结果中的程序版本和业务基准日正确</label>
+            <label><input type="checkbox" id="c2"> 状态为成功；或为部分完成，且已看过被隔离的范围</label>
+            <label><input type="checkbox" id="c3"> 主结果和更新记录是两个独立文件</label>
+            <label><input type="checkbox" id="c4"> 按样表核对清单抽查的汇总值一致</label>
+            <label><input type="checkbox" id="c5"> 缺失的数据显示为缺失，没有被当作 0</label>
+          </div></div>
+        </section>
+
+        <section class="step" id="s-next">
+          <div class="step-title"><span class="n">4</span><h2>下次更新要保留什么</h2></div>
+          <div class="carry">
+            <div class="f"><span class="small muted">本次得到</span><b>主结果</b></div><span class="arrow">→</span><div class="f"><span class="small muted">下次作为</span><b>主表</b></div>
+          </div>
+          <div class="carry">
+            <div class="f"><span class="small muted">本次得到</span><b>更新记录</b></div><span class="arrow">→</span><div class="f"><span class="small muted">下次作为</span><b>更新记录</b></div>
+          </div>
+          <div class="notice bad"><span class="k">注意</span><span>丢失更新记录，下次就无法正确更新。请把两个文件一起归档。</span></div>
+        </section>
+
+        <section class="step" id="s-release">
+          <div class="step-title"><span class="n">5</span><h2>版本与下载</h2></div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>系统 · 变体</th><th>版本</th><th>大小</th><th>SHA256</th><th></th></tr></thead>
+            <tbody>
+              ${['Windows · 普通版', 'Windows · 注释版', 'Mac · 普通版', 'Mac · 注释版'].map(v => `
+              <tr><td>${v}</td><td class="mono">v1.0.10</td><td class="mono muted">待登记</td><td class="mono muted">待登记</td><td><button class="btn small" data-act="download">下载</button></td></tr>`).join('')}
+            </tbody>
+          </table></div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>版本类型</th><th>当前</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td>源码版本</td><td class="mono">v1.0.11</td><td>原项目最新代码，尚未打包</td></tr>
+              <tr><td>下载包版本</td><td class="mono">v1.0.10</td><td>上表中的四个文件</td></tr>
+              <tr><td>部署版本</td><td class="mono">—</td><td>下载型工具，服务器上不运行</td></tr>
+              <tr><td>教程适用版本</td><td class="mono">v1.0.10</td><td>与推荐版本不一致时，教程顶部会提示</td></tr>
+            </tbody>
+          </table></div>
+          <p class="small muted">已知限制：未在所有 Windows／WPS 组合上实机验证，未验证的组合会在这里单独标注。负责人：站主。</p>
+        </section>
+
+        <section class="stack">
+          <h2>相关内容</h2>
+          <div class="related">
+            <a href="#doc-first-update"><span class="eyebrow">教程</span><b>第一次更新进销存表格</b></a>
+            <a href="#doc-faq-partial"><span class="eyebrow">常见问题</span><b>部分完成的结果还能交付吗</b></a>
+            <a href="#skill-inv-check"><span class="eyebrow">SKILL</span><b>进销存结果核验</b></a>
+          </div>
+        </section>
+      </div>
+    </div>`);
+
+  pages['tool-visualizer'] = () => shell('tools', `
+    <div class="crumb"><a href="#tools">工具</a> / 进销存可视化程序</div>
+    <section class="detail-head">
+      <div class="row">${pill('upcoming')}<span class="pill plain">在线服务</span></div>
+      <h1>进销存可视化程序</h1>
+      <p class="aliases">也叫：进销存协作工作台</p>
+      <p>团队按 SKU、国家、人员查看同一份库存、销量与计划，并在权限内修改保存。</p>
+      <div class="row"><button class="btn" disabled>尚未开放</button></div>
+      <div class="notice"><span class="k info">为什么还没开放</span><span>它会在服务器上保存经营数据。开放前需要先确定谁能看哪些数据、数据保留多久，并完成备份恢复演练。</span></div>
+    </section>
+    <section class="stack">
+      <h2>开放后可以做什么</h2>
+      <ol class="plain">
+        <li>从 SKU、国家或人员任一入口找到同一个 SKU 的完整信息。</li>
+        <li>对照历史年份和月份的销量，缺失数据会明确标出。</li>
+        <li>在允许的字段里编辑计划和备注；别人同时修改时会提示冲突，不会静默覆盖。</li>
+      </ol>
+      <p class="small muted">现在要更新进销存，请使用 <a href="#tool-inventory">进销存表格更新</a>。</p>
+    </section>`);
+
+  pages['tool-script'] = () => shell('tools', `
+    <div class="crumb"><a href="#tools">工具</a> / 脚本更新</div>
+    <section class="detail-head">
+      <div class="row">${pill('history')}<span class="pill plain">仅文档</span></div>
+      <h1>脚本更新</h1>
+      <p class="aliases">也叫：WPS 更新脚本 · V2.10.7 系列</p>
+      <div class="notice warn"><span class="k">新同事请勿使用</span><span>这是原有的 WPS 脚本流程，保留作对照。更新进销存请使用 <a href="#tool-inventory">进销存表格更新</a>。</span></div>
+    </section>
+    <section class="prose">
+      <h2>与进销存表格更新的关系</h2>
+      <p>进销存表格更新由脚本更新发展而来，改为网页界面操作，并增加了预检、部分完成提示和独立的更新记录。两者处理同一类表格，但不要混用同一批文件。</p>
+    </section>`);
+
+  pages['tool-dedupe'] = () => shell('tools', `
+    <div class="crumb"><a href="#tools">工具</a> / 文本去重整理</div>
+    <section class="detail-head">
+      <div class="row">${pill('formal')}<span class="pill plain">浏览器内</span></div>
+      <h1>文本去重整理</h1>
+      <p>按行去掉首尾空白和空行，删除重复项，保留第一次出现的顺序。</p>
+      <div class="notice"><span class="k info">文件去向</span><span>文本只在当前浏览器中处理，不会上传，也不会保存。</span></div>
+    </section>
+    <section class="split">
+      <div class="field"><label for="dd-in">粘贴文本，每行一项</label><textarea id="dd-in">blue water bottle
+water bottle 1l
+  blue water bottle
+stainless bottle
+
+water bottle 1l
+kids water bottle</textarea></div>
+      <div class="field"><label for="dd-out">整理结果</label><textarea id="dd-out" readonly></textarea></div>
+    </section>
+    <div class="row"><button class="btn primary" data-act="dedupe">整理</button><button class="btn" data-act="copy-dedupe">复制结果</button><span class="small muted" id="dd-stat"></span></div>`);
+
+  pages.skills = () => shell('skills', `
+    <section class="stack">
+      <span class="eyebrow">SKILL</span>
+      <h1>AI 工作方法</h1>
+      <p class="muted">每份 SKILL 都写明适用场景、需要准备的输入和检查方法。复制到你自己的 AI 工具中使用；网站本身不运行 AI。</p>
+    </section>
+    <div class="catalog">
+      ${skills.map(s => `
+      <a class="item" href="#skill-${s.id}">
+        <div class="meta"><h3>${s.name}</h3>${pill(s.maturity)}</div>
+        <div class="side-info"><span>${s.topic}</span><span class="mono">${s.ver}</span></div>
+        <p>${s.summary}</p>
+      </a>`).join('')}
+    </div>`);
+
+  const skillPage = s => () => shell('skills', `
+    <div class="crumb"><a href="#skills">SKILL</a> / ${s.name}</div>
+    <section class="detail-head">
+      <div class="row">${pill(s.maturity)}<span class="pill plain">${s.topic}</span><span class="pill plain mono">${s.ver}</span></div>
+      <h1>${s.name}</h1>
+      <p>${s.summary}</p>
+      ${s.maturity === 'sample' ? '<div class="notice warn"><span class="k">示例</span><span>这份 SKILL 还没有用真实任务验证过，输出需要你自己仔细检查。</span></div>' : ''}
+      <div class="row">
+        <button class="btn primary" data-act="copy-prompt">复制提示词</button>
+        <button class="btn" data-act="download">下载 SKILL 文件</button>
+      </div>
+    </section>
+    <div class="two">
+      <section class="stack">
+        <h2>使用前确认</h2>
+        <div class="table-wrap"><table><tbody>
+          <tr><th>适用环境</th><td>${s.env}</td></tr>
+          <tr><th>适合</th><td>已有整理好的输入数据，需要一份结构化结果</td></tr>
+          <tr><th>不适合</th><td>需要实时数据或登录第三方后台的任务</td></tr>
+          <tr><th>数据提醒</th><td>你粘贴进 AI 工具的内容会交给该工具处理，请先脱敏</td></tr>
+        </tbody></table></div>
+        <h2>检查输出</h2>
+        <div class="panel"><div class="checks">
+          <label><input type="checkbox" id="k1"> 输出结构与下方提示词要求一致</label>
+          <label><input type="checkbox" id="k2"> 每个结论都能在输入中找到依据</label>
+          <label><input type="checkbox" id="k3"> 没有出现输入里不存在的数字</label>
+        </div></div>
+      </section>
+      <section class="stack">
+        <h2>提示词</h2>
+        <pre class="prompt" id="prompt-text">你是一名${s.topic}助手。
+任务：${s.summary}
+
+输入：
+1. 我会粘贴本次的数据（已脱敏）。
+2. 如有缺失字段，请先列出，不要猜测。
+
+输出：
+- 一张表格，列出每项检查的结果
+- 单独列出「需要人工核对」的条目
+- 不确定的地方明确写「待确认」</pre>
+        <p class="small muted">变更记录：${s.ver} 为当前版本（布局示例）。</p>
+      </section>
+    </div>`);
+  skills.forEach(s => { pages['skill-' + s.id] = skillPage(s); });
+
+  pages.knowledge = () => {
+    const kinds = ['入门', '教程', '常见问题'];
+    const list = docs.filter(d => state.kind === 'all' || d.kind === state.kind);
+    return shell('knowledge', `
+      <section class="stack">
+        <span class="eyebrow">知识库</span>
+        <h1>教程与常见问题</h1>
+      </section>
+      <div class="fgroup">${[['all', '全部'], ...kinds.map(k => [k, k])].map(([v, l]) => `<button class="chip" data-filter="kind" data-v="${v}" aria-pressed="${state.kind === v}">${l}</button>`).join('')}</div>
+      <div class="catalog">
+        ${list.map(d => `
+        <a class="item" href="#doc-${d.id}">
+          <div class="meta"><h3>${d.name}</h3><span class="pill plain">${d.kind}</span></div>
+          <div class="side-info"><span>适用版本</span><span class="mono">${d.applies}</span></div>
+          <p>${d.summary}</p>
+        </a>`).join('')}
+      </div>`);
+  };
+
+  const docPage = d => () => shell('knowledge', `
+    <div class="crumb"><a href="#knowledge">知识库</a> / ${d.name}</div>
+    <article class="prose">
+      <div class="row"><span class="pill plain">${d.kind}</span><span class="pill plain">适用 <span class="mono">${d.applies}</span></span></div>
+      <h1>${d.name}</h1>
+      <p>${d.summary}</p>
+      ${d.applies !== '—' ? '<div class="notice warn"><span class="k">版本提示</span><span>本文按下载包 v1.0.10 编写。推荐版本确定后，如有变化会在这里提示。</span></div>' : ''}
+      ${d.id === 'which-tool' ? `
+        <div class="table-wrap"><table>
+          <thead><tr><th>程序</th><th>做什么</th><th>现在能否使用</th></tr></thead>
+          <tbody>
+            <tr><td><a href="#tool-inventory"><b>进销存表格更新</b></a></td><td>生成新版进销存表格</td><td>可以，推荐</td></tr>
+            <tr><td><a href="#tool-visualizer">进销存可视化程序</a></td><td>团队在线查看库存与计划</td><td>尚未开放</td></tr>
+            <tr><td><a href="#tool-script">脚本更新</a></td><td>原有 WPS 脚本流程</td><td>仅作对照，新同事不要使用</td></tr>
+          </tbody>
+        </table></div>` : `
+        <h2>开始前</h2>
+        <p>准备好练习样表 SAMPLE-01，或按《准备三类文件》准备正式文件。确认你的电脑系统在下载页的已验证列表中。</p>
+        <h2>步骤</h2>
+        <ol class="plain"><li>下载并启动程序。</li><li>选择三类文件并预检。</li><li>生成后分别下载主结果和更新记录。</li><li>按核对清单检查结果。</li></ol>
+        <h2>常见问题</h2>
+        <p>预检提示问题时，正式结果不会被修改，补齐后重新预检即可。</p>`}
+      <div class="row"><a class="btn" href="#tool-${d.tool}">前往工具</a><a class="small" href="#states" data-act="feedback">这篇有问题？反馈</a></div>
+    </article>`);
+  docs.forEach(d => { pages['doc-' + d.id] = docPage(d); });
+
+  pages.search = () => {
+    const q = state.q.trim();
+    const lower = q.toLowerCase();
+    const hit = (...fields) => lower && fields.join(' ').toLowerCase().includes(lower);
+    const mark = s => {
+      const e = esc(s);
+      if (!q) return e;
+      const qe = esc(q).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      return e.replace(new RegExp(qe, 'gi'), m => `<mark>${m}</mark>`);
+    };
+    const r = [
+      ...tools.filter(t => hit(t.name, t.aliases.join(' '), t.summary)).map(t => ({ k: '工具', to: 'tool-' + t.id, n: t.name, s: t.summary, a: t.aliases.find(a => a.toLowerCase().includes(lower)) })),
+      ...skills.filter(s => hit(s.name, s.topic, s.summary)).map(s => ({ k: 'SKILL', to: 'skill-' + s.id, n: s.name, s: s.summary })),
+      ...docs.filter(d => hit(d.name, d.summary, d.kind)).map(d => ({ k: d.kind, to: 'doc-' + d.id, n: d.name, s: d.summary }))
+    ];
+    return shell('', `
+      <section class="stack">
+        <span class="eyebrow">搜索</span>
+        <h1>${q ? `「${esc(q)}」的结果` : '搜索'}</h1>
+        ${q ? `<p class="muted">共 ${r.length} 条，只包含你有权查看的内容。</p>` : '<p class="muted">输入工具名、旧称或用途，例如「报表更新器」。</p>'}
+      </section>
+      <div class="catalog">
+        ${r.length ? r.map(x => `
+          <a class="item" href="#${x.to}">
+            <div class="meta"><h3>${mark(x.n)}</h3><span class="pill plain">${x.k}</span></div>
+            <div class="side-info">${x.a ? `<span>旧称：${mark(x.a)}</span>` : ''}</div>
+            <p>${mark(x.s)}</p>
+          </a>`).join('') : q ? `
+          <div class="empty"><b>没有找到相关内容</b><span>试试更短的词，或用旧称搜索。</span><div class="row"><a class="btn small" href="#tools">查看全部工具</a><a class="btn small" href="#states" data-act="feedback">告诉我们缺什么</a></div></div>` : ''}
+      </div>`);
+  };
+
+  pages.admin = () => shell('admin', `
+    <section class="stack">
+      <span class="eyebrow">仅所有者可见</span>
+      <h1>成员管理</h1>
+      <p class="muted">账号由你手工开通，把账号和初始密码私下发给同事。内容的编辑和发布在你电脑上的内容文件里完成，不在这里。</p>
+    </section>
+    <form class="panel row" id="add-form" style="align-items:flex-end">
+      <div class="field" style="flex:1;min-width:160px"><label for="m-name">姓名</label><input id="m-name" required placeholder="例如：运营同事"></div>
+      <div class="field" style="flex:1;min-width:160px"><label for="m-acc">登录账号</label><input id="m-acc" required placeholder="字母或数字"></div>
+      <button class="btn primary" type="submit">开通账号</button>
+    </form>
+    <div class="table-wrap"><table>
+      <thead><tr><th>姓名</th><th>账号</th><th>角色</th><th>状态</th><th>操作</th></tr></thead>
+      <tbody>${members.map((m, i) => `
+        <tr><td>${esc(m.name)}</td><td class="mono">${esc(m.account)}</td><td>${m.role}</td>
+        <td>${m.on ? '<span class="pill ok">可登录</span>' : '<span class="pill">已停用</span>'}</td>
+        <td>${m.role === '所有者' ? '<span class="muted small">—</span>' : `<div class="row"><button class="btn small" data-act="toggle" data-i="${i}">${m.on ? '停用' : '恢复'}</button><button class="btn small" data-act="reset" data-i="${i}">重置密码</button></div>`}</td></tr>`).join('')}
+      </tbody>
+    </table></div>
+    <div class="notice"><span class="k info">停用后</span><span>该同事立即无法登录和下载，已打开的页面在下一次操作时退出。已经下载到其电脑上的程序仍能运行，已复制的资料无法收回。</span></div>`);
+
+  pages.states = () => shell('states', `
+    <section class="stack">
+      <span class="eyebrow">评审用</span>
+      <h1>页面状态样例</h1>
+      <p class="muted">正式上线时这些状态出现在对应页面中，这里集中展示，方便检查文案。</p>
+    </section>
+    <div class="states">
+      <div class="panel"><span class="code-big">403</span><h3>没有权限查看此页面</h3><p class="small muted">这一页仅所有者可见。如果你需要它，请联系站主。</p><div class="row"><a class="btn small" href="#home">回到工作台</a></div></div>
+      <div class="panel"><span class="pill bad">已撤回</span><h3>这个下载包已停止提供</h3><p class="small muted">v1.0.10 · Mac · 注释版 发现问题后撤回，请改用替代版本。</p><div class="row"><button class="btn small" data-act="download">下载替代版本</button></div></div>
+      <div class="panel"><span class="pill warn">校验未通过</span><h3>文件完整性校验失败</h3><p class="small muted">服务器上的文件与发布清单不一致，暂停下载。站主已收到提醒，修复后会恢复。</p></div>
+      <div class="panel"><span class="pill">已停用</span><h3>你的账号已停用</h3><p class="small muted">无法登录造物册。如有疑问，请联系站主。</p></div>
+      <div class="panel"><span class="pill info">尚未开放</span><h3>这个工具还不能在线使用</h3><p class="small muted">开放后会在这里显示「打开工具」。现在可以先阅读说明。</p></div>
+      <div class="panel"><span class="code-big">!</span><h3>页面加载失败</h3><p class="small muted">网络中断或服务器正在维护。刷新页面重试；仍然失败，请在群里告诉站主。</p><div class="row"><button class="btn small" data-act="reload">重试</button></div></div>
+    </div>
+    <section class="stack">
+      <h2>问题反馈</h2>
+      <p class="muted">反馈途径为团队群或站主邮箱，地址会显示在这里供复制。网站本身不收集反馈表单。</p>
+      <div class="row"><span class="mono panel" style="padding:8px 14px">（反馈地址待定）</span></div>
+    </section>`);
+
+  pages.login = () => `
+    <div class="login-wrap">
+      <form class="login panel" id="login-form">
+        <div class="brand"><b>造物册</b><span>zaowuce.com</span></div>
+        <p class="muted small">团队的工具工作台与知识库，仅限受邀成员。</p>
+        <div class="field"><label for="l-acc">账号</label><input id="l-acc" autocomplete="username" value="member-a"></div>
+        <div class="field"><label for="l-pw">密码</label><input id="l-pw" type="password" autocomplete="current-password" value="example"></div>
+        <button class="btn primary" type="submit" style="justify-content:center">登录</button>
+        <p class="small muted">没有账号？请联系站主开通。忘记密码也请联系站主重置。</p>
+      </form>
+    </div>`;
+
+  /* ---------- 路由与交互 ---------- */
+  function route() {
+    const h = (location.hash || '#home').slice(1);
+    const key = !state.loggedIn ? 'login' : (pages[h] ? h : 'home');
+    root.innerHTML = pages[key]();
+    document.title = '造物册工作台';
+    window.scrollTo(0, 0);
+    if (key === 'tool-dedupe') runDedupe();
+  }
+
+  function runDedupe() {
+    const inp = document.getElementById('dd-in'), out = document.getElementById('dd-out');
+    if (!inp) return;
+    const lines = inp.value.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+    const seen = new Set(), res = [];
+    lines.forEach(l => { if (!seen.has(l)) { seen.add(l); res.push(l); } });
+    out.value = res.join('\n');
+    document.getElementById('dd-stat').textContent = `${lines.length} 行 → ${res.length} 行，去掉 ${lines.length - res.length} 个重复`;
+  }
+
+  async function copy(text, el) {
+    try { await navigator.clipboard.writeText(text); toast('已复制'); }
+    catch (e) {
+      if (el) { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+      toast('无法自动复制，已选中文本，请手动复制');
+    }
+  }
+
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-act],[data-jump],[data-filter]');
+    if (!t) return;
+    if (t.dataset.filter) { state[t.dataset.filter] = t.dataset.v; route(); return; }
+    if (t.dataset.jump) {
+      const el = document.getElementById(t.dataset.jump);
+      if (el) el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      document.querySelectorAll('.rail button').forEach(b => b.classList.toggle('on', b.dataset.jump === t.dataset.jump));
+      return;
+    }
+    const a = t.dataset.act;
+    if (a === 'menu') { document.getElementById('side').classList.add('open'); document.getElementById('scrim').classList.add('open'); }
+    if (a === 'logout') { state.loggedIn = false; route(); }
+    if (a === 'download') toast('原型：下载尚未接入');
+    if (a === 'sample') toast('原型：样表包 SAMPLE-01 尚未制作');
+    if (a === 'feedback') { e.preventDefault(); location.hash = 'states'; }
+    if (a === 'clear-filters') { state.run = 'all'; state.mat = 'all'; route(); }
+    if (a === 'dedupe') runDedupe();
+    if (a === 'copy-dedupe') copy(document.getElementById('dd-out').value, null);
+    if (a === 'copy-prompt') { const p = document.getElementById('prompt-text'); copy(p.textContent, p); }
+    if (a === 'toggle') { const m = members[+t.dataset.i]; m.on = !m.on; route(); toast(m.on ? `已恢复 ${m.name}` : `已停用 ${m.name}`); }
+    if (a === 'reset') toast(`已为 ${members[+t.dataset.i].name} 生成新密码（原型）`);
+    if (a === 'reload') route();
+  });
+  document.addEventListener('click', e => {
+    if (e.target.id === 'scrim' || (e.target.closest('.side a'))) {
+      const s = document.getElementById('side'), c = document.getElementById('scrim');
+      if (s) s.classList.remove('open'); if (c) c.classList.remove('open');
+    }
+  });
+  document.addEventListener('submit', e => {
+    e.preventDefault();
+    if (e.target.id === 'search-form') { state.q = document.getElementById('q').value; if (location.hash === '#search') route(); else location.hash = 'search'; }
+    if (e.target.id === 'login-form') { state.loggedIn = true; location.hash = 'home'; route(); }
+    if (e.target.id === 'add-form') {
+      const n = document.getElementById('m-name').value.trim(), acc = document.getElementById('m-acc').value.trim();
+      if (!n || !acc) return;
+      members.push({ name: n, account: acc, role: '成员', on: true }); route(); toast(`已开通 ${n}`);
+    }
+  });
+  window.addEventListener('hashchange', route);
+  route();
+})();
+</script>
