@@ -133,6 +133,40 @@ test('重置密码后旧密码失效，新的临时密码需要修改', async ()
   assert.equal((await req('/api/me', { cookie: c })).data.user.mustChange, true);
 });
 
+test('收藏保存在账号里，只能收藏可见的内容', async () => {
+  const cookie = await login('mem', 'member-pass-1');
+  assert.deepEqual((await req('/api/favorites', { cookie })).data.favorites, []);
+  const on = await req('/api/favorites', { method: 'POST', cookie, body: { key: 'tool:inventory-table-update', on: true } });
+  assert.deepEqual(on.data.favorites, ['tool:inventory-table-update']);
+  // 换一个会话（相当于换设备）仍然在
+  const other = await login('mem', 'member-pass-1');
+  assert.deepEqual((await req('/api/favorites', { cookie: other })).data.favorites, ['tool:inventory-table-update']);
+  assert.equal((await req('/api/favorites', { method: 'POST', cookie, body: { key: 'tool:nope', on: true } })).status, 404);
+  const off = await req('/api/favorites', { method: 'POST', cookie, body: { key: 'tool:inventory-table-update', on: false } });
+  assert.deepEqual(off.data.favorites, []);
+});
+
+test('反馈写入记录，站主在站点状态里能看到', async () => {
+  const cookie = await login('mem', 'member-pass-1');
+  assert.equal((await req('/api/feedback', { method: 'POST', cookie, body: { key: 'doc:first-update', helpful: false, comment: '第二轮没写清楚' } })).status, 201);
+  assert.equal((await req('/api/feedback', { method: 'POST', cookie, body: { key: 'doc:first-update', helpful: 'x' } })).status, 400);
+  assert.equal((await req('/api/feedback', { method: 'POST', cookie, body: { key: 'doc:first-update', helpful: true, comment: 'x'.repeat(501) } })).status, 400);
+  const owner = await login('owner', 'owner-pass-1');
+  const st = await req('/api/admin/status', { cookie: owner });
+  const row = st.data.feedback.summary.find(f => f.key === 'doc:first-update');
+  assert.equal(row.down, 1);
+  assert.equal(st.data.feedback.recent[0].comment, '第二轮没写清楚');
+});
+
+test('更新记录按日期倒序', async () => {
+  const cookie = await login('mem', 'member-pass-1');
+  const { data } = await req('/api/changelog', { cookie });
+  assert.ok(data.entries.length >= 1);
+  const dates = data.entries.map(e => e.date);
+  assert.deepEqual(dates, [...dates].sort().reverse());
+  assert.ok((await req('/api/catalog', { cookie })).data.changelog.length >= 1);
+});
+
 test('连续输错密码会被暂停登录', async () => {
   for (let i = 0; i < 5; i++) {
     const r = await req('/api/login', { method: 'POST', body: { account: 'owner', password: 'wrong' }, headers: { 'X-Forwarded-For': '10.0.0.' + i } });

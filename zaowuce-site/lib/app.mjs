@@ -4,6 +4,7 @@ import { json, error, send, readJson, parseCookies, cookie, serveStatic, clientI
 import { AccountStore, SessionStore, LoginLimiter, publicAccount, tempPassword } from './auth.mjs';
 import { loadContent, visibleItems, summary, detail } from './content.mjs';
 import { ReleaseStore } from './releases.mjs';
+import { PrefStore, FeedbackLog } from './prefs.mjs';
 
 const SID = 'zw_sid';
 
@@ -12,6 +13,8 @@ export function createApp(config) {
   const sessions = new SessionStore({ idleMs: config.sessionIdleMs, maxMs: config.sessionMaxMs });
   const limiter = new LoginLimiter();
   const releases = new ReleaseStore(config.releasesDir, config.downloadDir).load();
+  const prefs = new PrefStore(config.dataDir);
+  const feedback = new FeedbackLog(config.dataDir);
   let lib = loadContent(config.contentDir);
 
   const problems = () => [...lib.errors, ...releases.errors];
@@ -102,7 +105,34 @@ export function createApp(config) {
     const items = visibleItems(lib, user);
     const pick = t => items.filter(i => i.type === t).sort((a, b) => a.order - b.order || a.name.localeCompare(b.name, 'zh')).map(summary);
     const updates = [...items].sort((a, b) => b.updated.localeCompare(a.updated)).slice(0, 6).map(i => ({ type: i.type, id: i.id, name: i.name, updated: i.updated }));
-    json(res, 200, { tools: pick('tool'), skills: pick('skill'), docs: pick('doc'), updates });
+    json(res, 200, { tools: pick('tool'), skills: pick('skill'), docs: pick('doc'), updates, changelog: lib.changelog.slice(0, 2).map(e => ({ date: e.date, items: e.items })) });
+  });
+
+  route('GET', '/api/changelog', (req, res) => json(res, 200, { entries: lib.changelog.map(e => ({ date: e.date, html: e.html })) }));
+
+  const visibleKeys = user => new Set(visibleItems(lib, user).map(i => `${i.type}:${i.id}`));
+
+  route('GET', '/api/favorites', (req, res, { user }) => {
+    const keys = visibleKeys(user);
+    json(res, 200, { favorites: prefs.favorites(user.account).filter(k => keys.has(k)) });
+  });
+
+  route('POST', '/api/favorites', async (req, res, { user }) => {
+    const { key, on } = await readJson(req);
+    const keys = visibleKeys(user);
+    if (!keys.has(String(key))) return error(res, 404, 'not_found', '没有找到这条内容');
+    const list = prefs.setFavorite(user.account, String(key), !!on);
+    json(res, 200, { favorites: list.filter(k => keys.has(k)) });
+  });
+
+  route('POST', '/api/feedback', async (req, res, { user }) => {
+    const { key, helpful, comment } = await readJson(req);
+    if (!visibleKeys(user).has(String(key))) return error(res, 404, 'not_found', '没有找到这条内容');
+    if (typeof helpful !== 'boolean') return error(res, 400, 'bad_feedback', '请选择有帮助或没帮助');
+    const text = String(comment || '').trim();
+    if (text.length > 500) return error(res, 400, 'too_long', '补充说明最多 500 字');
+    feedback.add({ at: new Date().toISOString(), account: user.account, key: String(key), helpful, comment: text });
+    json(res, 201, { ok: true });
   });
 
   route('GET', '/api/items/:type/:id', async (req, res, { user, params }) => {
@@ -188,7 +218,17 @@ export function createApp(config) {
       if (i.status === 'draft') counts.draft++;
       else { counts[i.type]++; if (i.visibility === 'owner') counts.ownerOnly++; }
     }
-    json(res, 200, { problems: problems(), counts, assets, downloads: readDownloadLog(), sessions: sessions.map.size });
+    const names = new Map(lib.items.map(i => [`${i.type}:${i.id}`, i.name]));
+    const fb = feedback.all();
+    const byKey = new Map();
+    for (const f of fb) {
+      const s = byKey.get(f.key) || { key: f.key, name: names.get(f.key) || f.key, up: 0, down: 0 };
+      f.helpful ? s.up++ : s.down++;
+      byKey.set(f.key, s);
+    }
+    const feedbackSummary = [...byKey.values()].sort((a, b) => b.down - a.down || b.up + b.down - (a.up + a.down));
+    const recentFeedback = fb.slice(-30).reverse().map(f => ({ ...f, name: names.get(f.key) || f.key }));
+    json(res, 200, { problems: problems(), counts, assets, downloads: readDownloadLog(), sessions: sessions.map.size, feedback: { summary: feedbackSummary, recent: recentFeedback } });
   }, { owner: true });
 
   async function handle(req, res) {
@@ -223,5 +263,5 @@ export function createApp(config) {
     }
   }
 
-  return { handle, accounts, sessions, releases, reload, problems, get lib() { return lib; } };
+  return { handle, accounts, sessions, releases, prefs, feedback, reload, problems, get lib() { return lib; } };
 }

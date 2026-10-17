@@ -32,6 +32,7 @@ npm start                                                   # 打开 http://127.
 content/tools/    工具页面，一个工具一个文件
 content/skills/   SKILL
 content/docs/     入门、教程、常见问题
+content/changelog.md  更新记录，每个 `## 日期` 一段，新的在上
 releases/         每个下载型工具的发布清单（版本、文件、大小、SHA256）
 downloads/        下载包本体（不进 Git，由 deploy.sh 同步到服务器）
 public/           前端
@@ -70,7 +71,15 @@ updated: 2026-10-16
 
 工具的 `maturity`：`trial` 试用、`formal` 正式、`sample` 示例、`upcoming` 待开放、`history` 历史。**示例改为正式前，请先用一次真实任务验证**，不要只改标签。
 
-改完运行 `npm run check`，再发布。
+改完运行 `npm run check`，再发布。新增或改动了值得同事知道的内容，在 `content/changelog.md` 顶部加一条，首页和「更新记录」页会显示。
+
+## 使用功能一览
+
+- **快速搜索**：任何页面按 Ctrl K（Mac 上 ⌘ K）或 `/`，搜索工具、SKILL、文章和旧称；空白时列出最近访问。
+- **收藏**：工具、SKILL、文章页面的「收藏」按钮，收藏保存在账号里，首页「我的收藏」显示。
+- **最近访问**：首页显示，只保存在当前设备的浏览器里。
+- **下载**：工具页会识别同事的电脑系统，主按钮直接下载对应的安装包；手机访问时提示到电脑上下载。
+- **反馈**：每个页面底部「这篇内容有帮助吗」，结果和留言在「站点状态」里查看。
 
 ## 发布一个下载包
 
@@ -102,7 +111,7 @@ npm run release -- --tool inventory-table-update --recommend 1.0.10
 
 ### 备份
 
-服务器上只有 `/var/lib/zaowuce/accounts.json`（账号）和 `downloads.log`（下载记录）不可重建：
+服务器上只有 `/var/lib/zaowuce/` 下的 `accounts.json`（账号）、`prefs.json`（收藏）、`feedback.log`（内容反馈）和 `downloads.log`（下载记录）不可重建：
 
 ```bash
 DEPLOY_HOST=root@服务器IP deploy/backup.sh     # 拉回到 ~/zaowuce-backup/

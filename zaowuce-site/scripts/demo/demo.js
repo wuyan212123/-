@@ -3,6 +3,8 @@ import { DATA } from './demo-data.js';
 import { ApiError } from './api.js';
 
 let user = null;
+let favorites = ['tool:inventory-table-update', 'doc:first-update'];
+const feedback = [];
 const members = [
   { account: 'owner', name: '站主', role: 'owner', enabled: true, mustChange: false, lastLoginAt: new Date().toISOString() },
   { account: 'member-a', name: '示例成员 A', role: 'member', enabled: true, mustChange: false, lastLoginAt: null },
@@ -26,6 +28,18 @@ export async function demoBackend(path, { method, body }) {
     return { ok: true };
   }
   if (p === '/api/catalog') return DATA.catalog;
+  if (p === '/api/changelog') return { entries: DATA.changelog };
+  if (p === '/api/favorites' && method === 'GET') return { favorites };
+  if (p === '/api/favorites') {
+    favorites = favorites.filter(k => k !== body.key);
+    if (body.on) favorites.unshift(body.key);
+    return { favorites };
+  }
+  if (p === '/api/feedback') {
+    const name = DATA.items[body.key]?.name || body.key;
+    feedback.unshift({ at: new Date().toISOString(), account: 'owner', key: body.key, name, helpful: body.helpful, comment: body.comment || '' });
+    return { ok: true };
+  }
   let m = p.match(/^\/api\/items\/(\w+)\/([\w-]+)$/);
   if (m) {
     const it = DATA.items[`${m[1]}:${m[2]}`];
@@ -48,6 +62,14 @@ export async function demoBackend(path, { method, body }) {
     if (m[2] === 'reset') { t.mustChange = true; return { member: t, password: fakePassword() }; }
     return { member: t };
   }
-  if (p === '/api/admin/status') return { ...DATA.status, sessions: 1 };
+  if (p === '/api/admin/status') {
+    const by = new Map();
+    for (const f of feedback) {
+      const x = by.get(f.key) || { key: f.key, name: f.name, up: 0, down: 0 };
+      f.helpful ? x.up++ : x.down++;
+      by.set(f.key, x);
+    }
+    return { ...DATA.status, sessions: 1, feedback: { summary: [...by.values()], recent: feedback } };
+  }
   throw new ApiError(404, 'not_found', '接口不存在');
 }

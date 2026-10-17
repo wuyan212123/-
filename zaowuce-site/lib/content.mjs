@@ -70,7 +70,41 @@ export function loadContent(contentDir) {
     }
   }
 
-  return { items, byKey, errors };
+  const changelog = loadChangelog(contentDir, errors);
+  return { items, byKey, errors, changelog };
+}
+
+/**
+ * content/changelog.md：每个 `## 2026-10-17` 是一天，下面用列表写这天的更新，新的在上。
+ */
+export function loadChangelog(contentDir, errors = []) {
+  let src;
+  try { src = fs.readFileSync(path.join(contentDir, 'changelog.md'), 'utf8'); } catch { return []; }
+  const entries = [];
+  let cur = null;
+  for (const line of src.replace(/\r\n?/g, '\n').split('\n')) {
+    const h = line.match(/^##\s+(.+)$/);
+    if (h) {
+      const date = h[1].trim();
+      if (!DATE_RE.test(date)) errors.push(`changelog.md：「${date}」应写成 2026-10-17 这样的日期`);
+      cur = { date, lines: [] };
+      entries.push(cur);
+    } else if (cur) {
+      cur.lines.push(line);
+    }
+  }
+  for (let i = 1; i < entries.length; i++) {
+    if (entries[i - 1].date <= entries[i].date) errors.push(`changelog.md：${entries[i].date} 应排在 ${entries[i - 1].date} 之前（新的在上）`);
+  }
+  return entries.map(e => {
+    const body = e.lines.join('\n').trim();
+    return {
+      date: e.date,
+      html: renderMarkdown(body).html,
+      // 首页只显示每条更新的第一行
+      items: body.split('\n').filter(l => /^[-*]\s/.test(l)).map(l => plainText(l.replace(/^[-*]\s+/, '')))
+    };
+  });
 }
 
 function normalize(type, d, body, file, errors) {

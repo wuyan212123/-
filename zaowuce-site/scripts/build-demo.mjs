@@ -17,6 +17,7 @@ const items = visibleItems(lib, owner);
 const pick = t => items.filter(i => i.type === t).sort((a, b) => a.order - b.order || a.name.localeCompare(b.name, 'zh')).map(summary);
 const catalog = {
   tools: pick('tool'), skills: pick('skill'), docs: pick('doc'),
+  changelog: lib.changelog.slice(0, 2).map(e => ({ date: e.date, items: e.items })),
   updates: [...items].sort((a, b) => b.updated.localeCompare(a.updated)).slice(0, 6).map(i => ({ type: i.type, id: i.id, name: i.name, updated: i.updated }))
 };
 const details = {};
@@ -40,10 +41,11 @@ const status = {
 
 fs.rmSync(out, { recursive: true, force: true });
 fs.mkdirSync(path.join(out, 'js'), { recursive: true });
-for (const f of ['icons.js', 'api.js', 'ui.js', 'app.js']) fs.copyFileSync(path.join(config.publicDir, 'js', f), path.join(out, 'js', f));
+for (const f of ['icons.js', 'api.js', 'ui.js', 'app.js', 'palette.js']) fs.copyFileSync(path.join(config.publicDir, 'js', f), path.join(out, 'js', f));
 fs.copyFileSync(path.join(config.publicDir, 'styles.css'), path.join(out, 'styles.css'));
 fs.copyFileSync(path.join(config.root, 'scripts/demo/demo.js'), path.join(out, 'js/demo.js'));
-fs.writeFileSync(path.join(out, 'js/demo-data.js'), `export const DATA = ${JSON.stringify({ catalog, items: details, status })};\n`);
+const changelog = lib.changelog.map(e => ({ date: e.date, html: e.html.replace(/href="\/(tools|skills|docs)\//g, 'href="#/$1/') }));
+fs.writeFileSync(path.join(out, 'js/demo-data.js'), `export const DATA = ${JSON.stringify({ catalog, items: details, status, changelog })};\n`);
 fs.writeFileSync(path.join(out, 'index.html'), `<title>造物册</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="zw-demo" content="1">

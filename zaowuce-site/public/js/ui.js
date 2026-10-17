@@ -26,6 +26,7 @@ export const TYPE_LABEL = { tool: '工具', skill: 'SKILL', doc: '知识库' };
 export const TYPE_ICON = { tool: 'tools', skill: 'skill', doc: 'book' };
 
 export const maturityTag = m => {
+  if (!m) return '';
   const [label, tone] = MATURITY[m] || [m, ''];
   return `<span class="tag dot ${tone}">${esc(label)}</span>`;
 };
