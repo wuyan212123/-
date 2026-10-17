@@ -50,7 +50,7 @@ fs.writeFileSync(path.join(out, 'index.html'), `<title>造物册</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="zw-demo" content="1">
 <link rel="stylesheet" href="styles.css">
-<style>.demo-flag{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:60;font:600 12px/1 system-ui,sans-serif;background:var(--warn-soft);color:var(--warn);padding:7px 11px;border-radius:999px;box-shadow:var(--shadow)}</style>
+<style>.demo-flag{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:60;font:600 12px/1 system-ui,sans-serif;background:rgba(29,29,31,.86);color:#fff;padding:8px 14px;border-radius:980px;backdrop-filter:blur(12px)}</style>
 <div id="app"></div>
 <div class="demo-flag">演示版 · 数据为本站真实内容，操作不会保存</div>
 <script type="module" src="js/app.js"></script>
