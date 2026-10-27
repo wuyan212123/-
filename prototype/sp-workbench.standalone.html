@@ -19,6 +19,8 @@
   --a:#2f5fef; --b:#9ba5b6; --b-weak:#eff1f5; --b-ink:#5a6476;
   --good:#0b935d; --good-weak:#e4f5ec; --bad:#dc3c37; --bad-weak:#fdeceb; --warn:#b86f00; --warn-weak:#fdf3df;
   --c1:#2f5fef; --c2:#eb6834; --c1-fill:rgba(47,95,239,.13); --band-a:#eef3ff; --band-b:#f2f4f7;
+  --hm-lo:#f1f4fa; --hm-hi:#1c5cab; --hm-ink:#ffffff; --dv-good:#2a78d6; --dv-bad:#e34948; --dv-mid:#f0efec;
+  --mt1:#2a78d6; --mt2:#eb6834; --mt3:#1baf7a; --mt4:#eda100; --mt5:#e87ba4;
   --nav-bg:#f6f7f9; --nav-bg-2:#ffffff; --nav-fg:#667085; --nav-fg-2:#101828; --nav-line:#e7eaef; --nav-dim:#98a2b3;
   --scrim:rgba(13,20,36,.42);
   --sh-1:0 1px 2px rgba(16,24,40,.035);
@@ -36,6 +38,8 @@
   --a:#6f94ff; --b:#6b7689; --b-weak:#1c2332; --b-ink:#a6b0c0;
   --good:#3fcb8b; --good-weak:#0f2a1f; --bad:#ff6b63; --bad-weak:#351718; --warn:#f0b14a; --warn-weak:#2f240e;
   --c1:#5b87ff; --c2:#e8692a; --c1-fill:rgba(91,135,255,.2); --band-a:rgba(111,148,255,.09); --band-b:rgba(255,255,255,.035);
+  --hm-lo:#1a2130; --hm-hi:#5598e7; --hm-ink:#0b1020; --dv-good:#3987e5; --dv-bad:#e66767; --dv-mid:#383835;
+  --mt1:#3987e5; --mt2:#d95926; --mt3:#199e70; --mt4:#c98500; --mt5:#d55181;
   --nav-bg:#0a0e16; --nav-bg-2:#161d2b; --nav-fg:#8a95ab; --nav-fg-2:#eef2f8; --nav-line:#1c2433; --nav-dim:#5a6478;
   --scrim:rgba(0,0,0,.6);
   --sh-1:0 1px 2px rgba(0,0,0,.35);
@@ -50,6 +54,8 @@
   --a:#6f94ff; --b:#6b7689; --b-weak:#1c2332; --b-ink:#a6b0c0;
   --good:#3fcb8b; --good-weak:#0f2a1f; --bad:#ff6b63; --bad-weak:#351718; --warn:#f0b14a; --warn-weak:#2f240e;
   --c1:#5b87ff; --c2:#e8692a; --c1-fill:rgba(91,135,255,.2); --band-a:rgba(111,148,255,.09); --band-b:rgba(255,255,255,.035);
+  --hm-lo:#1a2130; --hm-hi:#5598e7; --hm-ink:#0b1020; --dv-good:#3987e5; --dv-bad:#e66767; --dv-mid:#383835;
+  --mt1:#3987e5; --mt2:#d95926; --mt3:#199e70; --mt4:#c98500; --mt5:#d55181;
   --nav-bg:#0a0e16; --nav-bg-2:#161d2b; --nav-fg:#8a95ab; --nav-fg-2:#eef2f8; --nav-line:#1c2433; --nav-dim:#5a6478;
   --scrim:rgba(0,0,0,.6);
   --sh-1:0 1px 2px rgba(0,0,0,.35);
@@ -925,6 +931,88 @@ table.bulkt td{font-family:var(--font-mono);font-size:11.5px}
 .toast{bottom:auto;top:calc(72px + env(safe-area-inset-top,0px))}
 @media (max-width:1279px){.cyc-body{grid-template-columns:minmax(0,1fr)}.guide{position:static}.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:760px){.checks li{flex-wrap:wrap}.checks li .ct2{flex-basis:calc(100% - 30px)}.checks li .btn{margin-left:26px}.cyc-steps{display:flex;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:2px 16px}.cstep{min-width:150px}.cyc-foot{bottom:calc(66px + env(safe-area-inset-bottom,0px))}.tiles,.ctodo{grid-template-columns:1fr}}
+
+/* ---------- v6：复盘分析（活动趋势 / 关键词变动 / 结构与效率 / 星期规律） ---------- */
+.vtabs.rtabs{border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:var(--sh-1);padding:0 8px}
+.vtabs.rtabs button svg{width:15px;height:15px}
+.vtabs.rtabs button[aria-selected="true"] svg{color:var(--accent)}
+table.hm{border-collapse:separate;border-spacing:3px;font-size:12px;width:100%}
+table.hm th{font-weight:500;color:var(--fg-3);font-size:11px;padding:2px 1px 4px;white-space:nowrap;text-align:center;font-family:var(--font-num)}
+table.hm .wtag{display:block;font-size:10px;font-weight:700;line-height:14px}
+table.hm th.wa{color:var(--accent)} table.hm th.wb{color:var(--b-ink)}
+table.hm th.rl,table.hm td.rl{text-align:left;padding:0 10px 0 0;white-space:nowrap;max-width:210px;overflow:hidden;text-overflow:ellipsis;font:500 12.5px var(--font-ui);color:var(--fg)}
+table.hm td.rl small{display:block;font-size:11px;color:var(--fg-3);font-weight:400}
+table.hm td.hc{height:32px;min-width:46px;text-align:center;border-radius:6px;font:500 11.5px var(--font-num);font-variant-numeric:tabular-nums;position:relative}
+table.hm td.hc.nil{color:var(--fg-3);background:var(--surface-2)}
+table.hm td.hc.bad0{background:color-mix(in oklab,var(--dv-bad) 22%,var(--dv-mid));color:var(--bad);font-weight:600}
+table.hm td.hc.inc::after{content:"";position:absolute;top:4px;right:4px;width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.55}
+table.hm td.ex{padding:0 0 0 10px;white-space:nowrap;text-align:left}
+table.hm tr.tot td.rl{color:var(--fg-2)}
+table.hm tr.tot td.hc{outline:1px solid var(--line-2);outline-offset:-1px}
+table.hm button.rl{border:0;background:none;padding:0;font:inherit;color:inherit;cursor:pointer;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;text-align:left}
+table.hm button.rl:hover{color:var(--accent)}
+.hm-legend{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--fg-3);flex-wrap:wrap}
+.hm-legend .ramp{width:110px;height:8px;border-radius:4px;display:inline-block}
+.insights{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.insights li{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line);font-size:13px;line-height:1.6}
+.insights li:first-child{border-top:0;padding-top:0}
+.insights li>svg{margin-top:3px;flex:none}
+.insights li.bad>svg{color:var(--bad)} .insights li.good>svg{color:var(--good)} .insights li.warn>svg{color:var(--warn)} .insights li.neu>svg{color:var(--fg-3)}
+.insights li .it{flex:1;min-width:0} .insights li .it b{font-weight:600}
+.insights li .btn{flex:none}
+.shr{display:grid;grid-template-columns:minmax(0,170px) 1fr 52px;gap:6px 12px;align-items:center;font-size:12px}
+.shr .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}
+.shr .bp{display:flex;flex-direction:column;gap:3px}
+.shr .bp i{display:block;height:7px;border-radius:2px;min-width:2px}
+.shr .ix{text-align:right;font:600 12.5px var(--font-num)}
+.mvcards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.mvc{display:flex;flex-direction:column;gap:2px;text-align:left;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:var(--sh-1);transition:border-color .15s,box-shadow .15s}
+.mvc:hover{border-color:var(--line-2)}
+.mvc.on{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-weak)}
+.mvc .ml{font-size:12px;color:var(--fg-2);display:flex;align-items:center;gap:6px}
+.mvc .ml i{width:8px;height:8px;border-radius:50%}
+.mvc b{font:600 24px/1.2 var(--font-num)}
+.mvc small{font:500 12px var(--font-num);color:var(--fg-3)}
+.mvbar{display:flex;height:8px;border-radius:4px;overflow:hidden;gap:2px;margin-top:2px}
+.mvbar i{display:block;height:100%}
+.mv{display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 8px;border-radius:10px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.mv.new{background:var(--accent-weak);color:var(--accent)} .mv.lost{background:var(--bad-weak);color:var(--bad)} .mv.up{background:var(--good-weak);color:var(--good)} .mv.down{background:var(--warn-weak);color:var(--warn)} .mv.flat{background:var(--sunken);color:var(--fg-2)}
+.conc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 40px}
+.conc .cr{display:grid;grid-template-columns:110px 1fr 120px;gap:10px;align-items:center;font-size:12.5px}
+.conc .cr .bp{display:flex;flex-direction:column;gap:3px}
+.conc .cr .bp i{display:block;height:7px;border-radius:2px}
+.conc .cr .v{text-align:right;font:500 12.5px var(--font-num);color:var(--fg-2)} .conc .cr .v b{color:var(--fg);font-weight:600}
+.mix{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:6px;align-items:end;height:170px}
+.mixc{display:flex;flex-direction:column-reverse;gap:2px;height:100%;border-radius:4px;overflow:hidden}
+.mixc i{display:block;width:100%;min-height:1px}
+.mixax{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:6px;font:500 10.5px var(--font-num);color:var(--fg-3);text-align:center;margin-top:6px}
+.mixax .wa{color:var(--accent);font-weight:700}
+.wbars{position:relative;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:6px;align-items:end;height:150px;padding-top:16px}
+.wbars .band{position:absolute;left:0;right:0;background:var(--good-weak);border-top:1px dashed var(--good);border-bottom:1px dashed var(--good);opacity:.7}
+.wbars .wb{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;z-index:1}
+.wbars .wb i{display:block;width:70%;background:var(--c2);border-radius:3px 3px 1px 1px;min-height:2px}
+.wbars .wb.last i{background:var(--bad)}
+.wbars .wb span{font:600 10.5px var(--font-num);color:var(--fg-2);margin-bottom:3px}
+.canni{display:flex;flex-direction:column}
+.canni .cn1{padding:10px 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
+.canni .cn1:first-child{border-top:0;padding-top:0}
+.canni .cnh{display:flex;align-items:center;gap:8px;font-size:12.5px}
+.canni .cnh .muted{margin-left:auto;font:500 12px var(--font-num)}
+.canni .cnr{display:flex;gap:6px;flex-wrap:wrap}
+.canni .cnr span{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:6px;background:var(--surface-2);border:1px solid var(--line);font-size:11.5px}
+.canni .cnr span.keep{border-color:var(--good);background:var(--good-weak)}
+.canni .cnr span b{font:600 11.5px var(--font-num)}
+.qlegend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--fg-2)}
+.qlegend span{display:inline-flex;align-items:center;gap:6px}
+.qlegend i{width:10px;height:10px;border-radius:50%}
+.chart .qp{cursor:pointer}
+.chart .qp:hover{stroke-width:3}
+.kpis2{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.kpis2 .k2{padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2)}
+.kpis2 .k2 span{font-size:11.5px;color:var(--fg-3)} .kpis2 .k2 b{display:block;font:600 20px/1.3 var(--font-num)} .kpis2 .k2 small{font:500 11.5px var(--font-num);color:var(--fg-3)}
+.kpis2 .k2.hl{background:var(--accent-weak);border-color:var(--accent-line)}
+@media (max-width:1279px){.mvcards{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:760px){.conc{grid-template-columns:1fr}.mvcards{grid-template-columns:repeat(2,minmax(0,1fr))}.kpis2{grid-template-columns:1fr}.shr{grid-template-columns:minmax(0,110px) 1fr 44px}.conc .cr{grid-template-columns:80px 1fr 96px}}
 </style>
 
 <div id="app"></div>
@@ -948,7 +1036,7 @@ const span=(s,e)=>di(e)-di(s)+1;
 const LAST=ds(END);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 // 图标：Lucide 0.460.0 中用到的图标，内联为 SVG（不依赖 CDN）
-const ICONS={"usb":"<circle cx=\"10\" cy=\"7\" r=\"1\"/><circle cx=\"4\" cy=\"20\" r=\"1\"/><path d=\"M4.7 19.3 19 5\"/><path d=\"m21 3-3 1 2 2Z\"/><path d=\"M9.26 7.68 5 12l2 5\"/><path d=\"m10 14 5 2 3.5-3.5\"/><path d=\"m18 12 1-1 1 1-1 1Z\"/>","scale":"<path d=\"m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z\"/><path d=\"m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z\"/><path d=\"M7 21h10\"/><path d=\"M12 3v18\"/><path d=\"M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2\"/>","arrow-up-right":"<path d=\"M7 7h10v10\"/><path d=\"M7 17 17 7\"/>","arrow-down-right":"<path d=\"m7 7 10 10\"/><path d=\"M17 7v10H7\"/>","tags":"<path d=\"m15 5 6.3 6.3a2.4 2.4 0 0 1 0 3.4L17 19\"/><path d=\"M9.586 5.586A2 2 0 0 0 8.172 5H3a1 1 0 0 0-1 1v5.172a2 2 0 0 0 .586 1.414L8.29 18.29a2.426 2.426 0 0 0 3.42 0l3.58-3.58a2.426 2.426 0 0 0 0-3.42z\"/><circle cx=\"6.5\" cy=\"9.5\" r=\".5\" fill=\"currentColor\"/>","target":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"6\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/>","circle-check":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m9 12 2 2 4-4\"/>","pi":"<line x1=\"9\" x2=\"9\" y1=\"4\" y2=\"20\"/><path d=\"M4 7c0-1.7 1.3-3 3-3h13\"/><path d=\"M18 20c-1.7 0-3-1.3-3-3V4\"/>","plus":"<path d=\"M5 12h14\"/><path d=\"M12 5v14\"/>","database":"<ellipse cx=\"12\" cy=\"5\" rx=\"9\" ry=\"3\"/><path d=\"M3 5V19A9 3 0 0 0 21 19V5\"/><path d=\"M3 12A9 3 0 0 0 21 12\"/>","loader-circle":"<path d=\"M21 12a9 9 0 1 1-6.219-8.56\"/>","triangle-alert":"<path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"/><path d=\"M12 9v4\"/><path d=\"M12 17h.01\"/>","chevrons-up-down":"<path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/>","group":"<path d=\"M3 7V5c0-1.1.9-2 2-2h2\"/><path d=\"M17 3h2c1.1 0 2 .9 2 2v2\"/><path d=\"M21 17v2c0 1.1-.9 2-2 2h-2\"/><path d=\"M7 21H5c-1.1 0-2-.9-2-2v-2\"/><rect width=\"7\" height=\"5\" x=\"7\" y=\"7\" rx=\"1\"/><rect width=\"7\" height=\"5\" x=\"10\" y=\"12\" rx=\"1\"/>","chevron-down":"<path d=\"m6 9 6 6 6-6\"/>","list-filter":"<path d=\"M3 6h18\"/><path d=\"M7 12h10\"/><path d=\"M10 18h4\"/>","calendar-range":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\"/><path d=\"M16 2v4\"/><path d=\"M3 10h18\"/><path d=\"M8 2v4\"/><path d=\"M17 14h-6\"/><path d=\"M13 18H7\"/><path d=\"M7 14h.01\"/><path d=\"M17 18h.01\"/>","circle-help":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3\"/><path d=\"M12 17h.01\"/>","search":"<circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/>","check":"<path d=\"M20 6 9 17l-5-5\"/>","x":"<path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/>","chevron-left":"<path d=\"m15 18-6-6 6-6\"/>","chevron-right":"<path d=\"m9 18 6-6-6-6\"/>","layout-dashboard":"<rect width=\"7\" height=\"9\" x=\"3\" y=\"3\" rx=\"1\"/><rect width=\"7\" height=\"5\" x=\"14\" y=\"3\" rx=\"1\"/><rect width=\"7\" height=\"9\" x=\"14\" y=\"12\" rx=\"1\"/><rect width=\"7\" height=\"5\" x=\"3\" y=\"16\" rx=\"1\"/>","git-compare-arrows":"<circle cx=\"5\" cy=\"6\" r=\"3\"/><path d=\"M12 6h5a2 2 0 0 1 2 2v7\"/><path d=\"m15 9-3-3 3-3\"/><circle cx=\"19\" cy=\"18\" r=\"3\"/><path d=\"M12 18H7a2 2 0 0 1-2-2V9\"/><path d=\"m9 15 3 3-3 3\"/>","list-checks":"<path d=\"m3 17 2 2 4-4\"/><path d=\"m3 7 2 2 4-4\"/><path d=\"M13 6h8\"/><path d=\"M13 12h8\"/><path d=\"M13 18h8\"/>","file-text":"<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/><path d=\"M10 9H8\"/><path d=\"M16 13H8\"/><path d=\"M16 17H8\"/>","folder-kanban":"<path d=\"M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z\"/><path d=\"M8 10v4\"/><path d=\"M12 10v2\"/><path d=\"M16 10v6\"/>","sliders-horizontal":"<line x1=\"21\" x2=\"14\" y1=\"4\" y2=\"4\"/><line x1=\"10\" x2=\"3\" y1=\"4\" y2=\"4\"/><line x1=\"21\" x2=\"12\" y1=\"12\" y2=\"12\"/><line x1=\"8\" x2=\"3\" y1=\"12\" y2=\"12\"/><line x1=\"21\" x2=\"16\" y1=\"20\" y2=\"20\"/><line x1=\"12\" x2=\"3\" y1=\"20\" y2=\"20\"/><line x1=\"14\" x2=\"14\" y1=\"2\" y2=\"6\"/><line x1=\"8\" x2=\"8\" y1=\"10\" y2=\"14\"/><line x1=\"16\" x2=\"16\" y1=\"18\" y2=\"22\"/>","book-open":"<path d=\"M12 7v14\"/><path d=\"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z\"/>","flask-conical":"<path d=\"M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2\"/><path d=\"M8.5 2h7\"/><path d=\"M7 16h10\"/>","ellipsis":"<circle cx=\"12\" cy=\"12\" r=\"1\"/><circle cx=\"19\" cy=\"12\" r=\"1\"/><circle cx=\"5\" cy=\"12\" r=\"1\"/>","folder-plus":"<path d=\"M12 10v6\"/><path d=\"M9 13h6\"/><path d=\"M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z\"/>","upload":"<path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"17 8 12 3 7 8\"/><line x1=\"12\" x2=\"12\" y1=\"3\" y2=\"15\"/>","file-spreadsheet":"<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/><path d=\"M8 13h2\"/><path d=\"M14 13h2\"/><path d=\"M8 17h2\"/><path d=\"M14 17h2\"/>","calendar-days":"<path d=\"M8 2v4\"/><path d=\"M16 2v4\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\"/><path d=\"M3 10h18\"/><path d=\"M8 14h.01\"/><path d=\"M12 14h.01\"/><path d=\"M16 14h.01\"/><path d=\"M8 18h.01\"/><path d=\"M12 18h.01\"/><path d=\"M16 18h.01\"/>","languages":"<path d=\"m5 8 6 6\"/><path d=\"m4 14 6-6 2-3\"/><path d=\"M2 5h12\"/><path d=\"M7 2h1\"/><path d=\"m22 22-5-10-5 10\"/><path d=\"M14 18h6\"/>","cloud-off":"<path d=\"m2 2 20 20\"/><path d=\"M5.782 5.782A7 7 0 0 0 9 19h8.5a4.5 4.5 0 0 0 1.307-.193\"/><path d=\"M21.532 16.5A4.5 4.5 0 0 0 17.5 10h-1.79A7.008 7.008 0 0 0 10 5.07\"/>","refresh-cw":"<path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"/><path d=\"M21 3v5h-5\"/><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"/><path d=\"M8 16H3v5\"/>","circle-alert":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"12\" x2=\"12\" y1=\"8\" y2=\"12\"/><line x1=\"12\" x2=\"12.01\" y1=\"16\" y2=\"16\"/>","calendar-x-2":"<path d=\"M8 2v4\"/><path d=\"M16 2v4\"/><path d=\"M21 13V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8\"/><path d=\"M3 10h18\"/><path d=\"m17 22 5-5\"/><path d=\"m17 17 5 5\"/>","search-x":"<path d=\"m13.5 8.5-5 5\"/><path d=\"m8.5 8.5 5 5\"/><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/>","filter-x":"<path d=\"M13.013 3H2l8 9.46V19l4 2v-8.54l.9-1.055\"/><path d=\"m22 3-5 5\"/><path d=\"m17 3 5 5\"/>","info":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 16v-4\"/><path d=\"M12 8h.01\"/>","arrow-right":"<path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/>","tag":"<path d=\"M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z\"/><circle cx=\"7.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/>","dot":"<circle cx=\"12.1\" cy=\"12.1\" r=\"1\"/>","arrow-up":"<path d=\"m5 12 7-7 7 7\"/><path d=\"M12 19V5\"/>","arrow-down":"<path d=\"M12 5v14\"/><path d=\"m19 12-7 7-7-7\"/>","list-x":"<path d=\"M11 12H3\"/><path d=\"M16 6H3\"/><path d=\"M16 18H3\"/><path d=\"m19 10-4 4\"/><path d=\"m15 10 4 4\"/>","file-pen-line":"<path d=\"m18 5-2.414-2.414A2 2 0 0 0 14.172 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2\"/><path d=\"M21.378 12.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z\"/><path d=\"M8 18h1\"/>","download":"<path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" x2=\"12\" y1=\"15\" y2=\"3\"/>","eye":"<path d=\"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>","columns-3":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M9 3v18\"/><path d=\"M15 3v18\"/>","rotate-ccw":"<path d=\"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\"/><path d=\"M3 3v5h5\"/>","lock":"<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\" ry=\"2\"/><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"/>","chevron-up":"<path d=\"m18 15-6-6-6 6\"/>","lightbulb":"<path d=\"M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5\"/><path d=\"M9 18h6\"/><path d=\"M10 22h4\"/>","table-2":"<path d=\"M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18\"/>","history":"<path d=\"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\"/><path d=\"M3 3v5h5\"/><path d=\"M12 7v5l4 2\"/>","layers":"<path d=\"m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z\"/><path d=\"m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65\"/><path d=\"m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65\"/>","user-round-check":"<path d=\"M2 21a8 8 0 0 1 13.292-6\"/><circle cx=\"10\" cy=\"8\" r=\"5\"/><path d=\"m16 19 2 2 4-4\"/>","copy":"<rect width=\"14\" height=\"14\" x=\"8\" y=\"8\" rx=\"2\" ry=\"2\"/><path d=\"M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2\"/>","archive":"<rect width=\"20\" height=\"5\" x=\"2\" y=\"3\" rx=\"1\"/><path d=\"M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8\"/><path d=\"M10 12h4\"/>","file-up":"<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/><path d=\"M12 12v6\"/><path d=\"m15 15-3-3-3 3\"/>","file":"<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/>","file-question":"<path d=\"M12 17h.01\"/><path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z\"/><path d=\"M9.1 9a3 3 0 0 1 5.82 1c0 2-3 3-3 3\"/>","circle-x":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m15 9-6 6\"/><path d=\"m9 9 6 6\"/>","trash-2":"<path d=\"M3 6h18\"/><path d=\"M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6\"/><path d=\"M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2\"/><line x1=\"10\" x2=\"10\" y1=\"11\" y2=\"17\"/><line x1=\"14\" x2=\"14\" y1=\"11\" y2=\"17\"/>","sparkles":"<path d=\"M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z\"/><path d=\"M20 3v4\"/><path d=\"M22 5h-4\"/><path d=\"M4 17v2\"/><path d=\"M5 18H3\"/>","file-down":"<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/><path d=\"M12 18v-6\"/><path d=\"m9 15 3 3 3-3\"/>","pencil":"<path d=\"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z\"/><path d=\"m15 5 4 4\"/>","plug-zap":"<path d=\"M6.3 20.3a2.4 2.4 0 0 0 3.4 0L12 18l-6-6-2.3 2.3a2.4 2.4 0 0 0 0 3.4Z\"/><path d=\"m2 22 3-3\"/><path d=\"M7.5 13.5 10 11\"/><path d=\"M10.5 16.5 13 14\"/><path d=\"m18 3-4 4h6l-4 4\"/>","grid":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M3 9h18\"/><path d=\"M3 15h18\"/><path d=\"M9 3v18\"/><path d=\"M15 3v18\"/>","text":"<path d=\"M17 6.1H3\"/><path d=\"M21 12.1H3\"/><path d=\"M15.1 18H3\"/>","table":"<path d=\"M12 3v18\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M3 9h18\"/><path d=\"M3 15h18\"/>","wallet":"<path d=\"M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1\"/><path d=\"M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4\"/>","banknote":"<rect width=\"20\" height=\"12\" x=\"2\" y=\"6\" rx=\"2\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/><path d=\"M6 12h.01M18 12h.01\"/>","shopping-cart":"<circle cx=\"8\" cy=\"21\" r=\"1\"/><circle cx=\"19\" cy=\"21\" r=\"1\"/><path d=\"M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12\"/>","percent":"<line x1=\"19\" x2=\"5\" y1=\"5\" y2=\"19\"/><circle cx=\"6.5\" cy=\"6.5\" r=\"2.5\"/><circle cx=\"17.5\" cy=\"17.5\" r=\"2.5\"/>","mouse-pointer-click":"<path d=\"M14 4.1 12 6\"/><path d=\"m5.1 8-2.9-.8\"/><path d=\"m6 12-1.9 2\"/><path d=\"M7.2 2.2 8 5.1\"/><path d=\"M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z\"/>","trending-up":"<polyline points=\"22 7 13.5 15.5 8.5 10.5 2 17\"/><polyline points=\"16 7 22 7 22 13\"/>","eye-off":"<path d=\"M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49\"/><path d=\"M14.084 14.158a3 3 0 0 1-4.242-4.242\"/><path d=\"M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143\"/><path d=\"m2 2 20 20\"/>","rocket":"<path d=\"M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z\"/><path d=\"m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z\"/><path d=\"M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0\"/><path d=\"M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5\"/>","crosshair":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"22\" x2=\"18\" y1=\"12\" y2=\"12\"/><line x1=\"6\" x2=\"2\" y1=\"12\" y2=\"12\"/><line x1=\"12\" x2=\"12\" y1=\"6\" y2=\"2\"/><line x1=\"12\" x2=\"12\" y1=\"22\" y2=\"18\"/>","shield-alert":"<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\"/><path d=\"M12 8v4\"/><path d=\"M12 16h.01\"/>","circle-dot":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"1\"/>","circle":"<circle cx=\"12\" cy=\"12\" r=\"10\"/>","undo":"<path d=\"M3 7v6h6\"/><path d=\"M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13\"/>","repeat":"<path d=\"m17 2 4 4-4 4\"/><path d=\"M3 11v-1a4 4 0 0 1 4-4h14\"/><path d=\"m7 22-4-4 4-4\"/><path d=\"M21 13v1a4 4 0 0 1-4 4H3\"/>","refresh-ccw":"<path d=\"M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\"/><path d=\"M3 3v5h5\"/><path d=\"M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16\"/><path d=\"M16 16h5v5\"/>","pause":"<rect x=\"14\" y=\"4\" width=\"4\" height=\"16\" rx=\"1\"/><rect x=\"6\" y=\"4\" width=\"4\" height=\"16\" rx=\"1\"/>","watch":"<circle cx=\"12\" cy=\"12\" r=\"6\"/><polyline points=\"12 10 12 12 13 13\"/><path d=\"m16.13 7.66-.81-4.05a2 2 0 0 0-2-1.61h-2.68a2 2 0 0 0-2 1.61l-.78 4.05\"/><path d=\"m7.88 16.36.8 4a2 2 0 0 0 2 1.61h2.72a2 2 0 0 0 2-1.61l.81-4.05\"/>","sprout":"<path d=\"M7 20h10\"/><path d=\"M10 20c5.5-2.5.8-6.4 3-10\"/><path d=\"M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z\"/><path d=\"M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z\"/>","ban":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m4.9 4.9 14.2 14.2\"/>","gauge":"<path d=\"m12 14 4-4\"/><path d=\"M3.34 19a10 10 0 1 1 17.32 0\"/>","circle-pause":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"10\" x2=\"10\" y1=\"15\" y2=\"9\"/><line x1=\"14\" x2=\"14\" y1=\"15\" y2=\"9\"/>","piggy-bank":"<path d=\"M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2V5z\"/><path d=\"M2 9v1c0 1.1.9 2 2 2h1\"/><path d=\"M16 11h.01\"/>","square":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/>","arrow-left":"<path d=\"m12 19-7-7 7-7\"/><path d=\"M19 12H5\"/>"};
+const ICONS={"usb":"<circle cx=\"10\" cy=\"7\" r=\"1\"/><circle cx=\"4\" cy=\"20\" r=\"1\"/><path d=\"M4.7 19.3 19 5\"/><path d=\"m21 3-3 1 2 2Z\"/><path d=\"M9.26 7.68 5 12l2 5\"/><path d=\"m10 14 5 2 3.5-3.5\"/><path d=\"m18 12 1-1 1 1-1 1Z\"/>","scale":"<path d=\"m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z\"/><path d=\"m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z\"/><path d=\"M7 21h10\"/><path d=\"M12 3v18\"/><path d=\"M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2\"/>","arrow-up-right":"<path d=\"M7 7h10v10\"/><path d=\"M7 17 17 7\"/>","arrow-down-right":"<path d=\"m7 7 10 10\"/><path d=\"M17 7v10H7\"/>","tags":"<path d=\"m15 5 6.3 6.3a2.4 2.4 0 0 1 0 3.4L17 19\"/><path d=\"M9.586 5.586A2 2 0 0 0 8.172 5H3a1 1 0 0 0-1 1v5.172a2 2 0 0 0 .586 1.414L8.29 18.29a2.426 2.426 0 0 0 3.42 0l3.58-3.58a2.426 2.426 0 0 0 0-3.42z\"/><circle cx=\"6.5\" cy=\"9.5\" r=\".5\" fill=\"currentColor\"/>","target":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"6\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/>","circle-check":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m9 12 2 2 4-4\"/>","pi":"<line x1=\"9\" x2=\"9\" y1=\"4\" y2=\"20\"/><path d=\"M4 7c0-1.7 1.3-3 3-3h13\"/><path d=\"M18 20c-1.7 0-3-1.3-3-3V4\"/>","plus":"<path d=\"M5 12h14\"/><path d=\"M12 5v14\"/>","database":"<ellipse cx=\"12\" cy=\"5\" rx=\"9\" ry=\"3\"/><path d=\"M3 5V19A9 3 0 0 0 21 19V5\"/><path d=\"M3 12A9 3 0 0 0 21 12\"/>","loader-circle":"<path d=\"M21 12a9 9 0 1 1-6.219-8.56\"/>","triangle-alert":"<path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"/><path d=\"M12 9v4\"/><path d=\"M12 17h.01\"/>","chevrons-up-down":"<path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/>","group":"<path d=\"M3 7V5c0-1.1.9-2 2-2h2\"/><path d=\"M17 3h2c1.1 0 2 .9 2 2v2\"/><path d=\"M21 17v2c0 1.1-.9 2-2 2h-2\"/><path d=\"M7 21H5c-1.1 0-2-.9-2-2v-2\"/><rect width=\"7\" height=\"5\" x=\"7\" y=\"7\" rx=\"1\"/><rect width=\"7\" height=\"5\" x=\"10\" y=\"12\" rx=\"1\"/>","chevron-down":"<path d=\"m6 9 6 6 6-6\"/>","list-filter":"<path d=\"M3 6h18\"/><path d=\"M7 12h10\"/><path d=\"M10 18h4\"/>","calendar-range":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\"/><path d=\"M16 2v4\"/><path d=\"M3 10h18\"/><path d=\"M8 2v4\"/><path d=\"M17 14h-6\"/><path d=\"M13 18H7\"/><path d=\"M7 14h.01\"/><path d=\"M17 18h.01\"/>","circle-help":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3\"/><path d=\"M12 17h.01\"/>","search":"<circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/>","check":"<path d=\"M20 6 9 17l-5-5\"/>","x":"<path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/>","chevron-left":"<path d=\"m15 18-6-6 6-6\"/>","chevron-right":"<path d=\"m9 18 6-6-6-6\"/>","layout-dashboard":"<rect width=\"7\" height=\"9\" x=\"3\" y=\"3\" rx=\"1\"/><rect width=\"7\" height=\"5\" x=\"14\" y=\"3\" rx=\"1\"/><rect width=\"7\" height=\"9\" x=\"14\" y=\"12\" rx=\"1\"/><rect width=\"7\" height=\"5\" x=\"3\" y=\"16\" rx=\"1\"/>","git-compare-arrows":"<circle cx=\"5\" cy=\"6\" r=\"3\"/><path d=\"M12 6h5a2 2 0 0 1 2 2v7\"/><path d=\"m15 9-3-3 3-3\"/><circle cx=\"19\" cy=\"18\" r=\"3\"/><path d=\"M12 18H7a2 2 0 0 1-2-2V9\"/><path d=\"m9 15 3 3-3 3\"/>","list-checks":"<path d=\"m3 17 2 2 4-4\"/><path d=\"m3 7 2 2 4-4\"/><path d=\"M13 6h8\"/><path d=\"M13 12h8\"/><path d=\"M13 18h8\"/>","file-text":"<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/><path d=\"M10 9H8\"/><path d=\"M16 13H8\"/><path d=\"M16 17H8\"/>","folder-kanban":"<path d=\"M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z\"/><path d=\"M8 10v4\"/><path d=\"M12 10v2\"/><path d=\"M16 10v6\"/>","sliders-horizontal":"<line x1=\"21\" x2=\"14\" y1=\"4\" y2=\"4\"/><line x1=\"10\" x2=\"3\" y1=\"4\" y2=\"4\"/><line x1=\"21\" x2=\"12\" y1=\"12\" y2=\"12\"/><line x1=\"8\" x2=\"3\" y1=\"12\" y2=\"12\"/><line x1=\"21\" x2=\"16\" y1=\"20\" y2=\"20\"/><line x1=\"12\" x2=\"3\" y1=\"20\" y2=\"20\"/><line x1=\"14\" x2=\"14\" y1=\"2\" y2=\"6\"/><line x1=\"8\" x2=\"8\" y1=\"10\" y2=\"14\"/><line x1=\"16\" x2=\"16\" y1=\"18\" y2=\"22\"/>","book-open":"<path d=\"M12 7v14\"/><path d=\"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z\"/>","flask-conical":"<path d=\"M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2\"/><path d=\"M8.5 2h7\"/><path d=\"M7 16h10\"/>","ellipsis":"<circle cx=\"12\" cy=\"12\" r=\"1\"/><circle cx=\"19\" cy=\"12\" r=\"1\"/><circle cx=\"5\" cy=\"12\" r=\"1\"/>","folder-plus":"<path d=\"M12 10v6\"/><path d=\"M9 13h6\"/><path d=\"M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z\"/>","upload":"<path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"17 8 12 3 7 8\"/><line x1=\"12\" x2=\"12\" y1=\"3\" y2=\"15\"/>","file-spreadsheet":"<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/><path d=\"M8 13h2\"/><path d=\"M14 13h2\"/><path d=\"M8 17h2\"/><path d=\"M14 17h2\"/>","calendar-days":"<path d=\"M8 2v4\"/><path d=\"M16 2v4\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\"/><path d=\"M3 10h18\"/><path d=\"M8 14h.01\"/><path d=\"M12 14h.01\"/><path d=\"M16 14h.01\"/><path d=\"M8 18h.01\"/><path d=\"M12 18h.01\"/><path d=\"M16 18h.01\"/>","languages":"<path d=\"m5 8 6 6\"/><path d=\"m4 14 6-6 2-3\"/><path d=\"M2 5h12\"/><path d=\"M7 2h1\"/><path d=\"m22 22-5-10-5 10\"/><path d=\"M14 18h6\"/>","cloud-off":"<path d=\"m2 2 20 20\"/><path d=\"M5.782 5.782A7 7 0 0 0 9 19h8.5a4.5 4.5 0 0 0 1.307-.193\"/><path d=\"M21.532 16.5A4.5 4.5 0 0 0 17.5 10h-1.79A7.008 7.008 0 0 0 10 5.07\"/>","refresh-cw":"<path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"/><path d=\"M21 3v5h-5\"/><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"/><path d=\"M8 16H3v5\"/>","circle-alert":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"12\" x2=\"12\" y1=\"8\" y2=\"12\"/><line x1=\"12\" x2=\"12.01\" y1=\"16\" y2=\"16\"/>","calendar-x-2":"<path d=\"M8 2v4\"/><path d=\"M16 2v4\"/><path d=\"M21 13V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8\"/><path d=\"M3 10h18\"/><path d=\"m17 22 5-5\"/><path d=\"m17 17 5 5\"/>","search-x":"<path d=\"m13.5 8.5-5 5\"/><path d=\"m8.5 8.5 5 5\"/><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/>","filter-x":"<path d=\"M13.013 3H2l8 9.46V19l4 2v-8.54l.9-1.055\"/><path d=\"m22 3-5 5\"/><path d=\"m17 3 5 5\"/>","info":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 16v-4\"/><path d=\"M12 8h.01\"/>","arrow-right":"<path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/>","tag":"<path d=\"M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z\"/><circle cx=\"7.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/>","dot":"<circle cx=\"12.1\" cy=\"12.1\" r=\"1\"/>","arrow-up":"<path d=\"m5 12 7-7 7 7\"/><path d=\"M12 19V5\"/>","arrow-down":"<path d=\"M12 5v14\"/><path d=\"m19 12-7 7-7-7\"/>","list-x":"<path d=\"M11 12H3\"/><path d=\"M16 6H3\"/><path d=\"M16 18H3\"/><path d=\"m19 10-4 4\"/><path d=\"m15 10 4 4\"/>","file-pen-line":"<path d=\"m18 5-2.414-2.414A2 2 0 0 0 14.172 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2\"/><path d=\"M21.378 12.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z\"/><path d=\"M8 18h1\"/>","download":"<path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" x2=\"12\" y1=\"15\" y2=\"3\"/>","eye":"<path d=\"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>","columns-3":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M9 3v18\"/><path d=\"M15 3v18\"/>","rotate-ccw":"<path d=\"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\"/><path d=\"M3 3v5h5\"/>","lock":"<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\" ry=\"2\"/><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"/>","chevron-up":"<path d=\"m18 15-6-6-6 6\"/>","lightbulb":"<path d=\"M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5\"/><path d=\"M9 18h6\"/><path d=\"M10 22h4\"/>","table-2":"<path d=\"M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18\"/>","history":"<path d=\"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\"/><path d=\"M3 3v5h5\"/><path d=\"M12 7v5l4 2\"/>","layers":"<path d=\"m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z\"/><path d=\"m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65\"/><path d=\"m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65\"/>","user-round-check":"<path d=\"M2 21a8 8 0 0 1 13.292-6\"/><circle cx=\"10\" cy=\"8\" r=\"5\"/><path d=\"m16 19 2 2 4-4\"/>","copy":"<rect width=\"14\" height=\"14\" x=\"8\" y=\"8\" rx=\"2\" ry=\"2\"/><path d=\"M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2\"/>","archive":"<rect width=\"20\" height=\"5\" x=\"2\" y=\"3\" rx=\"1\"/><path d=\"M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8\"/><path d=\"M10 12h4\"/>","file-up":"<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/><path d=\"M12 12v6\"/><path d=\"m15 15-3-3-3 3\"/>","file":"<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/>","file-question":"<path d=\"M12 17h.01\"/><path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z\"/><path d=\"M9.1 9a3 3 0 0 1 5.82 1c0 2-3 3-3 3\"/>","circle-x":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m15 9-6 6\"/><path d=\"m9 9 6 6\"/>","trash-2":"<path d=\"M3 6h18\"/><path d=\"M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6\"/><path d=\"M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2\"/><line x1=\"10\" x2=\"10\" y1=\"11\" y2=\"17\"/><line x1=\"14\" x2=\"14\" y1=\"11\" y2=\"17\"/>","sparkles":"<path d=\"M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z\"/><path d=\"M20 3v4\"/><path d=\"M22 5h-4\"/><path d=\"M4 17v2\"/><path d=\"M5 18H3\"/>","file-down":"<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/><path d=\"M12 18v-6\"/><path d=\"m9 15 3 3 3-3\"/>","pencil":"<path d=\"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z\"/><path d=\"m15 5 4 4\"/>","plug-zap":"<path d=\"M6.3 20.3a2.4 2.4 0 0 0 3.4 0L12 18l-6-6-2.3 2.3a2.4 2.4 0 0 0 0 3.4Z\"/><path d=\"m2 22 3-3\"/><path d=\"M7.5 13.5 10 11\"/><path d=\"M10.5 16.5 13 14\"/><path d=\"m18 3-4 4h6l-4 4\"/>","grid":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M3 9h18\"/><path d=\"M3 15h18\"/><path d=\"M9 3v18\"/><path d=\"M15 3v18\"/>","text":"<path d=\"M17 6.1H3\"/><path d=\"M21 12.1H3\"/><path d=\"M15.1 18H3\"/>","table":"<path d=\"M12 3v18\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M3 9h18\"/><path d=\"M3 15h18\"/>","wallet":"<path d=\"M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1\"/><path d=\"M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4\"/>","banknote":"<rect width=\"20\" height=\"12\" x=\"2\" y=\"6\" rx=\"2\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/><path d=\"M6 12h.01M18 12h.01\"/>","shopping-cart":"<circle cx=\"8\" cy=\"21\" r=\"1\"/><circle cx=\"19\" cy=\"21\" r=\"1\"/><path d=\"M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12\"/>","percent":"<line x1=\"19\" x2=\"5\" y1=\"5\" y2=\"19\"/><circle cx=\"6.5\" cy=\"6.5\" r=\"2.5\"/><circle cx=\"17.5\" cy=\"17.5\" r=\"2.5\"/>","mouse-pointer-click":"<path d=\"M14 4.1 12 6\"/><path d=\"m5.1 8-2.9-.8\"/><path d=\"m6 12-1.9 2\"/><path d=\"M7.2 2.2 8 5.1\"/><path d=\"M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z\"/>","trending-up":"<polyline points=\"22 7 13.5 15.5 8.5 10.5 2 17\"/><polyline points=\"16 7 22 7 22 13\"/>","eye-off":"<path d=\"M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49\"/><path d=\"M14.084 14.158a3 3 0 0 1-4.242-4.242\"/><path d=\"M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143\"/><path d=\"m2 2 20 20\"/>","rocket":"<path d=\"M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z\"/><path d=\"m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z\"/><path d=\"M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0\"/><path d=\"M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5\"/>","crosshair":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"22\" x2=\"18\" y1=\"12\" y2=\"12\"/><line x1=\"6\" x2=\"2\" y1=\"12\" y2=\"12\"/><line x1=\"12\" x2=\"12\" y1=\"6\" y2=\"2\"/><line x1=\"12\" x2=\"12\" y1=\"22\" y2=\"18\"/>","shield-alert":"<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\"/><path d=\"M12 8v4\"/><path d=\"M12 16h.01\"/>","circle-dot":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"1\"/>","circle":"<circle cx=\"12\" cy=\"12\" r=\"10\"/>","undo":"<path d=\"M3 7v6h6\"/><path d=\"M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13\"/>","repeat":"<path d=\"m17 2 4 4-4 4\"/><path d=\"M3 11v-1a4 4 0 0 1 4-4h14\"/><path d=\"m7 22-4-4 4-4\"/><path d=\"M21 13v1a4 4 0 0 1-4 4H3\"/>","refresh-ccw":"<path d=\"M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\"/><path d=\"M3 3v5h5\"/><path d=\"M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16\"/><path d=\"M16 16h5v5\"/>","pause":"<rect x=\"14\" y=\"4\" width=\"4\" height=\"16\" rx=\"1\"/><rect x=\"6\" y=\"4\" width=\"4\" height=\"16\" rx=\"1\"/>","watch":"<circle cx=\"12\" cy=\"12\" r=\"6\"/><polyline points=\"12 10 12 12 13 13\"/><path d=\"m16.13 7.66-.81-4.05a2 2 0 0 0-2-1.61h-2.68a2 2 0 0 0-2 1.61l-.78 4.05\"/><path d=\"m7.88 16.36.8 4a2 2 0 0 0 2 1.61h2.72a2 2 0 0 0 2-1.61l.81-4.05\"/>","sprout":"<path d=\"M7 20h10\"/><path d=\"M10 20c5.5-2.5.8-6.4 3-10\"/><path d=\"M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z\"/><path d=\"M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z\"/>","ban":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m4.9 4.9 14.2 14.2\"/>","gauge":"<path d=\"m12 14 4-4\"/><path d=\"M3.34 19a10 10 0 1 1 17.32 0\"/>","circle-pause":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"10\" x2=\"10\" y1=\"15\" y2=\"9\"/><line x1=\"14\" x2=\"14\" y1=\"15\" y2=\"9\"/>","piggy-bank":"<path d=\"M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2V5z\"/><path d=\"M2 9v1c0 1.1.9 2 2 2h1\"/><path d=\"M16 11h.01\"/>","square":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/>","arrow-left":"<path d=\"m12 19-7-7 7-7\"/><path d=\"M19 12H5\"/>","chart-line":"<path d=\"M3 3v16a2 2 0 0 0 2 2h16\"/><path d=\"m19 9-5 5-4-4-3 3\"/>","arrow-up-down":"<path d=\"m21 16-4 4-4-4\"/><path d=\"M17 20V4\"/><path d=\"m3 8 4-4 4 4\"/><path d=\"M7 4v16\"/>","minus":"<path d=\"M5 12h14\"/>","star":"<path d=\"M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z\"/>"};
 const ic=(n,c)=>`<svg class="lucide${c?' '+c:''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]||''}</svg>`;
 function rng(seed){let a=seed>>>0;return()=>{a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 const store={get(k,d){try{const v=localStorage.getItem('spwb.'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('spwb.'+k,JSON.stringify(v))}catch(e){}}};
@@ -1167,7 +1255,7 @@ const S={
   expanded:new Set(),sel:null,last:null,
   cols:store.get('cols',DEF_COLS).filter(id=>CD[id]),colW:store.get('colW',{}),
   rules:clone(DEF_RULES),ruleDraft:null,aiTested:false,
-  diag:{mode:'custom',event:'2026-10-06',win:7,metric:'sales',wf:'sales',wA:LAST,wB:addD(LAST,-7)},
+  diag:{tab:'ab',cm:'acos',km:'orders',mv:'all',mvAll:false,exEv:true,mode:'custom',event:'2026-10-06',win:7,metric:'sales',wf:'sales',wA:LAST,wB:addD(LAST,-7)},
   data:{stage:'preview',fix:{s:'',e:''}},
   report:{type:'weekly',src:'rule',state:'done',sel:'cur',genAt:'2026-10-27 10:48'},
   toast:null,modal:null
@@ -1383,7 +1471,7 @@ function rail(){
   const nav=(id,icon,label,badge)=>`<a class="nav ${S.view===id?'on':''}" href="#${id}" data-act="nav" data-v="${id}" title="${label}">${ic(icon)}<span>${label}</span>${badge?`<em title="风险词">${badge}</em>`:''}</a>`;
   return `<nav class="rail" aria-label="主导航">
     <div class="brand"><svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#2f5fef"/><path d="M9.5 22.5v-4M14 22.5v-8.5M18.5 22.5v-5.5M23 22.5V9.5" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg><div class="bt"><b>SP 广告工作台</b><small>3.0 预览版</small></div></div>
-    <div class="ng"><div class="nl">分析</div>${nav('cycle','refresh-ccw','周期优化',cycN)}${nav('overview','layout-dashboard','经营总览')}${nav('diagnosis','git-compare-arrows','变化诊断')}${nav('keywords','list-checks','关键词决策')}${nav('reports','file-text','复盘报告')}</div>
+    <div class="ng"><div class="nl">分析</div>${nav('cycle','refresh-ccw','周期优化',cycN)}${nav('overview','layout-dashboard','经营总览')}${nav('diagnosis','chart-line','复盘分析')}${nav('keywords','list-checks','关键词决策')}${nav('reports','file-text','复盘报告')}</div>
     <div class="ng"><div class="nl">工作区</div>${nav('data','database','数据中心')}${nav('projects','folder-kanban','项目')}${nav('rules','sliders-horizontal','分析规则')}</div>
     <div class="ng end">${nav('spec','book-open','方案说明')}<div class="pa" style="display:block"><button class="nav ${S.pop==='demo'?'on':''}" data-act="pop" data-pop="demo" title="状态演示">${ic('flask-conical')}<span>状态演示</span></button>${S.pop==='demo'?popDemo('up'):''}</div></div>
     <div class="rail-foot"><i></i>演示数据 · 截至 ${md(LAST)}</div>
@@ -1392,7 +1480,7 @@ function rail(){
 function tabbar(){
   const t=(id,icon,l)=>`<a href="#${id}" data-act="nav" data-v="${id}" class="${S.view===id?'on':''}">${ic(icon)}${l}</a>`;
   const more=['diagnosis','data','projects','rules','spec'].includes(S.view);
-  return `<nav class="tabbar" aria-label="主导航">${t('cycle','refresh-ccw','优化')}${t('overview','layout-dashboard','总览')}${t('keywords','list-checks','关键词')}${t('reports','file-text','报告')}<button data-act="pop" data-pop="more" class="${more?'on':''}">${ic('ellipsis')}更多</button></nav>${S.pop==='more'?`${scrimM()}<div class="pop" role="dialog"><div class="plist">${[['diagnosis','git-compare-arrows','变化诊断'],['data','database','数据中心'],['projects','folder-kanban','项目'],['rules','sliders-horizontal','分析规则'],['spec','book-open','方案说明']].map(([id,i,l])=>`<button class="pitem" data-act="nav" data-v="${id}">${ic(i)}<span class="pt">${l}</span></button>`).join('')}<button class="pitem" data-act="pop" data-pop="demo">${ic('flask-conical')}<span class="pt">状态演示</span></button></div></div>`:''}${S.pop==='demo'&&innerWidth<=760?popDemo():''}`;
+  return `<nav class="tabbar" aria-label="主导航">${t('cycle','refresh-ccw','优化')}${t('overview','layout-dashboard','总览')}${t('keywords','list-checks','关键词')}${t('reports','file-text','报告')}<button data-act="pop" data-pop="more" class="${more?'on':''}">${ic('ellipsis')}更多</button></nav>${S.pop==='more'?`${scrimM()}<div class="pop" role="dialog"><div class="plist">${[['diagnosis','chart-line','复盘分析'],['data','database','数据中心'],['projects','folder-kanban','项目'],['rules','sliders-horizontal','分析规则'],['spec','book-open','方案说明']].map(([id,i,l])=>`<button class="pitem" data-act="nav" data-v="${id}">${ic(i)}<span class="pt">${l}</span></button>`).join('')}<button class="pitem" data-act="pop" data-pop="demo">${ic('flask-conical')}<span class="pt">状态演示</span></button></div></div>`:''}${S.pop==='demo'&&innerWidth<=760?popDemo():''}`;
 }
 const DEMOS=[['normal','正常数据'],['noproject','无项目'],['empty','空项目（未导入报表）'],['nodata','当前范围无数据'],['listempty','清单筛选为空'],['nobase','没有历史基准（B 无数据）'],['coverage','数据覆盖不足'],['loaderror','读取失败可重试'],['importpending','导入待确认'],['importdone','导入完成'],['importfail','导入失败'],['reportgen','报告生成中']];
 function popDemo(dir){
@@ -1774,6 +1862,7 @@ function vDiagnosis(){
   const g=gate();if(g)return g;
   const R=calc(S.shown);
   if(!R.kws.length)return banners(R)+noData(R);
+  if((S.diag.tab||'ab')!=='ab')return vReview(R);
   const sh=S.shown, dg=S.diag;
   let modeCtl='';
   if(dg.mode==='custom')modeCtl=`<span class="hint">使用顶部范围条的 A / B 日期</span><button class="btn sm" data-act="pop" data-pop="date-A"><span class="ab a">A</span>${rLabel(S.scope.A)}</button><button class="btn sm" data-act="pop" data-pop="date-B"><span class="ab b">B</span>${rLabel(S.scope.B)}</button>`;
@@ -1787,7 +1876,7 @@ function vDiagnosis(){
   const maxD=Math.max(1e-9,...contrib.map(x=>Math.abs(x.d)));
   const totD=R.hasB?R.A[m]-R.B[m]:0;
   return `
-  <div class="ph"><div class="tt"><h1>变化诊断</h1><span class="meta">与之前相比发生了什么 · ${srcLabel(sh.source)}${covChip(R,false)}</span></div><div class="act"><button class="btn" data-act="genReportCmp">${ic('file-pen-line')}生成周期对比报告</button></div></div>
+  ${revHead(R)}
   <div class="mode"><div class="seg">${[['custom','自定义 A/B'],['archive','归档周期'],['event','大促前后']].map(([v,l])=>`<button data-act="diagMode" data-v="${v}" aria-pressed="${dg.mode===v}">${l}</button>`).join('')}</div>${modeCtl}</div>
   ${banners(R,{kpi:false})}
   <section class="panel"><div class="panel-h"><h3>变化拆解</h3><span class="newb">新增</span><span class="muted" style="font-size:12px">${({sales:'销售额 = 曝光 × CTR × CVR × 客单价',spend:'花费 = 曝光 × CTR × CPC',acos:'ACOS = CPC ÷ (CVR × 客单价)'})[S.diag.wf]}</span><div class="r"><div class="seg">${[['sales','销售额'],['spend','花费'],['acos','ACOS']].map(([v,l])=>`<button data-act="diagWf" data-v="${v}" aria-pressed="${S.diag.wf===v}">${l}</button>`).join('')}</div></div></div>
@@ -1903,11 +1992,13 @@ ${by('可放大').slice(0,4).map(line).join('\n')||'本期没有符合条件的�
 ## 四、建议动作清单
 以下动作需在亚马逊广告后台人工确认后执行：
 ${acts.map(x=>`- ${x.s.action} · \`${x.k.key}\` · ${x.s.obj.camp} / ${x.s.obj.ag}（${({hi:'高',mid:'中',lo:'低'})[x.s.pri]}优先）`).join('\n')}
-## 五、本周优化动作
+## 五、趋势与结构
+${revMd()}
+## 六、本周优化动作
 ${cycMd()}
-## 六、本轮人工判断
+## 七、本轮人工判断
 ${decMd()}
-## 七、数据说明
+## 八、数据说明
 - 比率均由汇总后的基础量重新计算；分母为 0 记为不可计算。
 - 产品相关性、毛利、库存和推广阶段未纳入判断，需运营综合确认。`;
 }
@@ -1999,6 +2090,16 @@ function vRules(){
 function vSpec(){
   return `<div class="spec">
   <div class="ph"><div class="tt"><h1>方案说明</h1><span class="meta">信息架构、模块去向、交互规范与实施优先级 · 供评审与开发参考</span></div></div>
+  <section class="panel"><div class="panel-h"><h3>v6：资深运营的多维度周期复盘</h3><span class="newb">新增</span></div><div class="panel-b">
+    <p style="margin:0 0 10px">周期复盘不只看 A/B 两个数字。“复盘分析”在 A/B 对比之外增加四个维度，全部沿用顶部分析范围与筛选，按 A 期结束日倒推 12 个 7 天区间（缺日区间带圆点标记）：</p>
+    <div class="scx"><table class="sp" style="min-width:720px"><thead><tr><th>维度</th><th>资深运营看什么</th><th>页面</th></tr></thead><tbody>
+      <tr><td>活动趋势</td><td>多周走势而不是单周：ACOS 是否连续上升、是否在放量、花费占比与销售占比是否匹配</td><td>活动 × 周热力表（ACOS 以目标为中点双色）、趋势判断、占比对照，一键去调价</td></tr>
+      <tr><td>关键词变动</td><td>新出单 / 流失 / 增长 / 下滑四类变动及原因；头部集中度</td><td>变动分桶卡片、变动清单（主因 = 销售额拆解中贡献最大的因素）、关键词 × 周热力表、集中度对照</td></tr>
+      <tr><td>结构与效率</td><td>匹配方式结构是否向精准倾斜；非品牌 ACOS；无效花费率；同词多活动竞价；效率分层</td><td>匹配方式周结构、品牌 / 非品牌拆分、无效花费率走势、同词多活动清单、花费 × ACOS 散点</td></tr>
+      <tr><td>星期规律</td><td>多周数据中反复出现的星期差异，是否值得按星期调整</td><td>星期 × 指标热力表（可排除大促等异常日）；小时级分析需另接数据（新增范围）</td></tr>
+    </tbody></table></div>
+    <p style="margin:10px 0 0">数据边界：TACoS 需要店铺总销售额（业务报告），版位与展示份额需要版位报表 / 搜索词展示份额报告，均不在现有导入范围内，列为新增范围。</p>
+  </div></section>
   <section class="panel"><div class="panel-h"><h3>v5：按资深运营的周期优化流程组织</h3><span class="newb">新增</span></div><div class="panel-b">
     <p style="margin:0 0 10px">资深运营的工作不是“看报表”，而是按固定节奏完成一轮可回看的动作。本工具聚焦每周一轮的关键词优化：</p>
     <div class="scx"><table class="sp" style="min-width:720px"><thead><tr><th>节奏</th><th>做什么</th><th>本工具</th></tr></thead><tbody>
@@ -2018,6 +2119,9 @@ function vSpec(){
     <tr><td>Stripe Dashboard</td><td>顶部指标行配迷你折线，只看方向；点选指标后主图展示该指标；列表 → 详情的下钻</td><td>指标卡即标签页，点选后下方趋势图切换为该指标（单一纵轴）；迷你线只表达方向</td></tr>
     <tr><td>Shopify Polaris 索引表</td><td>视图标签 + 搜索筛选 + 排序 + 批量选择与批量操作；超过 50 行分页；行操作按需出现</td><td>全部 / 风险 / 机会 / 变化 / 需核查 / 已处理 视图；标签下拉；勾选后工具栏切换为批量操作条</td></tr>
     <tr><td>Google Ads 建议页</td><td>建议按影响排序；可采纳或忽略并改变优化进度；卡片与表格两种视图</td><td>“需要优先处理”按涉及金额排序并显示已处理数；详情中“采纳 / 暂不处理”记录人工判断，汇入复盘；总览顶部显示本轮进度</td></tr>
+    <tr><td>Ahrefs / Semrush 排名变化</td><td>把“变化”组织成 新增 / 流失 / 上升 / 下降 四类并给出计数</td><td>关键词变动的四类分桶卡片与清单</td></tr>
+    <tr><td>Google Search Console 比较模式</td><td>选择两个时段比较后，表格每行直接给出差值</td><td>B 列可切换为“变化”；变动清单给出 B → A 与差值</td></tr>
+    <tr><td>同期群 / 热力表（Amplitude 等）</td><td>对象 × 时间的网格，横向看走势、纵向比对象</td><td>活动 × 周、关键词 × 周、星期 × 指标热力表</td></tr>
     <tr><td>Vercel Geist</td><td>克制配色、单一强调色、细线代替重阴影、字重不超过 600</td><td>改用 Geist 字体与等宽数字；卡片阴影收至最轻；保留唯一强调色钴蓝</td></tr>
   </tbody></table></div></section>
   <section class="panel"><div class="panel-h"><h3>v4：先结论、再证据</h3></div><div class="panel-b"><ul style="margin:0">
@@ -2035,7 +2139,7 @@ function vSpec(){
   <section class="panel"><div class="panel-h"><h3>原有七个模块的去向</h3></div><div class="panel-b scx"><table class="sp" style="min-width:720px"><thead><tr><th>原模块</th><th>新位置</th><th>说明</th></tr></thead><tbody>
     <tr><td>（新增）周期优化</td><td>周期优化（默认首页）</td><td>把关键词决策的建议按资深运营的每周节奏组织为 6 步：准备与回看、诊断、收割、否定、投放层调价、确认导出；输出亚马逊批量操作表与动作日志，下周期回看效果</td></tr>
     <tr><td>经营总览</td><td>经营总览</td><td>KPI 条、日趋势、需要优先处理队列、重点关键词、数据覆盖与口径（含此前 28 天历史基准）、最近复盘；导入入口移到页头与空状态</td></tr>
-    <tr><td>变化诊断</td><td>变化诊断</td><td>三种模式（自定义 / 归档周期 / 大促前后）在页内切换；A/B 日期与顶部范围条共用；指标对照含日均列；覆盖口径折叠</td></tr>
+    <tr><td>变化诊断</td><td>复盘分析（A/B 对比 + 活动趋势、关键词变动、结构与效率、星期规律）</td><td>三种模式（自定义 / 归档周期 / 大促前后）在页内切换；A/B 日期与顶部范围条共用；指标对照含日均列；覆盖口径折叠</td></tr>
     <tr><td>关键词决策</td><td>关键词决策</td><td>表格为主体；标签、搜索、订单、显示列在工具栏；详情改为右侧栏；行内展开来源活动；导出与生成复盘在页头</td></tr>
     <tr><td>复盘报告</td><td>复盘报告</td><td>左侧历史、右侧生成与正文；范围跟随顶部；关键词页与诊断页可一键带范围进入</td></tr>
     <tr><td>数据中心</td><td>工作区 · 数据中心</td><td>五步导入流程、覆盖日历（新增展示）、归档台账；删除归档使用独立确认对话框</td></tr>
@@ -2065,7 +2169,7 @@ function vSpec(){
   <div class="prio">
     <section class="panel"><h4><span class="lv">P0</span>布局调整</h4><ul style="margin:0"><li>顶部常驻范围条与状态胶囊</li><li>关键词页表格主体 + 右侧详情</li><li>总览“需要优先处理”带标签跳转</li><li>管理功能归入工作区分组</li></ul></section>
     <section class="panel"><h4><span class="lv">P1</span>交互优化</h4><ul style="margin:0"><li>日期弹层：预设分组、日历缺日标记、归档周</li><li>旧结果标记、失败重试、禁止导出旧结果</li><li>导出范围说明弹层</li><li>来源活动展开与加总校验、列宽与分页</li><li>三种宽度适配</li><li>覆盖提示收为页头标记 + 弹层</li><li>B 列可切换为“变化”</li><li>手机端关键词卡片列表</li></ul></section>
-    <section class="panel"><h4><span class="lv">P2</span>新增范围 <span class="newb">需评审</span></h4><ul style="margin:0"><li>“活动分化”派生标签</li><li>变化贡献分解（按词）</li><li>数据覆盖日历</li><li>人工判断记录（采纳 / 暂不处理）与批量操作</li><li>⌘K 命令面板与清单快捷键</li><li>本期结论（规则生成）与对数均值变化拆解</li><li>周期优化工作流：收割 / 否定 / 投放层调价建议</li><li>亚马逊批量操作表导出与动作日志、上期效果回看（需后端保存）</li><li>清单视图标签（可扩展为保存自定义视图）</li><li>不建议本期：账户同步、自动执行、库存利润联动</li></ul></section>
+    <section class="panel"><h4><span class="lv">P2</span>新增范围 <span class="newb">需评审</span></h4><ul style="margin:0"><li>“活动分化”派生标签</li><li>变化贡献分解（按词）</li><li>数据覆盖日历</li><li>人工判断记录（采纳 / 暂不处理）与批量操作</li><li>⌘K 命令面板与清单快捷键</li><li>本期结论（规则生成）与对数均值变化拆解</li><li>周期优化工作流：收割 / 否定 / 投放层调价建议</li><li>复盘分析四个维度：活动趋势、关键词变动、结构与效率、星期规律</li><li>亚马逊批量操作表导出与动作日志、上期效果回看（需后端保存）</li><li>清单视图标签（可扩展为保存自定义视图）</li><li>不建议本期：账户同步、自动执行、库存利润联动</li></ul></section>
   </div>
   <p class="muted" style="font-size:12px">原型中带虚线“新增”标记的元素，是基于现有数据派生的新展示，不属于现有已完成能力。全部数字为演示合成数据。</p>
   </div>`;
@@ -2262,14 +2366,17 @@ function vCycle(){
     foot=`<span class="fs">检查 ${checks.filter(c=>c[0]==='warn').length?`<b>${checks.filter(c=>c[0]==='warn').length}</b> 项需注意`:'全部通过'}</span>`;
   }
   else if(C.step==='diag'){
+    const rv=revData(R);
     const camps=[...new Set(R.rows.map(r=>r.camp))].map(c=>{const rows=R.rows.filter(r=>r.camp===c),za=Z(),zb=Z();rows.forEach(r=>{addTo(za,sumRow(r,R.Ai[0],R.Ai[1]));addTo(zb,sumRow(r,R.Bi[0],R.Bi[1]))});const a=derive(za),b=derive(zb),sa=a.spend/Math.max(1,R.covA.n),sb=R.hasB?b.spend/Math.max(1,R.covB.n):null;
       const hint=a.acos==null?(a.spend>0?['bad','有花费无销售，优先检查']:['neu','—']):a.acos>T.acos*1.1?['bad','ACOS 超标 → 本周重点调价']:(sb&&sa/sb>1.3?['warn','达标且花费上涨 → 检查预算是否受限']:['good','达标 → 维持']);
       const pend=act.filter(x=>x.g.camp===c).length+cd.neg.filter(x=>x.r.camp===c).length;
-      return {c,a,sa,sb,hint,pend}}).sort((x,y)=>y.sa-x.sa);
+      const rc=rv.camps.find(z=>z.name===c);
+      return {c,a,sa,sb,hint,pend,w:rc?rc.w.slice(-8):null,tr:rc?trendOf(rc.w,rv.blocks,T):null}}).sort((x,y)=>y.sa-x.sa);
+    const mvs=kwMoves(R),mc=k=>mvs.filter(x=>x.mv===k);
     body=`${insight(R)}
-    <section class="panel"><div class="panel-h"><h3>活动表现</h3><span class="muted" style="font-size:12px">按 A 期日均花费排序 · 目标 ACOS ${pct(T.acos)}</span></div><div class="panel-b scx"><table class="lt ctab" style="min-width:740px"><thead><tr><th>广告活动</th><th class="num">A 花费 / 天</th><th class="num">日均变化</th><th class="num">A 销售额</th><th class="num">ACOS</th><th class="num">CVR</th><th>判断</th><th class="num">待处理</th><th></th></tr></thead><tbody>
-    ${camps.map(x=>`<tr><td><b style="font-weight:600">${esc(x.c)}</b></td><td class="num">${money0(x.sa)}</td><td class="num">${x.sb?dlt('spend',x.sa,x.sb):'<span class="nobase">无基准</span>'}</td><td class="num">${fv('sales',x.a.sales)}</td><td class="num ${acosCls(x.a.acos)}">${fv('acos',x.a.acos)}</td><td class="num">${fv('cvr',x.a.cvr)}</td><td><span class="rs ${x.hint[0]}">${x.hint[1]}</span></td><td class="num">${x.pend||'—'}</td><td style="text-align:right">${x.pend?`<button class="btn sm ghost" data-act="cycCamp" data-v="${esc(x.c)}" data-go="1">处理${ic('arrow-right')}</button>`:''}</td></tr>`).join('')}
-    </tbody></table><p class="hint2" style="margin:10px 0 0">预算提示只基于花费趋势；报表没有预算使用率，是否受限需到后台确认。</p></div></section>`;
+    <section class="panel"><div class="panel-h"><h3>活动表现</h3><span class="muted" style="font-size:12px">按 A 期日均花费排序 · 目标 ACOS ${pct(T.acos)}</span></div><div class="panel-b scx"><table class="lt ctab" style="min-width:740px"><thead><tr><th>广告活动</th><th class="num">A 花费 / 天</th><th class="num">日均变化</th><th class="num">A 销售额</th><th class="num">ACOS</th><th>近 8 周 ACOS</th><th>判断</th><th class="num">待处理</th><th></th></tr></thead><tbody>
+    ${camps.map(x=>`<tr><td><b style="font-weight:600">${esc(x.c)}</b></td><td class="num">${money0(x.sa)}</td><td class="num">${x.sb?dlt('spend',x.sa,x.sb):'<span class="nobase">无基准</span>'}</td><td class="num">${fv('sales',x.a.sales)}</td><td class="num ${acosCls(x.a.acos)}">${fv('acos',x.a.acos)}</td><td>${x.w?acosSpark(x.w,T):''}</td><td class="sm2" style="max-width:230px"><span class="rs ${x.hint[0]}">${x.hint[1]}</span>${x.tr&&x.tr[0]!=='neu'?`<small style="margin-top:3px">${x.tr[1]}</small>`:''}</td><td class="num">${x.pend||'—'}</td><td style="text-align:right">${x.pend?`<button class="btn sm ghost" data-act="cycCamp" data-v="${esc(x.c)}" data-go="1">处理${ic('arrow-right')}</button>`:''}</td></tr>`).join('')}
+    </tbody></table><p class="hint2" style="margin:10px 0 0">预算提示只基于花费趋势；报表没有预算使用率，是否受限需到后台确认。红色虚线为目标 ACOS。</p></div><div class="panel-b" style="padding-top:0;display:flex;gap:10px;align-items:center;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:12px"><b style="font-size:13px">关键词变动</b>${[['new','新出单'],['lost','流失'],['up','增长'],['down','下滑']].map(([k,l])=>`<span class="mv ${k}">${l} ${mc(k).length}</span>`).join('')}<span class="muted" style="font-size:12px">按销售额 A 对比 B</span><button class="btn sm ghost" style="margin-left:auto" data-act="revTab" data-v="kw">查看关键词变动${ic('arrow-right')}</button><button class="btn sm ghost" data-act="revTab" data-v="camp">查看活动趋势${ic('arrow-right')}</button></div></section>`;
     foot=`<span class="fs">本周待处理：收割 <b>${cd.harvest.length}</b> · 否定 <b>${cd.neg.length}</b> · 调价 <b>${act.length}</b></span>`;
   }
   else if(C.step==='harvest'){
@@ -2328,8 +2435,234 @@ function vCycle(){
   ${ksel?`<div class="cyc-drawer">${detail(R,R.kws)}</div>`:''}`;
 }
 
+// ---------- 复盘分析：多维度周趋势 ----------
+const RTABS=[['ab','A/B 对比','git-compare-arrows'],['camp','活动趋势','chart-line'],['kw','关键词变动','arrow-up-down'],['struct','结构与效率','layers'],['week','星期规律','calendar-days']];
+const MT=[['auto','自动','var(--mt1)'],['broad','广泛','var(--mt2)'],['phrase','词组','var(--mt3)'],['exact','精准','var(--mt4)'],['asin','ASIN','var(--mt5)']];
+const MVL={new:['新出单','var(--accent)'],lost:['流失','var(--bad)'],up:['增长','var(--good)'],down:['下滑','var(--warn)'],flat:['稳定','var(--b)']};
+const add5=(t,x)=>{t.impr+=x.impr;t.clicks+=x.clicks;t.orders+=x.orders;t.spend+=x.spend;t.sales+=x.sales;return t};
+function wkBlocks(endIdx,n){const out=[];for(let k=n-1;k>=0;k--){const e=endIdx-7*k;out.push({s:e-6,e})}return out}
+function covN(D,s,e){let c=0;for(let t=s;t<=e;t++)if(t>=0&&t<=END&&!D.miss.has(t))c++;return c}
+function weekly(rows,blocks){return blocks.map(b=>{const z=Z();for(const r of rows)add5(z,sumRow(r,b.s,b.e));return derive(z)})}
+let revMemo={k:null,v:null};
+function revData(R){
+  const key=JSON.stringify([S.projectId,S.shown,S.rules]);if(revMemo.k===key)return revMemo.v;
+  const blocks=wkBlocks(R.Ai[1],12).map(b=>Object.assign(b,{n:covN(R.D,b.s,b.e),inA:b.s>=R.Ai[0]&&b.e<=R.Ai[1],inB:b.s>=R.Bi[0]&&b.e<=R.Bi[1]}));
+  const m=new Map();for(const r of R.rows){if(!m.has(r.camp))m.set(r.camp,[]);m.get(r.camp).push(r)}
+  const camps=[...m].map(([name,rows])=>{const za=Z(),zb=Z();rows.forEach(r=>{add5(za,sumRow(r,R.Ai[0],R.Ai[1]));add5(zb,sumRow(r,R.Bi[0],R.Bi[1]))});return {name,rows,w:weekly(rows,blocks),A:derive(za),B:derive(zb)}}).filter(c=>c.w.some(x=>x.spend>0)).sort((x,y)=>y.A.spend-x.A.spend);
+  const v={blocks,camps,total:weekly(R.rows,blocks),kwW:new Map(),mix:null,waste:null};revMemo={k:key,v};return v;
+}
+function streak(vals,dir){let n=0;for(let i=vals.length-1;i>0;i--){const a=vals[i],b=vals[i-1];if(a==null||b==null)break;if(dir>0?a>b*1.02:a<b*.98)n++;else break}return n}
+function trendOf(w,blocks,T){
+  const ac=w.map(x=>x.acos),sp=w.map((x,i)=>blocks[i].n?x.spend/blocks[i].n:null),last=w[w.length-1];
+  const au=streak(ac,1),ad=streak(ac,-1),su=streak(sp,1),sd=streak(sp,-1);
+  if(last.spend===0)return ['neu','最近一周无花费'];
+  if(last.acos==null)return ['bad','最近一周有花费无销售'];
+  if(au>=2&&last.acos>T.acos*1.1)return ['bad',`ACOS 连续 ${au} 周上升，已超目标`];
+  if(sd>=3)return ['warn',`花费连续 ${sd} 周下降`];
+  if(su>=2&&last.acos<=T.acos)return ['good',`放量中：花费连续 ${su} 周增长，ACOS 达标`];
+  if(ad>=2)return ['good',`ACOS 连续 ${ad} 周下降`];
+  if(au>=2)return last.acos>T.acos*.8?['warn',`ACOS 连续 ${au} 周上升，接近目标`]:['neu',`ACOS 小幅上升，仍低于目标`];
+  if(last.acos>T.acos*1.1)return ['bad','ACOS 超目标'];
+  return ['neu','平稳'];
+}
+function fc(m,v){if(v==null)return '—';if(m==='spend'||m==='sales')return cur()+(v>=1000?(v/1000).toFixed(1)+'k':Math.round(v));if(m==='orders'||m==='clicks')return String(Math.round(v));if(m==='acos')return (v*100).toFixed(0)+'%';if(m==='cvr')return (v*100).toFixed(1)+'%';if(m==='cpc')return cur()+v.toFixed(2);return String(v)}
+function cellSt(m,v,lo,hi,T){
+  if(m==='acos'){const t=Math.max(-1,Math.min(1,(v-T.acos)/(T.acos*.6))),a=Math.abs(t);return `background:color-mix(in oklab,${t<0?'var(--dv-good)':'var(--dv-bad)'} ${Math.round(a*82)}%,var(--dv-mid));color:${a>.62?'var(--hm-ink)':'var(--fg)'}`}
+  const p=hi>lo?(v-lo)/(hi-lo):.5;return `background:color-mix(in oklab,var(--hm-hi) ${Math.round(6+p*84)}%,var(--hm-lo));color:${p>.6?'var(--hm-ink)':'var(--fg)'}`;
+}
+function hcell(m,x,lo,hi,T,b){
+  const tt=`${md(ds(b.s))}–${md(ds(b.e))}${b.n<7?`（${b.n}/7 天有数据）`:''}：${MLABEL[m]} ${fvt(m,x[m])} · 花费 ${fvt('spend',x.spend)} · 订单 ${x.orders}`;
+  if(x.spend===0&&x.impr===0)return `<td class="hc nil" title="${tt}">—</td>`;
+  if(x[m]==null)return `<td class="hc ${m==='acos'&&x.spend>0?'bad0':'nil'}${b.n<7?' inc':''}" title="${tt}">${m==='acos'&&x.spend>0?'无单':'—'}</td>`;
+  return `<td class="hc${b.n<7?' inc':''}" style="${cellSt(m,x[m],lo,hi,T)}" title="${tt}">${fc(m,x[m])}</td>`;
+}
+const wkHead=(blocks,first,extra)=>`<thead><tr><th class="rl">${first}</th>${blocks.map(b=>`<th class="${b.inA?'wa':b.inB?'wb':''}" title="${md(ds(b.s))}–${md(ds(b.e))}${b.n<7?` · ${b.n}/7 天有数据`:''}"><span class="wtag">${b.inA?'A':b.inB?'B':'&nbsp;'}</span>${md(ds(b.s))}</th>`).join('')}${extra||''}</tr></thead>`;
+const hmLegend=(m,T,perRow)=>m==='acos'?`<span class="hm-legend"><span>低于目标</span><i class="ramp" style="background:linear-gradient(90deg,var(--dv-good),var(--dv-mid),var(--dv-bad))"></i><span>高于目标 ${pct(T.acos)}</span></span>`:`<span class="hm-legend"><span>低</span><i class="ramp" style="background:linear-gradient(90deg,var(--hm-lo),var(--hm-hi))"></i><span>高${perRow?'（按行着色）':''}</span></span>`;
+function acosSpark(w,T){
+  const v=w.map(x=>x.acos),nn=v.filter(x=>x!=null);if(!nn.length)return '<span class="muted">—</span>';
+  const mx=Math.max(T.acos*1.6,...nn)*1.05,n=v.length,X=i=>(i/(n-1)*100).toFixed(1),Y=x=>(22-x/mx*20).toFixed(1);
+  let p='',pen=false;v.forEach((x,i)=>{if(x!=null){p+=(pen?'L':'M')+X(i)+','+Y(x);pen=true}else pen=false});const ty=Y(T.acos);
+  return `<svg class="wsp" viewBox="0 0 100 24" preserveAspectRatio="none" role="img" aria-label="近 ${n} 周 ACOS：${v.map(x=>x==null?'—':(x*100).toFixed(0)+'%').join('、')}"><line x1="0" x2="100" y1="${ty}" y2="${ty}" style="stroke:var(--bad)" stroke-width="1" stroke-dasharray="3 3" vector-effect="non-scaling-stroke" opacity=".7"/><path d="${p}" fill="none" style="stroke:var(--c1)" stroke-width="1.75" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>`;
+}
+function barSpark(vals){const mx=Math.max(...vals,1e-9),n=vals.length,bw=100/n;return `<svg class="wsp" viewBox="0 0 100 24" preserveAspectRatio="none" role="img" aria-label="${vals.map(v=>Math.round(v)).join('、')}">${vals.map((v,i)=>{const h=v>0?Math.max(1.5,v/mx*22):.8;return `<rect x="${(i*bw+bw*.15).toFixed(1)}" y="${(24-h).toFixed(1)}" width="${(bw*.7).toFixed(1)}" height="${h.toFixed(1)}" style="fill:${v>0?'var(--c1)':'var(--line-2)'}"/>`}).join('')}</svg>`}
+function kwMoves(R){
+  if(!R.hasB)return [];
+  const per=R.covA.n!==R.covB.n,fA=per?1/R.covA.n:1,fB=per?1/R.covB.n:1;
+  return R.kws.map(k=>{const a=k.A.sales*fA,b=k.B.sales*fB,oa=k.A.orders,ob=k.B.orders;let mv;
+    if(ob===0&&oa===0)return null;
+    if(ob===0)mv='new';else if(oa===0)mv='lost';else if(a>=b*1.2)mv='up';else if(a<=b*.8)mv='down';else mv='flat';
+    let cause='';
+    if(mv==='new')cause=k.B.impr===0?'新获得流量':k.B.clicks===0?'开始有点击并转化':'开始转化';
+    else if(mv==='lost')cause=k.A.impr===0?'流量消失':k.A.clicks===0?'有曝光无点击':'有点击无转化';
+    else{const d=decompAB(k.A,k.B,R.covA.n,R.covB.n,'sales');if(d){const x=[...d.steps].sort((p,q)=>Math.abs(q.v)-Math.abs(p.v))[0];cause=`${x.l} ${x.chg>0?'↑':'↓'}${Math.abs(x.chg*100).toFixed(0)}%`}}
+    return {k,mv,a,b,d:a-b,cause,per}}).filter(Boolean);
+}
+function matchSplit(R){return MT.map(([m,l,c])=>{const rows=R.rows.filter(r=>r.match===m);if(!rows.length)return null;const za=Z(),zb=Z();rows.forEach(r=>{add5(za,sumRow(r,R.Ai[0],R.Ai[1]));add5(zb,sumRow(r,R.Bi[0],R.Bi[1]))});return {m,l,c,rows,A:derive(za),B:derive(zb)}}).filter(x=>x&&(x.A.spend>0||x.B.spend>0))}
+function typeSplit(R){const m=new Map();R.kws.forEach(k=>{if(!m.has(k.kwtype))m.set(k.kwtype,{t:k.kwtype,n:0,a:Z(),b:Z()});const g=m.get(k.kwtype);g.n++;add5(g.a,k.A);add5(g.b,k.B)});return [...m.values()].map(g=>Object.assign(g,{A:derive(g.a),B:derive(g.b)})).sort((x,y)=>y.A.spend-x.A.spend)}
+function wasteSeries(R,rv){if(rv.waste)return rv.waste;const T=thr(S.rules);rv.waste=rv.blocks.map(b=>{const s0=b.e-13;let w=0,t=0;for(const r of R.rows){const z=sumRow(r,s0,b.e);t+=z.spend;if(z.orders===0&&z.clicks>=T.noConv)w+=z.spend}return {b,w,t,p:t?w/t:null}});return rv.waste}
+function mixSeries(R,rv){if(rv.mix)return rv.mix;const ms=matchSplit(R);rv.mix=rv.blocks.map(b=>{const sp=ms.map(x=>{let v=0;x.rows.forEach(r=>{v+=sumRow(r,b.s,b.e).spend});return v}),t=sp.reduce((a,c)=>a+c,0);return {b,t,parts:ms.map((x,i)=>({m:x.m,l:x.l,c:x.c,v:sp[i],p:t?sp[i]/t:0}))}});return rv.mix}
+function kwWeekly(rv,k){if(!rv.kwW.has(k.key))rv.kwW.set(k.key,weekly(k.rows.map(x=>x.r),rv.blocks));return rv.kwW.get(k.key)}
+function weekdayData(R){
+  const end=R.Ai[1],st=Math.max(0,end-55),D=R.D,days=[];
+  for(let t=st;t<=Math.min(end,END);t++){if(D.miss.has(t))continue;const z=Z();for(const r of R.rows)add5(z,sumRow(r,t,t));days.push({t,z})}
+  const sl=days.map(d=>d.z.sales),mean=sl.reduce((a,b)=>a+b,0)/Math.max(1,sl.length),sd=Math.sqrt(sl.reduce((a,b)=>a+(b-mean)**2,0)/Math.max(1,sl.length));
+  const ev=days.filter(d=>d.z.sales>mean+2.5*sd).map(d=>d.t),ex=S.diag.exEv!==false;
+  const W=Array.from({length:7},()=>({z:Z(),n:0})),tot=Z();let nd=0;
+  days.forEach(d=>{if(ex&&ev.includes(d.t))return;const w=(dow(ds(d.t))+6)%7;add5(W[w].z,d.z);W[w].n++;add5(tot,d.z);nd++});
+  return {st,end,ev,ex,W:W.map(x=>Object.assign(derive(x.z),{n:x.n})),tot:Object.assign(derive(tot),{n:nd})};
+}
+function revHead(R){
+  const sh=S.shown,tab=S.diag.tab||'ab';
+  return `<div class="ph"><div class="tt"><h1>复盘分析</h1><span class="meta tn">${tab==='ab'?'与之前相比发生了什么':`近 12 周 · 按 A 期结束日 ${md(sh.A.e)} 倒推的 7 天区间`} · ${srcLabel(sh.source)}${covChip(R,false)}</span></div><div class="act"><button class="btn" data-act="genReportCmp">${ic('file-pen-line')}生成周期对比报告</button></div></div>
+  <div class="vtabs rtabs" role="tablist" aria-label="复盘维度">${RTABS.map(([k,l,i])=>`<button role="tab" aria-selected="${tab===k}" data-act="revTab" data-v="${k}">${ic(i)}${l}</button>`).join('')}<span class="sp"></span><span class="vt-hint">${ic('list-filter')}沿用顶部分析范围与筛选</span></div>`;
+}
+function revCamp(R,rv){
+  const T=thr(S.rules),m=S.diag.cm||'acos',B=rv.blocks,camps=rv.camps;
+  const ms=[['acos','ACOS'],['spend','花费'],['sales','销售额'],['orders','订单'],['cvr','CVR'],['cpc','CPC']];
+  const row=(name,w,cls)=>{const vals=w.map(x=>x[m]).filter(v=>v!=null),lo=Math.min(...vals),hi=Math.max(...vals),l=w[w.length-1],p=w[w.length-2];return `<tr class="${cls||''}"><td class="rl" title="${esc(name)}">${esc(name)}</td>${w.map((x,i)=>hcell(m,x,lo,hi,T,B[i])).join('')}<td class="ex">${dlt(m,m==='spend'||m==='sales'||m==='orders'?(B[B.length-1].n?l[m]/B[B.length-1].n:null):l[m],m==='spend'||m==='sales'||m==='orders'?(B[B.length-2].n?p[m]/B[B.length-2].n:null):p[m])}</td>`};
+  const labs=camps.map(c=>({c,t:trendOf(c.w,B,T)}));
+  const tA=camps.reduce((a,c)=>a+c.A.spend,0),tS=camps.reduce((a,c)=>a+c.A.sales,0),mxs=Math.max(...camps.map(c=>Math.max(tA?c.A.spend/tA:0,tS?c.A.sales/tS:0)),.01);
+  const order={bad:0,warn:1,good:2,neu:3};
+  return `<section class="panel"><div class="panel-h"><h3>活动 × 周</h3><span class="muted" style="font-size:12px">${m==='acos'?'以目标 ACOS 为中点着色':'按行着色，比较各活动自身的周变化'} · 末列为最近一周对比前一周${m==='spend'||m==='sales'||m==='orders'?'（按日均）':''}</span><div class="r"><div class="seg">${ms.map(([k,l])=>`<button data-act="revCm" data-v="${k}" aria-pressed="${m===k}">${l}</button>`).join('')}</div></div></div>
+    <div class="panel-b"><div class="scx"><table class="hm" style="min-width:900px">${wkHead(B,'广告活动','<th style="text-align:left;padding-left:10px">周环比</th>')}<tbody>${camps.map(c=>row(c.name,c.w)).join('')}${row('全部活动',rv.total,'tot')}</tbody></table></div>
+    <div style="display:flex;gap:16px;align-items:center;margin-top:10px;flex-wrap:wrap">${hmLegend(m,T,m!=='acos')}<span class="hint2">表头 A / B 标出分析期与对比期所在的周；单元格右上角圆点表示该周有缺日；悬停查看花费与订单。</span></div></div></section>
+  <div class="cols2e">
+    <section class="panel"><div class="panel-h"><h3>趋势判断</h3><span class="muted" style="font-size:12px">按 ACOS 与日均花费的连续周变化</span></div><div class="panel-b"><ul class="insights">${labs.sort((x,y)=>order[x.t[0]]-order[y.t[0]]).map(x=>`<li class="${x.t[0]}">${ic(x.t[0]==='bad'?'trending-up':x.t[0]==='good'?'circle-check':x.t[0]==='warn'?'triangle-alert':'minus')}<span class="it"><b>${esc(x.c.name)}</b><br><span class="muted" style="font-size:12px">${x.t[1]} · 最近一周 ACOS ${fv('acos',x.c.w[x.c.w.length-1].acos)}</span></span>${x.t[0]==='bad'||x.t[0]==='warn'?`<button class="btn sm" data-act="cycCamp" data-v="${esc(x.c.name)}" data-go="1">去调价${ic('arrow-right')}</button>`:''}</li>`).join('')}</ul></div></section>
+    <section class="panel"><div class="panel-h"><h3>花费占比 vs 销售占比</h3><span class="muted" style="font-size:12px">A 期 · 效率 = 销售占比 ÷ 花费占比</span></div><div class="panel-b"><div class="legend" style="margin-bottom:10px"><span><i class="sw" style="background:var(--b)"></i>花费占比</span><span><i class="sw" style="background:var(--c1)"></i>销售占比</span></div>
+      <div class="shr">${camps.map(c=>{const sp=tA?c.A.spend/tA:0,ss=tS?c.A.sales/tS:0,ix=sp?ss/sp:null;return `<span class="nm" title="${esc(c.name)}">${esc(c.name)}</span><span class="bp" title="花费占比 ${(sp*100).toFixed(1)}% · 销售占比 ${(ss*100).toFixed(1)}%"><i style="width:${sp/mxs*100}%;background:var(--b)"></i><i style="width:${ss/mxs*100}%;background:var(--c1)"></i></span><span class="ix" style="color:${ix==null?'var(--fg-3)':ix>=1?'var(--good)':'var(--bad)'}">${ix==null?'—':ix.toFixed(2)}</span>`}).join('')}</div>
+      <p class="hint2" style="margin:10px 0 0">效率 &lt; 1 表示花得多、卖得少，是预算再分配时优先削减的对象。</p></div></section>
+  </div>`;
+}
+function revKw(R,rv){
+  if(!R.hasB)return `<div class="bn warn">${ic('circle-alert')}<div class="bt2">B 期没有可用数据，无法判断关键词变动。</div></div>`;
+  const T=thr(S.rules),mvs=kwMoves(R),f=S.diag.mv||'all',B=rv.blocks,per=mvs.length&&mvs[0].per;
+  const cnt=k=>mvs.filter(x=>x.mv===k),sum=k=>cnt(k).reduce((a,x)=>a+x.d,0);
+  const cards=['new','lost','up','down','flat'].map(k=>`<button class="mvc ${f===k?'on':''}" data-act="revMv" data-v="${k}"><span class="ml"><i style="background:${MVL[k][1]}"></i>${MVL[k][0]}</span><b>${cnt(k).length}</b><small>${k==='flat'?'±20% 以内':(sum(k)>=0?'+':'−')+money0(Math.abs(sum(k)))+(per?'/天':'')}</small></button>`).join('');
+  const total=mvs.length;
+  const bar=`<div class="mvbar">${['new','up','flat','down','lost'].map(k=>`<i style="width:${cnt(k).length/Math.max(1,total)*100}%;background:${MVL[k][1]}" title="${MVL[k][0]} ${cnt(k).length}"></i>`).join('')}</div>`;
+  let list=(f==='all'?mvs.filter(x=>x.mv!=='flat'):cnt(f)).sort((x,y)=>Math.abs(y.d)-Math.abs(x.d));
+  const more=list.length>20&&!S.diag.mvAll;if(more)list=list.slice(0,20);
+  const fs=v=>fv('sales',v);
+  const km=S.diag.km||'orders';
+  const span=[B[0].s,B[B.length-1].e];
+  const topK=[...R.kws].map(k=>{let t=0;k.rows.forEach(x=>{t+=sumRow(x.r,span[0],span[1]).sales});return {k,t}}).sort((a,b)=>b.t-a.t).slice(0,20);
+  const kws=topK.map(x=>({k:x.k,w:kwWeekly(rv,x.k)}));
+  const allV=kws.flatMap(x=>x.w.map(w=>w[km])).filter(v=>v!=null),lo=Math.min(...allV),hi=Math.max(...allV);
+  const sa=[...R.kws].sort((x,y)=>y.A.sales-x.A.sales),sb=[...R.kws].sort((x,y)=>y.B.sales-x.B.sales);
+  const sh=(arr,key,n)=>{const t=key==='A'?R.A.sales:R.B.sales;return t?arr.slice(0,n).reduce((a,k)=>a+k[key].sales,0)/t:0};
+  const lt=(key)=>{const t=key==='A'?R.A.sales:R.B.sales;return t?R.kws.filter(k=>k.kwtype==='长尾词').reduce((a,k)=>a+k[key].sales,0)/t:0};
+  const crow=(l,a,b,fmt)=>`<div class="cr"><span>${l}</span><span class="bp"><i style="width:${Math.min(100,a*100)}%;background:var(--a)"></i><i style="width:${Math.min(100,b*100)}%;background:var(--b)"></i></span><span class="v"><b>${fmt(a)}</b> · B ${fmt(b)}</span></div>`;
+  const p0=v=>(v*100).toFixed(0)+'%';
+  const nA=R.kws.filter(k=>k.A.orders>0).length,nB=R.kws.filter(k=>k.B.orders>0).length;
+  return `<div class="mvcards">${cards}</div>
+  <section class="panel"><div class="panel-h"><h3>${f==='all'?'变动最大的词':MVL[f][0]+'的词'}</h3><span class="muted" style="font-size:12px">按销售额${per?'日均':''}变化排序 · 增长 / 下滑 = 变化超过 ±20% · 主因 = 销售额拆解中贡献最大的因素</span><div class="r" style="min-width:160px">${bar}</div></div>
+    <div class="panel-b scx"><table class="lt ctab" style="min-width:860px"><thead><tr><th>关键词</th><th>变动</th><th class="num">销售额 B → A${per?'（日均）':''}</th><th class="num">变化</th><th class="num">订单 B → A</th><th class="num">ACOS B → A</th><th>主因</th><th>近 12 周订单</th></tr></thead><tbody>
+    ${list.map(x=>`<tr><td><button class="lnk" data-act="open" data-key="${esc(x.k.key)}" title="${esc(x.k.key)}">${esc(x.k.key)}</button></td><td><span class="mv ${x.mv}">${MVL[x.mv][0]}</span></td><td class="num"><span class="muted">${fs(x.b)}</span> → ${fs(x.a)}</td><td class="num"><b style="color:${x.d>=0?'var(--good)':'var(--bad)'}">${x.d>=0?'+':'−'}${money0(Math.abs(x.d))}</b></td><td class="num">${x.k.B.orders} → ${x.k.A.orders}</td><td class="num"><span class="muted">${fv('acos',x.k.B.acos)}</span> → <span class="${acosCls(x.k.A.acos)}">${fv('acos',x.k.A.acos)}</span></td><td class="sm2">${esc(x.cause)}</td><td>${barSpark(kwWeekly(rv,x.k).map(w=>w.orders))}</td></tr>`).join('')||`<tr><td colspan="8" class="muted" style="padding:20px">没有符合条件的词。</td></tr>`}
+    </tbody></table>${more?`<div style="padding-top:10px"><button class="btn sm" data-act="revMvAll">显示全部 ${(f==='all'?mvs.filter(x=>x.mv!=='flat'):cnt(f)).length} 个</button></div>`:''}</div></section>
+  <section class="panel"><div class="panel-h"><h3>头部关键词 × 周</h3><span class="muted" style="font-size:12px">近 12 周销售额前 20</span><div class="r"><div class="seg">${[['orders','订单'],['sales','销售额'],['spend','花费'],['acos','ACOS']].map(([k,l])=>`<button data-act="revKm" data-v="${k}" aria-pressed="${km===k}">${l}</button>`).join('')}</div></div></div>
+      <div class="panel-b"><div class="scx"><table class="hm" style="min-width:820px">${wkHead(B,'关键词')}<tbody>${kws.map(x=>`<tr><td class="rl"><button class="rl" data-act="open" data-key="${esc(x.k.key)}" title="${esc(x.k.key)}">${esc(x.k.key)}</button></td>${x.w.map((w,i)=>hcell(km,w,lo,hi,T,B[i])).join('')}</tr>`).join('')}</tbody></table></div><div style="margin-top:10px">${hmLegend(km,T,false)}</div></div></section>
+  <section class="panel"><div class="panel-h"><h3>集中度</h3><span class="muted" style="font-size:12px">A 对比 B</span></div><div class="panel-b"><div class="legend" style="margin-bottom:12px"><span><i class="sw" style="background:var(--a)"></i>A</span><span><i class="sw" style="background:var(--b)"></i>B</span></div>
+      <div class="conc">${crow('前 1 个词',sh(sa,'A',1),sh(sb,'B',1),p0)}${crow('前 5 个词',sh(sa,'A',5),sh(sb,'B',5),p0)}${crow('前 10 个词',sh(sa,'A',10),sh(sb,'B',10),p0)}${crow('长尾词',lt('A'),lt('B'),p0)}
+      <div class="cr"><span>出单词数</span><span class="bp"><i style="width:${nA/Math.max(nA,nB,1)*100}%;background:var(--a)"></i><i style="width:${nB/Math.max(nA,nB,1)*100}%;background:var(--b)"></i></span><span class="v"><b>${nA}</b> · B ${nB}</span></div></div>
+      <p class="hint2" style="margin:12px 0 0">前 5 个词占比上升、出单词数下降，说明销售越来越依赖少数头部词，竞价波动的风险变大，需要通过收割补充新的出单词。</p></div></section>`;
+}
+function revStruct(R,rv){
+  const T=thr(S.rules),ms=matchSplit(R),mix=mixSeries(R,rv),ws=wasteSeries(R,rv),B=rv.blocks;
+  const tsA=ms.reduce((a,x)=>a+x.A.spend,0),tsB=ms.reduce((a,x)=>a+x.B.spend,0),tlA=ms.reduce((a,x)=>a+x.A.sales,0);
+  const ex=ms.find(x=>x.m==='exact');
+  const ty=typeSplit(R),nb=Z(),nbB=Z(),br=Z(),brB=Z();ty.forEach(g=>{if(g.t==='品牌词'){add5(br,g.a);add5(brB,g.b)}else{add5(nb,g.a);add5(nbB,g.b)}});
+  const NB=derive(nb),NBB=derive(nbB),BR=derive(br);
+  const wl=ws[ws.length-1],w4=ws[Math.max(0,ws.length-5)],wmax=Math.max(.3,...ws.map(x=>x.p||0))*1.15;
+  const can=S.shown.source==='term'?R.kws.map(k=>({k,rows:k.rows.filter(x=>x.a.spend>0)})).filter(x=>new Set(x.rows.map(y=>y.r.camp)).size>=2).map(x=>Object.assign(x,{sp:x.rows.reduce((a,y)=>a+y.a.spend,0)})).sort((a,b)=>b.sp-a.sp):[];
+  const canSp=can.reduce((a,x)=>a+x.sp,0);
+  const keepOf=rows=>[...rows].sort((a,b)=>(b.a.orders-a.a.orders)||((a.a.acos??9)-(b.a.acos??9)))[0];
+  return `<section class="panel"><div class="panel-h"><h3>匹配方式结构</h3><span class="muted" style="font-size:12px">每周花费占比 · 拓词（自动 / 广泛）→ 控制（词组）→ 放量（精准）</span></div>
+    <div class="panel-b"><div class="cols2e" style="align-items:start"><div><div class="legend" style="margin-bottom:10px">${ms.map(x=>`<span><i class="sw" style="background:${x.c}"></i>${x.l}</span>`).join('')}</div>
+      <div class="mix">${mix.map(w=>`<div class="mixc" title="${md(ds(w.b.s))}–${md(ds(w.b.e))}：${w.parts.map(p=>`${p.l} ${(p.p*100).toFixed(0)}%`).join(' · ')}">${w.parts.map(p=>`<i style="height:${p.p*100}%;background:${p.c}"></i>`).join('')}</div>`).join('')}</div>
+      <div class="mixax">${B.map(b=>`<span class="${b.inA?'wa':''}">${md(ds(b.s))}</span>`).join('')}</div></div>
+      <div class="scx"><table class="lt ctab" style="min-width:420px"><thead><tr><th>匹配</th><th class="num">花费占比 A</th><th class="num">B</th><th class="num">销售占比 A</th><th class="num">ACOS A</th><th class="num">变化</th></tr></thead><tbody>
+      ${ms.map(x=>`<tr><td><i class="sw" style="background:${x.c};margin-right:6px;vertical-align:-1px"></i>${x.l}</td><td class="num"><b>${tsA?(x.A.spend/tsA*100).toFixed(1):'0'}%</b></td><td class="num muted">${tsB?(x.B.spend/tsB*100).toFixed(1):'0'}%</td><td class="num">${tlA?(x.A.sales/tlA*100).toFixed(1):'0'}%</td><td class="num ${acosCls(x.A.acos)}">${fv('acos',x.A.acos)}</td><td class="num">${dlt('acos',x.A.acos,x.B.acos)}</td></tr>`).join('')}
+      </tbody></table>${ex?`<p class="hint2" style="margin:10px 0 0">精准花费占比 <b>${tsB?(ex.B.spend/tsB*100).toFixed(0):0}% → ${tsA?(ex.A.spend/tsA*100).toFixed(0):0}%</b>。核心词稳定后，预算应逐步向承接它们的精准投放倾斜。</p>`:''}</div></div></div></section>
+  <div class="cols2e">
+    <section class="panel"><div class="panel-h"><h3>品牌 / 非品牌</h3><span class="muted" style="font-size:12px">品牌词转化高、ACOS 低，会拉低整体 ACOS</span></div><div class="panel-b">
+      <div class="kpis2"><div class="k2"><span>整体 ACOS</span><b>${fv('acos',R.A.acos)}</b><small>B ${fv('acos',R.B.acos)}</small></div><div class="k2 hl"><span>非品牌 ACOS</span><b class="${acosCls(NB.acos)}">${fv('acos',NB.acos)}</b><small>B ${fv('acos',NBB.acos)}</small></div><div class="k2"><span>品牌词 ACOS</span><b>${fv('acos',BR.acos)}</b><small>花费占比 ${R.A.spend?(BR.spend/R.A.spend*100).toFixed(0):0}%</small></div></div>
+      <div class="scx"><table class="lt ctab" style="min-width:440px"><thead><tr><th>类型</th><th class="num">词数</th><th class="num">花费占比</th><th class="num">销售占比</th><th class="num">ACOS A</th><th class="num">变化</th></tr></thead><tbody>
+      ${ty.map(g=>`<tr><td>${g.t}</td><td class="num">${g.n}</td><td class="num">${R.A.spend?(g.A.spend/R.A.spend*100).toFixed(1):0}%</td><td class="num">${R.A.sales?(g.A.sales/R.A.sales*100).toFixed(1):0}%</td><td class="num ${acosCls(g.A.acos)}">${fv('acos',g.A.acos)}</td><td class="num">${dlt('acos',g.A.acos,g.B.acos)}</td></tr>`).join('')}
+      </tbody></table></div></div></section>
+    <section class="panel"><div class="panel-h"><h3>无效花费率</h3><span class="muted" style="font-size:12px">近 14 天点击 ≥ ${T.noConv} 且无订单的搜索词花费 ÷ 总花费</span></div><div class="panel-b">
+      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px"><b style="font:600 24px var(--font-num)">${wl.p==null?'—':(wl.p*100).toFixed(1)+'%'}</b><span class="muted" style="font-size:12px">最新 · 4 周前 ${w4.p==null?'—':(w4.p*100).toFixed(1)+'%'} · 约 ${money0(wl.w)} / 14 天</span></div>
+      <div class="wbars"><div class="band" style="bottom:${.10/wmax*134}px;height:${.10/wmax*134}px" title="参考区间 10%–20%"></div>${ws.map((x,i)=>`<div class="wb ${i===ws.length-1?'last':''}" title="截至 ${md(ds(x.b.e))} 的 14 天：${x.p==null?'—':(x.p*100).toFixed(1)+'%'}（${money0(x.w)} / ${money0(x.t)}）"><span>${x.p==null?'':(x.p*100).toFixed(0)}</span><i style="height:${(x.p||0)/wmax*134}px"></i></div>`).join('')}</div>
+      <div class="mixax">${B.map(b=>`<span>${md(ds(b.e))}</span>`).join('')}</div>
+      <p class="hint2" style="margin:10px 0 0">绿色带为 10%–20%：部分代理商用作“拓词期可接受”的参考，并非行业标准。持续上升说明否定没有跟上。</p></div></section>
+  </div>
+  <div class="cols2" style="align-items:start">
+    <section class="panel"><div class="panel-h"><h3>效率分层</h3><span class="muted" style="font-size:12px">A 期每个${S.shown.source==='term'?'搜索词':'投放'} · 横轴花费（平方根刻度），纵轴 ACOS · 点击圆点查看详情</span></div><div class="panel-b"><div class="qlegend" id="qlegend"></div><div class="chart" data-chart="quad" style="height:340px;margin-top:8px"></div></div></section>
+    <section class="panel"><div class="panel-h"><h3>同词多活动竞价</h3><span class="muted" style="font-size:12px">${S.shown.source==='term'?`${can.length} 个搜索词 · 合计 ${money0(canSp)}`:'需要搜索词报表'}</span></div><div class="panel-b">${S.shown.source!=='term'?`<div class="muted">切换到搜索词报表后查看。</div>`:can.length?`<div class="canni">${can.slice(0,5).map(x=>{const kp=keepOf(x.rows);return `<div class="cn1"><div class="cnh"><button class="lnk" data-act="open" data-key="${esc(x.k.key)}">${esc(x.k.key)}</button><span class="muted">${new Set(x.rows.map(y=>y.r.camp)).size} 个活动 · ${money0(x.sp)}</span></div><div class="cnr">${x.rows.map(y=>`<span class="${y===kp?'keep':''}" title="${esc(y.r.camp+' / '+y.r.ag)}">${esc(y.r.camp.replace(/^SP-/,''))} · ${MLAB[y.r.match]} <b class="${acosCls(y.a.acos)}">${fv('acos',y.a.acos)}</b> <b>${y.a.orders} 单</b></span>`).join('')}</div></div>`}).join('')}</div><p class="hint2" style="margin:10px 0 0">绿框为表现最好的活动（订单多、ACOS 低）。其余活动可加否定精准，让流量集中到一处，避免自己抬高 CPC、稀释数据。</p>`:`<div class="muted">没有同一搜索词在多个活动中花费。</div>`}</div></section>
+  </div>`;
+}
+function revWeek(R){
+  const T=thr(S.rules),wd=weekdayData(R),W=wd.W,tot=wd.tot,names=['周一','周二','周三','周四','周五','周六','周日'];
+  const defs=[['日均花费',w=>w.n?w.spend/w.n:null,'seq',v=>money0(v),tot.n?tot.spend/tot.n:null],['日均销售额',w=>w.n?w.sales/w.n:null,'seq',v=>money0(v),tot.n?tot.sales/tot.n:null],['日均订单',w=>w.n?w.orders/w.n:null,'seq',v=>v.toFixed(1),tot.n?tot.orders/tot.n:null],['CVR',w=>w.cvr,'up',v=>(v*100).toFixed(1)+'%',tot.cvr],['CPC',w=>w.cpc,'down',v=>cur()+v.toFixed(2),tot.cpc],['ACOS',w=>w.acos,'down',v=>(v*100).toFixed(1)+'%',tot.acos]];
+  const cell=(def,w)=>{const v=def[1](w),mean=def[4];if(v==null)return `<td class="hc nil">—</td>`;const tt=`${def[0]} ${def[3](v)} · 均值 ${mean==null?'—':def[3](mean)} · ${w.n} 天`;
+    if(def[2]==='seq'){const vals=W.map(def[1]).filter(x=>x!=null),lo=Math.min(...vals),hi=Math.max(...vals),p=hi>lo?(v-lo)/(hi-lo):.5;return `<td class="hc" title="${tt}" style="background:color-mix(in oklab,var(--hm-hi) ${Math.round(6+p*70)}%,var(--hm-lo));color:${p>.7?'var(--hm-ink)':'var(--fg)'}">${def[3](v)}</td>`}
+    const dev=mean?(v-mean)/mean:0,t=Math.max(-1,Math.min(1,dev/.2))*(def[2]==='up'?-1:1),a=Math.abs(t);return `<td class="hc" title="${tt}（${dev>=0?'+':''}${(dev*100).toFixed(0)}%）" style="background:color-mix(in oklab,${t<0?'var(--dv-good)':'var(--dv-bad)'} ${Math.round(a*80)}%,var(--dv-mid));color:${a>.62?'var(--hm-ink)':'var(--fg)'}">${def[3](v)}</td>`};
+  const dv=(f)=>W.map((w,i)=>({i,v:f(w)})).filter(x=>x.v!=null);
+  const cv=dv(w=>w.cvr),ac=dv(w=>w.acos),best=cv.sort((a,b)=>b.v-a.v)[0],worst=[...cv].sort((a,b)=>a.v-b.v)[0],acMax=ac.sort((a,b)=>b.v-a.v)[0];
+  const spread=best&&worst&&tot.cvr?(best.v-worst.v)/tot.cvr:0;
+  return `<section class="panel"><div class="panel-h"><h3>星期 × 指标</h3><span class="muted" style="font-size:12px">${md(ds(wd.st))}–${md(ds(Math.min(wd.end,END)))} 共 ${tot.n} 天 · 比率指标以 8 周均值为中点着色，蓝色为有利</span><div class="r">${wd.ev.length?`<label style="display:inline-flex;gap:6px;align-items:center;font-size:12px;cursor:pointer"><input type="checkbox" class="pick" data-act="revEx" ${wd.ex?'checked':''}>排除异常日（${wd.ev.map(t=>md(ds(t))).join('、')}）</label>`:''}</div></div>
+    <div class="panel-b"><div class="scx"><table class="hm" style="min-width:640px"><thead><tr><th class="rl">指标</th>${names.map((n,i)=>`<th>${n}<span class="wtag" style="font-weight:500;color:var(--fg-3)">${W[i].n} 天</span></th>`).join('')}<th style="text-align:left;padding-left:10px">8 周均值</th></tr></thead><tbody>
+    ${defs.map(d=>`<tr><td class="rl">${d[0]}</td>${W.map(w=>cell(d,w)).join('')}<td class="ex tn">${d[4]==null?'—':d[3](d[4])}</td></tr>`).join('')}
+    </tbody></table></div></div></section>
+  <div class="cols2e">
+    <section class="panel"><div class="panel-h"><h3>规律</h3></div><div class="panel-b"><ul class="insights">
+      ${best?`<li class="good">${ic('circle-check')}<span class="it"><b>${names[best.i]} CVR 最高</b>（${(best.v*100).toFixed(1)}%），${names[worst.i]}最低（${(worst.v*100).toFixed(1)}%），相差均值的 ${(spread*100).toFixed(0)}%。</span></li>`:''}
+      ${acMax?`<li class="warn">${ic('triangle-alert')}<span class="it"><b>${names[acMax.i]} ACOS 最高</b>（${(acMax.v*100).toFixed(1)}%，均值 ${fv('acos',tot.acos)}）。</span></li>`:''}
+      <li class="${spread<.1?'neu':'good'}">${ic(spread<.1?'minus':'lightbulb')}<span class="it">${spread<.1?'星期之间转化差异不到 10%，不建议按星期调整预算或出价。':'差异明显时，可在转化高的日子保证预算不提前耗尽，转化低的日子适当收紧；先连续观察几周确认规律反复出现。'}</span></li>
+    </ul></div></section>
+    <section class="panel"><div class="panel-h"><h3>数据边界</h3></div><div class="panel-b"><ul class="insights">
+      <li class="neu">${ic('info')}<span class="it">导入的是按日报表，只能看到星期规律。分时段（小时级）分析需要 Amazon Marketing Stream 等小时级数据，属新增范围。</span></li>
+      <li class="neu">${ic('info')}<span class="it">亚马逊后台没有原生的分时调价，需要第三方工具；预算在每天同一时间重置，早时段 CPC 往往偏高。</span></li>
+    </ul></div></section>
+  </div>`;
+}
+function quadChart(el,R){
+  const T=thr(S.rules),cpa=S.rules.cpa;
+  const SEG={nos:['高花费无单','var(--bad)'],hi:['ACOS 超标','var(--c2)'],ok:['达标','var(--c1)'],star:['可放大','var(--good)'],low:['样本不足','var(--b)']};
+  const pts=R.kws.filter(k=>k.A.spend>0).map(k=>{const a=k.A;let sg;if(a.orders===0&&a.spend>=cpa)sg='nos';else if(a.orders===0||a.acos==null)sg='low';else if(a.acos>T.acos)sg='hi';else if(a.acos<=T.acos*.7&&a.orders>=2)sg='star';else sg='ok';return {k,x:a.spend,y:a.acos,sg}});
+  const lg=document.getElementById('qlegend');if(lg)lg.innerHTML=Object.entries(SEG).map(([k,[l,c]])=>`<span><i style="background:${c}"></i>${l} ${pts.filter(p=>p.sg===k).length}</span>`).join('');
+  if(!pts.length){el.innerHTML='<div class="muted">没有数据</div>';return}
+  const W=el.clientWidth,H=el.clientHeight,pl=50,pr=14,pt=20,pb=34,iw=W-pl-pr,ih=H-pt-pb;
+  const mxX=Math.max(...pts.map(p=>p.x)),ymax=Math.max(T.acos*2.2,Math.min(1.6,Math.max(...pts.map(p=>p.y||0))*1.05));
+  const X=v=>pl+Math.sqrt(v/mxX)*iw,Y=v=>pt+ih*(1-Math.min(v,ymax)/ymax);
+  let g='';
+  [0,T.acos,T.acos*2,ymax].filter((v,i,a)=>a.indexOf(v)===i&&v<=ymax).forEach(v=>{g+=`<line class="grid" x1="${pl}" x2="${W-pr}" y1="${Y(v)}" y2="${Y(v)}"/><text class="ax" x="${pl-8}" y="${Y(v)+4}" text-anchor="end">${(v*100).toFixed(0)}%</text>`});
+  [1,5,20,50,100,200,500,1000].filter(v=>v<=mxX).forEach(v=>{g+=`<text class="ax" x="${X(v)}" y="${H-12}" text-anchor="middle">${cur()}${v}</text>`});
+  g+=`<line x1="${pl}" x2="${W-pr}" y1="${Y(T.acos)}" y2="${Y(T.acos)}" style="stroke:var(--bad)" stroke-dasharray="4 4" opacity=".7"/><text class="ax" x="${W-pr}" y="${Y(T.acos)-6}" text-anchor="end" style="fill:var(--bad)">目标 ACOS ${pct(T.acos)}</text>`;
+  if(cpa<mxX)g+=`<line x1="${X(cpa)}" x2="${X(cpa)}" y1="${pt}" y2="${pt+ih}" style="stroke:var(--fg-3)" stroke-dasharray="4 4" opacity=".6"/><text class="ax" x="${X(cpa)+6}" y="${pt+ih-6}">花费 ≥ 目标 CPA ${cur()}${cpa}</text>`;
+  g+=`<text class="ax" x="${W-pr}" y="${pt+12}" text-anchor="end" style="font-weight:600">高花费 · 超标 → 降价 / 否定</text><text class="ax" x="${W-pr}" y="${pt+ih-6}" text-anchor="end" style="font-weight:600">高花费 · 达标 → 核心词保量</text>`;
+  g+=`<text class="ax" x="${pl+4}" y="${pt-6}">无销售</text>`;
+  pts.sort((a,b)=>(a.sg==='low')-(b.sg==='low')).reverse();
+  pts.forEach(p=>{const cy=p.y==null?pt+4:Y(p.y);g+=`<circle class="qp" data-act="open" data-key="${esc(p.k.key)}" cx="${X(p.x).toFixed(1)}" cy="${cy.toFixed(1)}" r="${p.sg==='low'?3.5:5}" style="fill:${SEG[p.sg][1]};stroke:var(--surface)" stroke-width="1.5"><title>${esc(p.k.key)}：花费 ${fvt('spend',p.x)} · ACOS ${p.y==null?'无销售':fvt('acos',p.y)} · ${p.k.A.orders} 单</title></circle>`});
+  el.innerHTML=svgEl(W,H,g);
+}
+function revMd(){
+  const R=(!S.noProject&&!proj().empty)?calc(S.shown):null;if(!R)return '';
+  const rv=revData(R),T=thr(S.rules),L=[];
+  rv.camps.forEach(c=>{const t=trendOf(c.w,rv.blocks,T);if(t[0]!=='neu')L.push(`- ${c.name}：${t[1]}`)});
+  const mv=kwMoves(R);if(mv.length)L.push(`- 关键词变动：新出单 ${mv.filter(x=>x.mv==='new').length}、流失 ${mv.filter(x=>x.mv==='lost').length}、增长 ${mv.filter(x=>x.mv==='up').length}、下滑 ${mv.filter(x=>x.mv==='down').length}（按销售额，±20% 为界）`);
+  const ty=typeSplit(R),nb=Z();ty.filter(g=>g.t!=='品牌词').forEach(g=>add5(nb,g.a));L.push(`- 非品牌 ACOS ${fv('acos',derive(nb).acos)}（整体 ${fv('acos',R.A.acos)}）`);
+  const ws=wasteSeries(R,rv),wl=ws[ws.length-1];if(wl.p!=null)L.push(`- 无效花费率 ${(wl.p*100).toFixed(1)}%（近 14 天点击 ≥ ${T.noConv} 且无订单的搜索词花费占比）`);
+  return L.join('\n')||'各活动走势平稳。';
+}
+function vReview(R){
+  const rv=revData(R),tab=S.diag.tab;
+  const body=tab==='camp'?revCamp(R,rv):tab==='kw'?revKw(R,rv):tab==='struct'?revStruct(R,rv):revWeek(R);
+  const ksel=S.sel&&R.kws.find(k=>k.key===S.sel);
+  return revHead(R)+banners(R)+body+(ksel?`<div class="cyc-drawer">${detail(R,R.kws)}</div>`:'');
+}
+
 // ---------- 命令面板 ⌘K ----------
-const PAGE_ITEMS=[['cycle','周期优化','refresh-ccw'],['overview','经营总览','layout-dashboard'],['diagnosis','变化诊断','git-compare-arrows'],['keywords','关键词决策','list-checks'],['reports','复盘报告','file-text'],['data','数据中心','database'],['projects','项目','folder-kanban'],['rules','分析规则','sliders-horizontal'],['spec','方案说明','book-open']];
+const PAGE_ITEMS=[['cycle','周期优化','refresh-ccw'],['overview','经营总览','layout-dashboard'],['diagnosis','复盘分析','chart-line'],['keywords','关键词决策','list-checks'],['reports','复盘报告','file-text'],['data','数据中心','database'],['projects','项目','folder-kanban'],['rules','分析规则','sliders-horizontal'],['spec','方案说明','book-open']];
 function cmdItems(q){
   q=(q||'').trim().toLowerCase();
   const out=[];
@@ -2339,6 +2672,9 @@ function cmdItems(q){
   const acts=[['打开风险词清单','triangle-alert',()=>{S.view='keywords';S.list.view='risk';S.list.tag='all';S.list.page=1;history.replaceState(null,'','#keywords')}],
     ['A 设为最近 7 天，B 设为前 7 天','calendar-days',()=>{const d=defScope();S.scope.A=d.A;S.scope.B=d.B;refresh()}],
     [S.scope.source==='term'?'改用投放报表分析':'改用搜索词报表分析','repeat',()=>{S.scope.source=S.scope.source==='term'?'target':'term';refresh()}],
+    ['复盘：活动趋势','chart-line',()=>{S.view='diagnosis';S.diag.tab='camp';history.replaceState(null,'','#diagnosis')}],
+    ['复盘：关键词变动','arrow-up-down',()=>{S.view='diagnosis';S.diag.tab='kw';history.replaceState(null,'','#diagnosis')}],
+    ['复盘：结构与效率','layers',()=>{S.view='diagnosis';S.diag.tab='struct';history.replaceState(null,'','#diagnosis')}],
     ['生成本期复盘','file-pen-line',()=>ACT.genReport()],['导入报表','upload',()=>{S.view='data';history.replaceState(null,'','#data')}],['查看指标口径','circle-help',()=>{S.modal={kind:'help'}}]];
   PROJECTS.filter(p=>p.id!==S.projectId).forEach(p=>acts.push([`切换项目：${p.name}`,'folder-kanban',()=>{switchProject(p.id);toast(`已切换到 ${p.name}，筛选已清空`)}]));
   acts.forEach(([l,i,run])=>out.push({g:'操作',l,i,run}));
@@ -2365,6 +2701,7 @@ function drawCharts(){
     if(type==='trend')trendChart(el,R);
     else if(type==='sm')smChart(el,R,el.dataset.k);
     else if(type==='wf')wfChart(el,R);
+    else if(type==='quad')quadChart(el,R);
   });
 }
 function svgEl(w,h,inner){return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img">${inner}</svg>`}
@@ -2465,6 +2802,7 @@ function render(){
   if(S.cmd){const c=document.getElementById('cmdq');if(c&&focusId!=='cmdq'){c.focus();c.setSelectionRange(c.value.length,c.value.length)}const a=document.getElementById('cmd-'+S.cmd.i);if(a)a.scrollIntoView({block:'nearest'})}
   if(focusId){const f=document.getElementById(focusId);if(f){f.focus({preventScroll:true});if(selS!=null&&f.setSelectionRange&&/text|search/.test(f.type||'text'))try{f.setSelectionRange(selS,selS)}catch(e){}}}
   if(render.focusKey){const b=document.querySelector(`tr.r[data-key="${CSS.escape(render.focusKey)}"] .kwn`);if(b)b.focus({preventScroll:false});render.focusKey=null}
+  document.querySelectorAll('.scx').forEach(x=>{if(x.querySelector('table.hm')&&x.scrollWidth>x.clientWidth)x.scrollLeft=x.scrollWidth});
   {const cs=document.querySelector('.cstep.on'),st=cs&&cs.parentElement;if(st&&st.scrollWidth>st.clientWidth)st.scrollLeft=cs.offsetLeft-(st.clientWidth-cs.clientWidth)/2}
   drawCharts();
 }
@@ -2530,11 +2868,17 @@ const ACT={
   diagWin:t=>{S.diag.win=+t.dataset.v},
   diagMetric:t=>{S.diag.metric=t.dataset.v},
   diagWf:t=>{S.diag.wf=t.dataset.v},
+  revTab:t=>{S.diag.tab=t.dataset.v;S.sel=null;if(S.view!=='diagnosis'){S.view='diagnosis';history.replaceState(null,'','#diagnosis')}render.resetScroll=true},
+  revCm:t=>{S.diag.cm=t.dataset.v},
+  revKm:t=>{S.diag.km=t.dataset.v},
+  revMv:t=>{S.diag.mv=S.diag.mv===t.dataset.v?'all':t.dataset.v;S.diag.mvAll=false},
+  revMvAll:()=>{S.diag.mvAll=!S.diag.mvAll},
+  revEx:()=>{S.diag.exEv=!S.diag.exEv},
   cycStep:t=>{const C=S.cyc;if(C.step!==t.dataset.v)C.done.add(C.step);C.step=t.dataset.v;S.sel=null;S.view='cycle';render.resetScroll=true;history.replaceState(null,'','#cycle')},
   cycSel:t=>{const cd=cycleData(calc(S.shown)),a=[...cd.harvest,...cd.neg,...cd.bids].find(x=>x.id===t.dataset.id);if(a)S.cyc.sel[a.id]=!isSel(a)},
   cycAll:t=>{const cd=cycleData(calc(S.shown)),v=t.dataset.v,list=v==='harvest'?cd.harvest:v==='neg'?cd.neg:cd.bids.filter(x=>x.kind===S.cyc.bk&&(!S.cyc.camp||x.g.camp===S.cyc.camp));const all=list.length&&list.every(isSel);list.forEach(a=>{S.cyc.sel[a.id]=!all})},
   cycBk:t=>{S.cyc.bk=t.dataset.v},
-  cycCamp:t=>{S.cyc.camp=t.dataset.v||null;if(t.dataset.go){const cd=cycleData(calc(S.shown));const c=t.dataset.v;const order=['down','down0','pause','up'];S.cyc.bk=order.find(k=>cd.bids.some(x=>x.kind===k&&x.g.camp===c))||'down';S.cyc.done.add(S.cyc.step);S.cyc.step='bid';render.resetScroll=true}},
+  cycCamp:t=>{S.cyc.camp=t.dataset.v||null;if(t.dataset.go){const cd=cycleData(calc(S.shown));const c=t.dataset.v;const order=['down','down0','pause','up'];S.cyc.bk=order.find(k=>cd.bids.some(x=>x.kind===k&&x.g.camp===c))||'down';S.cyc.done.add(S.cyc.step);S.cyc.step='bid';S.view='cycle';history.replaceState(null,'','#cycle');render.resetScroll=true}},
   cycWin:()=>{const lag=S.rules.lag;const A={s:addD(LAST,-(lag+13)),e:addD(LAST,-lag)};S.scope.A=A;S.scope.B={s:addD(A.s,-14),e:addD(A.s,-1)};refresh();toast('已改用推荐窗口：近 14 天，排除最近 '+lag+' 天未结算数据')},
   srcTerm:()=>{S.scope.source='term';refresh()},
   cycExport:t=>{toast(t.dataset.v==='log'?'演示：动作日志（.csv）已生成，原型不下载文件':'演示：批量操作表（.xlsx）已按亚马逊格式生成，原型不下载文件','file-down')},
@@ -2588,7 +2932,7 @@ document.addEventListener('click',e=>{
   const inPop=e.target.closest('.pop');
   if(!t){if(S.pop&&!inPop){S.pop=null;render()}return}
   if(t.tagName==='A')e.preventDefault();
-  if(t.tagName==='INPUT'&&t.type==='checkbox'&&!['colT','pick','pickAll','cycSel','cycAll'].includes(t.dataset.act))return;
+  if(t.tagName==='INPUT'&&t.type==='checkbox'&&!['colT','pick','pickAll','cycSel','cycAll','revEx'].includes(t.dataset.act))return;
   if(S.pop&&!inPop&&t.dataset.act!=='pop'&&t.dataset.act!=='closepop')S.pop=null;
   const fn=ACT[t.dataset.act];
   if(fn&&fn(t,e)===false)return;
