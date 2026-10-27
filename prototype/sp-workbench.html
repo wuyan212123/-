@@ -1010,6 +1010,218 @@ table.hm button.rl:hover{color:var(--accent)}
 @media (max-width:760px){.conc{grid-template-columns:1fr}.mvcards{grid-template-columns:repeat(2,minmax(0,1fr))}.kpis2{grid-template-columns:1fr}.shr{grid-template-columns:minmax(0,110px) 1fr 44px}.conc .cr{grid-template-columns:80px 1fr 96px}}
 .tchip.dis{opacity:.45;pointer-events:none}
 .mvtb{background:var(--surface);min-height:48px}
+
+/* ---------- v7 复盘报告：结论先行的报告文档（左侧报告结构目录 + 右侧文档） ---------- */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.rep{grid-template-columns:252px minmax(0,1fr)}
+.rside{display:flex;flex-direction:column;gap:16px;align-self:stretch;min-width:0}
+.rtoc{position:sticky;top:12px;padding-bottom:12px}
+.rtoc .panel-h{padding-bottom:2px}
+.rtoc-s{margin:4px 18px 4px;font-size:11.5px;color:var(--fg-3);line-height:1.55}
+.rtoc .tg{display:flex;align-items:baseline;gap:8px;padding:12px 18px 3px}
+.rtoc .tg b{font-size:12px;font-weight:600;color:var(--fg-2)}
+.rtoc .tg small{font-size:11px;color:var(--fg-3)}
+.rtoc .ti{display:flex;align-items:center;gap:4px;padding:0 14px 0 16px}
+.rtoc .ti button{flex:1;min-width:0;display:flex;align-items:center;gap:8px;border:0;background:none;padding:5px 6px;border-radius:7px;text-align:left;font-size:13px;color:var(--fg)}
+.rtoc .ti button:hover:not(:disabled){background:var(--hover)}
+.rtoc .ti .no{font:500 11px var(--font-num);color:var(--fg-3);width:16px;font-variant-numeric:tabular-nums;flex:none}
+.rtoc .ti .tl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rtoc .ti.off button{color:var(--fg-3);cursor:default}
+.rd-dot{width:7px;height:7px;border-radius:50%;display:inline-block;flex:none;background:var(--b)}
+.rd-dot.bad{background:var(--bad)} .rd-dot.warn{background:var(--warn)} .rd-dot.good{background:var(--good)}
+.rbody{overflow:hidden}
+.rgen-s{font-size:12px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:0 1 auto}
+.rdoc{container-type:inline-size;max-width:920px;margin:0 auto;padding:4px 44px 56px}
+.rdoc .neg{color:var(--bad)} .rdoc .pos{color:var(--good)}
+.rd-cover{padding:30px 0 24px}
+.rd-pre{font-size:12.5px;color:var(--fg-3)}
+.rd-cover h1{margin:6px 0 14px;font-size:28px;font-weight:600;letter-spacing:-.02em;line-height:1.25;text-wrap:balance}
+.rd-meta{display:flex;flex-wrap:wrap;gap:6px}
+.rd-chip{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:12px;background:var(--sunken);color:var(--fg-2);font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rd-chip svg{width:13px;height:13px}
+.rd-chip .ab{min-width:16px;height:16px;font-size:10px}
+.rd-chip.warn{background:var(--warn-weak);color:var(--warn)}
+.rd-chip.good{background:var(--good-weak);color:var(--good)}
+.rd-hist{display:flex;gap:12px;padding:16px 18px;border:1px dashed var(--line-2);border-radius:12px;color:var(--fg-2);font-size:13px;line-height:1.65}
+.rd-hist>svg{margin-top:3px}
+.rd-hist b{color:var(--fg);font-weight:600}
+.rd-hist p{margin:4px 0 0}
+/* 章节 */
+.rd-sec{padding:30px 0 6px;border-top:1px solid var(--line);scroll-margin-top:12px}
+.rd-eb{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--fg-2);font-weight:500}
+.rd-no{font:600 12px var(--font-num);color:var(--accent);letter-spacing:.02em}
+.rd-st{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--fg-3);font-weight:400}
+.rd-sec h2{margin:8px 0 16px;font-size:19px;font-weight:600;line-height:1.5;letter-spacing:-.01em;text-wrap:balance}
+.rd-sec h2 em,.rd-verdict em{font-style:normal;color:var(--bad)}
+.rd-sec h2 em.up,.rd-verdict em.up{color:var(--good)}
+.rd-p{margin:0 0 6px;font-size:13.5px;line-height:1.7;color:var(--fg-2)}
+.rd-pts{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column}
+.rd-pts li{display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:13.5px;line-height:1.65}
+.rd-pts li>svg{margin-top:3px;flex:none}
+.rd-pts li.bad>svg,.rd-judg li.bad>svg{color:var(--bad)} .rd-pts li.warn>svg,.rd-judg li.warn>svg{color:var(--warn)} .rd-pts li.good>svg,.rd-judg li.good>svg{color:var(--good)} .rd-pts li.neu>svg{color:var(--fg-3)}
+.rd-pts li>span,.rd-judg li>span{flex:1;min-width:0}
+.rd-pts b,.rd-judg b{font-weight:600}
+.rd-go{display:inline-flex;align-items:center;gap:6px;margin-top:12px;border:0;background:none;padding:0;color:var(--accent);font-size:12.5px;font-weight:500}
+.rd-go:hover{text-decoration:underline}
+.rd-go svg{width:14px;height:14px}
+.rd-go.in{margin:0 0 0 8px;vertical-align:-2px}
+.rd-fig{margin:0 0 12px;padding:14px 16px 10px;border:1px solid var(--line);border-radius:12px}
+.rd-fig figcaption{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;margin-bottom:10px;font-size:12px;color:var(--fg-3)}
+.rd-fig figcaption b{font-size:13px;color:var(--fg);font-weight:600}
+.rd-fig .fxrow{margin-top:0}
+.rd-box{border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}
+.rd-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.rd-2 h4,.rd-card h4{margin:0 0 6px;font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:6px}
+.rd-2 h4 svg{width:15px;height:15px}
+.rd-legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:11.5px;color:var(--fg-2)}
+.rd-legend span{display:inline-flex;align-items:center;gap:5px}
+.rd-legend i{width:8px;height:8px;border-radius:2px}
+.rd-legend b{font:600 11.5px var(--font-num);color:var(--fg)}
+/* 本期结论 */
+.rd-sum{border:1px solid var(--line);border-radius:16px;background:var(--surface-2);padding:20px 24px 18px;margin-bottom:10px}
+.rd-sum .rd-verdict{font-size:20px;line-height:1.65;font-weight:500;margin:10px 0 18px;letter-spacing:-.005em}
+.rd-verdict b{font-weight:600}
+.rd-goals{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.rd-goal{background:var(--surface);padding:12px 14px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.rd-goal .gl{font-size:12px;color:var(--fg-3)}
+.rd-goal b{font:600 20px var(--font-num);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.rd-goal .gs{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500}
+.rd-goal.bad .gs{color:var(--bad)} .rd-goal.warn .gs{color:var(--warn)} .rd-goal.good .gs{color:var(--good)} .rd-goal.neu .gs{color:var(--fg-3)}
+.rd-goal small{font-size:11.5px;color:var(--fg-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rd-sum h3{margin:18px 0 8px;font-size:12px;font-weight:600;color:var(--fg-2)}
+.rd-sum h3 small{font-weight:400;color:var(--fg-3);margin-left:8px}
+.rd-judg ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.rd-judg li{display:flex;gap:10px;align-items:flex-start;padding:10px 12px 10px 14px;background:var(--surface);border:1px solid var(--line);border-radius:10px;font-size:13.5px;line-height:1.65}
+.rd-judg li>svg{margin-top:3px;flex:none}
+.rd-ref{flex:none;border:0;background:var(--sunken);color:var(--fg-2);font-size:11.5px;height:22px;padding:0 8px;border-radius:6px;margin-top:1px;white-space:nowrap}
+.rd-ref:hover{color:var(--accent);background:var(--accent-weak)}
+.rd-kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.rd-kpi{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px 8px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.rd-kpi .kl{font-size:11.5px;color:var(--fg-3)}
+.rd-kpi>b{font:600 16px var(--font-num);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rd-kpi .kd{display:flex;align-items:center;gap:4px;min-height:20px}
+.rd-kpi .kd small{color:var(--fg-3);font-size:10.5px}
+.rd-spk{width:100%;height:auto;display:block;margin-top:6px}
+/* 上期动作 */
+.rd-stack{display:flex;gap:2px;height:12px;border-radius:4px;overflow:hidden;margin-bottom:8px}
+.rd-stack i{display:block;min-width:4px}
+.rd-tb{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:12px;min-width:540px}
+.rd-tb.tight{min-width:0;margin-top:2px}
+.rd-tb th{font-weight:500;color:var(--fg-3);text-align:left;padding:7px 12px 7px 0;border-bottom:1px solid var(--line);font-size:11.5px;white-space:nowrap}
+.rd-tb td{padding:8px 12px 8px 0;border-bottom:1px solid var(--line);vertical-align:middle}
+.rd-tb th:last-child,.rd-tb td:last-child{padding-right:0}
+.rd-tb tr:last-child td{border-bottom:0}
+.rd-tb .num{text-align:right;font-family:var(--font-num);white-space:nowrap;font-variant-numeric:tabular-nums}
+.rd-tb td b{display:block;font-weight:600}
+.rd-tb td small{display:block;font-size:11.5px;color:var(--fg-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:280px}
+.rd-obj{max-width:260px}
+.rd-obj b,.rd-obj .lnk{font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.rd-act{font-weight:500;white-space:nowrap}
+.rd-act small{display:inline!important;color:var(--fg-3);font-family:var(--font-num)}
+/* 趋势 */
+.rd-trs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.rd-tr{border:1px solid var(--line);border-radius:12px;padding:12px 12px 4px;min-width:0}
+.rd-trh{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--fg-3);gap:8px;margin-bottom:4px}
+.rd-trh b{font:600 15px var(--font-num);color:var(--fg)}
+/* 广告活动 */
+.rd-crs{display:flex;flex-direction:column}
+.rd-cr{display:grid;grid-template-columns:minmax(150px,1.25fr) minmax(110px,1.3fr) 76px 118px;gap:14px;align-items:center;padding:8px 0;border-top:1px solid var(--line);font-size:13px}
+.rd-cr.h{border-top:0;padding:0 0 6px;font-size:11.5px;color:var(--fg-3)}
+.rd-cr.h+.rd-cr{border-top:1px solid var(--line)}
+.rd-cr .nm{display:flex;flex-direction:column;min-width:0}
+.rd-cr .nm b{font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rd-cr .nm small{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--fg-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rd-dv{position:relative;height:14px;background:linear-gradient(var(--line-2),var(--line-2)) center/1px 100% no-repeat}
+.rd-dv i{position:absolute;top:2px;height:10px}
+.rd-dv i.p{left:50%;background:var(--good);border-radius:0 3px 3px 0}
+.rd-dv i.n{right:50%;background:var(--bad);border-radius:3px 0 0 3px}
+.rd-cr .v{font:600 13px var(--font-num);text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rd-cr .ac{font:500 12.5px var(--font-num);color:var(--fg-2);text-align:right;white-space:nowrap}
+/* 关键词 */
+.rd-mv{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:10px}
+.rd-mvc{display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);text-align:left;min-width:0}
+.rd-mvc:hover{border-color:var(--accent-line)}
+.rd-mvc span{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--fg-2)}
+.rd-mvc span i{width:8px;height:8px;border-radius:2px}
+.rd-mvc b{font:600 20px var(--font-num)}
+.rd-mvc small{font:500 11.5px var(--font-num);color:var(--fg-3);white-space:nowrap}
+.rd-kl{list-style:none;margin:0;padding:0}
+.rd-kl li{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:1px 8px;align-items:center;padding:7px 0;border-top:1px solid var(--line)}
+.rd-kl li:first-child{border-top:0}
+.rd-kl .lnk{min-width:0;max-width:100%;font-weight:500}
+.rd-kl b{font:600 12.5px var(--font-num);text-align:right}
+.rd-kl small{grid-column:1/-1;font-size:11.5px;color:var(--fg-3)}
+/* 结构 */
+.rd-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.rd-card{border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0;display:flex;flex-direction:column;gap:8px}
+.rd-card h4{margin:0}
+.rd-card .hint2{margin-top:auto}
+.rd-mix{display:grid;grid-template-columns:14px minmax(0,1fr);gap:8px;align-items:center;font:600 11px var(--font-num);color:var(--fg-3)}
+.rd-mix .bar{display:flex;gap:2px;height:14px;border-radius:4px;overflow:hidden}
+.rd-mix .bar i{display:block;min-width:2px}
+.rd-hb{display:grid;grid-template-columns:44px minmax(0,1fr) 44px 50px;gap:8px;align-items:center;font-size:12px}
+.rd-hb .bp{position:relative;height:10px;background:var(--sunken);border-radius:3px}
+.rd-hb .bp i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:var(--c1)}
+.rd-hb .bp i.hi{background:var(--bad)}
+.rd-hb .bp em{position:absolute;top:-3px;bottom:-3px;width:0;border-left:1.5px dashed var(--fg-2)}
+.rd-hb b{font:600 12px var(--font-num);text-align:right}
+.rd-hb small{font:500 11px var(--font-num);color:var(--fg-3);white-space:nowrap}
+.rd-big{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.rd-big b{font:600 24px var(--font-num)}
+.rd-big span{font-size:12px;color:var(--fg-3)}
+.rd-wsp{width:100%;height:44px;display:block}
+.rd-mini{list-style:none;margin:0;padding:0}
+.rd-mini li{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-top:1px solid var(--line);font-size:12.5px}
+.rd-mini li:first-child{border-top:0}
+.rd-mini span{color:var(--fg-3);white-space:nowrap}
+.rd-mini b{font-weight:500;text-align:right}
+/* 风险与机会、行动、沉淀 */
+.rd-ro ul{list-style:none;margin:0;padding:0}
+.rd-ro li{display:grid;grid-template-columns:minmax(0,1fr) auto 28px;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+.rd-ro li:first-child{border-top:0}
+.rd-ro li.muted{display:block}
+.rd-ro li b{font-weight:600;font-size:13px}
+.rd-ro li small{display:block;font-size:11.5px;color:var(--fg-3);line-height:1.5}
+.rd-ro .v{text-align:right;white-space:nowrap}
+.rd-ro .v b{font:600 13px var(--font-num)}
+.rd-ro .v small{font-size:11px}
+.rd-ro.risk h4 svg{color:var(--bad)} .rd-ro.opp h4 svg{color:var(--good)}
+.rd-ic{width:28px;height:28px;border-radius:8px;border:1px solid var(--line);background:var(--surface);display:inline-flex;align-items:center;justify-content:center;color:var(--fg-2);padding:0}
+.rd-ic:hover{color:var(--accent);border-color:var(--accent-line)}
+.rd-ic svg{width:14px;height:14px}
+.rd-pri{display:inline-flex;align-items:center;justify-content:center;width:24px;height:22px;border-radius:6px;font-size:11.5px;font-weight:600}
+.rd-pri.hi{background:var(--bad-weak);color:var(--bad)} .rd-pri.mid{background:var(--warn-weak);color:var(--warn)} .rd-pri.lo{background:var(--sunken);color:var(--fg-2)}
+.rd-plan td{vertical-align:middle}
+.rd-own{height:28px;width:84px;padding:0 8px;font-size:12.5px}
+.rd-sl h4 svg{width:15px;height:15px}
+.rd-sl.good h4 svg{color:var(--good)} .rd-sl.warn h4 svg{color:var(--warn)}
+.rd-sl ul{margin:0;padding-left:18px}
+.rd-sl li{font-size:13px;line-height:1.65;margin:4px 0}
+.rd-sl p{margin:4px 0;font-size:12.5px}
+.rd-dl{display:grid;grid-template-columns:84px minmax(0,1fr);gap:10px 16px;margin:0;font-size:13px;line-height:1.65}
+.rd-dl dt{color:var(--fg-3);font-size:12px;padding-top:1px}
+.rd-dl dd{margin:0;color:var(--fg-2)}
+/* 运营补充 */
+.rd-note{margin-top:14px;display:flex;flex-direction:column;gap:6px}
+.rd-note label{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:var(--fg-2)}
+.rd-note label svg{width:13px;height:13px}
+.rd-note textarea.inp{width:100%;height:auto;resize:vertical;min-height:58px;padding:9px 11px;line-height:1.6;font-size:13px}
+.rd-add{margin-top:14px;display:flex;width:fit-content;align-items:center;gap:5px;border:1px dashed var(--line-2);background:none;border-radius:8px;height:28px;padding:0 10px;font-size:12px;color:var(--fg-3)}
+.rd-add:hover{color:var(--accent);border-color:var(--accent-line)}
+.rd-add svg{width:13px;height:13px}
+/* 文档宽度自适应（按文档自身宽度） */
+@container (max-width:760px){.rd-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.rd-goals{grid-template-columns:repeat(2,minmax(0,1fr))}.rd-trs{grid-template-columns:minmax(0,1fr)}.rd-cr{grid-template-columns:minmax(0,1fr) minmax(90px,1fr) 70px}.rd-cr .ac{display:none}}
+@container (max-width:620px){.rd-2,.rd-cards{grid-template-columns:minmax(0,1fr)}.rd-mv{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@container (max-width:460px){.rd-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.rd-cr{grid-template-columns:minmax(0,1fr) 70px}.rd-cr .rd-dv{grid-column:1/-1;grid-row:2}.rd-cr.h span:nth-child(2){display:none}.rd-dl{grid-template-columns:minmax(0,1fr);gap:2px}.rd-dl dd{margin-bottom:8px}.rd-sum{padding:16px 14px}.rd-sum .rd-verdict{font-size:17px}.rd-judg li{flex-wrap:wrap}.rd-judg li>span{flex-basis:calc(100% - 30px)}.rd-ref{margin-left:26px}}
+@media (max-width:1279px){.rep{grid-template-columns:216px minmax(0,1fr)}.rdoc{padding:4px 28px 44px}.rgen-s{display:none}}
+@media (max-width:1100px){
+  .rep{grid-template-columns:minmax(0,1fr)}
+  .rtoc{display:none}
+  .rh{flex-direction:row;overflow-x:auto;gap:6px;padding:8px;scrollbar-width:none}
+  .rh>.panel-h{display:none}
+  .rh>button{flex:none;width:210px;margin:0}
+}
+@media (max-width:760px){.rdoc{padding:0 16px 32px}.rd-cover{padding:20px 0 18px}.rd-cover h1{font-size:23px}.rd-sec h2{font-size:17px}.rmeta .btn{flex:none}}
 </style>
 
 <div id="app"></div>
@@ -1254,7 +1466,7 @@ const S={
   rules:clone(DEF_RULES),ruleDraft:null,aiTested:false,
   diag:{tab:'ab',cm:'acos',km:'orders',mv:'all',mvAll:false,exEv:true,mode:'custom',event:'2026-10-06',win:7,metric:'sales',wf:'sales',wA:LAST,wB:addD(LAST,-7)},
   data:{stage:'preview',fix:{s:'',e:''}},
-  report:{type:'weekly',src:'rule',state:'done',sel:'cur',genAt:'2026-10-27 10:48'},
+  report:{type:'weekly',src:'rule',state:'done',sel:'cur',genAt:'2026-10-27 10:48',on:{},notes:store.get('repNotes',{}),own:{},edit:null,ok:false},
   toast:null,modal:null
 };
 if(!S.cols.includes('kw'))S.cols.unshift('kw');
@@ -1970,85 +2182,407 @@ function vData(){
 }
 
 // ---------- 复盘报告 ----------
-function md2html(m){
-  const lines=m.split('\n');let h='',inL=false,inT=false;
-  const inl=s=>esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/`(.+?)`/g,'<code>$1</code>');
-  const close=()=>{if(inL){h+='</ul>';inL=false}if(inT){h+='</tbody></table>';inT=false}};
-  for(const l of lines){
-    if(/^\|/.test(l)){if(/^\|[\s-|]+\|$/.test(l))continue;const cells=l.split('|').slice(1,-1).map(c=>c.trim());if(!inT){close();h+='<table><thead><tr>'+cells.map(c=>`<th>${inl(c)}</th>`).join('')+'</tr></thead><tbody>';inT=true}else h+='<tr>'+cells.map(c=>`<td>${inl(c)}</td>`).join('')+'</tr>';continue}
-    if(/^- /.test(l)){if(!inL){close();h+='<ul>';inL=true}h+=`<li>${inl(l.slice(2))}</li>`;continue}
-    close();
-    if(/^# /.test(l))h+=`<h1>${inl(l.slice(2))}</h1>`;else if(/^## /.test(l))h+=`<h2>${inl(l.slice(3))}</h2>`;else if(/^> /.test(l))h+=`<blockquote>${inl(l.slice(2))}</blockquote>`;else if(l.trim())h+=`<p>${inl(l)}</p>`;
-  }
-  close();return h;
-}
 function decMd(){
   const list=Object.entries(S.decisions).filter(([k])=>k.startsWith(S.projectId+'|'));
   if(!list.length)return '本轮还没有记录人工判断。可在关键词详情或批量操作中采纳、暂不处理建议。';
   return list.map(([k,d])=>`- ${d.st==='adopt'?'**已采纳**':'暂不处理'} · \`${k.split('|')[1]}\` · ${d.action}（${d.at}）`).join('\n');
 }
-function reportMd(R){
-  const P=proj(), sh=S.shown, T=thr(S.rules);
-  const typeL={weekly:'周报分析',cmp:'周期对比',kw:'关键词复盘'}[S.report.type];
-  const by=t=>R.kws.filter(k=>k.tags.includes(t)).sort((a,b)=>b.A.spend-a.A.spend);
-  const line=k=>`- **${k.key}**：A 花费 ${fvt('spend',k.A.spend)}，订单 ${k.A.orders}，ACOS ${fvt('acos',k.A.acos)}${R.hasB?`（B ${fvt('acos',k.B.acos)}）`:''}${k.sugg[0]?` → 建议 ${k.sugg[0].action}（${k.sugg[0].obj.camp}）`:''}`;
-  const t=MET.filter(([k])=>['spend','sales','orders','acos','cvr','cpc'].includes(k)).map(([k,l])=>`| ${l} | ${fvt(k,R.A[k])} | ${R.hasB?fvt(k,R.B[k]):'无基准'} | ${R.hasB?dlt(k,R.A[k],R.B[k]).replace(/<[^>]+>/g,''):'—'} |`).join('\n');
-  const acts=R.kws.flatMap(k=>k.sugg.map(s=>({k,s}))).filter(x=>x.s.pri!=='lo').slice(0,8);
-  return `# ${P.name} ${typeL}
-> 规则生成 · ${srcLabel(sh.source)} · A ${sh.A.s} 至 ${sh.A.e}（${R.covA.n}/${R.covA.days} 天）对比 B ${sh.B.s} 至 ${sh.B.e}（${R.covB.n}/${R.covB.days} 天）· 生成于 ${S.report.genAt}
-## 一、整体表现
-| 指标 | A | B | 变化 |
-|---|---|---|---|
-${t}
-${R.covB.n<R.covB.days?`\nB 期缺 ${R.covB.miss.map(md).join('、')} 的数据，花费与销售额的总量变化偏大，请以日均对照为准。`:''}
-## 二、需要处理的风险
-${by('ACOS恶化').length?`**ACOS 恶化（${by('ACOS恶化').length} 个词）**，目标 ACOS ${pct(T.acos)}：`:''}
-${by('ACOS恶化').slice(0,3).map(line).join('\n')}
-${by('高点击无转化').length?`**高点击无转化（${by('高点击无转化').length} 个词）**：`:''}
-${by('高点击无转化').slice(0,3).map(line).join('\n')}
-## 三、可放大的机会
-${by('可放大').slice(0,4).map(line).join('\n')||'本期没有符合条件的词。'}
-## 四、建议动作清单
-以下动作需在亚马逊广告后台人工确认后执行：
-${acts.map(x=>`- ${x.s.action} · \`${x.k.key}\` · ${x.s.obj.camp} / ${x.s.obj.ag}（${({hi:'高',mid:'中',lo:'低'})[x.s.pri]}优先）`).join('\n')}
-## 五、趋势与结构
-${revMd()}
-## 六、本周优化动作
-${cycMd()}
-## 七、本轮人工判断
-${decMd()}
-## 八、数据说明
-- 比率均由汇总后的基础量重新计算；分母为 0 记为不可计算。
-- 产品相关性、毛利、库存和推广阶段未纳入判断，需运营综合确认。`;
+// ---------- 复盘报告 ----------
+// 写法（v7 调研结论）：
+//  1. 结论先行（金字塔原理）：第一节回答“好不好、为什么、下周先做什么”；每节标题是一句结论，不是主题名。
+//  2. 按复盘四步组织（回顾目标 → 评估结果 → 分析原因 → 总结规律，同 AAR）：先对照目标、验证上期动作，再拆原因，最后沉淀做法。
+//  3. 借鉴亚马逊 WBR：把本期放进近 12 周里看，连续同向才算趋势；只解释显著变化；区分可控动作（出价、否定、收割、预算）与结果。
+//  4. 下期动作带优先级、预计影响、负责人和复查日，下次复盘在“上期动作复盘”中回看，形成闭环。
+// 章节按报告类型默认开关，可在左侧“报告结构”中增减；每节可写运营补充，复制 / 导出 Markdown 时一并带上。
+const RTYPES=[['weekly','周报分析','每周例行：结果、上期动作、原因、下周计划'],['cmp','周期对比','大促、调价前后等两个时段的对比，重点看变化归因'],['kw','关键词复盘','关键词专项：变动、收割、否定与结构']];
+const RGROUPS=[['res','结果','回顾目标 · 评估结果'],['why','原因','分析原因'],['act','行动','下期怎么做'],['learn','沉淀','总结规律']];
+const RSECS=[
+  {id:'sum',l:'本期结论',g:'res',t:['weekly','cmp','kw'],fixed:true},
+  {id:'loop',l:'上期动作复盘',g:'res',t:['weekly','kw']},
+  {id:'why',l:'变化归因',g:'why',t:['weekly','cmp']},
+  {id:'trend',l:'趋势背景',g:'why',t:['weekly','cmp']},
+  {id:'camp',l:'广告活动',g:'why',t:['weekly','cmp']},
+  {id:'kw',l:'关键词',g:'why',t:['weekly','cmp','kw']},
+  {id:'term',l:'收割与否定',g:'why',t:['kw']},
+  {id:'struct',l:'结构与效率',g:'why',t:['weekly','cmp','kw']},
+  {id:'ro',l:'风险与机会',g:'act',t:['weekly','cmp']},
+  {id:'plan',l:'下期行动计划',g:'act',t:['weekly','cmp','kw']},
+  {id:'learn',l:'经验沉淀',g:'learn',t:['weekly','cmp','kw']},
+  {id:'appx',l:'附录 · 数据说明',g:'learn',t:['weekly','cmp','kw']}
+];
+const TONEL={bad:'需处理',warn:'需关注',good:'正常',neu:'参考'};
+const TONE_IC={bad:'circle-alert',warn:'triangle-alert',good:'circle-check',neu:'info'};
+const DRV={曝光:'先查预算是否提前用完、出价是否被调低、关键词排名是否下滑',CTR:'先查主图、价格、评论星级和广告位',CVR:'先排查价格、优惠券、评论、库存与 Listing 等广告以外的原因，再动出价',客单价:'检查价格调整、促销或变体结构'};
+const NOTE_PH={sum:'例：本周断货 2 天，CVR 下滑主要来自库存，不调整出价。',learn:'例：周末 CVR 稳定高于工作日，预算不要在周五前用完。'};
+const secOn=s=>s.fixed||(S.report.on[S.report.type+'|'+s.id]??s.t.includes(S.report.type));
+const noteKey=id=>S.projectId+'|'+S.report.type+'|'+id;
+const sgn=v=>(v>=0?'+':'−')+money0(Math.abs(v));
+const avg=a=>{const v=a.filter(x=>x!=null);return v.length?v.reduce((s,x)=>s+x,0)/v.length:null};
+const strip=h=>String(h).replace(/<[^>]+>/g,'').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&amp;/g,'&');
+const p0=v=>v==null?'—':(v*100).toFixed(0)+'%';
+const ptsHTML=pts=>pts.length?`<ul class="rd-pts">${pts.map(([t,h,x])=>`<li class="${t}">${ic(TONE_IC[t])}<span>${h}${x||''}</span></li>`).join('')}</ul>`:'';
+const ptsMd=pts=>pts.map(p=>'- '+strip(p[1])).join('\n');
+function repCtx(R){
+  const T=thr(S.rules),Ru=S.rules,rv=revData(R),per=R.hasB&&R.covA.n!==R.covB.n,nA=Math.max(1,R.covA.n),nB=Math.max(1,R.covB.n),fa=per?1/nA:1,fb=per?1/nB:1;
+  const top=d=>d?[...d.steps].sort((a,b)=>Math.abs(b.v)-Math.abs(a.v))[0]:null,dS=decomp(R,'sales'),dA=decomp(R,'acos');
+  const ws=wasteSeries(R,rv),nb=Z(),nbB=Z(),br=Z();typeSplit(R).forEach(g=>{if(g.t==='品牌词')add5(br,g.a);else{add5(nb,g.a);add5(nbB,g.b)}});
+  const can=S.shown.source==='term'?R.kws.map(k=>({k,rows:k.rows.filter(x=>x.a.spend>0)})).filter(x=>new Set(x.rows.map(y=>y.r.camp)).size>=2):[];
+  const B=rv.blocks,share5=key=>{const t=R[key].sales;return t?[...R.kws].sort((x,y)=>y[key].sales-x[key].sales).slice(0,5).reduce((a,k)=>a+k[key].sales,0)/t:0};
+  return {T,Ru,rv,per,nA,nB,fa,fb,dS,dA,mainS:top(dS),mainA:top(dA),
+    wk:v=>per?v*7:v*7/nA,
+    vchg:m=>R.hasB&&R.B[m]?(R.A[m]*fa)/(R.B[m]*fb)-1:null,
+    wkv:m=>rv.total.map((x,i)=>VOL.has(m)?(B[i].n?x[m]/B[i].n:null):x[m]),
+    camps:rv.camps.map(x=>({name:x.name,A:x.A,B:x.B,w:x.w,dS:x.A.sales*fa-x.B.sales*fb,t:trendOf(x.w,B,T)})),
+    mvs:kwMoves(R),cd:cycleData(R),prev:(R.hasB&&prevCycle(R))||[],ws,wl:ws[ws.length-1],w4:ws[Math.max(0,ws.length-5)],ms:matchSplit(R),
+    NB:derive(nb),NBB:derive(nbB),BR:derive(br),can,canSp:can.reduce((a,x)=>a+x.rows.reduce((t,y)=>t+y.a.spend,0),0),wd:weekdayData(R),
+    s5A:share5('A'),s5B:R.hasB?share5('B'):0,oA:R.kws.filter(k=>k.A.orders>0).length,oB:R.kws.filter(k=>k.B.orders>0).length,
+    dayW:per?'日均':'',dayU:per?'/天':''};
 }
-const HIST=[{id:'r1',t:'W42 周报分析',type:'周报分析',a:'10/12–10/18',b:'10/05–10/11',src:'规则',d:'10-19 10:20'},{id:'r2',t:'Prime 大促前后对比',type:'周期对比',a:'10/06–10/12',b:'09/29–10/05',src:'规则',d:'10-13 15:02'},{id:'r3',t:'W41 关键词复盘',type:'关键词复盘',a:'10/05–10/11',b:'09/28–10/04',src:'AI',model:'gpt-4.1',d:'10-12 11:30'},{id:'r4',t:'W40 周报分析',type:'周报分析',a:'09/28–10/04',b:'09/21–09/27',src:'规则',d:'10-05 09:58'}];
+// ---- 本期结论 ----
+function repGoals(R,c){
+  const T=c.T,Ru=c.Ru,a=R.A.acos,cpa=R.A.cpa,sc=c.vchg('sales'),wp=c.wl.p;
+  const lv=(v,g,w)=>v<=g?'good':v<=w?'warn':'bad',gl={good:'达标',warn:'接近目标',bad:'超标'};
+  const aS=a==null?'bad':lv(a,T.acos,T.acos*1.1),cS=cpa==null?'bad':lv(cpa,Ru.cpa,Ru.cpa*1.1);
+  return [
+    {l:'ACOS',v:fvt('acos',a),g:`目标 ≤ ${pct(T.acos)} · 盈亏线 ${pct(Ru.be)}`,st:aS,s:a==null?'无销售':a>Ru.be?'高于盈亏线':gl[aS]},
+    {l:'CPA',v:fvt('cpa',cpa),g:`目标 ≤ ${cur()}${Ru.cpa}`,st:cS,s:cpa==null?'无订单':gl[cS]},
+    {l:`销售额${c.dayW}变化`,v:sc==null?'—':pcs(sc),g:R.hasB?`对比 B ${rLabel(S.shown.B)}`:'没有对比期',st:sc==null?'neu':sc>=0?'good':sc>=-.1?'warn':'bad',s:sc==null?'无基准':sc>=0?'增长':sc>=-.1?'小幅下滑':'明显下滑'},
+    {l:'无效花费率',v:wp==null?'—':(wp*100).toFixed(1)+'%',g:'近 14 天 · 参考 10%–20%',st:wp==null?'neu':wp<=.1?'good':wp<=.2?'warn':'bad',s:wp==null?'—':wp<=.1?'健康':wp<=.2?'偏高':'过高'}
+  ];
+}
+function repPlan(R,c){
+  const im=cycImpact(c.cd),Ru=c.Ru,P=[],m=c.mainS,cd=c.cd;
+  if(im.n)P.push({id:'neg',pri:'hi',a:'否定无效搜索词',o:`${im.n} 个 · 否定精准`,v:`节省约 ${money0(im.negSave)}/周`,go:['cycStep','neg']});
+  if(im.down||im.pause)P.push({id:'down',pri:'hi',a:'超标投放降价 / 暂停',o:`降价 ${im.down} 个 · 暂停 ${im.pause} 个`,v:`节省约 ${money0(im.bidSave)}/周`,go:['cycStep','bid']});
+  if(m&&m.v<0&&(m.l==='CVR'||m.l==='CTR')&&m.chg<=-.05)P.push({id:'conv',pri:'hi',a:m.l==='CVR'?'排查转化率下滑':'排查点击率下滑',o:m.l==='CVR'?'价格 · 评论 · 库存 · Listing':'主图 · 价格 · 星级 · 广告位',v:`影响销售约 ${money0(Math.abs(c.wk(m.v)))}/周`,go:['revTab','ab']});
+  const nBad=c.prev.filter(x=>x.res[0]==='bad').length,nWarn=c.prev.filter(x=>x.res[0]==='warn').length;
+  if(nBad)P.push({id:'recheck',pri:'mid',a:'复查上期变差的对象',o:`${nBad} 个`,v:'先停止同方向加码',go:['cycStep','prep']});
+  if(nWarn)P.push({id:'verify',pri:'mid',a:'核实否定是否已执行',o:`${nWarn} 个`,v:'否定后仍有花费',go:['cycStep','prep']});
+  if(im.h)P.push({id:'harvest',pri:'mid',a:'收割搜索词到精准',o:`${im.h} 个 · 来源活动加否定精准`,v:`相关销售约 ${money0(cd.harvest.filter(isSel).reduce((t,x)=>t+x.a.sales,0)*cd.wk)}/周`,go:['cycStep','harvest']});
+  if(im.up)P.push({id:'up',pri:'mid',a:'盈利投放提价',o:`${im.up} 个 · +${Math.round(Ru.up*100)}%`,v:`花费最多 +${money0(im.upCost)}/周`,go:['cycStep','bid']});
+  if(c.can.length>=2)P.push({id:'canni',pri:'lo',a:'同词多活动收敛',o:`${c.can.length} 个搜索词`,v:`A 期花费 ${money0(c.canSp)}`,go:['revTab','struct']});
+  const grow=c.camps.filter(x=>x.t[0]==='good'&&/放量/.test(x.t[1]));
+  if(grow.length)P.push({id:'budget',pri:'lo',a:'检查预算是否提前用完',o:grow.map(x=>x.name).join('、'),v:'放量中 · 报表无预算数据',go:null});
+  return P;
+}
+function repVerdict(R,c,plan){
+  const T=c.T,a=R.A.acos,sc=c.vchg('sales'),next=plan.slice(0,2).map(p=>p.a).join('、');
+  if(!R.hasB)return {tone:a!=null&&a<=T.acos?'good':'warn',h:`没有对比期数据，本期只对照目标：ACOS <b>${fvt('acos',a)}</b>（目标 ${pct(T.acos)}），CPA <b>${fvt('cpa',R.A.cpa)}</b>。${next?`下周先做：${next}。`:''}`};
+  const b=R.B.acos,m=c.mainS;
+  const scale=Math.abs(sc)<.02?`广告销售额${c.dayW}基本持平`:`广告销售额${c.dayW}<em class="${sc>0?'up':''}">${sc>0?'增长':'下降'} ${Math.abs(sc*100).toFixed(1)}%</em>`;
+  const eff=a==null?'本期没有广告销售':a<=T.acos?`ACOS <b>${pct(a)}</b> 仍在目标内${b!=null&&a-b>=.02?`，但比 B 期高 ${((a-b)*100).toFixed(1)}pt`:''}`:`ACOS <em>${pct(a)}</em> 超出目标 ${pct(T.acos)}`;
+  const why=m&&Math.abs(m.chg)>=.03&&Math.abs(sc)>=.02?`；${sc<0?'下滑':'增长'}主要来自 <b>${m.l} ${m.chg>0?'上升':'下降'} ${Math.abs(m.chg*100).toFixed(0)}%</b>`:'';
+  return {tone:a==null||a>T.acos*1.1||sc<-.1?'bad':a>T.acos||sc<0?'warn':'good',h:`${scale}，${eff}${why}。${next?`下周先做：${next}。`:''}`};
+}
+function repJudg(R,c){
+  const J=[],m=c.mainS;
+  if(c.dS&&m&&Math.abs(m.chg)>=.03){const neg=m.v<0;J.push({tone:neg?'bad':'good',sec:'why',sc:Math.abs(c.wk(m.v)),h:`<b>${m.l} ${facV(m.l,m.b)} → ${facV(m.l,m.a)}</b>（${pcs(m.chg)}）是销售额变化的主因，影响约 ${sgn(c.wk(m.v))}/周。${neg&&DRV[m.l]?DRV[m.l]+'。':''}`})}
+  if(R.hasB){const tot=c.camps.reduce((a,x)=>a+x.dS,0),neg=tot<0,side=c.camps.filter(x=>neg?x.dS<0:x.dS>0).sort((a,b)=>Math.abs(b.dS)-Math.abs(a.dS)),ss=side.reduce((a,x)=>a+x.dS,0);
+    if(side.length&&ss){const t=side[0];J.push({tone:neg?'bad':'good',sec:'camp',sc:Math.abs(c.wk(t.dS)),h:`${neg?'下滑':'增长'}集中在 <b>${esc(t.name)}</b>：销售额${c.dayW} ${sgn(t.dS)}，占${neg?'下滑':'增长'}活动合计的 ${Math.round(t.dS/ss*100)}%。`})}}
+  const lost=c.mvs.filter(x=>x.mv==='lost'),nw=c.mvs.filter(x=>x.mv==='new'),sL=lost.reduce((a,x)=>a+x.d,0),sN=nw.reduce((a,x)=>a+x.d,0);
+  if(lost.length||nw.length)J.push({tone:sL+sN<0?'warn':'good',sec:'kw',sc:Math.abs(c.wk(sL+sN)),h:`<b>消失 ${lost.length} 个出单词</b>（${sgn(sL)}${c.dayU}），新增 ${nw.length} 个（${sgn(sN)}${c.dayU}），${sL+sN<0?'新词还没补上缺口':'新词补上了缺口'}。`});
+  if(c.prev.length){const g=c.prev.filter(x=>x.res[0]==='good').length,b=c.prev.filter(x=>x.res[0]==='bad').length,w=c.prev.filter(x=>x.res[0]==='warn').length;
+    J.push({tone:b+w>g?'warn':'good',sec:'loop',sc:(b+w)*10,h:`上期 ${c.prev.length} 个动作 <b>${g} 个见效</b>${b?`，${b} 个变差`:''}${w?`，${w} 个否定后仍有花费`:''}。`})}
+  const p=c.wl.p;if(p!=null&&p>.1)J.push({tone:p>.2?'bad':'warn',sec:'struct',sc:c.wl.w/2,h:`<b>无效花费率 ${(p*100).toFixed(1)}%</b>${c.w4.p!=null?`（4 周前 ${(c.w4.p*100).toFixed(1)}%）`:''}，近 14 天约 ${money0(c.wl.w)} 没有带来订单。`});
+  const up=c.cd.bids.filter(x=>x.kind==='up'),hv=c.cd.harvest;
+  if(up.length||hv.length)J.push({tone:'good',sec:'ro',sc:hv.reduce((t,x)=>t+x.a.sales,0)*c.cd.wk,h:`<b>${hv.length} 个搜索词可收割</b>到精准，${up.length} 个投放可提价放量，它们的 ACOS 都在目标内。`});
+  const bad=J.filter(x=>x.tone!=='good').sort((a,b)=>b.sc-a.sc),good=J.filter(x=>x.tone==='good').sort((a,b)=>b.sc-a.sc);
+  const pick=bad.slice(0,good.length?2:3);pick.push(...good.slice(0,3-pick.length));return pick;
+}
+function rspark(v,B,m,T){
+  const W=132,H=30,n=v.length,nn=v.filter(x=>x!=null);if(nn.length<2)return '';
+  let hi=Math.max(...nn),lo=Math.min(...nn);if(m==='acos'){hi=Math.max(hi,T.acos);lo=Math.min(lo,T.acos)}
+  const pad=(hi-lo)*.18||hi*.1||1;hi+=pad;lo=Math.max(0,lo-pad);
+  const X=i=>(3+i/(n-1)*(W-6)).toFixed(1),Y=x=>(H-3-(x-lo)/(hi-lo)*(H-6)).toFixed(1);
+  let p='',pen=false;v.forEach((x,i)=>{if(x!=null){p+=(pen?'L':'M')+X(i)+','+Y(x);pen=true}else pen=false});
+  const ia=B.map((b,i)=>b.inA?i:-1).filter(i=>i>=0).pop(),ib=B.map((b,i)=>b.inB?i:-1).filter(i=>i>=0).pop();
+  return `<svg class="rd-spk" viewBox="0 0 ${W} ${H}" role="img" aria-label="近 ${n} 周${VOL.has(m)?'日均':''}${MLABEL[m]}：${v.map(x=>x==null?'—':fc(m,x)).join('、')}">${m==='acos'?`<line x1="0" x2="${W}" y1="${Y(T.acos)}" y2="${Y(T.acos)}" style="stroke:var(--bad)" stroke-width="1" stroke-dasharray="3 3" opacity=".55"/>`:''}<path d="${p}" fill="none" style="stroke:var(--c1)" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>${ib>=0&&v[ib]!=null?`<circle cx="${X(ib)}" cy="${Y(v[ib])}" r="2.6" style="fill:var(--surface);stroke:var(--b-ink)" stroke-width="1.4"/>`:''}${ia>=0&&v[ia]!=null?`<circle cx="${X(ia)}" cy="${Y(v[ia])}" r="3" style="fill:var(--a);stroke:var(--surface)" stroke-width="1.4"/>`:''}</svg>`;
+}
+const RKPI=[['spend','花费'],['sales','销售额'],['orders','订单'],['acos','ACOS'],['cvr','CVR'],['cpc','CPC']];
+function repKpis(R,c){
+  return `<div class="rd-kpis">${RKPI.map(([k,l])=>{const a=R.A[k],pd=VOL.has(k)&&c.per;
+    const d=!R.hasB?'<span class="nobase">无基准</span>':pd?dlt(k,a/c.nA,R.B[k]/c.nB):dlt(k,a,R.B[k]);
+    return `<div class="rd-kpi"><span class="kl">${l}</span><b>${fv(k,a)}</b><span class="kd">${d}${pd&&R.hasB?'<small>日均</small>':''}</span>${rspark(c.wkv(k),c.rv.blocks,k,c.T)}</div>`}).join('')}</div>`;
+}
+function sumMd(R,c,b){
+  const t=RKPI.map(([k,l])=>{const pd=VOL.has(k)&&c.per;return `| ${l} | ${fvt(k,R.A[k])} | ${R.hasB?fvt(k,R.B[k]):'无基准'} | ${R.hasB?strip(pd?dlt(k,R.A[k]/c.nA,R.B[k]/c.nB):dlt(k,R.A[k],R.B[k]))+(pd?'（日均）':''):'—'} |`}).join('\n');
+  return `**${strip(b.title)}**\n\n| 目标 | 本期 | 状态 |\n|---|---|---|\n${b.goals.map(g=>`| ${g.l}（${g.g}） | ${g.v} | ${g.s} |`).join('\n')}\n\n关键判断：\n${b.judg.map((j,i)=>`${i+1}. ${strip(j.h)}`).join('\n')}\n\n| 指标 | A | B | 变化 |\n|---|---|---|---|\n${t}`;
+}
+// ---- 各章节：返回 {tone, title, body, md} ----
+function secLoop(R,c){
+  if(!R.hasB)return {tone:'neu',title:'没有对比期，无法回看上期动作',body:'<p class="rd-p">调整顶部 B 期后会自动回看。</p>',md:'没有对比期，无法回看上期动作。'};
+  const P=c.prev;if(!P.length)return {tone:'neu',title:'上期没有需要回看的调价或否定',body:'<p class="rd-p">B 期没有达到调价或否定条件的对象。</p>',md:'上期没有需要回看的调价或否定。'};
+  const G=k=>P.filter(x=>x.res[0]===k),g=G('good'),n=G('neu'),w=G('warn'),b=G('bad');
+  const seg=[[g,'见效','var(--good)'],[n,'持平','var(--b)'],[w,'需核实','var(--warn)'],[b,'变差','var(--bad)']].filter(x=>x[0].length);
+  const ML={acos:'ACOS',sales:'销售额',spend:'花费'},f=(m,v)=>v==null?(m==='acos'?'无销售':'—'):fvt(m,v),top=P.slice(0,8);
+  const pts=[];
+  if(b.length)pts.push(['bad',`${b.length} 个对象变差：本期先复查原因，不要继续同方向加码。`]);
+  if(w.length)pts.push(['warn',`${w.length} 个否定后仍有花费：先确认后台已执行；已执行的，说明还有相近搜索词，改用否定词组。`]);
+  if(g.length)pts.push(['good',`${g.length} 个动作见效，说明当前规则适合这个产品，可以继续沿用。`]);
+  return {tone:b.length+w.length>g.length?'warn':'good',
+    title:`上期 ${P.length} 个动作：<em class="up">${g.length} 个见效</em>${b.length?`，<em>${b.length} 个变差</em>`:''}${w.length?`，${w.length} 个否定后仍有花费`:''}`,
+    body:`<div class="rd-stack" role="img" aria-label="${seg.map(s=>s[1]+' '+s[0].length+' 个').join('，')}">${seg.map(s=>`<i style="flex:${s[0].length};background:${s[2]}"></i>`).join('')}</div>
+      <div class="rd-legend">${seg.map(s=>`<span><i style="background:${s[2]}"></i>${s[1]} <b>${s[0].length}</b></span>`).join('')}</div>
+      <div class="scx"><table class="rd-tb"><thead><tr><th>动作</th><th>对象</th><th class="num">B → A</th><th>结果</th></tr></thead><tbody>
+      ${top.map(x=>`<tr><td><span class="rd-act">${x.act}${x.d?` <small>${x.d}</small>`:''}</span></td><td class="rd-obj"><b title="${esc(x.obj)}">${esc(x.obj)}</b><small title="${esc(x.ctx)}">${esc(x.ctx)}</small></td><td class="num"><span class="muted">${x.per&&x.m!=='acos'?'日均':''}${ML[x.m]} ${f(x.m,x.bv)}</span> → ${f(x.m,x.av)}</td><td><span class="rs ${x.res[0]}">${x.res[1]}</span></td></tr>`).join('')}
+      </tbody></table></div>${P.length>top.length?`<p class="hint2">另有 ${P.length-top.length} 个动作，见“周期优化 · 准备与回看”。</p>`:''}
+      ${ptsHTML(pts)}<p class="hint2">降价看 ACOS 是否下降；提价看销售变化是否跑赢整体（剔除全账户共同波动）；否定看是否还有花费。原型按 B 期数据推算上期动作；正式版读取上期“确认导出”保存的动作日志，并标出是否已在后台执行。</p>`,
+    md:`| 动作 | 对象 | B → A | 结果 |\n|---|---|---|---|\n${top.map(x=>`| ${x.act}${x.d?' '+x.d:''} | ${x.obj}（${x.ctx}） | ${x.per&&x.m!=='acos'?'日均':''}${ML[x.m]} ${f(x.m,x.bv)} → ${f(x.m,x.av)} | ${x.res[1]} |`).join('\n')}\n\n${ptsMd(pts)}`};
+}
+function secWhy(R,c){
+  const d=c.dS,dA=c.dA;
+  if(!d)return {tone:'neu',title:R.hasB?'有因素为 0（如无订单），无法拆解销售额':'没有对比期，无法拆解变化',body:'',md:''};
+  const sc=d.tA/d.tB-1,m=c.mainS,u=d.per?'/天':'';
+  const pts=d.steps.filter(s=>Math.abs(s.chg)>=.05).sort((a,b)=>Math.abs(b.v)-Math.abs(a.v)).map(s=>[s.v<0?'bad':'good',`<b>${s.l} ${facV(s.l,s.b)} → ${facV(s.l,s.a)}</b>（${pcs(s.chg)}，影响 ${fmtD(d,s.v,true)}${u}）${s.v<0&&DRV[s.l]?'：'+DRV[s.l]+'。':'。'}`]);
+  const st=d.steps.filter(s=>Math.abs(s.chg)<.05).map(s=>s.l);
+  if(st.length)pts.push(['neu',`${st.join('、')} 变化不到 5%，${st.includes('曝光')&&st.includes('CTR')?'流量端稳定，问题不在拿量。':'不是这次变化的原因。'}`]);
+  if(dA)pts.push([dA.tA>dA.tB?'warn':'good',`ACOS ${pct(dA.tB)} → ${pct(dA.tA)}，主要由 ${c.mainA.l} ${pcs(c.mainA.chg)} 推动。`]);
+  return {tone:sc<-.1?'bad':sc<0?'warn':'good',
+    title:`销售额${c.dayW}${sc<0?'下降':'增长'} <em class="${sc>=0?'up':''}">${Math.abs(sc*100).toFixed(1)}%</em>，主要因为 ${m.l} 从 ${facV(m.l,m.b)} ${m.chg>0?'升':'降'}到 ${facV(m.l,m.a)}`,
+    body:`<figure class="rd-fig"><figcaption><b>销售额拆解</b><span>销售额 = 曝光 × CTR × CVR × 客单价${d.per?' · 按日均':''} · 绿色拉动，红色拖累</span></figcaption><div class="chart" data-chart="wf" data-m="sales" style="height:250px"></div></figure>
+      ${dA?`<figure class="rd-fig"><figcaption><b>ACOS ${pct(dA.tB)} → ${pct(dA.tA)}</b><span>ACOS = CPC ÷ (CVR × 客单价)</span></figcaption><div class="fxrow">${fxChips(dA)}</div></figure>`:''}
+      ${ptsHTML(pts)}<button class="rd-go" data-act="revTab" data-v="ab">在复盘分析中查看花费与 ACOS 拆解${ic('arrow-right')}</button>`,
+    md:`| 因素 | B | A | 变化 | 影响 |\n|---|---|---|---|---|\n${d.steps.map(s=>`| ${s.l} | ${facV(s.l,s.b)} | ${facV(s.l,s.a)} | ${pcs(s.chg)} | ${fmtD(d,s.v,true)}${u} |`).join('\n')}\n\n${ptsMd(pts)}`};
+}
+function secTrend(R,c){
+  const T=c.T,B=c.rv.blocks,ac=c.wkv('acos'),sl=c.wkv('sales'),sp=c.wkv('spend'),n=sl.length;
+  const au=streak(ac,1),ad=streak(ac,-1),su=streak(sl,1),sd=streak(sl,-1);
+  const last=sl[n-1],m6=avg(sl.slice(Math.max(0,n-7),n-1)),dev=last!=null&&m6?last/m6-1:null,la=ac[n-1],a6=avg(ac.slice(Math.max(0,n-7),n-1));
+  let tone='neu',title='近 12 周走势平稳，本周变化在正常波动范围内';
+  if(au>=2){tone=la>T.acos?'bad':'warn';title=`ACOS 已连续 ${au} 周上升，<em>是趋势而不是单周波动</em>`}
+  else if(sd>=2){tone='bad';title=`日均销售额已连续 ${sd} 周下滑，<em>是趋势而不是单周波动</em>`}
+  else if(su>=2){tone='good';title=`日均销售额连续 ${su} 周增长`}
+  else if(ad>=2){tone='good';title=`ACOS 连续 ${ad} 周下降`}
+  else if(dev!=null&&Math.abs(dev)>=.15){tone='warn';title=`本周日均销售额${dev<0?'低于':'高于'}前 6 周均值 ${Math.abs(dev*100).toFixed(0)}%，前几周平稳，先按单周波动处理`}
+  const pts=[];
+  if(dev!=null)pts.push([dev<-.1?'warn':'neu',`前 6 周日均销售额 ${money0(m6)}，本周 ${money0(last)}（${pcs(dev)}）。`]);
+  if(la!=null&&a6!=null)pts.push([la>T.acos?'bad':'neu',`本周 ACOS ${pct(la)}，前 6 周均值 ${pct(a6)}，目标 ${pct(T.acos)}。`]);
+  pts.push(['neu','连续 2 周以上同方向变化才按趋势处理；单周异常先排除缺日、归因未补全、促销与断货等外部因素。']);
+  const inc=B.filter(b=>b.n<7).length;
+  const card=(k,l,v)=>`<div class="rd-tr"><div class="rd-trh"><span>${l}</span><b>${v[n-1]==null?'—':k==='acos'?pct(v[n-1]):money0(v[n-1])}</b></div><div class="chart" data-chart="rwk" data-k="${k}" style="height:118px"></div></div>`;
+  return {tone,title,
+    body:`<div class="rd-trs">${card('spend','日均花费',sp)}${card('sales','日均销售额',sl)}${card('acos','ACOS',ac)}</div>
+      <p class="hint2" style="margin:8px 0 0">近 12 周，按 A 期结束日倒推的 7 天区间；实心点为 A 期所在周，空心点为 B 期所在周${inc?`；${inc} 周有缺日，按有数据的天数取日均`:''}；ACOS 虚线为目标 ${pct(T.acos)}。</p>${ptsHTML(pts)}`,
+    md:`| 周 | 日均花费 | 日均销售额 | ACOS |\n|---|---|---|---|\n${B.map((b,i)=>`| ${md(ds(b.s))}–${md(ds(b.e))}${b.inA?'（A）':b.inB?'（B）':''} | ${sp[i]==null?'—':money0(sp[i])} | ${sl[i]==null?'—':money0(sl[i])} | ${ac[i]==null?'—':pct(ac[i])} |`).join('\n')}\n\n${ptsMd(pts)}`};
+}
+function secCamp(R,c){
+  if(!R.hasB)return {tone:'neu',title:'没有对比期，无法比较活动变化',body:'',md:''};
+  const C=c.camps,tot=C.reduce((a,x)=>a+x.dS,0),neg=tot<0;
+  const side=C.filter(x=>neg?x.dS<0:x.dS>0).sort((a,b)=>Math.abs(b.dS)-Math.abs(a.dS)),ss=side.reduce((a,x)=>a+x.dS,0);
+  let k=0,acc=0;while(k<side.length&&k<3&&acc/ss<.6){acc+=side[k].dS;k++}
+  const lead=side.slice(0,Math.max(1,k)),sh=ss?lead.reduce((a,x)=>a+x.dS,0)/ss:0;
+  const L=[...C].sort((a,b)=>Math.abs(b.dS)-Math.abs(a.dS)).slice(0,8),mx=Math.max(...L.map(x=>Math.abs(x.dS)),1e-9);
+  const pts=[];
+  C.filter(x=>x.t[0]==='bad'||x.t[0]==='warn').slice(0,3).forEach(x=>pts.push([x.t[0],`<b>${esc(x.name)}</b>：${x.t[1]}，最近一周 ACOS ${fvt('acos',x.w[x.w.length-1].acos)}。`,`<button class="rd-go in" data-act="cycCamp" data-v="${esc(x.name)}" data-go="1">去调价${ic('arrow-right')}</button>`]));
+  const tA=C.reduce((a,x)=>a+x.A.spend,0),tS=C.reduce((a,x)=>a+x.A.sales,0);
+  C.filter(x=>tA&&tS&&x.A.spend/tA>=.1&&(x.A.sales/tS)/(x.A.spend/tA)<.8).slice(0,2).forEach(x=>pts.push(['warn',`<b>${esc(x.name)}</b> 花费占比 ${p0(x.A.spend/tA)}，销售占比只有 ${p0(x.A.sales/tS)}，预算再分配时优先削减。`]));
+  const sc=c.vchg('sales')||0;
+  return {tone:neg?(sc<=-.1?'bad':'warn'):'good',
+    title:side.length?`${neg?'下滑':'增长'}集中在 ${lead.length>1?lead.length+' 个活动：':''}${lead.map(x=>esc(x.name)).join('、')}，占${neg?'下滑':'增长'}活动合计的 ${Math.round(sh*100)}%`:'各活动销售额变化不大',
+    body:`<div class="rd-crs"><div class="rd-cr h"><span>广告活动 · 趋势</span><span>销售额${c.dayW}变化（A − B）</span><span class="v">变化</span><span class="ac">ACOS B → A</span></div>
+      ${L.map(x=>`<div class="rd-cr"><span class="nm"><b title="${esc(x.name)}">${esc(x.name)}</b><small title="${x.t[1]}"><i class="rd-dot ${x.t[0]}"></i>${x.t[1]}</small></span><span class="rd-dv" title="销售额${c.dayW} B ${money0(x.B.sales*c.fb)} → A ${money0(x.A.sales*c.fa)}"><i class="${x.dS<0?'n':'p'}" style="width:${(Math.abs(x.dS)/mx*50).toFixed(1)}%"></i></span><b class="v ${x.dS<0?'neg':'pos'}">${sgn(x.dS)}</b><span class="ac">${fvt('acos',x.B.acos)} → <span class="${acosCls(x.A.acos)}">${fvt('acos',x.A.acos)}</span></span></div>`).join('')}</div>
+      ${ptsHTML(pts)}<button class="rd-go" data-act="revTab" data-v="camp">在复盘分析中查看活动 × 周${ic('arrow-right')}</button>`,
+    md:`| 广告活动 | 销售额${c.dayW}变化 | ACOS B → A | 趋势 |\n|---|---|---|---|\n${L.map(x=>`| ${x.name} | ${sgn(x.dS)} | ${fvt('acos',x.B.acos)} → ${fvt('acos',x.A.acos)} | ${x.t[1]} |`).join('\n')}\n\n${ptsMd(pts)}`};
+}
+function secKw(R,c){
+  if(!R.hasB)return {tone:'neu',title:'没有对比期，无法判断关键词变动',body:'',md:''};
+  const M=c.mvs,cnt=t=>M.filter(x=>x.mv===t),sm=t=>cnt(t).reduce((a,x)=>a+x.d,0),N=S.report.type==='kw'?8:5;
+  const up=M.filter(x=>x.d>0).sort((a,b)=>b.d-a.d).slice(0,N),dn=M.filter(x=>x.d<0).sort((a,b)=>a.d-b.d).slice(0,N),neg=M.reduce((a,x)=>a+x.d,0)<0;
+  const li=x=>`<li><button class="lnk" data-act="openKw" data-key="${esc(x.k.key)}" title="${esc(x.k.key)}">${esc(x.k.key)}</button><span class="mv ${x.mv}">${MVL[x.mv][0]}</span><b class="${x.d<0?'neg':'pos'}">${sgn(x.d)}</b><small>${esc(x.cause)}</small></li>`;
+  const pts=[[c.oA<c.oB?'warn':'good',`出单词 ${c.oB} → ${c.oA} 个；前 5 个词的销售占比 ${p0(c.s5B)} → ${p0(c.s5A)}。${c.s5A-c.s5B>.05&&c.oA<c.oB?'销售越来越依赖头部词，竞价波动的风险变大，需要靠收割补充新的出单词。':''}`]];
+  return {tone:neg?'warn':'good',
+    title:neg?`消失 ${cnt('lost').length} 个、下滑 ${cnt('down').length} 个关键词，合计 <em>${sgn(sm('lost')+sm('down'))}${c.dayU}</em>；新增与增长补回 ${sgn(sm('new')+sm('up'))}${c.dayU}`:`新增 ${cnt('new').length} 个、增长 ${cnt('up').length} 个关键词，合计 <em class="up">${sgn(sm('new')+sm('up'))}${c.dayU}</em>`,
+    body:`<div class="rd-mv">${MVORD.map(([t])=>`<button class="rd-mvc" data-act="kwMvGo" data-v="${t}" title="在关键词决策中查看${MVL[t][0]}的词"><span><i style="background:${MVL[t][1]}"></i>${MVL[t][0]}</span><b>${cnt(t).length}</b><small>${t==='flat'?'±20% 以内':sgn(sm(t))+c.dayU}</small></button>`).join('')}</div>
+      <div class="rd-2"><div class="rd-box"><h4>拉动最大</h4><ul class="rd-kl">${up.map(li).join('')||'<li class="muted">没有增长的词</li>'}</ul></div><div class="rd-box"><h4>拖累最大</h4><ul class="rd-kl">${dn.map(li).join('')||'<li class="muted">没有下滑的词</li>'}</ul></div></div>
+      <p class="hint2" style="margin:8px 0 0">按销售额${c.dayW}变化排序；增长 / 下滑 = 变化超过 ±20% 且差额 ≥ ${cur()}20；灰字为该词销售额拆解中贡献最大的因素。点卡片在关键词决策中处理。</p>${ptsHTML(pts)}`,
+    md:`| 变动 | 词数 | 销售额${c.dayW}合计 |\n|---|---|---|\n${MVORD.map(([t])=>`| ${MVL[t][0]} | ${cnt(t).length} | ${t==='flat'?'—':sgn(sm(t))} |`).join('\n')}\n\n拉动最大：${up.map(x=>`\`${x.k.key}\` ${sgn(x.d)}（${x.cause}）`).join('、')||'无'}\n\n拖累最大：${dn.map(x=>`\`${x.k.key}\` ${sgn(x.d)}（${x.cause}）`).join('、')||'无'}\n\n${ptsMd(pts)}`};
+}
+function secTerm(R,c){
+  if(S.shown.source!=='term')return {tone:'neu',title:'收割与否定需要搜索词报表',body:'<p class="rd-p">切换到搜索词报表后生成。</p>',md:'需要搜索词报表。'};
+  const H=c.cd.harvest,N=c.cd.neg,waste=N.reduce((a,x)=>a+x.waste,0),T=c.T,hb=H.slice(0,8),nb=N.slice(0,8);
+  const pts=[];const nBr=N.filter(x=>x.brand).length;
+  if(nBr)pts.push(['warn',`${nBr} 个是品牌词：不直接否定，先检查落地页与竞价。`]);
+  if(H.length)pts.push(['good',`收割后在来源活动加否定精准，让流量只走精准投放，避免自己和自己竞价。`]);
+  return {tone:waste>0?'warn':'good',
+    title:`${H.length} 个搜索词可收割到精准；${N.length} 个无效搜索词每周约 <em>${money0(waste)}</em> 没有回报`,
+    body:`<div class="rd-2"><div class="rd-box"><h4>${ic('sprout')}可收割 · ${H.length}</h4><div class="scx"><table class="rd-tb tight"><thead><tr><th>搜索词</th><th class="num">订单</th><th class="num">ACOS</th><th class="num">建议出价</th></tr></thead><tbody>${hb.map(h=>`<tr><td class="rd-obj"><button class="lnk" data-act="openKw" data-key="${esc(h.key)}" title="${esc(h.key)}">${esc(h.key)}</button></td><td class="num">${h.a.orders}</td><td class="num">${pct(h.a.acos)}</td><td class="num">${cur()}${h.bid.toFixed(2)}</td></tr>`).join('')||'<tr><td colspan="4" class="muted">没有达到收割条件的词</td></tr>'}</tbody></table></div></div>
+      <div class="rd-box"><h4>${ic('ban')}应否定 · ${N.length}</h4><div class="scx"><table class="rd-tb tight"><thead><tr><th>搜索词</th><th class="num">点击</th><th class="num">花费</th></tr></thead><tbody>${nb.map(x=>`<tr><td class="rd-obj"><button class="lnk" data-act="openKw" data-key="${esc(x.key)}" title="${esc(x.key)}">${esc(x.key)}</button><small title="${esc(x.r.camp)}">${esc(x.r.camp)}</small></td><td class="num">${x.a.clicks}</td><td class="num">${fvt('spend',x.a.spend)}</td></tr>`).join('')||'<tr><td colspan="3" class="muted">没有无效搜索词</td></tr>'}</tbody></table></div></div></div>
+      <p class="hint2" style="margin:8px 0 0">收割：订单 ≥ ${c.Ru.harvestMin} 且 ACOS ≤ ${pct(T.acos)}，尚无精准投放。否定：点击 ≥ ${T.noConv} 或花费 ≥ 目标 CPA 的 1.5 倍，且没有订单。</p>${ptsHTML(pts)}
+      <button class="rd-go" data-act="cycStep" data-v="harvest">在周期优化中确认并导出${ic('arrow-right')}</button>`,
+    md:`可收割：${hb.map(h=>`\`${h.key}\`（${h.a.orders} 单，ACOS ${pct(h.a.acos)}，建议出价 ${cur()}${h.bid.toFixed(2)}）`).join('、')||'无'}\n\n应否定：${nb.map(x=>`\`${x.key}\`（${x.a.clicks} 次点击，${fvt('spend',x.a.spend)}）`).join('、')||'无'}\n\n${ptsMd(pts)}`};
+}
+function wasteSpk(ws){
+  const W=240,H=44,n=ws.length,bw=W/n,mx=Math.max(.22,...ws.map(x=>(x.p||0)*1.25)),Y=v=>H-v/mx*H;
+  return `<svg class="rd-wsp" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="近 ${n} 周无效花费率：${ws.map(x=>x.p==null?'—':(x.p*100).toFixed(0)+'%').join('、')}"><rect x="0" y="${Y(.2)}" width="${W}" height="${Y(.1)-Y(.2)}" style="fill:var(--sunken)"/>${ws.map((x,i)=>{const h=Math.max(1,H-Y(x.p||0));return `<rect x="${(i*bw+bw*.18).toFixed(1)}" y="${(H-h).toFixed(1)}" width="${(bw*.64).toFixed(1)}" height="${h.toFixed(1)}" rx="1.5" style="fill:${i===n-1?'var(--a)':'var(--b)'}"><title>截至 ${md(ds(x.b.e))}：${x.p==null?'—':(x.p*100).toFixed(1)+'%'}</title></rect>`}).join('')}</svg>`;
+}
+function secStruct(R,c){
+  const T=c.T,ms=c.ms,tA=ms.reduce((a,x)=>a+x.A.spend,0),tB=ms.reduce((a,x)=>a+x.B.spend,0),p=c.wl.p,p4=c.w4.p,F=[];
+  if(p!=null&&p>.2)F.push(['bad',`无效花费率 ${(p*100).toFixed(1)}%，否定没有跟上`,3]);
+  else if(p!=null&&p4!=null&&p-p4>=.03)F.push(['warn',`无效花费率 4 周内从 ${(p4*100).toFixed(1)}% 升到 ${(p*100).toFixed(1)}%`,2.5]);
+  if(c.NB.acos!=null&&R.A.acos!=null&&c.NB.acos>T.acos&&c.NB.acos>R.A.acos*1.1)F.push(['warn',`非品牌 ACOS ${pct(c.NB.acos)}，整体 ${pct(R.A.acos)} 被品牌词拉低`,2]);
+  if(c.can.length>=3)F.push(['warn',`${c.can.length} 个搜索词在多个活动里同时花钱，自己抬高 CPC`,1.5]);
+  const ex=ms.find(x=>x.m==='exact'),eA=ex&&tA?ex.A.spend/tA:0,eB=ex&&tB?ex.B.spend/tB:0;
+  if(ex&&R.hasB&&Math.abs(eA-eB)>=.05)F.push([eA>eB?'good':'warn',`精准投放花费占比 ${p0(eB)} → ${p0(eA)}${eA>eB?'，预算在向核心词集中':'，预算在流向拓词'}`,1]);
+  F.sort((a,b)=>b[2]-a[2]);
+  const W=c.wd.W,names=['周一','周二','周三','周四','周五','周六','周日'],cv=W.map((w,i)=>({i,v:w.cvr})).filter(x=>x.v!=null).sort((a,b)=>b.v-a.v);
+  const spread=cv.length>1&&c.wd.tot.cvr?(cv[0].v-cv[cv.length-1].v)/c.wd.tot.cvr:0;
+  const mx=Math.max(T.acos*1.5,...[R.A.acos,c.NB.acos,c.BR.acos].filter(v=>v!=null))*1.05;
+  const hb=(l,v,b)=>`<div class="rd-hb"><span>${l}</span><span class="bp"><i class="${v!=null&&v>T.acos?'hi':''}" style="width:${v==null?0:(v/mx*100).toFixed(1)}%"></i><em style="left:${(T.acos/mx*100).toFixed(1)}%" title="目标 ${pct(T.acos)}"></em></span><b>${v==null?'—':pct(v)}</b><small>${b==null?'':'B '+pct(b)}</small></div>`;
+  const mix=(k,t)=>`<div class="rd-mix"><span>${k}</span><div class="bar">${ms.filter(x=>x[k].spend>0).map(x=>`<i style="flex:${x[k].spend};background:${x.c}" title="${x.l} ${p0(t?x[k].spend/t:0)}"></i>`).join('')}</div></div>`;
+  const pts=F.slice(1,4).map(f=>[f[0],f[1]+'。']);
+  return {tone:F.length?F[0][0]:'good',
+    title:F.length?F[0][1]:`结构健康：无效花费率 ${p==null?'—':(p*100).toFixed(1)+'%'}，非品牌 ACOS ${pct(c.NB.acos)}`,
+    body:`<div class="rd-cards">
+      <div class="rd-card"><h4>匹配方式 · 花费占比</h4>${R.hasB?mix('B',tB):''}${mix('A',tA)}<div class="rd-legend">${ms.map(x=>`<span><i style="background:${x.c}"></i>${x.l} <b>${p0(tA?x.A.spend/tA:0)}</b></span>`).join('')}</div><small class="hint2">拓词（自动 / 广泛）→ 控制（词组）→ 放量（精准）</small></div>
+      <div class="rd-card"><h4>品牌 / 非品牌 ACOS</h4>${hb('整体',R.A.acos,R.hasB?R.B.acos:null)}${hb('非品牌',c.NB.acos,R.hasB?c.NBB.acos:null)}${hb('品牌词',c.BR.acos,null)}<small class="hint2">虚线为目标 ${pct(T.acos)}；品牌词花费占比 ${p0(R.A.spend?c.BR.spend/R.A.spend:0)}，非品牌才是拉新效率。</small></div>
+      <div class="rd-card"><h4>无效花费率 · 近 14 天滚动</h4><div class="rd-big"><b>${p==null?'—':(p*100).toFixed(1)+'%'}</b><span>4 周前 ${p4==null?'—':(p4*100).toFixed(1)+'%'} · 约 ${money0(c.wl.w)} / 14 天</span></div>${wasteSpk(c.ws)}<small class="hint2">灰色带为 10%–20%，部分代理商作为拓词期参考，并非行业标准。</small></div>
+      <div class="rd-card"><h4>其他信号</h4><ul class="rd-mini"><li><span>同词多活动</span><b>${S.shown.source==='term'?`${c.can.length} 个词 · ${money0(c.canSp)}`:'需要搜索词报表'}</b></li><li><span>星期规律</span><b>${cv.length<2?'—':spread<.1?'差异不到 10%，不按星期调整':`${names[cv[0].i]} CVR 最高，${names[cv[cv.length-1].i]}最低`}</b></li><li><span>精准花费占比</span><b>${R.hasB?`${p0(eB)} → ${p0(eA)}`:p0(eA)}</b></li></ul></div>
+    </div>${ptsHTML(pts)}<button class="rd-go" data-act="revTab" data-v="struct">在复盘分析中查看结构与效率${ic('arrow-right')}</button>`,
+    md:`- 匹配方式花费占比（A）：${ms.map(x=>`${x.l} ${p0(tA?x.A.spend/tA:0)}`).join('、')}\n- ACOS：整体 ${fvt('acos',R.A.acos)}，非品牌 ${fvt('acos',c.NB.acos)}，品牌词 ${fvt('acos',c.BR.acos)}\n- 无效花费率：${p==null?'—':(p*100).toFixed(1)+'%'}（4 周前 ${p4==null?'—':(p4*100).toFixed(1)+'%'}）\n- 同词多活动：${c.can.length} 个词，${money0(c.canSp)}\n${ptsMd(pts)}`};
+}
+function secRO(R,c){
+  const T=c.T,cd=c.cd,K=[],O=[],m=c.mainS;
+  if(cd.neg.length)K.push({t:`${cd.neg.length} 个搜索词高点击无订单`,e:`点击 ≥ ${T.noConv} 或花费 ≥ ${cur()}${(c.Ru.cpa*1.5).toFixed(0)}，没有订单`,v:cd.neg.reduce((a,x)=>a+x.waste,0),u:'无效花费',go:['cycStep','neg']});
+  const dn=cd.bids.filter(b=>b.kind==='down'||b.kind==='down0'||b.kind==='pause');
+  if(dn.length)K.push({t:`${dn.length} 个投放 ACOS 超标或有点击无单`,e:'按目标 ACOS 降价；无单的阶梯降价或暂停',v:dn.reduce((a,x)=>a+x.save,0),u:'可节省',go:['cycStep','bid']});
+  if(m&&m.v<0&&Math.abs(m.chg)>=.05)K.push({t:`${m.l} 下降 ${Math.abs(m.chg*100).toFixed(0)}%`,e:DRV[m.l]||'',v:Math.abs(c.wk(m.v)),u:'销售影响',go:['revTab','ab']});
+  const bc=c.camps.filter(x=>x.t[0]==='bad');
+  if(bc.length)K.push({t:`${bc.length} 个活动 ACOS 走坏`,e:bc.slice(0,2).map(x=>x.name).join('、')+(bc.length>2?' 等':''),v:bc.reduce((a,x)=>a+Math.max(0,x.A.spend-x.A.sales*T.acos),0)*7/c.nA,u:'超目标花费',go:['revTab','camp']});
+  if(R.hasB&&c.s5A-c.s5B>.05&&c.oA<c.oB)K.push({t:'销售更依赖头部词',e:`前 5 词占比 ${p0(c.s5B)} → ${p0(c.s5A)}，出单词 ${c.oB} → ${c.oA}`,v:null,u:'',go:['revTab','kw']});
+  const H=cd.harvest;if(H.length)O.push({t:`${H.length} 个搜索词可收割到精准`,e:`合计 ${H.reduce((a,x)=>a+x.a.orders,0)} 单，ACOS 在目标内`,v:H.reduce((a,x)=>a+x.a.sales,0)*cd.wk,u:'相关销售',go:['cycStep','harvest']});
+  const up=cd.bids.filter(b=>b.kind==='up');if(up.length)O.push({t:`${up.length} 个投放可提价放量`,e:`ACOS ≤ 目标 70%，建议 +${Math.round(c.Ru.up*100)}%`,v:up.reduce((a,x)=>a+x.a.sales,0)*cd.wk,u:'当前销售',go:['cycStep','bid']});
+  const nw=c.mvs.filter(x=>x.mv==='new');if(nw.length)O.push({t:`${nw.length} 个新增出单词`,e:'确认是否已有精准投放，表现稳定后收割',v:Math.abs(c.wk(nw.reduce((a,x)=>a+x.d,0))),u:'新增销售',go:['kwMvGo','new']});
+  const gc=c.camps.filter(x=>x.t[0]==='good');if(gc.length)O.push({t:`${gc.length} 个活动走势向好`,e:gc.slice(0,2).map(x=>x.name).join('、')+'：检查预算是否提前用完',v:null,u:'',go:['revTab','camp']});
+  const by=(a,b)=>(b.v??-1)-(a.v??-1);K.sort(by);O.sort(by);
+  const stop=K.filter(x=>x.u==='无效花费'||x.u==='可节省').reduce((a,x)=>a+x.v,0);
+  const li=x=>`<li><div><b>${x.t}</b><small>${esc(x.e)}</small></div><span class="v">${x.v==null?'':`<b>${money0(x.v)}</b><small>${x.u}/周</small>`}</span>${x.go?`<button class="rd-ic" data-act="${x.go[0]}" data-v="${x.go[1]}" aria-label="去处理：${esc(x.t)}">${ic('arrow-right')}</button>`:'<span></span>'}</li>`;
+  return {tone:K.length?(stop>0?'warn':'neu'):'good',
+    title:`${K.length} 项风险、${O.length} 项机会${stop>0?`；止损空间约 ${money0(stop)}/周`:''}`,
+    body:`<div class="rd-2"><div class="rd-box rd-ro risk"><h4>${ic('shield-alert')}风险</h4><ul>${K.map(li).join('')||'<li class="muted">本期没有明显风险</li>'}</ul></div><div class="rd-box rd-ro opp"><h4>${ic('rocket')}机会</h4><ul>${O.map(li).join('')||'<li class="muted">本期没有明显机会</li>'}</ul></div></div>
+      <p class="hint2" style="margin:8px 0 0">按每周影响排序；金额为按本期数据的粗估，用于排优先级，不是承诺效果。</p>`,
+    md:`风险：\n${K.map(x=>`- ${x.t}：${x.e}${x.v==null?'':`（${x.u}约 ${money0(x.v)}/周）`}`).join('\n')||'- 无'}\n\n机会：\n${O.map(x=>`- ${x.t}：${x.e}${x.v==null?'':`（${x.u}约 ${money0(x.v)}/周）`}`).join('\n')||'- 无'}`};
+}
+function secPlan(R,c,P){
+  if(!P.length)return {tone:'good',title:'本期没有需要立即执行的动作',body:'<p class="rd-p">维持当前出价与预算，下次复盘继续观察。</p>',md:'本期没有需要立即执行的动作。'};
+  const im=cycImpact(c.cd),save=im.negSave+im.bidSave,due=md(addD(S.shown.A.e,7)),PL={hi:'高',mid:'中',lo:'低'};
+  return {tone:P.some(p=>p.pri==='hi')?'warn':'good',
+    title:`下周 ${P.length} 项动作${save>0?`，预计每周节省约 <em class="up">${money0(save)}</em>`:''}${im.upCost>0?`，放量最多增加花费 ${money0(im.upCost)}`:''}`,
+    body:`<div class="scx"><table class="rd-tb rd-plan"><thead><tr><th>优先级</th><th>动作</th><th>预计影响</th><th>负责人</th><th>复查</th><th><span class="sr">去执行</span></th></tr></thead><tbody>
+      ${P.map(p=>`<tr><td><span class="rd-pri ${p.pri}" title="${PL[p.pri]}优先">${PL[p.pri]}</span></td><td><b>${p.a}</b><small title="${esc(p.o)}">${esc(p.o)}</small></td><td class="tn">${p.v}</td><td><input id="own-${p.id}" class="inp rd-own" data-in="repOwn" data-k="${p.id}" value="${esc(S.report.own[p.id]??'运营')}" aria-label="${p.a}的负责人"></td><td class="tn">${due}</td><td>${p.go?`<button class="rd-ic" data-act="${p.go[0]}" data-v="${p.go[1]}" aria-label="去执行：${p.a}">${ic('arrow-right')}</button>`:''}</td></tr>`).join('')}
+      </tbody></table></div>
+      <p class="hint2" style="margin:8px 0 0">数量与金额来自“周期优化”中当前勾选的动作${S.cyc.completed?`（本周期已于 ${S.cyc.completed} 完成导出）`:'，尚未确认导出'}；复查日 = A 期结束后 7 天，下次复盘会在“上期动作复盘”中自动回看。</p>
+      <button class="rd-go" data-act="cycStep" data-v="prep">在周期优化中执行${ic('arrow-right')}</button>`,
+    md:`| 优先级 | 动作 | 对象 | 预计影响 | 负责人 | 复查 |\n|---|---|---|---|---|---|\n${P.map(p=>`| ${PL[p.pri]} | ${p.a} | ${p.o} | ${p.v} | ${S.report.own[p.id]??'运营'} | ${due} |`).join('\n')}`};
+}
+function secLearn(R,c){
+  const P=c.prev,Ru=c.Ru,K=[],F=[],by=(a,r)=>P.filter(x=>x.act===a&&x.res[0]===r).length,m=c.mainS,p=c.wl.p,p4=c.w4.p;
+  if(by('降价','good'))K.push(`按“目标 ACOS ÷ 实际 ACOS”降价：上期 ${by('降价','good')} 个对象 ACOS 改善，继续沿用。`);
+  if(by('提价','good'))K.push(`提价 ${Math.round(Ru.up*100)}%：${by('提价','good')} 个对象销售跑赢整体，ACOS 仍在目标内。`);
+  if(by('否定精准','good'))K.push(`否定精准：${by('否定精准','good')} 个无效搜索词已止损。`);
+  if(p!=null&&p<=.12&&!(p4!=null&&p-p4>=.03))K.push(`无效花费率保持在 ${(p*100).toFixed(1)}%，每周否定的节奏合适。`);
+  const ms=c.ms,ex=ms.find(x=>x.m==='exact'),tA=ms.reduce((a,x)=>a+x.A.spend,0),tB=ms.reduce((a,x)=>a+x.B.spend,0);
+  if(ex&&R.hasB&&tA&&tB&&ex.A.spend/tA-ex.B.spend/tB>=.03)K.push(`精准投放花费占比升到 ${p0(ex.A.spend/tA)}，收割 → 精准的结构在起作用。`);
+  const upL=l=>P.filter(x=>x.act==='提价'&&x.res[1]===l).length;
+  if(upL('ACOS 超标')+upL('无销售'))F.push(`${upL('ACOS 超标')+upL('无销售')} 个提价对象 ACOS 超标或无销售：下次提价幅度降到 ${Math.max(5,Math.round(Ru.up*50))}%，或延长观察期。`);
+  if(upL('跑输整体'))F.push(`${upL('跑输整体')} 个提价对象销售跑输整体：提价没有换来流量，检查预算是否受限、排名是否被挤占。`);
+  if(by('降价','bad'))F.push(`${by('降价','bad')} 个降价对象仍然变差：可能不是出价问题，检查搜索词相关性或直接否定。`);
+  const nw=P.filter(x=>x.res[0]==='warn').length;if(nw)F.push(`${nw} 个否定后仍有花费：导出后在后台抽查执行情况，近似词改用否定词组。`);
+  if(p!=null&&p4!=null&&p-p4>=.03)F.push(`无效花费率 4 周内上升 ${((p-p4)*100).toFixed(1)}pt：否定频率要跟上拓词节奏。`);
+  if(R.hasB&&c.s5A-c.s5B>.05&&c.oA<c.oB)F.push('销售越来越依赖头部词：每周固定收割新词，补充出单词池。');
+  if(m&&m.v<0&&(m.l==='CVR'||m.l==='CTR')&&m.chg<=-.05)F.push(`${m.l} 下滑时先查非广告因素，确认后再调价，避免误降核心词出价。`);
+  const ul=(a,e)=>a.length?`<ul>${a.map(x=>`<li>${x}</li>`).join('')}</ul>`:`<p class="muted">${e}</p>`;
+  return {tone:F.length>K.length?'warn':'good',
+    title:`保持 ${K.length} 条做法，改进 ${F.length} 条`,
+    body:`<div class="rd-2"><div class="rd-box rd-sl good"><h4>${ic('circle-check')}保持</h4>${ul(K,'本期还没有被数据验证有效的做法。')}</div><div class="rd-box rd-sl warn"><h4>${ic('lightbulb')}改进</h4>${ul(F,'本期没有需要改进的做法。')}</div></div>
+      <p class="hint2" style="margin:8px 0 0">由上期动作结果和结构变化自动归纳；只有反复出现的规律才写进“分析规则”，单次现象记在下方补充里继续观察。</p>`,
+    md:`保持：\n${K.map(x=>'- '+x).join('\n')||'- 无'}\n\n改进：\n${F.map(x=>'- '+x).join('\n')||'- 无'}`};
+}
+function secAppx(R,c){
+  const sh=S.shown,Ru=c.Ru,T=c.T,lag=Ru.lag,miss=[...R.covA.miss,...R.covB.miss];
+  const dec=Object.entries(S.decisions).filter(([k])=>k.startsWith(S.projectId+'|'));
+  const items=[
+    ['数据范围',`A ${sh.A.s} 至 ${sh.A.e}（${R.covA.n}/${R.covA.days} 天）；B ${sh.B.s} 至 ${sh.B.e}（${R.covB.n}/${R.covB.days} 天）${miss.length?`；缺 ${miss.map(md).join('、')}，缺日不补零`:''}${c.per?'；天数不同，花费、销售额、订单按日均对比':''}。`],
+    ['归因滞后',`SP 广告按点击后 7 天归因。A 期最后 ${lag} 天（${md(addD(sh.A.e,1-lag))}–${md(sh.A.e)}）的订单可能仍在补入，ACOS 偏高、销售偏低；下次复盘会用补全后的数据回看。`],
+    ['计算口径','比率由汇总后的基础量重新计算，分母为 0 记为不可计算；拆解用对数平均（LMDI），各因素贡献之和等于总变化。'],
+    ['判断规则',`目标 ACOS ${pct(T.acos)}${Ru.newMode?'（新品模式已放宽）':''}，盈亏线 ${pct(Ru.be)}，目标 CPA ${cur()}${Ru.cpa}，最低样本 ${T.minC} 次点击，无转化阈值 ${T.noConv} 次点击。`],
+    ['未纳入','自然销售与 TACOS（需导入业务报告）、广告位、预算使用率、库存与价格变化；涉及这些因素的结论需运营确认。'],
+    ['人工判断',dec.length?`本轮记录了 ${dec.length} 条：已采纳 ${dec.filter(([,d])=>d.st==='adopt').length} 条，暂不处理 ${dec.filter(([,d])=>d.st!=='adopt').length} 条。`:'本轮还没有记录人工判断。']
+  ];
+  return {tone:'neu',title:`本报告基于${srcLabel(sh.source)}${c.per?'，A / B 天数不同，量类指标已按日均对比':''}`,
+    body:`<dl class="rd-dl">${items.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>`,
+    md:items.map(([k,v])=>`- **${k}**：${v}`).join('\n')+(dec.length?'\n\n'+decMd():'')};
+}
+// ---- 组装 ----
+function repBuild(R){
+  const c=repCtx(R),plan=repPlan(R,c),v=repVerdict(R,c,plan);
+  const B={loop:secLoop(R,c),why:secWhy(R,c),trend:secTrend(R,c),camp:secCamp(R,c),kw:secKw(R,c),term:secTerm(R,c),struct:secStruct(R,c),ro:secRO(R,c),plan:secPlan(R,c,plan),learn:secLearn(R,c),appx:secAppx(R,c)};
+  B.sum={tone:v.tone,title:v.h,goals:repGoals(R,c),judg:repJudg(R,c)};B.sum.md=sumMd(R,c,B.sum);
+  const on=RSECS.filter(secOn),num={};on.forEach((s,i)=>num[s.id]=String(i+1).padStart(2,'0'));
+  return {c,B,on,num};
+}
+function repTitle(){const sh=S.shown,t=S.report.type;return t==='cmp'?`${rLabel(sh.A)} 对比 ${rLabel(sh.B)}`:`W${isoW(sh.A.s)} ${t==='kw'?'关键词复盘':'广告周报'}`}
+function noteHTML(id){
+  const v=S.report.notes[noteKey(id)]||'';
+  if(!v&&S.report.edit!==id&&id!=='learn')return `<button class="rd-add" data-act="repNote" data-v="${id}">${ic('plus')}补充说明</button>`;
+  return `<div class="rd-note"><label for="rn-${id}">${ic('pencil')}${id==='learn'?'本期规律（运营填写）':'运营补充'}</label><textarea id="rn-${id}" class="inp" data-in="repNote" data-k="${id}" rows="2" placeholder="${NOTE_PH[id]||'补充背景、判断或下一步，复制和导出时一并带上'}">${esc(v)}</textarea></div>`;
+}
+function repDoc(R,X){
+  const {c,B,on,num}=X,sh=S.shown,rp=S.report,lag=c.Ru.lag,miss=[...R.covA.miss.map(d=>'A '+md(d)),...R.covB.miss.map(d=>'B '+md(d))];
+  const eb=s=>`<div class="rd-eb"><span class="rd-no">${num[s.id]}</span><span>${s.l}</span><span class="rd-st"><i class="rd-dot ${B[s.id].tone}"></i>${TONEL[B[s.id].tone]}</span></div>`;
+  const sum=b=>`<section class="rd-sec rd-sum" id="rs-sum" aria-labelledby="rh-sum">${eb(RSECS[0])}
+    <h2 id="rh-sum" class="rd-verdict">${b.title}</h2>
+    <div class="rd-goals">${b.goals.map(g=>`<div class="rd-goal ${g.st}"><span class="gl">${g.l}</span><b>${g.v}</b><span class="gs"><i class="rd-dot ${g.st}"></i>${g.s}</span><small title="${g.g}">${g.g}</small></div>`).join('')}</div>
+    ${b.judg.length?`<div class="rd-judg"><h3>关键判断</h3><ol>${b.judg.map(j=>`<li class="${j.tone}">${ic(TONE_IC[j.tone])}<span>${j.h}</span>${num[j.sec]?`<button class="rd-ref" data-act="repGo" data-v="${j.sec}">§${num[j.sec]} ${RSECS.find(s=>s.id===j.sec).l}</button>`:''}</li>`).join('')}</ol></div>`:''}
+    <h3 class="rd-kh">核心指标<small>A 期 · 对比 B${c.per?' · 量类指标按日均':''} · 小图为近 12 周，实心点为 A 期</small></h3>${repKpis(R,c)}${noteHTML('sum')}</section>`;
+  return `<article class="rdoc">
+    <header class="rd-cover"><div class="rd-pre">${esc(proj().name)} · ${RTYPES.find(t=>t[0]===rp.type)[1]}</div><h1>${repTitle()}</h1>
+      <div class="rd-meta"><span class="rd-chip"><span class="ab a">A</span>${sh.A.s} – ${sh.A.e}</span>${R.hasB?`<span class="rd-chip"><span class="ab b">B</span>${sh.B.s} – ${sh.B.e}</span>`:''}<span class="rd-chip">${srcLabel(sh.source)}</span>${miss.length?`<span class="rd-chip warn">${ic('calendar-x-2')}缺 ${miss.join('、')}</span>`:''}<span class="rd-chip warn" title="SP 广告按点击后 7 天归因，最近几天的订单还会补入">${ic('history')}最近 ${lag} 天归因未补全</span><span class="rd-chip">${rp.src==='ai'?'AI 生成':'规则生成'} · ${rp.genAt}</span><span class="rd-chip ${rp.ok?'good':''}">${rp.ok?ic('check')+'已确认':'草稿'}</span></div>
+    </header>
+    ${on.map(s=>s.id==='sum'?sum(B.sum):`<section class="rd-sec" id="rs-${s.id}" aria-labelledby="rh-${s.id}">${eb(s)}<h2 id="rh-${s.id}">${B[s.id].title}</h2>${B[s.id].body}${noteHTML(s.id)}</section>`).join('')}
+  </article>`;
+}
+function repToc(X){
+  const {B,num}=X;
+  return `<nav class="panel rtoc" aria-label="报告结构"><div class="panel-h"><h3>报告结构</h3></div><p class="rtoc-s">结论先行，按“目标 → 结果 → 原因 → 行动 → 沉淀”组织；勾选决定报告与导出包含哪些章节。</p>
+    ${RGROUPS.map(([g,l,d])=>`<div class="tg"><b>${l}</b><small>${d}</small></div>${RSECS.filter(s=>s.g===g).map(s=>{const o=secOn(s),t=B[s.id].tone;return `<div class="ti${o?'':' off'}"><input type="checkbox" class="pick" id="ts-${s.id}" data-act="repSec" data-v="${s.id}" ${o?'checked':''} ${s.fixed?'disabled':''} aria-label="在报告中包含：${s.l}"><button data-act="repGo" data-v="${s.id}" ${o?'':'disabled'}><span class="no">${o?num[s.id]:'—'}</span><span class="tl">${s.l}</span></button>${o?`<i class="rd-dot ${t}" title="${TONEL[t]}"></i>`:''}</div>`}).join('')}`).join('')}
+  </nav>`;
+}
+function reportMd(R){
+  const X=repBuild(R),sh=S.shown,rp=S.report;
+  const head=`# ${proj().name} ${repTitle()}\n> ${rp.src==='ai'?'AI 生成':'规则生成'} · ${srcLabel(sh.source)} · A ${sh.A.s} 至 ${sh.A.e}（${R.covA.n}/${R.covA.days} 天）对比 B ${sh.B.s} 至 ${sh.B.e}（${R.covB.n}/${R.covB.days} 天）· 生成于 ${rp.genAt} · ${rp.ok?'已确认':'草稿'}`;
+  return head+X.on.map(s=>{const b=X.B[s.id],n=S.report.notes[noteKey(s.id)];return `\n\n## ${X.num[s.id]} ${s.l}${s.id==='sum'?'':'：'+strip(b.title)}\n\n${b.md||''}${n?`\n\n> 运营补充：${n.replace(/\n+/g,' ')}`:''}`}).join('')+'\n';
+}
+const HIST=[{id:'r1',t:'W42 广告周报',type:'周报分析',a:'10/12–10/18',b:'10/05–10/11',src:'规则',d:'10-19 10:20'},{id:'r2',t:'Prime 大促前后对比',type:'周期对比',a:'10/06–10/12',b:'09/29–10/05',src:'规则',d:'10-13 15:02'},{id:'r3',t:'W41 关键词复盘',type:'关键词复盘',a:'10/05–10/11',b:'09/28–10/04',src:'AI',model:'gpt-4.1',d:'10-12 11:30'},{id:'r4',t:'W40 广告周报',type:'周报分析',a:'09/28–10/04',b:'09/21–09/27',src:'规则',d:'10-05 09:58'}];
 function vReports(){
   const g=gate();if(g)return g;
-  const R=calc(S.shown), rp=S.report, sh=S.shown;
+  const R=calc(S.shown),rp=S.report,sh=S.shown;
   if(!R.kws.length)return banners(R)+noData(R);
-  const cur=rp.sel==='cur';
+  const isCur=rp.sel==='cur',h0=isCur?null:HIST.find(x=>x.id===rp.sel),X=isCur&&rp.state!=='gen'?repBuild(R):null;
   let body;
-  if(rp.state==='gen')body=`<div class="md" aria-busy="true"><div class="muted" style="margin:16px 0 4px;display:flex;gap:8px;align-items:center">${ic('loader-circle','spin')}正在按内置规则生成报告…</div>${[80,95,60,90,70,85,40].map(w=>`<div class="skel" style="width:${w}%"></div>`).join('')}</div>`;
-  else if(cur)body=`<div class="md">${md2html(reportMd(R))}</div>`;
-  else{const h=HIST.find(x=>x.id===rp.sel);body=`<div class="md"><h1>${esc(proj().name)} ${h.t}</h1><blockquote>${h.src==='AI'?`AI 生成 · 模型 ${h.model}`:'规则生成'} · A ${h.a} 对比 B ${h.b} · 保存于 ${h.d}</blockquote><p class="muted">历史报告正文按保存时的数据与范围固定，不随当前范围变化。（原型省略正文）</p></div>`}
-  const h0=cur?null:HIST.find(x=>x.id===rp.sel);
+  if(isCur&&rp.state==='gen')body=`<div class="rdoc" aria-busy="true"><div class="muted" style="margin:26px 0 8px;display:flex;gap:8px;align-items:center">${ic('loader-circle','spin')}正在按内置规则生成报告…</div>${[60,95,80,90,70,85,40].map(w=>`<div class="skel" style="width:${w}%"></div>`).join('')}</div>`;
+  else if(isCur)body=repDoc(R,X);
+  else body=`<article class="rdoc"><header class="rd-cover"><div class="rd-pre">${esc(proj().name)} · ${h0.type}</div><h1>${h0.t}</h1><div class="rd-meta"><span class="rd-chip"><span class="ab a">A</span>${h0.a}</span><span class="rd-chip"><span class="ab b">B</span>${h0.b}</span><span class="rd-chip">${h0.src==='AI'?'AI 生成 · '+h0.model:'规则生成'}</span><span class="rd-chip good">${ic('check')}已确认 · ${h0.d}</span></div></header>
+    <div class="rd-hist">${ic('lock')}<div><b>历史报告按保存时的数据与范围固定，不随顶部范围变化。</b><p>原型省略正文。正式版保存生成时的完整报告（图表数据快照、运营补充、负责人与复查日），下一期“上期动作复盘”从这里读取动作清单。</p></div></div></article>`;
   return `
-  <div class="ph"><div class="tt"><h1>复盘报告</h1><span class="meta">保存并沟通本轮判断</span></div></div>
+  <div class="ph"><div class="tt"><h1>复盘报告</h1><span class="meta">结论先行 · 目标 → 结果 → 原因 → 行动 → 沉淀</span></div></div>
   <div class="rep">
-    <section class="panel rh"><div class="panel-h" style="padding-bottom:8px"><h3>报告</h3><div class="r"><button class="btn sm ghost" data-act="repSel" data-v="cur">${ic('plus')}新报告</button></div></div>
-      <button class="${cur?'on':''}" data-act="repSel" data-v="cur"><b>本期 · 未保存</b><small><span class="srcb">规则</span>A ${rLabel(sh.A)}</small></button>
-      ${HIST.map(h=>`<button class="${rp.sel===h.id?'on':''}" data-act="repSel" data-v="${h.id}"><b>${h.t}</b><small><span class="srcb ${h.src==='AI'?'ai':''}">${h.src}</span>A ${h.a} · ${h.d}</small></button>`).join('')}
-    </section>
-    <section class="panel" style="overflow:hidden">
-      ${cur?`<div class="rgen">
-        <div class="seg">${[['weekly','周报分析'],['cmp','周期对比'],['kw','关键词复盘']].map(([v,l])=>`<button data-act="repType" data-v="${v}" aria-pressed="${rp.type===v}">${l}</button>`).join('')}</div>
-        <span class="muted tn" style="font-size:12px">范围跟随顶部：A ${rLabel(sh.A)} · B ${rLabel(sh.B)}</span>
+    <aside class="rside">
+      <section class="panel rh"><div class="panel-h" style="padding-bottom:8px"><h3>报告</h3><div class="r"><button class="btn sm ghost" data-act="repSel" data-v="cur">${ic('plus')}新报告</button></div></div>
+        <button class="${isCur?'on':''}" data-act="repSel" data-v="cur"><b>本期 · ${rp.ok?'已确认':'草稿'}</b><small><span class="srcb">规则</span>A ${rLabel(sh.A)}</small></button>
+        ${HIST.map(h=>`<button class="${rp.sel===h.id?'on':''}" data-act="repSel" data-v="${h.id}"><b>${h.t}</b><small><span class="srcb ${h.src==='AI'?'ai':''}">${h.src}</span>A ${h.a} · ${h.d}</small></button>`).join('')}
+      </section>
+      ${X?repToc(X):''}
+    </aside>
+    <section class="panel rbody">
+      ${isCur?`<div class="rgen">
+        <div class="seg" role="group" aria-label="报告类型">${RTYPES.map(([v,l,d])=>`<button data-act="repType" data-v="${v}" aria-pressed="${rp.type===v}" title="${d}">${l}</button>`).join('')}</div>
+        <span class="muted tn rgen-s">${RTYPES.find(t=>t[0]===rp.type)[2]}</span>
         <span style="flex:1"></span>
         <div class="seg" title="生成方式"><button data-act="repSrc" data-v="rule" aria-pressed="${rp.src==='rule'}">内置规则</button><button data-act="repSrc" data-v="ai" aria-pressed="${rp.src==='ai'}">AI（可选）</button></div>
         <button class="btn primary${S.loading||S.err?' dis':''}" data-act="repGen">${ic('sparkles')}生成</button>
       </div>
-      ${rp.src==='ai'?`<div class="bn warn" style="margin:10px 14px 0">${ic('circle-alert')}<div class="bt2"><b>AI 配置已保存，尚未验证连接。</b>生成时会把项目标识、广告指标和关键词摘要发送给所选服务商。常规分析不需要 AI。</div><div class="ba"><button class="btn sm" data-act="nav" data-v="rules">去测试连接</button></div></div>`:''}
-      <div class="rmeta"><span class="srcb">规则生成</span><span class="tn">${srcLabel(sh.source)}</span><span class="tn">A ${sh.A.s} – ${sh.A.e}</span><span class="tn">B ${sh.B.s} – ${sh.B.e}</span><span class="tn">${rp.genAt}</span><span style="flex:1"></span><button class="btn sm" data-act="copyRep">${ic('copy')}复制正文</button><button class="btn sm" data-act="mdExport">${ic('file-down')}导出 Markdown</button><button class="btn sm primary" data-act="repSave">保存到历史</button></div>`
+      ${rp.src==='ai'?`<div class="bn warn" style="margin:10px 14px 0">${ic('circle-alert')}<div class="bt2"><b>AI 配置已保存，尚未验证连接。</b>AI 只改写各节的文字，章节结构、数字和图表仍由规则计算。生成时会把项目标识、广告指标和关键词摘要发送给所选服务商。</div><div class="ba"><button class="btn sm" data-act="nav" data-v="rules">去测试连接</button></div></div>`:''}
+      <div class="rmeta"><span class="tn">范围跟随顶部 · A ${rLabel(sh.A)} · B ${rLabel(sh.B)}</span><span style="flex:1"></span><button class="btn sm" data-act="copyRep">${ic('copy')}复制正文</button><button class="btn sm" data-act="mdExport">${ic('file-down')}导出 Markdown</button><button class="btn sm${rp.ok?'':' primary'}" data-act="repOk">${ic(rp.ok?'undo':'check')}${rp.ok?'改回草稿':'确认报告'}</button><button class="btn sm" data-act="repSave">保存到历史</button></div>`
       :`<div class="rmeta"><span class="srcb ${h0.src==='AI'?'ai':''}">${h0.src==='AI'?'AI · '+h0.model:'规则生成'}</span><span>${h0.type}</span><span class="tn">A ${h0.a} · B ${h0.b}</span><span class="tn">${h0.d}</span><span style="flex:1"></span><button class="btn sm" data-act="copyRep">${ic('copy')}复制</button><button class="btn sm" data-act="mdExport">${ic('file-down')}导出 Markdown</button></div>`}
       ${body}
     </section>
@@ -2160,7 +2694,7 @@ function vSpec(){
     <tr><td>经营总览</td><td>经营总览</td><td>KPI 条、日趋势、需要优先处理队列、重点关键词、数据覆盖与口径（含此前 28 天历史基准）、最近复盘；导入入口移到页头与空状态</td></tr>
     <tr><td>变化诊断</td><td>复盘分析（A/B 对比 + 活动趋势、关键词变动、结构与效率、星期规律）</td><td>三种模式（自定义 / 归档周期 / 大促前后）在页内切换；A/B 日期与顶部范围条共用；指标对照含日均列；覆盖口径折叠</td></tr>
     <tr><td>关键词决策</td><td>关键词决策</td><td>表格为主体；标签、搜索、订单、显示列在工具栏；详情改为右侧栏；行内展开来源活动；导出与生成复盘在页头</td></tr>
-    <tr><td>复盘报告</td><td>复盘报告</td><td>左侧历史、右侧生成与正文；范围跟随顶部；关键词页与诊断页可一键带范围进入</td></tr>
+    <tr><td>复盘报告</td><td>复盘报告</td><td>结论先行，按“结果 → 原因 → 行动 → 沉淀”组织 12 个章节，每节标题是一句结论；左侧历史与报告结构目录（可勾选章节），每节可写运营补充，下期动作带负责人与复查日；范围跟随顶部</td></tr>
     <tr><td>数据中心</td><td>工作区 · 数据中心</td><td>五步导入流程、覆盖日历（新增展示）、归档台账；删除归档使用独立确认对话框</td></tr>
     <tr><td>项目管理</td><td>顶部项目切换 + 工作区 · 项目</td><td>高频的切换放在顶部；新建、编辑、删除等低频操作在项目页</td></tr>
     <tr><td>分析规则</td><td>工作区 · 分析规则</td><td>项目级阈值、新品模式、保护词表；AI 配置标注“所有项目共用”且区分“已保存”和“已验证”；字段映射折叠</td></tr>
@@ -2287,21 +2821,23 @@ function cycImpact(cd){
 }
 function prevCycle(R){
   if(!R.hasB)return null;
-  const T=thr(S.rules),out=[];
+  // 天数不同时，销售额与花费按日均比较（比率指标直接比）
+  // 提价效果与整体销售变化比较，剔除全账户共同的波动（如整体转化下滑）
+  const T=thr(S.rules),out=[],per=R.covA.n!==R.covB.n,fa=per?1/R.covA.n:1,fb=per?1/R.covB.n:1,rS=R.B.sales?(R.A.sales*fa)/(R.B.sales*fb):1;
   for(const g of tgroups(R)){
     const b=derive(g.zb),a=derive(g.z),ctx=g.camp+' / '+g.ag;
     if(b.orders>=1&&b.acos>T.acos*1.1&&b.clicks>=T.minC){
       const res=a.spend===0?['neu','已无花费']:a.acos==null?['bad','无订单']:a.acos<b.acos*.95?['good','改善']:a.acos>b.acos*1.05?['bad','变差']:['neu','持平'];
       out.push({act:'降价',d:`${Math.round(Math.max(-S.rules.maxDown,T.acos/b.acos-1)*100)}%`,obj:g.target,ctx,m:'acos',bv:b.acos,av:a.acos,res,w:b.spend});
     }else if(b.orders>=2&&b.acos<=T.acos*.7&&b.clicks>=T.minC){
-      const res=a.acos!=null&&a.acos<=T.acos&&a.sales>b.sales*1.05?['good','改善']:a.acos!=null&&a.acos>T.acos?['bad','变差']:['neu','持平'];
-      out.push({act:'提价',d:`+${Math.round(S.rules.up*100)}%`,obj:g.target,ctx,m:'sales',bv:b.sales,av:a.sales,res,w:b.spend});
+      const sa=a.sales*fa,sb=b.sales*fb,rel=sb?sa/sb/rS:1,res=a.acos==null?['bad','无销售']:a.acos>T.acos?['bad','ACOS 超标']:rel>1.05?['good','跑赢整体']:rel<.9?['bad','跑输整体']:['neu','持平'];
+      out.push({act:'提价',d:`+${Math.round(S.rules.up*100)}%`,obj:g.target,ctx,m:'sales',bv:sb,av:sa,per,res,w:b.spend});
     }
   }
   if(S.shown.source==='term')for(const r of R.rows){
     if(r.match==='exact'||r.match==='asin')continue;
     const b=derive(sumRow(r,R.Bi[0],R.Bi[1])),a=derive(sumRow(r,R.Ai[0],R.Ai[1]));
-    if(b.orders===0&&b.clicks>=T.noConv)out.push({act:'否定精准',d:'',obj:r.term,ctx:r.camp+' / '+r.ag,m:'spend',bv:b.spend,av:a.spend,res:a.spend<.5?['good','已止损']:['warn','仍有花费，需核实'],w:b.spend});
+    if(b.orders===0&&b.clicks>=T.noConv)out.push({act:'否定精准',d:'',obj:r.term,ctx:r.camp+' / '+r.ag,m:'spend',bv:b.spend*fb,av:a.spend*fa,per,res:a.spend<.5?['good','已止损']:['warn','仍有花费，需核实'],w:b.spend});
   }
   return out.sort((x,y)=>y.w-x.w).slice(0,14);
 }
@@ -2314,20 +2850,6 @@ function bulkRows(cd){
   cd.neg.filter(isSel).forEach(n=>rows.push([n.asin?'Negative Product Targeting':'Negative Keyword','Create',n.r.camp,n.r.ag,n.asin?asinX(n.key):n.key,n.asin?'—':'Negative Exact','','enabled']));
   cd.bids.filter(b=>ACTK.has(b.kind)&&isSel(b)).forEach(b=>rows.push([b.kwEnt?'Keyword':'Product Targeting','Update',b.g.camp,b.g.ag,b.g.target,b.kwEnt?cap(b.g.match):'—',b.kind==='pause'?'':b.ref.toFixed(2),b.kind==='pause'?'paused':'enabled']));
   return rows;
-}
-function cycMd(){
-  const R=(!S.noProject&&!proj().empty)?calc(S.shown):null;if(!R)return '';
-  const cd=cycleData(R),im=cycImpact(cd);
-  if(!im.total)return '本周期没有选中的优化动作。';
-  const L=[`- 状态：${S.cyc.completed?'已完成（'+S.cyc.completed+'）':'进行中，尚未在“确认导出”中完成'}`,
-    `- 收割 ${im.h} 个搜索词 → 精准投放，并在来源活动添加否定精准`,
-    `- 否定 ${im.n} 个无效搜索词，预计每周节省约 ${money0(im.negSave)}`,
-    `- 降价 ${im.down} 个、暂停 ${im.pause} 个投放，预计每周节省约 ${money0(im.bidSave)}（按点击量不变粗估）`,
-    `- 提价 ${im.up} 个盈利投放，花费每周最多增加约 ${money0(im.upCost)}`];
-  const top=cd.harvest.filter(isSel).slice(0,3).map(h=>`\`${h.key}\`（${h.a.orders} 单，ACOS ${pct(h.a.acos)}，出价 ${cur()}${h.bid.toFixed(2)}）`);
-  if(top.length)L.push(`- 重点收割：${top.join('、')}`);
-  L.push('- 下周期在“准备与回看”中检查这些动作的效果');
-  return L.join('\n');
 }
 function guide(step){
   const T=thr(S.rules),Ru=S.rules;
@@ -2380,7 +2902,7 @@ function vCycle(){
     <section class="panel"><div class="panel-h"><h3>上期动作回看</h3><span class="newb">新增</span><span class="muted" style="font-size:12px">${pv?`依据 ${rLabel(sh.B)} 数据制定、${md(sh.A.s)} 执行（演示记录）· 效果 = A 对比 B`:'没有 B 期数据，无法回看'}</span></div>
       <div class="panel-b">${pv&&pv.length?`<div class="rsum"><div class="rt"><b>${pv.length}</b><span>上期动作</span></div><div class="rt good"><b>${cntR('good')}</b><span>改善 / 已止损</span></div><div class="rt"><b>${cntR('neu')}</b><span>持平</span></div><div class="rt bad"><b>${cntR('bad')}</b><span>变差</span></div><div class="rt warn"><b>${cntR('warn')}</b><span>需核实执行</span></div></div>
       <div class="scx"><table class="lt ctab" style="min-width:740px"><thead><tr><th>动作</th><th>对象</th><th>活动 / 广告组</th><th class="num">执行前 (B)</th><th class="num">执行后 (A)</th><th>结果</th></tr></thead><tbody>
-      ${pv.map(x=>`<tr><td><b style="font-weight:600">${x.act}</b> <span class="muted tn">${x.d}</span></td><td><span class="lnk" style="cursor:default" title="${esc(x.obj)}">${esc(x.obj)}</span></td><td class="sm2" title="${esc(x.ctx)}">${esc(x.ctx)}</td><td class="num">${({acos:'ACOS ',sales:'销售 ',spend:'花费 '})[x.m]}${fmtM(x.m,x.bv)}</td><td class="num">${fmtM(x.m,x.av)}</td><td><span class="rs ${x.res[0]}">${x.res[1]}</span></td></tr>`).join('')}
+      ${pv.map(x=>`<tr><td><b style="font-weight:600">${x.act}</b> <span class="muted tn">${x.d}</span></td><td><span class="lnk" style="cursor:default" title="${esc(x.obj)}">${esc(x.obj)}</span></td><td class="sm2" title="${esc(x.ctx)}">${esc(x.ctx)}</td><td class="num">${({acos:'ACOS ',sales:x.per?'日均销售 ':'销售 ',spend:x.per?'日均花费 ':'花费 '})[x.m]}${fmtM(x.m,x.bv)}</td><td class="num">${fmtM(x.m,x.av)}</td><td><span class="rs ${x.res[0]}">${x.res[1]}</span></td></tr>`).join('')}
       </tbody></table></div><p class="hint2" style="margin:10px 0 0">前后对比没有剔除季节、竞品与库存等因素，只作方向参考。正式使用时，动作来自上期“完成本周期”保存的日志。</p>`:`<div class="muted">没有可回看的上期动作。</div>`}</div></section>`;
     foot=`<span class="fs">检查 ${checks.filter(c=>c[0]==='warn').length?`<b>${checks.filter(c=>c[0]==='warn').length}</b> 项需注意`:'全部通过'}</span>`;
   }
@@ -2661,15 +3183,6 @@ function quadChart(el,R){
   pts.forEach(p=>{const cy=p.y==null?pt+4:Y(p.y);g+=`<circle class="qp" data-act="open" data-key="${esc(p.k.key)}" cx="${X(p.x).toFixed(1)}" cy="${cy.toFixed(1)}" r="${p.sg==='low'?3.5:5}" style="fill:${SEG[p.sg][1]};stroke:var(--surface)" stroke-width="1.5"><title>${esc(p.k.key)}：花费 ${fvt('spend',p.x)} · ACOS ${p.y==null?'无销售':fvt('acos',p.y)} · ${p.k.A.orders} 单</title></circle>`});
   el.innerHTML=svgEl(W,H,g);
 }
-function revMd(){
-  const R=(!S.noProject&&!proj().empty)?calc(S.shown):null;if(!R)return '';
-  const rv=revData(R),T=thr(S.rules),L=[];
-  rv.camps.forEach(c=>{const t=trendOf(c.w,rv.blocks,T);if(t[0]!=='neu')L.push(`- ${c.name}：${t[1]}`)});
-  const mv=kwMoves(R);if(mv.length)L.push(`- 关键词变动：新增 ${mv.filter(x=>x.mv==='new').length}、消失 ${mv.filter(x=>x.mv==='lost').length}、增长 ${mv.filter(x=>x.mv==='up').length}、下滑 ${mv.filter(x=>x.mv==='down').length}（按销售额，±20% 为界）`);
-  const ty=typeSplit(R),nb=Z();ty.filter(g=>g.t!=='品牌词').forEach(g=>add5(nb,g.a));L.push(`- 非品牌 ACOS ${fv('acos',derive(nb).acos)}（整体 ${fv('acos',R.A.acos)}）`);
-  const ws=wasteSeries(R,rv),wl=ws[ws.length-1];if(wl.p!=null)L.push(`- 无效花费率 ${(wl.p*100).toFixed(1)}%（近 14 天点击 ≥ ${T.noConv} 且无订单的搜索词花费占比）`);
-  return L.join('\n')||'各活动走势平稳。';
-}
 function vReview(R){
   const rv=revData(R),tab=S.diag.tab;
   const body=tab==='camp'?revCamp(R,rv):tab==='kw'?revKw(R,rv):tab==='struct'?revStruct(R,rv):revWeek(R);
@@ -2718,6 +3231,7 @@ function drawCharts(){
     else if(type==='sm')smChart(el,R,el.dataset.k);
     else if(type==='wf')wfChart(el,R);
     else if(type==='quad')quadChart(el,R);
+    else if(type==='rwk')rwkChart(el,R,el.dataset.k);
   });
 }
 function svgEl(w,h,inner){return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img">${inner}</svg>`}
@@ -2760,7 +3274,7 @@ function wfScale(d){
   return {floor:Math.max(0,lo-spn*.7),ceil:hi+spn*.22};
 }
 function wfChart(el,R){
-  const m=S.diag.wf||'sales',d=decomp(R,m);
+  const m=el.dataset.m||S.diag.wf||'sales',d=decomp(R,m);
   if(!d){el.innerHTML=`<div class="muted" style="padding:60px 0;text-align:center">${R.hasB?'有因素为 0（如无订单），无法拆解':'没有 B 基准，无法拆解'}</div>`;return}
   const W=el.clientWidth,H=el.clientHeight,pl=8,pr=8,pt=28,pb=46;
   const cats=[{l:'B 期',t:'tot',v:d.tB}].concat(d.steps.map(x=>({l:x.l,t:'d',v:x.v,chg:x.chg})),[{l:'A 期',t:'tot',v:d.tA}]);
@@ -2800,6 +3314,32 @@ function smChart(el,R,k){
     tip.innerHTML=`<b>第 ${i+1} 天</b><div class="tr"><span><i class="sw" style="background:var(--c1)"></i>A ${xa?md(ds(R.Ai[0]+i)):''}</span><span class="tn">${xa?fvt(k,xa[k]):'缺日'}</span></div>${R.hasB?`<div class="tr"><span><i class="sw" style="background:var(--b)"></i>B ${md(ds(R.Bi[0]+i))}</span><span class="tn">${xb?fvt(k,xb[k]):'缺日'}</span></div>`:''}`;
     tip.hidden=false;tip.style.left=Math.min(W-170,Math.max(0,X(i)-80))+'px';tip.style.top=(-60)+'px'});
   svg.querySelector('.hit').addEventListener('mouseleave',()=>tip.hidden=true);
+}
+
+// 复盘报告 · 趋势背景：近 12 周的周度小图（量类为日均），A / B 所在周加底色
+function rwkChart(el,R,k){
+  const rv=revData(R),T=thr(S.rules),B=rv.blocks,vol=VOL.has(k),v=rv.total.map((x,i)=>vol?(B[i].n?x[k]/B[i].n:null):x[k]);
+  const nn=v.filter(x=>x!=null);if(!nn.length){el.innerHTML='<div class="muted">没有数据</div>';return}
+  const W=el.clientWidth,H=el.clientHeight,pl=42,pr=8,pt=8,pb=20,iw=W-pl-pr,ih=H-pt-pb,n=v.length,step=n>1?iw/(n-1):iw;
+  const mx=niceMax(Math.max(...nn,k==='acos'?T.acos*1.15:0)),X=i=>pl+(n>1?i*step:iw/2),Y=x=>pt+ih-x/mx*ih;
+  const lab=x=>k==='acos'?(x*100).toFixed(0)+'%':cur()+(x>=1000?(x/1000).toFixed(1)+'k':Math.round(x));
+  let g='';
+  B.forEach((b,i)=>{if(!b.inA&&!b.inB)return;const x1=Math.max(pl,X(i)-step/2),x2=Math.min(W-pr,X(i)+step/2);g+=`<rect x="${x1}" y="${pt}" width="${x2-x1}" height="${ih}" style="fill:${b.inA?'var(--band-a)':'var(--band-b)'}"/>`});
+  [mx/2,mx].forEach(t=>{g+=`<line class="grid" x1="${pl}" x2="${W-pr}" y1="${Y(t)}" y2="${Y(t)}"/><text class="ax" x="${pl-6}" y="${Y(t)+4}" text-anchor="end">${lab(t)}</text>`});
+  g+=`<line class="base" x1="${pl}" x2="${W-pr}" y1="${Y(0)}" y2="${Y(0)}"/>`;
+  if(k==='acos')g+=`<line x1="${pl}" x2="${W-pr}" y1="${Y(T.acos)}" y2="${Y(T.acos)}" style="stroke:var(--bad)" stroke-dasharray="4 3" opacity=".7"/>`;
+  let p='',pen=false;v.forEach((x,i)=>{if(x!=null){p+=(pen?'L':'M')+X(i).toFixed(1)+','+Y(x).toFixed(1);pen=true}else pen=false});
+  g+=`<path d="${p}" fill="none" style="stroke:var(--c1)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+  v.forEach((x,i)=>{if(x==null)return;const b=B[i];if(b.inA)g+=`<circle cx="${X(i)}" cy="${Y(x)}" r="4" style="fill:var(--a);stroke:var(--surface)" stroke-width="2"/>`;else if(b.inB)g+=`<circle cx="${X(i)}" cy="${Y(x)}" r="3.5" style="fill:var(--surface);stroke:var(--b-ink)" stroke-width="1.75"/>`;else if(b.n<7)g+=`<circle cx="${X(i)}" cy="${Y(x)}" r="2.5" style="fill:var(--surface);stroke:var(--c1)" stroke-width="1.5"/>`});
+  [0,n-1].forEach(i=>{g+=`<text class="ax" x="${X(i)}" y="${H-5}" text-anchor="${i?'end':'start'}">${md(ds(B[i].s))}</text>`});
+  g+=`<line class="xh" x1="0" x2="0" y1="${pt}" y2="${pt+ih}" style="stroke:var(--fg-3)" visibility="hidden"/><rect class="hit" x="${pl}" y="${pt}" width="${iw}" height="${ih}" fill="transparent"/>`;
+  el.innerHTML=svgEl(W,H,g)+'<div class="tip" hidden></div>';
+  const svg=el.querySelector('svg'),tip=el.querySelector('.tip'),xh=svg.querySelector('.xh');
+  svg.querySelector('.hit').addEventListener('mousemove',ev=>{const rc=svg.getBoundingClientRect(),i=Math.max(0,Math.min(n-1,Math.round((ev.clientX-rc.left-pl)/step))),b=B[i];
+    xh.setAttribute('x1',X(i));xh.setAttribute('x2',X(i));xh.setAttribute('visibility','visible');
+    tip.innerHTML=`<b>${md(ds(b.s))}–${md(ds(b.e))}${b.inA?' · A 期':b.inB?' · B 期':''}</b><div class="tr"><span><i class="sw" style="background:var(--c1)"></i>${vol?'日均':''}${MLABEL[k]}</span><span class="tn">${v[i]==null?'—':fvt(k,v[i])}</span></div>${b.n<7?`<div class="muted">${b.n}/7 天有数据</div>`:''}`;
+    tip.hidden=false;tip.style.left=Math.min(W-170,Math.max(0,X(i)-82))+'px';tip.style.top=(-6-tip.offsetHeight)+'px'});
+  svg.querySelector('.hit').addEventListener('mouseleave',()=>{tip.hidden=true;xh.setAttribute('visibility','hidden')});
 }
 
 // ---------- 渲染 ----------
@@ -2910,9 +3450,13 @@ const ACT={
   delDo:()=>{S.modal=null;toast('演示：未执行删除。实际删除会立即影响分析结果','trash-2')},
   repSel:t=>{S.report.sel=t.dataset.v},
   repOpen:t=>{S.view='reports';S.report.sel=t.dataset.v;history.replaceState(null,'','#reports')},
-  repType:t=>{S.report.type=t.dataset.v},
+  repType:t=>{S.report.type=t.dataset.v;S.report.edit=null},
+  repSec:t=>{const s=RSECS.find(x=>x.id===t.dataset.v);if(!s||s.fixed)return false;S.report.on[S.report.type+'|'+s.id]=!secOn(s)},
+  repGo:t=>{const el=document.getElementById('rs-'+t.dataset.v);if(el)el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});return false},
+  repNote:t=>{S.report.edit=t.dataset.v;setTimeout(()=>{const el=document.getElementById('rn-'+t.dataset.v);if(el)el.focus()},0)},
+  repOk:()=>{S.report.ok=!S.report.ok;toast(S.report.ok?'报告已确认':'已改回草稿',S.report.ok?'check':'undo')},
   repSrc:t=>{S.report.src=t.dataset.v},
-  repGen:()=>{if(S.report.src==='ai'&&!S.aiTested){toast('AI 连接尚未验证，请先在分析规则中测试连接','circle-alert');return}S.report.state='gen';clearTimeout(ACT.rt);ACT.rt=setTimeout(()=>{S.report.state='done';const d=new Date();S.report.genAt=`2026-10-27 ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;render()},1800)},
+  repGen:()=>{if(S.report.src==='ai'&&!S.aiTested){toast('AI 连接尚未验证，请先在分析规则中测试连接','circle-alert');return}S.report.state='gen';clearTimeout(ACT.rt);ACT.rt=setTimeout(()=>{S.report.state='done';S.report.ok=false;const d=new Date();S.report.genAt=`2026-10-27 ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;render()},1800)},
   copyRep:()=>{const R=calc(S.shown);copy(reportMd(R),'已复制报告正文（Markdown）')},
   mdExport:()=>{toast('演示：原型不下载文件，实际会导出 .md','file-down')},
   repSave:()=>{toast('已保存到报告历史（演示）')},
@@ -2951,7 +3495,7 @@ document.addEventListener('click',e=>{
   const inPop=e.target.closest('.pop');
   if(!t){if(S.pop&&!inPop){S.pop=null;render()}return}
   if(t.tagName==='A')e.preventDefault();
-  if(t.tagName==='INPUT'&&t.type==='checkbox'&&!['colT','pick','pickAll','cycSel','cycAll','revEx'].includes(t.dataset.act))return;
+  if(t.tagName==='INPUT'&&t.type==='checkbox'&&!['colT','pick','pickAll','cycSel','cycAll','revEx','repSec'].includes(t.dataset.act))return;
   if(S.pop&&!inPop&&t.dataset.act!=='pop'&&t.dataset.act!=='closepop')S.pop=null;
   const fn=ACT[t.dataset.act];
   if(fn&&fn(t,e)===false)return;
@@ -2964,6 +3508,8 @@ document.addEventListener('input',e=>{
   else if(k==='cmdq'){S.cmd.q=t.value;S.cmd.i=0;render()}
   else if(k==='fTarget')S.fdraft.target=t.value;
   else if(k==='fTerm')S.fdraft.term=t.value;
+  else if(k==='repNote'){S.report.notes[noteKey(t.dataset.k)]=t.value;store.set('repNotes',S.report.notes)}
+  else if(k==='repOwn')S.report.own[t.dataset.k]=t.value;
 });
 document.addEventListener('change',e=>{
   const t=e.target,k=t.dataset.in;if(!k)return;
