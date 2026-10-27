@@ -846,6 +846,85 @@ table.g.dense .kwn small{display:none}
 .kw.open .keys{display:none}
 .kw.open .ft .hide-m{display:none}
 @media (max-width:760px){.fx{min-width:calc(50% - 4px)}.fx-op{display:none}.ins-t{font-size:16px}.ins-k .btn{margin-left:0}.wsp{width:80px}}
+
+/* ---------- v5：周期优化工作台（准备与回看 → 诊断 → 收割 → 否定 → 调价 → 确认导出） ---------- */
+.cyc-steps{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.cstep{position:relative;display:flex;flex-direction:column;gap:3px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);text-align:left;box-shadow:var(--sh-1);min-width:0;transition:border-color .15s,box-shadow .15s}
+.cstep:hover{border-color:var(--line-2)}
+.cstep .cn{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--fg-3);min-width:0;padding-right:34px}
+.cstep .cn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cstep .cn i{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font:600 11.5px var(--font-num);font-style:normal;background:var(--sunken);color:var(--fg-2);flex:none}
+.cstep .cn i svg{width:13px;height:13px;stroke-width:2.4}
+.cstep b{font-size:15px;font-weight:600;letter-spacing:-.005em}
+.cstep .cc{position:absolute;top:11px;right:12px;font:600 12px var(--font-num);color:var(--accent);background:var(--accent-weak);border-radius:10px;padding:0 8px;line-height:20px}
+.cstep.on{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-weak)}
+.cstep.on .cn i{background:var(--accent);color:var(--on-accent)}
+.cstep.done .cn i{background:var(--good-weak);color:var(--good)}
+.cyc-body{display:grid;grid-template-columns:minmax(0,1fr) 288px;gap:16px;align-items:start}
+.cyc-main{display:flex;flex-direction:column;gap:16px;min-width:0}
+.guide{position:sticky;top:0}
+.guide .gs{padding:14px 16px;border-top:1px solid var(--line)}
+.guide .gs:first-child{border-top:0}
+.guide h4{margin:0 0 6px;font-size:13px;display:flex;gap:7px;align-items:center}
+.guide h4 svg{color:var(--accent)}
+.guide p,.guide li{font-size:12.5px;color:var(--fg-2);line-height:1.7;margin:0}
+.guide p+p{margin-top:6px}
+.guide ul{margin:4px 0 0;padding-left:16px}
+.guide b{color:var(--fg);font-weight:600}
+.formula{font:500 12px/1.7 var(--font-mono);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;color:var(--fg);margin:6px 0 2px;white-space:pre-line}
+.checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.checks li{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-top:1px solid var(--line);font-size:13px}
+.checks li:first-child{border-top:0;padding-top:2px}
+.checks li>svg{margin-top:2px}
+.checks li.ok>svg{color:var(--good)} .checks li.warn>svg{color:var(--warn)}
+.checks li .ct2{flex:1;min-width:0;line-height:1.6}
+.checks li .ct2 small{display:block;color:var(--fg-3);font-size:12px}
+.checks li .btn{flex:none}
+.rs{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:10px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.rs.good{background:var(--good-weak);color:var(--good)} .rs.bad{background:var(--bad-weak);color:var(--bad)} .rs.neu{background:var(--sunken);color:var(--fg-2)} .rs.warn{background:var(--warn-weak);color:var(--warn)}
+.rsum{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.rsum .rt{display:flex;flex-direction:column;padding:8px 14px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line);min-width:92px}
+.rsum .rt b{font:600 20px/1.3 var(--font-num)}
+.rsum .rt span{font-size:11.5px;color:var(--fg-3)}
+.rsum .rt.good b{color:var(--good)} .rsum .rt.bad b{color:var(--bad)} .rsum .rt.warn b{color:var(--warn)}
+.cf{display:inline-flex;align-items:center;height:20px;padding:0 7px;border-radius:5px;font-size:11px;font-weight:600;white-space:nowrap}
+.cf.high{background:var(--good-weak);color:var(--good)} .cf.mid{background:var(--warn-weak);color:var(--warn)} .cf.low{background:var(--sunken);color:var(--fg-3);box-shadow:inset 0 0 0 1px var(--line-2)}
+table.ctab td{vertical-align:middle}
+table.ctab th.ck,table.ctab td.ck{width:38px;padding-right:0}
+table.ctab tr.on td{background:var(--accent-weak)}
+table.ctab tbody tr.on:hover td{background:var(--accent-weak)}
+table.ctab tr.mute td{color:var(--fg-3)}
+table.ctab td.num{font-family:var(--font-num);font-size:13px;font-weight:500}
+.lnk{border:0;background:none;padding:0;font-weight:600;color:var(--fg);text-align:left;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;vertical-align:middle}
+.lnk:hover{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+.sm2{font-size:12px;color:var(--fg-2);line-height:1.45;max-width:230px;overflow:hidden;text-overflow:ellipsis}
+.sm2 small{display:block;color:var(--fg-3);font-size:11px;overflow:hidden;text-overflow:ellipsis}
+.adj{display:inline-flex;align-items:center;gap:3px;height:22px;padding:0 8px;border-radius:6px;font:600 12px var(--font-num);white-space:nowrap}
+.adj svg{width:12px;height:12px;stroke-width:2.3}
+.adj.down,.adj.down0{background:var(--warn-weak);color:var(--warn)} .adj.pause{background:var(--sunken);color:var(--fg-2);box-shadow:inset 0 0 0 1px var(--line-2)} .adj.up{background:var(--good-weak);color:var(--good)} .adj.keep,.adj.watch{color:var(--fg-3);padding:0}
+.cyc-foot{position:sticky;bottom:0;z-index:5;display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 -4px 16px rgba(16,24,40,.07);flex-wrap:wrap}
+.cyc-foot .sp{flex:1}
+.cyc-foot .fs{font-size:12.5px;color:var(--fg-2)} .cyc-foot .fs b{font-family:var(--font-num);color:var(--fg);font-weight:600}
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.tile{display:flex;align-items:flex-start;gap:12px;padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);min-width:0}
+.tile .ti{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none;background:var(--sunken);color:var(--fg-2)}
+.tile .ti.g{background:var(--good-weak);color:var(--good)} .tile .ti.r{background:var(--bad-weak);color:var(--bad)} .tile .ti.w{background:var(--warn-weak);color:var(--warn)} .tile .ti.a{background:var(--accent-weak);color:var(--accent)}
+.tile b{display:block;font:600 22px/1.2 var(--font-num)}
+.tile span{font-size:12px;color:var(--fg-2)} .tile small{display:block;font-size:11.5px;color:var(--fg-3);margin-top:2px}
+.tile.hl{background:var(--accent-weak);border-color:var(--accent-line)}
+table.bulkt td{font-family:var(--font-mono);font-size:11.5px}
+.cchips{display:flex;gap:6px;flex-wrap:wrap;padding:12px 18px 0}
+.cyc-drawer{position:fixed;top:0;right:0;bottom:0;width:min(var(--detail-w),100%);z-index:65;box-shadow:var(--shadow);display:flex}
+.cyc-drawer .det{flex:1}
+.note{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--fg-2);background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:9px 12px;line-height:1.6}
+.note svg{color:var(--fg-3);margin-top:2px}
+.ctodo{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.ctodo li{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:var(--fg-2);padding:10px 12px;border:1px dashed var(--line-2);border-radius:10px}
+.ctodo li svg{color:var(--fg-3);margin-top:2px}
+.main:not(.fill)>*{flex-shrink:0}
+.toast{bottom:auto;top:calc(72px + env(safe-area-inset-top,0px))}
+@media (max-width:1279px){.cyc-body{grid-template-columns:minmax(0,1fr)}.guide{position:static}.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.checks li{flex-wrap:wrap}.checks li .ct2{flex-basis:calc(100% - 30px)}.checks li .btn{margin-left:26px}.cyc-steps{display:flex;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:2px 16px}.cstep{min-width:150px}.cyc-foot{bottom:calc(66px + env(safe-area-inset-bottom,0px))}.tiles,.ctodo{grid-template-columns:1fr}}
 </style>
 
 <div id="app"></div>
@@ -869,7 +948,7 @@ const span=(s,e)=>di(e)-di(s)+1;
 const LAST=ds(END);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 // 图标：Lucide 0.460.0 中用到的图标，内联为 SVG（不依赖 CDN）
-const ICONS={"usb":"<circle cx=\"10\" cy=\"7\" r=\"1\"/><circle cx=\"4\" cy=\"20\" r=\"1\"/><path d=\"M4.7 19.3 19 5\"/><path d=\"m21 3-3 1 2 2Z\"/><path d=\"M9.26 7.68 5 12l2 5\"/><path d=\"m10 14 5 2 3.5-3.5\"/><path d=\"m18 12 1-1 1 1-1 1Z\"/>","scale":"<path d=\"m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z\"/><path d=\"m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z\"/><path d=\"M7 21h10\"/><path d=\"M12 3v18\"/><path d=\"M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2\"/>","arrow-up-right":"<path d=\"M7 7h10v10\"/><path d=\"M7 17 17 7\"/>","arrow-down-right":"<path d=\"m7 7 10 10\"/><path d=\"M17 7v10H7\"/>","tags":"<path d=\"m15 5 6.3 6.3a2.4 2.4 0 0 1 0 3.4L17 19\"/><path d=\"M9.586 5.586A2 2 0 0 0 8.172 5H3a1 1 0 0 0-1 1v5.172a2 2 0 0 0 .586 1.414L8.29 18.29a2.426 2.426 0 0 0 3.42 0l3.58-3.58a2.426 2.426 0 0 0 0-3.42z\"/><circle cx=\"6.5\" cy=\"9.5\" r=\".5\" fill=\"currentColor\"/>","target":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"6\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/>","circle-check":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m9 12 2 2 4-4\"/>","pi":"<line x1=\"9\" x2=\"9\" y1=\"4\" y2=\"20\"/><path d=\"M4 7c0-1.7 1.3-3 3-3h13\"/><path d=\"M18 20c-1.7 0-3-1.3-3-3V4\"/>","plus":"<path d=\"M5 12h14\"/><path d=\"M12 5v14\"/>","database":"<ellipse cx=\"12\" cy=\"5\" rx=\"9\" ry=\"3\"/><path d=\"M3 5V19A9 3 0 0 0 21 19V5\"/><path d=\"M3 12A9 3 0 0 0 21 12\"/>","loader-circle":"<path d=\"M21 12a9 9 0 1 1-6.219-8.56\"/>","triangle-alert":"<path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"/><path d=\"M12 9v4\"/><path d=\"M12 17h.01\"/>","chevrons-up-down":"<path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/>","group":"<path d=\"M3 7V5c0-1.1.9-2 2-2h2\"/><path d=\"M17 3h2c1.1 0 2 .9 2 2v2\"/><path d=\"M21 17v2c0 1.1-.9 2-2 2h-2\"/><path d=\"M7 21H5c-1.1 0-2-.9-2-2v-2\"/><rect width=\"7\" height=\"5\" x=\"7\" y=\"7\" rx=\"1\"/><rect width=\"7\" height=\"5\" x=\"10\" y=\"12\" rx=\"1\"/>","chevron-down":"<path d=\"m6 9 6 6 6-6\"/>","list-filter":"<path d=\"M3 6h18\"/><path d=\"M7 12h10\"/><path d=\"M10 18h4\"/>","calendar-range":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\"/><path d=\"M16 2v4\"/><path d=\"M3 10h18\"/><path d=\"M8 2v4\"/><path d=\"M17 14h-6\"/><path d=\"M13 18H7\"/><path d=\"M7 14h.01\"/><path d=\"M17 18h.01\"/>","circle-help":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3\"/><path d=\"M12 17h.01\"/>","search":"<circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/>","check":"<path d=\"M20 6 9 17l-5-5\"/>","x":"<path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/>","chevron-left":"<path d=\"m15 18-6-6 6-6\"/>","chevron-right":"<path d=\"m9 18 6-6-6-6\"/>","layout-dashboard":"<rect width=\"7\" height=\"9\" x=\"3\" y=\"3\" rx=\"1\"/><rect width=\"7\" height=\"5\" x=\"14\" y=\"3\" rx=\"1\"/><rect width=\"7\" height=\"9\" x=\"14\" y=\"12\" rx=\"1\"/><rect width=\"7\" height=\"5\" x=\"3\" y=\"16\" rx=\"1\"/>","git-compare-arrows":"<circle cx=\"5\" cy=\"6\" r=\"3\"/><path d=\"M12 6h5a2 2 0 0 1 2 2v7\"/><path d=\"m15 9-3-3 3-3\"/><circle cx=\"19\" cy=\"18\" r=\"3\"/><path d=\"M12 18H7a2 2 0 0 1-2-2V9\"/><path d=\"m9 15 3 3-3 3\"/>","list-checks":"<path d=\"m3 17 2 2 4-4\"/><path d=\"m3 7 2 2 4-4\"/><path d=\"M13 6h8\"/><path d=\"M13 12h8\"/><path d=\"M13 18h8\"/>","file-text":"<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/><path d=\"M10 9H8\"/><path d=\"M16 13H8\"/><path d=\"M16 17H8\"/>","folder-kanban":"<path d=\"M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z\"/><path d=\"M8 10v4\"/><path d=\"M12 10v2\"/><path d=\"M16 10v6\"/>","sliders-horizontal":"<line x1=\"21\" x2=\"14\" y1=\"4\" y2=\"4\"/><line x1=\"10\" x2=\"3\" y1=\"4\" y2=\"4\"/><line x1=\"21\" x2=\"12\" y1=\"12\" y2=\"12\"/><line x1=\"8\" x2=\"3\" y1=\"12\" y2=\"12\"/><line x1=\"21\" x2=\"16\" y1=\"20\" y2=\"20\"/><line x1=\"12\" x2=\"3\" y1=\"20\" y2=\"20\"/><line x1=\"14\" x2=\"14\" y1=\"2\" y2=\"6\"/><line x1=\"8\" x2=\"8\" y1=\"10\" y2=\"14\"/><line x1=\"16\" x2=\"16\" y1=\"18\" y2=\"22\"/>","book-open":"<path d=\"M12 7v14\"/><path d=\"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z\"/>","flask-conical":"<path d=\"M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2\"/><path d=\"M8.5 2h7\"/><path d=\"M7 16h10\"/>","ellipsis":"<circle cx=\"12\" cy=\"12\" r=\"1\"/><circle cx=\"19\" cy=\"12\" r=\"1\"/><circle cx=\"5\" cy=\"12\" r=\"1\"/>","folder-plus":"<path d=\"M12 10v6\"/><path d=\"M9 13h6\"/><path d=\"M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z\"/>","upload":"<path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"17 8 12 3 7 8\"/><line x1=\"12\" x2=\"12\" y1=\"3\" y2=\"15\"/>","file-spreadsheet":"<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/><path d=\"M8 13h2\"/><path d=\"M14 13h2\"/><path d=\"M8 17h2\"/><path d=\"M14 17h2\"/>","calendar-days":"<path d=\"M8 2v4\"/><path d=\"M16 2v4\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\"/><path d=\"M3 10h18\"/><path d=\"M8 14h.01\"/><path d=\"M12 14h.01\"/><path d=\"M16 14h.01\"/><path d=\"M8 18h.01\"/><path d=\"M12 18h.01\"/><path d=\"M16 18h.01\"/>","languages":"<path d=\"m5 8 6 6\"/><path d=\"m4 14 6-6 2-3\"/><path d=\"M2 5h12\"/><path d=\"M7 2h1\"/><path d=\"m22 22-5-10-5 10\"/><path d=\"M14 18h6\"/>","cloud-off":"<path d=\"m2 2 20 20\"/><path d=\"M5.782 5.782A7 7 0 0 0 9 19h8.5a4.5 4.5 0 0 0 1.307-.193\"/><path d=\"M21.532 16.5A4.5 4.5 0 0 0 17.5 10h-1.79A7.008 7.008 0 0 0 10 5.07\"/>","refresh-cw":"<path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"/><path d=\"M21 3v5h-5\"/><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"/><path d=\"M8 16H3v5\"/>","circle-alert":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"12\" x2=\"12\" y1=\"8\" y2=\"12\"/><line x1=\"12\" x2=\"12.01\" y1=\"16\" y2=\"16\"/>","calendar-x-2":"<path d=\"M8 2v4\"/><path d=\"M16 2v4\"/><path d=\"M21 13V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8\"/><path d=\"M3 10h18\"/><path d=\"m17 22 5-5\"/><path d=\"m17 17 5 5\"/>","search-x":"<path d=\"m13.5 8.5-5 5\"/><path d=\"m8.5 8.5 5 5\"/><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/>","filter-x":"<path d=\"M13.013 3H2l8 9.46V19l4 2v-8.54l.9-1.055\"/><path d=\"m22 3-5 5\"/><path d=\"m17 3 5 5\"/>","info":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 16v-4\"/><path d=\"M12 8h.01\"/>","arrow-right":"<path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/>","tag":"<path d=\"M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z\"/><circle cx=\"7.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/>","dot":"<circle cx=\"12.1\" cy=\"12.1\" r=\"1\"/>","arrow-up":"<path d=\"m5 12 7-7 7 7\"/><path d=\"M12 19V5\"/>","arrow-down":"<path d=\"M12 5v14\"/><path d=\"m19 12-7 7-7-7\"/>","list-x":"<path d=\"M11 12H3\"/><path d=\"M16 6H3\"/><path d=\"M16 18H3\"/><path d=\"m19 10-4 4\"/><path d=\"m15 10 4 4\"/>","file-pen-line":"<path d=\"m18 5-2.414-2.414A2 2 0 0 0 14.172 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2\"/><path d=\"M21.378 12.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z\"/><path d=\"M8 18h1\"/>","download":"<path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" x2=\"12\" y1=\"15\" y2=\"3\"/>","eye":"<path d=\"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>","columns-3":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M9 3v18\"/><path d=\"M15 3v18\"/>","rotate-ccw":"<path d=\"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\"/><path d=\"M3 3v5h5\"/>","lock":"<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\" ry=\"2\"/><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"/>","chevron-up":"<path d=\"m18 15-6-6-6 6\"/>","lightbulb":"<path d=\"M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5\"/><path d=\"M9 18h6\"/><path d=\"M10 22h4\"/>","table-2":"<path d=\"M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18\"/>","history":"<path d=\"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\"/><path d=\"M3 3v5h5\"/><path d=\"M12 7v5l4 2\"/>","layers":"<path d=\"m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z\"/><path d=\"m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65\"/><path d=\"m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65\"/>","user-round-check":"<path d=\"M2 21a8 8 0 0 1 13.292-6\"/><circle cx=\"10\" cy=\"8\" r=\"5\"/><path d=\"m16 19 2 2 4-4\"/>","copy":"<rect width=\"14\" height=\"14\" x=\"8\" y=\"8\" rx=\"2\" ry=\"2\"/><path d=\"M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2\"/>","archive":"<rect width=\"20\" height=\"5\" x=\"2\" y=\"3\" rx=\"1\"/><path d=\"M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8\"/><path d=\"M10 12h4\"/>","file-up":"<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/><path d=\"M12 12v6\"/><path d=\"m15 15-3-3-3 3\"/>","file":"<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/>","file-question":"<path d=\"M12 17h.01\"/><path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z\"/><path d=\"M9.1 9a3 3 0 0 1 5.82 1c0 2-3 3-3 3\"/>","circle-x":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m15 9-6 6\"/><path d=\"m9 9 6 6\"/>","trash-2":"<path d=\"M3 6h18\"/><path d=\"M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6\"/><path d=\"M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2\"/><line x1=\"10\" x2=\"10\" y1=\"11\" y2=\"17\"/><line x1=\"14\" x2=\"14\" y1=\"11\" y2=\"17\"/>","sparkles":"<path d=\"M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z\"/><path d=\"M20 3v4\"/><path d=\"M22 5h-4\"/><path d=\"M4 17v2\"/><path d=\"M5 18H3\"/>","file-down":"<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/><path d=\"M12 18v-6\"/><path d=\"m9 15 3 3 3-3\"/>","pencil":"<path d=\"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z\"/><path d=\"m15 5 4 4\"/>","plug-zap":"<path d=\"M6.3 20.3a2.4 2.4 0 0 0 3.4 0L12 18l-6-6-2.3 2.3a2.4 2.4 0 0 0 0 3.4Z\"/><path d=\"m2 22 3-3\"/><path d=\"M7.5 13.5 10 11\"/><path d=\"M10.5 16.5 13 14\"/><path d=\"m18 3-4 4h6l-4 4\"/>","grid":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M3 9h18\"/><path d=\"M3 15h18\"/><path d=\"M9 3v18\"/><path d=\"M15 3v18\"/>","text":"<path d=\"M17 6.1H3\"/><path d=\"M21 12.1H3\"/><path d=\"M15.1 18H3\"/>","table":"<path d=\"M12 3v18\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M3 9h18\"/><path d=\"M3 15h18\"/>","wallet":"<path d=\"M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1\"/><path d=\"M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4\"/>","banknote":"<rect width=\"20\" height=\"12\" x=\"2\" y=\"6\" rx=\"2\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/><path d=\"M6 12h.01M18 12h.01\"/>","shopping-cart":"<circle cx=\"8\" cy=\"21\" r=\"1\"/><circle cx=\"19\" cy=\"21\" r=\"1\"/><path d=\"M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12\"/>","percent":"<line x1=\"19\" x2=\"5\" y1=\"5\" y2=\"19\"/><circle cx=\"6.5\" cy=\"6.5\" r=\"2.5\"/><circle cx=\"17.5\" cy=\"17.5\" r=\"2.5\"/>","mouse-pointer-click":"<path d=\"M14 4.1 12 6\"/><path d=\"m5.1 8-2.9-.8\"/><path d=\"m6 12-1.9 2\"/><path d=\"M7.2 2.2 8 5.1\"/><path d=\"M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z\"/>","trending-up":"<polyline points=\"22 7 13.5 15.5 8.5 10.5 2 17\"/><polyline points=\"16 7 22 7 22 13\"/>","eye-off":"<path d=\"M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49\"/><path d=\"M14.084 14.158a3 3 0 0 1-4.242-4.242\"/><path d=\"M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143\"/><path d=\"m2 2 20 20\"/>","rocket":"<path d=\"M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z\"/><path d=\"m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z\"/><path d=\"M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0\"/><path d=\"M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5\"/>","crosshair":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"22\" x2=\"18\" y1=\"12\" y2=\"12\"/><line x1=\"6\" x2=\"2\" y1=\"12\" y2=\"12\"/><line x1=\"12\" x2=\"12\" y1=\"6\" y2=\"2\"/><line x1=\"12\" x2=\"12\" y1=\"22\" y2=\"18\"/>","shield-alert":"<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\"/><path d=\"M12 8v4\"/><path d=\"M12 16h.01\"/>","circle-dot":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"1\"/>","circle":"<circle cx=\"12\" cy=\"12\" r=\"10\"/>","undo":"<path d=\"M3 7v6h6\"/><path d=\"M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13\"/>","repeat":"<path d=\"m17 2 4 4-4 4\"/><path d=\"M3 11v-1a4 4 0 0 1 4-4h14\"/><path d=\"m7 22-4-4 4-4\"/><path d=\"M21 13v1a4 4 0 0 1-4 4H3\"/>"};
+const ICONS={"usb":"<circle cx=\"10\" cy=\"7\" r=\"1\"/><circle cx=\"4\" cy=\"20\" r=\"1\"/><path d=\"M4.7 19.3 19 5\"/><path d=\"m21 3-3 1 2 2Z\"/><path d=\"M9.26 7.68 5 12l2 5\"/><path d=\"m10 14 5 2 3.5-3.5\"/><path d=\"m18 12 1-1 1 1-1 1Z\"/>","scale":"<path d=\"m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z\"/><path d=\"m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z\"/><path d=\"M7 21h10\"/><path d=\"M12 3v18\"/><path d=\"M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2\"/>","arrow-up-right":"<path d=\"M7 7h10v10\"/><path d=\"M7 17 17 7\"/>","arrow-down-right":"<path d=\"m7 7 10 10\"/><path d=\"M17 7v10H7\"/>","tags":"<path d=\"m15 5 6.3 6.3a2.4 2.4 0 0 1 0 3.4L17 19\"/><path d=\"M9.586 5.586A2 2 0 0 0 8.172 5H3a1 1 0 0 0-1 1v5.172a2 2 0 0 0 .586 1.414L8.29 18.29a2.426 2.426 0 0 0 3.42 0l3.58-3.58a2.426 2.426 0 0 0 0-3.42z\"/><circle cx=\"6.5\" cy=\"9.5\" r=\".5\" fill=\"currentColor\"/>","target":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"6\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/>","circle-check":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m9 12 2 2 4-4\"/>","pi":"<line x1=\"9\" x2=\"9\" y1=\"4\" y2=\"20\"/><path d=\"M4 7c0-1.7 1.3-3 3-3h13\"/><path d=\"M18 20c-1.7 0-3-1.3-3-3V4\"/>","plus":"<path d=\"M5 12h14\"/><path d=\"M12 5v14\"/>","database":"<ellipse cx=\"12\" cy=\"5\" rx=\"9\" ry=\"3\"/><path d=\"M3 5V19A9 3 0 0 0 21 19V5\"/><path d=\"M3 12A9 3 0 0 0 21 12\"/>","loader-circle":"<path d=\"M21 12a9 9 0 1 1-6.219-8.56\"/>","triangle-alert":"<path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"/><path d=\"M12 9v4\"/><path d=\"M12 17h.01\"/>","chevrons-up-down":"<path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/>","group":"<path d=\"M3 7V5c0-1.1.9-2 2-2h2\"/><path d=\"M17 3h2c1.1 0 2 .9 2 2v2\"/><path d=\"M21 17v2c0 1.1-.9 2-2 2h-2\"/><path d=\"M7 21H5c-1.1 0-2-.9-2-2v-2\"/><rect width=\"7\" height=\"5\" x=\"7\" y=\"7\" rx=\"1\"/><rect width=\"7\" height=\"5\" x=\"10\" y=\"12\" rx=\"1\"/>","chevron-down":"<path d=\"m6 9 6 6 6-6\"/>","list-filter":"<path d=\"M3 6h18\"/><path d=\"M7 12h10\"/><path d=\"M10 18h4\"/>","calendar-range":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\"/><path d=\"M16 2v4\"/><path d=\"M3 10h18\"/><path d=\"M8 2v4\"/><path d=\"M17 14h-6\"/><path d=\"M13 18H7\"/><path d=\"M7 14h.01\"/><path d=\"M17 18h.01\"/>","circle-help":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3\"/><path d=\"M12 17h.01\"/>","search":"<circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/>","check":"<path d=\"M20 6 9 17l-5-5\"/>","x":"<path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/>","chevron-left":"<path d=\"m15 18-6-6 6-6\"/>","chevron-right":"<path d=\"m9 18 6-6-6-6\"/>","layout-dashboard":"<rect width=\"7\" height=\"9\" x=\"3\" y=\"3\" rx=\"1\"/><rect width=\"7\" height=\"5\" x=\"14\" y=\"3\" rx=\"1\"/><rect width=\"7\" height=\"9\" x=\"14\" y=\"12\" rx=\"1\"/><rect width=\"7\" height=\"5\" x=\"3\" y=\"16\" rx=\"1\"/>","git-compare-arrows":"<circle cx=\"5\" cy=\"6\" r=\"3\"/><path d=\"M12 6h5a2 2 0 0 1 2 2v7\"/><path d=\"m15 9-3-3 3-3\"/><circle cx=\"19\" cy=\"18\" r=\"3\"/><path d=\"M12 18H7a2 2 0 0 1-2-2V9\"/><path d=\"m9 15 3 3-3 3\"/>","list-checks":"<path d=\"m3 17 2 2 4-4\"/><path d=\"m3 7 2 2 4-4\"/><path d=\"M13 6h8\"/><path d=\"M13 12h8\"/><path d=\"M13 18h8\"/>","file-text":"<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/><path d=\"M10 9H8\"/><path d=\"M16 13H8\"/><path d=\"M16 17H8\"/>","folder-kanban":"<path d=\"M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z\"/><path d=\"M8 10v4\"/><path d=\"M12 10v2\"/><path d=\"M16 10v6\"/>","sliders-horizontal":"<line x1=\"21\" x2=\"14\" y1=\"4\" y2=\"4\"/><line x1=\"10\" x2=\"3\" y1=\"4\" y2=\"4\"/><line x1=\"21\" x2=\"12\" y1=\"12\" y2=\"12\"/><line x1=\"8\" x2=\"3\" y1=\"12\" y2=\"12\"/><line x1=\"21\" x2=\"16\" y1=\"20\" y2=\"20\"/><line x1=\"12\" x2=\"3\" y1=\"20\" y2=\"20\"/><line x1=\"14\" x2=\"14\" y1=\"2\" y2=\"6\"/><line x1=\"8\" x2=\"8\" y1=\"10\" y2=\"14\"/><line x1=\"16\" x2=\"16\" y1=\"18\" y2=\"22\"/>","book-open":"<path d=\"M12 7v14\"/><path d=\"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z\"/>","flask-conical":"<path d=\"M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2\"/><path d=\"M8.5 2h7\"/><path d=\"M7 16h10\"/>","ellipsis":"<circle cx=\"12\" cy=\"12\" r=\"1\"/><circle cx=\"19\" cy=\"12\" r=\"1\"/><circle cx=\"5\" cy=\"12\" r=\"1\"/>","folder-plus":"<path d=\"M12 10v6\"/><path d=\"M9 13h6\"/><path d=\"M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z\"/>","upload":"<path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"17 8 12 3 7 8\"/><line x1=\"12\" x2=\"12\" y1=\"3\" y2=\"15\"/>","file-spreadsheet":"<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/><path d=\"M8 13h2\"/><path d=\"M14 13h2\"/><path d=\"M8 17h2\"/><path d=\"M14 17h2\"/>","calendar-days":"<path d=\"M8 2v4\"/><path d=\"M16 2v4\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\"/><path d=\"M3 10h18\"/><path d=\"M8 14h.01\"/><path d=\"M12 14h.01\"/><path d=\"M16 14h.01\"/><path d=\"M8 18h.01\"/><path d=\"M12 18h.01\"/><path d=\"M16 18h.01\"/>","languages":"<path d=\"m5 8 6 6\"/><path d=\"m4 14 6-6 2-3\"/><path d=\"M2 5h12\"/><path d=\"M7 2h1\"/><path d=\"m22 22-5-10-5 10\"/><path d=\"M14 18h6\"/>","cloud-off":"<path d=\"m2 2 20 20\"/><path d=\"M5.782 5.782A7 7 0 0 0 9 19h8.5a4.5 4.5 0 0 0 1.307-.193\"/><path d=\"M21.532 16.5A4.5 4.5 0 0 0 17.5 10h-1.79A7.008 7.008 0 0 0 10 5.07\"/>","refresh-cw":"<path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"/><path d=\"M21 3v5h-5\"/><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"/><path d=\"M8 16H3v5\"/>","circle-alert":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"12\" x2=\"12\" y1=\"8\" y2=\"12\"/><line x1=\"12\" x2=\"12.01\" y1=\"16\" y2=\"16\"/>","calendar-x-2":"<path d=\"M8 2v4\"/><path d=\"M16 2v4\"/><path d=\"M21 13V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8\"/><path d=\"M3 10h18\"/><path d=\"m17 22 5-5\"/><path d=\"m17 17 5 5\"/>","search-x":"<path d=\"m13.5 8.5-5 5\"/><path d=\"m8.5 8.5 5 5\"/><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/>","filter-x":"<path d=\"M13.013 3H2l8 9.46V19l4 2v-8.54l.9-1.055\"/><path d=\"m22 3-5 5\"/><path d=\"m17 3 5 5\"/>","info":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 16v-4\"/><path d=\"M12 8h.01\"/>","arrow-right":"<path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/>","tag":"<path d=\"M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z\"/><circle cx=\"7.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/>","dot":"<circle cx=\"12.1\" cy=\"12.1\" r=\"1\"/>","arrow-up":"<path d=\"m5 12 7-7 7 7\"/><path d=\"M12 19V5\"/>","arrow-down":"<path d=\"M12 5v14\"/><path d=\"m19 12-7 7-7-7\"/>","list-x":"<path d=\"M11 12H3\"/><path d=\"M16 6H3\"/><path d=\"M16 18H3\"/><path d=\"m19 10-4 4\"/><path d=\"m15 10 4 4\"/>","file-pen-line":"<path d=\"m18 5-2.414-2.414A2 2 0 0 0 14.172 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2\"/><path d=\"M21.378 12.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z\"/><path d=\"M8 18h1\"/>","download":"<path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" x2=\"12\" y1=\"15\" y2=\"3\"/>","eye":"<path d=\"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>","columns-3":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M9 3v18\"/><path d=\"M15 3v18\"/>","rotate-ccw":"<path d=\"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\"/><path d=\"M3 3v5h5\"/>","lock":"<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\" ry=\"2\"/><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"/>","chevron-up":"<path d=\"m18 15-6-6-6 6\"/>","lightbulb":"<path d=\"M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5\"/><path d=\"M9 18h6\"/><path d=\"M10 22h4\"/>","table-2":"<path d=\"M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18\"/>","history":"<path d=\"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\"/><path d=\"M3 3v5h5\"/><path d=\"M12 7v5l4 2\"/>","layers":"<path d=\"m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z\"/><path d=\"m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65\"/><path d=\"m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65\"/>","user-round-check":"<path d=\"M2 21a8 8 0 0 1 13.292-6\"/><circle cx=\"10\" cy=\"8\" r=\"5\"/><path d=\"m16 19 2 2 4-4\"/>","copy":"<rect width=\"14\" height=\"14\" x=\"8\" y=\"8\" rx=\"2\" ry=\"2\"/><path d=\"M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2\"/>","archive":"<rect width=\"20\" height=\"5\" x=\"2\" y=\"3\" rx=\"1\"/><path d=\"M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8\"/><path d=\"M10 12h4\"/>","file-up":"<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/><path d=\"M12 12v6\"/><path d=\"m15 15-3-3-3 3\"/>","file":"<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/>","file-question":"<path d=\"M12 17h.01\"/><path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z\"/><path d=\"M9.1 9a3 3 0 0 1 5.82 1c0 2-3 3-3 3\"/>","circle-x":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m15 9-6 6\"/><path d=\"m9 9 6 6\"/>","trash-2":"<path d=\"M3 6h18\"/><path d=\"M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6\"/><path d=\"M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2\"/><line x1=\"10\" x2=\"10\" y1=\"11\" y2=\"17\"/><line x1=\"14\" x2=\"14\" y1=\"11\" y2=\"17\"/>","sparkles":"<path d=\"M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z\"/><path d=\"M20 3v4\"/><path d=\"M22 5h-4\"/><path d=\"M4 17v2\"/><path d=\"M5 18H3\"/>","file-down":"<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/><path d=\"M12 18v-6\"/><path d=\"m9 15 3 3 3-3\"/>","pencil":"<path d=\"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z\"/><path d=\"m15 5 4 4\"/>","plug-zap":"<path d=\"M6.3 20.3a2.4 2.4 0 0 0 3.4 0L12 18l-6-6-2.3 2.3a2.4 2.4 0 0 0 0 3.4Z\"/><path d=\"m2 22 3-3\"/><path d=\"M7.5 13.5 10 11\"/><path d=\"M10.5 16.5 13 14\"/><path d=\"m18 3-4 4h6l-4 4\"/>","grid":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M3 9h18\"/><path d=\"M3 15h18\"/><path d=\"M9 3v18\"/><path d=\"M15 3v18\"/>","text":"<path d=\"M17 6.1H3\"/><path d=\"M21 12.1H3\"/><path d=\"M15.1 18H3\"/>","table":"<path d=\"M12 3v18\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M3 9h18\"/><path d=\"M3 15h18\"/>","wallet":"<path d=\"M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1\"/><path d=\"M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4\"/>","banknote":"<rect width=\"20\" height=\"12\" x=\"2\" y=\"6\" rx=\"2\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/><path d=\"M6 12h.01M18 12h.01\"/>","shopping-cart":"<circle cx=\"8\" cy=\"21\" r=\"1\"/><circle cx=\"19\" cy=\"21\" r=\"1\"/><path d=\"M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12\"/>","percent":"<line x1=\"19\" x2=\"5\" y1=\"5\" y2=\"19\"/><circle cx=\"6.5\" cy=\"6.5\" r=\"2.5\"/><circle cx=\"17.5\" cy=\"17.5\" r=\"2.5\"/>","mouse-pointer-click":"<path d=\"M14 4.1 12 6\"/><path d=\"m5.1 8-2.9-.8\"/><path d=\"m6 12-1.9 2\"/><path d=\"M7.2 2.2 8 5.1\"/><path d=\"M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z\"/>","trending-up":"<polyline points=\"22 7 13.5 15.5 8.5 10.5 2 17\"/><polyline points=\"16 7 22 7 22 13\"/>","eye-off":"<path d=\"M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49\"/><path d=\"M14.084 14.158a3 3 0 0 1-4.242-4.242\"/><path d=\"M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143\"/><path d=\"m2 2 20 20\"/>","rocket":"<path d=\"M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z\"/><path d=\"m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z\"/><path d=\"M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0\"/><path d=\"M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5\"/>","crosshair":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"22\" x2=\"18\" y1=\"12\" y2=\"12\"/><line x1=\"6\" x2=\"2\" y1=\"12\" y2=\"12\"/><line x1=\"12\" x2=\"12\" y1=\"6\" y2=\"2\"/><line x1=\"12\" x2=\"12\" y1=\"22\" y2=\"18\"/>","shield-alert":"<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\"/><path d=\"M12 8v4\"/><path d=\"M12 16h.01\"/>","circle-dot":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"1\"/>","circle":"<circle cx=\"12\" cy=\"12\" r=\"10\"/>","undo":"<path d=\"M3 7v6h6\"/><path d=\"M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13\"/>","repeat":"<path d=\"m17 2 4 4-4 4\"/><path d=\"M3 11v-1a4 4 0 0 1 4-4h14\"/><path d=\"m7 22-4-4 4-4\"/><path d=\"M21 13v1a4 4 0 0 1-4 4H3\"/>","refresh-ccw":"<path d=\"M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\"/><path d=\"M3 3v5h5\"/><path d=\"M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16\"/><path d=\"M16 16h5v5\"/>","pause":"<rect x=\"14\" y=\"4\" width=\"4\" height=\"16\" rx=\"1\"/><rect x=\"6\" y=\"4\" width=\"4\" height=\"16\" rx=\"1\"/>","watch":"<circle cx=\"12\" cy=\"12\" r=\"6\"/><polyline points=\"12 10 12 12 13 13\"/><path d=\"m16.13 7.66-.81-4.05a2 2 0 0 0-2-1.61h-2.68a2 2 0 0 0-2 1.61l-.78 4.05\"/><path d=\"m7.88 16.36.8 4a2 2 0 0 0 2 1.61h2.72a2 2 0 0 0 2-1.61l.81-4.05\"/>","sprout":"<path d=\"M7 20h10\"/><path d=\"M10 20c5.5-2.5.8-6.4 3-10\"/><path d=\"M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z\"/><path d=\"M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z\"/>","ban":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m4.9 4.9 14.2 14.2\"/>","gauge":"<path d=\"m12 14 4-4\"/><path d=\"M3.34 19a10 10 0 1 1 17.32 0\"/>","circle-pause":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"10\" x2=\"10\" y1=\"15\" y2=\"9\"/><line x1=\"14\" x2=\"14\" y1=\"15\" y2=\"9\"/>","piggy-bank":"<path d=\"M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2V5z\"/><path d=\"M2 9v1c0 1.1.9 2 2 2h1\"/><path d=\"M16 11h.01\"/>","square":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/>","arrow-left":"<path d=\"m12 19-7-7 7-7\"/><path d=\"M19 12H5\"/>"};
 const ic=(n,c)=>`<svg class="lucide${c?' '+c:''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]||''}</svg>`;
 function rng(seed){let a=seed>>>0;return()=>{a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 const store={get(k,d){try{const v=localStorage.getItem('spwb.'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('spwb.'+k,JSON.stringify(v))}catch(e){}}};
@@ -1075,11 +1154,12 @@ const COLDEF=[{id:'kw',l:'关键词',w:270,lock:true,g:'身份'},{id:'tags',l:'�
   .concat(MET.map(([k,l])=>({id:'B_'+k,l,k,ab:'b',w:k==='spend'||k==='sales'?104:k==='impr'?96:84,num:true,g:'B 对比期'})))
   .concat([{id:'sugg',l:'建议操作',w:150,g:'判断'},{id:'adgroup',l:'广告组',w:170,g:'上下文'},{id:'target',l:'投放词',w:190,g:'上下文'},{id:'kwtype',l:'关键词类型',w:104,g:'上下文'}]);
 const CD=Object.fromEntries(COLDEF.map(c=>[c.id,c]));
-const DEF_RULES={acos:.35,cpa:18,minClicks:10,minImpr:500,chg:.2,noConv:15,newMode:false,brand:['vortiq'],comp:['ninja','blendjet','beast','nutribullet','hamilton beach']};
+const DEF_RULES={acos:.35,cpa:18,minClicks:10,minImpr:500,chg:.2,noConv:15,newMode:false,be:.42,harvestMin:2,up:.15,noOrdDown:.2,maxDown:.3,lag:3,brand:['vortiq'],comp:['ninja','blendjet','beast','nutribullet','hamilton beach']};
 function defScope(){return{source:'term',A:{s:addD(LAST,-6),e:LAST},B:{s:addD(LAST,-13),e:addD(LAST,-7)},f:{campaigns:[],adgroups:[],match:[],target:'',term:''}}}
 const clone=o=>JSON.parse(JSON.stringify(o));
 const S={
-  view:'overview',projectId:'p1',noProject:false,loadError:false,
+  view:'cycle',projectId:'p1',
+  cyc:{step:'prep',done:new Set(),sel:{},bk:'down',camp:null,completed:null},noProject:false,loadError:false,
   scope:defScope(),shown:null,loading:false,err:null,failNext:false,updatedAt:'10:42',
   pop:null,draft:null,fdraft:null,
   list:{view:'all',tag:'all',q:'',orders:'all',sort:{k:'A_spend',d:-1},page:1,size:50},
@@ -1299,10 +1379,11 @@ function popScopeMobile(){
 function rail(){
   const R=(!S.noProject&&!proj().empty)?calc(S.shown):null;
   const risk=R?R.kws.filter(k=>k.tags.some(t=>TAGKIND[t]==='risk')).length:0;
+  const cycN=R&&!S.cyc.completed?cycImpact(cycleData(R)).total:0;
   const nav=(id,icon,label,badge)=>`<a class="nav ${S.view===id?'on':''}" href="#${id}" data-act="nav" data-v="${id}" title="${label}">${ic(icon)}<span>${label}</span>${badge?`<em title="风险词">${badge}</em>`:''}</a>`;
   return `<nav class="rail" aria-label="主导航">
     <div class="brand"><svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#2f5fef"/><path d="M9.5 22.5v-4M14 22.5v-8.5M18.5 22.5v-5.5M23 22.5V9.5" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg><div class="bt"><b>SP 广告工作台</b><small>3.0 预览版</small></div></div>
-    <div class="ng"><div class="nl">分析</div>${nav('overview','layout-dashboard','经营总览')}${nav('diagnosis','git-compare-arrows','变化诊断')}${nav('keywords','list-checks','关键词决策',risk)}${nav('reports','file-text','复盘报告')}</div>
+    <div class="ng"><div class="nl">分析</div>${nav('cycle','refresh-ccw','周期优化',cycN)}${nav('overview','layout-dashboard','经营总览')}${nav('diagnosis','git-compare-arrows','变化诊断')}${nav('keywords','list-checks','关键词决策')}${nav('reports','file-text','复盘报告')}</div>
     <div class="ng"><div class="nl">工作区</div>${nav('data','database','数据中心')}${nav('projects','folder-kanban','项目')}${nav('rules','sliders-horizontal','分析规则')}</div>
     <div class="ng end">${nav('spec','book-open','方案说明')}<div class="pa" style="display:block"><button class="nav ${S.pop==='demo'?'on':''}" data-act="pop" data-pop="demo" title="状态演示">${ic('flask-conical')}<span>状态演示</span></button>${S.pop==='demo'?popDemo('up'):''}</div></div>
     <div class="rail-foot"><i></i>演示数据 · 截至 ${md(LAST)}</div>
@@ -1310,8 +1391,8 @@ function rail(){
 }
 function tabbar(){
   const t=(id,icon,l)=>`<a href="#${id}" data-act="nav" data-v="${id}" class="${S.view===id?'on':''}">${ic(icon)}${l}</a>`;
-  const more=['data','projects','rules','spec'].includes(S.view);
-  return `<nav class="tabbar" aria-label="主导航">${t('overview','layout-dashboard','总览')}${t('diagnosis','git-compare-arrows','诊断')}${t('keywords','list-checks','关键词')}${t('reports','file-text','报告')}<button data-act="pop" data-pop="more" class="${more?'on':''}">${ic('ellipsis')}更多</button></nav>${S.pop==='more'?`${scrimM()}<div class="pop" role="dialog"><div class="plist">${[['data','database','数据中心'],['projects','folder-kanban','项目'],['rules','sliders-horizontal','分析规则'],['spec','book-open','方案说明']].map(([id,i,l])=>`<button class="pitem" data-act="nav" data-v="${id}">${ic(i)}<span class="pt">${l}</span></button>`).join('')}<button class="pitem" data-act="pop" data-pop="demo">${ic('flask-conical')}<span class="pt">状态演示</span></button></div></div>`:''}${S.pop==='demo'&&innerWidth<=760?popDemo():''}`;
+  const more=['diagnosis','data','projects','rules','spec'].includes(S.view);
+  return `<nav class="tabbar" aria-label="主导航">${t('cycle','refresh-ccw','优化')}${t('overview','layout-dashboard','总览')}${t('keywords','list-checks','关键词')}${t('reports','file-text','报告')}<button data-act="pop" data-pop="more" class="${more?'on':''}">${ic('ellipsis')}更多</button></nav>${S.pop==='more'?`${scrimM()}<div class="pop" role="dialog"><div class="plist">${[['diagnosis','git-compare-arrows','变化诊断'],['data','database','数据中心'],['projects','folder-kanban','项目'],['rules','sliders-horizontal','分析规则'],['spec','book-open','方案说明']].map(([id,i,l])=>`<button class="pitem" data-act="nav" data-v="${id}">${ic(i)}<span class="pt">${l}</span></button>`).join('')}<button class="pitem" data-act="pop" data-pop="demo">${ic('flask-conical')}<span class="pt">状态演示</span></button></div></div>`:''}${S.pop==='demo'&&innerWidth<=760?popDemo():''}`;
 }
 const DEMOS=[['normal','正常数据'],['noproject','无项目'],['empty','空项目（未导入报表）'],['nodata','当前范围无数据'],['listempty','清单筛选为空'],['nobase','没有历史基准（B 无数据）'],['coverage','数据覆盖不足'],['loaderror','读取失败可重试'],['importpending','导入待确认'],['importdone','导入完成'],['importfail','导入失败'],['reportgen','报告生成中']];
 function popDemo(dir){
@@ -1446,7 +1527,7 @@ function vOverview(){
   for(const c of D.camps){const rows=R.rows.filter(r=>r.camp===c);const a=rows.reduce((s,r)=>s+sumRow(r,R.Ai[0],R.Ai[1]).spend,0)/Math.max(1,R.covA.n);const b=rows.reduce((s,r)=>s+sumRow(r,R.Bi[0],R.Bi[1]).spend,0)/Math.max(1,R.covB.n);if(R.hasB&&b>0&&a/b>1.3)campUp.push([c,a/b-1])}
   const top=[...R.kws].sort((x,y)=>y.A.spend-x.A.spend).slice(0,8);
   const risky=R.kws.filter(VIEWF.risk), doneN=risky.filter(k=>decOf(k.key)).length, allDone=risky.length&&doneN>=risky.length;
-  const prog=`<div class="prog" aria-label="本轮进度"><span class="ps done">${ic('circle-check')}数据截至 ${md(LAST)}</span><span class="ps done">${ic('circle-check')}A/B 已设定</span><button class="ps ${allDone?'done':'cur'}" data-act="toView" data-v="risk">${ic(allDone?'circle-check':'circle-dot')}处理风险词 ${doneN}/${risky.length}</button><button class="ps ${allDone?'cur':''}" data-act="nav" data-v="reports">${ic('circle')}生成复盘</button></div>`;
+  const prog=`<div class="prog" aria-label="本轮进度"><span class="ps done">${ic('circle-check')}数据截至 ${md(LAST)}</span><span class="ps done">${ic('circle-check')}A/B 已设定</span><button class="ps ${S.cyc.completed?'done':'cur'}" data-act="nav" data-v="cycle">${ic(S.cyc.completed?'circle-check':'circle-dot')}周期优化 ${S.cyc.completed?'已完成':'第 '+(CYC_STEPS.findIndex(x=>x[0]===S.cyc.step)+1)+'/6 步'}</button><button class="ps ${S.cyc.completed?'cur':''}" data-act="nav" data-v="reports">${ic('circle')}生成复盘</button></div>`;
   const base28=(()=>{const s=di(sh.A.s)-28,e=di(sh.A.s)-1;const c=coverage(D,s,e);if(c.n===0)return null;const z=Z();R.rows.forEach(r=>addTo(z,sumRow(r,s,e)));const d=derive(z);return{s:ds(Math.max(0,s)),e:ds(e),c,d,wk:c.n/7}})();
   return `
   <div class="ph"><div class="tt"><h1>经营总览</h1><span class="meta">${esc(P.name)} · ${srcLabel(sh.source)} · A ${rLabel(sh.A)} 对比 B ${rLabel(sh.B)}${covChip(R,true)}</span></div>
@@ -1822,9 +1903,11 @@ ${by('可放大').slice(0,4).map(line).join('\n')||'本期没有符合条件的�
 ## 四、建议动作清单
 以下动作需在亚马逊广告后台人工确认后执行：
 ${acts.map(x=>`- ${x.s.action} · \`${x.k.key}\` · ${x.s.obj.camp} / ${x.s.obj.ag}（${({hi:'高',mid:'中',lo:'低'})[x.s.pri]}优先）`).join('\n')}
-## 五、本轮人工判断
+## 五、本周优化动作
+${cycMd()}
+## 六、本轮人工判断
 ${decMd()}
-## 六、数据说明
+## 七、数据说明
 - 比率均由汇总后的基础量重新计算；分母为 0 记为不可计算。
 - 产品相关性、毛利、库存和推广阶段未纳入判断，需运营综合确认。`;
 }
@@ -1892,6 +1975,14 @@ function vRules(){
     ${num('chg','变化阈值','%',100,'A 相对 B 的变化超过此比例才计入提升/恶化')}
   </div>
   <div class="switch" style="margin-top:16px"><button class="sw-btn" role="switch" aria-checked="${r.newMode}" data-act="ruleNew" aria-label="新品模式"></button><div><b>新品模式</b><div class="hint2">放宽判断：目标 ACOS ×1.4、最低点击 ×1.5、无转化阈值 +10。适合推广初期，避免过早否定。</div></div></div></div></section>
+  <section class="panel"><div class="panel-h"><h3>周期优化参数</h3><span class="newb">新增</span><span class="muted" style="font-size:12px">用于收割、否定与调价建议</span></div><div class="panel-b"><div class="form">
+    ${num('be','盈亏平衡 ACOS（毛利率）','%',100,'目标 ACOS 应低于此值，差值即广告利润空间')}
+    ${num('harvestMin','收割最少订单','单',1,'自动 / 广泛 / 词组中达到此订单数且 ACOS 达标')}
+    ${num('up','盈利提价幅度','%',100,'曝光偏少时再加 5%')}
+    ${num('noOrdDown','无单阶梯降价','%',100,'点击未到否定阈值时')}
+    ${num('maxDown','单次降价上限','%',100,'避免一次调整过猛')}
+    ${num('lag','排除最近未结算天数','天',1,'7 天归因，最近几天订单会补入')}
+  </div></div></section>
   <section class="panel"><div class="panel-h"><h3>保护词表</h3><span class="muted" style="font-size:12px">命中的词不会被建议直接否定，改为“人工复核”</span></div><div class="panel-b cols2e">
     ${tagin('brand','品牌词','包含任一品牌词即视为品牌词')}${tagin('comp','竞品词','用于识别竞品词，提示谨慎处理')}
   </div></section>
@@ -1908,6 +1999,17 @@ function vRules(){
 function vSpec(){
   return `<div class="spec">
   <div class="ph"><div class="tt"><h1>方案说明</h1><span class="meta">信息架构、模块去向、交互规范与实施优先级 · 供评审与开发参考</span></div></div>
+  <section class="panel"><div class="panel-h"><h3>v5：按资深运营的周期优化流程组织</h3><span class="newb">新增</span></div><div class="panel-b">
+    <p style="margin:0 0 10px">资深运营的工作不是“看报表”，而是按固定节奏完成一轮可回看的动作。本工具聚焦每周一轮的关键词优化：</p>
+    <div class="scx"><table class="sp" style="min-width:720px"><thead><tr><th>节奏</th><th>做什么</th><th>本工具</th></tr></thead><tbody>
+      <tr><td>每日</td><td>预算是否提前耗尽、花费异常、断货与购物车丢失</td><td>不在范围（需要实时数据与库存），仅提示</td></tr>
+      <tr><td>每周</td><td>准备与回看 → 诊断 → 收割 → 否定 → 调价 → 导出批量表并记录</td><td><b>周期优化</b>主流程</td></tr>
+      <tr><td>每两周</td><td>预算再分配、活动结构调整、版位溢价</td><td>诊断中的活动表给出检查提示；版位需版位报表（新增范围）</td></tr>
+      <tr><td>每月 / 大促</td><td>目标与策略复盘、大促前后对比</td><td>变化诊断“大促前后”、复盘报告</td></tr>
+    </tbody></table></div>
+    <p style="margin:12px 0 4px"><b>关键原则</b></p>
+    <ul style="margin:0"><li>先排除最近 2–3 天未结算数据，用 14 天窗口判断出价；样本不足不下结论。</li><li>收割与否定在搜索词层，出价在投放层；收割后在来源活动否定精准，避免自我竞价。</li><li>调价有幅度上限，无单阶梯降价，达到阈值再暂停；品牌词只复核不直接否定。</li><li>每次改动都留日志，下周期回看效果；回看只作方向参考，不当作因果结论。</li><li>数据边界：报表没有当前出价、预算使用率、版位、库存与毛利。参考出价由 CPC 推算，预算只给检查提示，毛利由用户填写盈亏平衡 ACOS。</li></ul>
+  </div></section>
   <section class="panel" style="padding:14px 16px"><h2>运营打开后的四步</h2>
     <div class="flow" style="margin-top:10px"><span class="k">看：总览 KPI 与趋势</span>${ic('arrow-right')}<span class="k">找：待处理队列 → 带标签进入清单</span>${ic('arrow-right')}<span class="k">证：详情侧栏的建议与依据、来源活动</span>${ic('arrow-right')}<span class="k">记：生成复盘 / 导出清单</span></div>
     <p style="margin:10px 0 0">分析范围（项目、来源、A/B、筛选）常驻顶部，四步之间切换页面时不变；切换项目时清空筛选并按新项目的数据截至日重设日期。</p></section>
@@ -1931,6 +2033,7 @@ function vSpec(){
       <ul><li>操作位置稳定，范围与“结果是否已更新”始终可见</li><li>总览风险入口直接带标签进入清单，详情侧栏不离开表格</li><li>代价：首次使用需理解范围条 → 用空状态引导，导入后自动设为最近 7 天对比前 7 天</li></ul></section>
   </div>
   <section class="panel"><div class="panel-h"><h3>原有七个模块的去向</h3></div><div class="panel-b scx"><table class="sp" style="min-width:720px"><thead><tr><th>原模块</th><th>新位置</th><th>说明</th></tr></thead><tbody>
+    <tr><td>（新增）周期优化</td><td>周期优化（默认首页）</td><td>把关键词决策的建议按资深运营的每周节奏组织为 6 步：准备与回看、诊断、收割、否定、投放层调价、确认导出；输出亚马逊批量操作表与动作日志，下周期回看效果</td></tr>
     <tr><td>经营总览</td><td>经营总览</td><td>KPI 条、日趋势、需要优先处理队列、重点关键词、数据覆盖与口径（含此前 28 天历史基准）、最近复盘；导入入口移到页头与空状态</td></tr>
     <tr><td>变化诊断</td><td>变化诊断</td><td>三种模式（自定义 / 归档周期 / 大促前后）在页内切换；A/B 日期与顶部范围条共用；指标对照含日均列；覆盖口径折叠</td></tr>
     <tr><td>关键词决策</td><td>关键词决策</td><td>表格为主体；标签、搜索、订单、显示列在工具栏；详情改为右侧栏；行内展开来源活动；导出与生成复盘在页头</td></tr>
@@ -1962,7 +2065,7 @@ function vSpec(){
   <div class="prio">
     <section class="panel"><h4><span class="lv">P0</span>布局调整</h4><ul style="margin:0"><li>顶部常驻范围条与状态胶囊</li><li>关键词页表格主体 + 右侧详情</li><li>总览“需要优先处理”带标签跳转</li><li>管理功能归入工作区分组</li></ul></section>
     <section class="panel"><h4><span class="lv">P1</span>交互优化</h4><ul style="margin:0"><li>日期弹层：预设分组、日历缺日标记、归档周</li><li>旧结果标记、失败重试、禁止导出旧结果</li><li>导出范围说明弹层</li><li>来源活动展开与加总校验、列宽与分页</li><li>三种宽度适配</li><li>覆盖提示收为页头标记 + 弹层</li><li>B 列可切换为“变化”</li><li>手机端关键词卡片列表</li></ul></section>
-    <section class="panel"><h4><span class="lv">P2</span>新增范围 <span class="newb">需评审</span></h4><ul style="margin:0"><li>“活动分化”派生标签</li><li>变化贡献分解（按词）</li><li>数据覆盖日历</li><li>人工判断记录（采纳 / 暂不处理）与批量操作</li><li>⌘K 命令面板与清单快捷键</li><li>本期结论（规则生成）与对数均值变化拆解</li><li>清单视图标签（可扩展为保存自定义视图）</li><li>不建议本期：账户同步、自动执行、库存利润联动</li></ul></section>
+    <section class="panel"><h4><span class="lv">P2</span>新增范围 <span class="newb">需评审</span></h4><ul style="margin:0"><li>“活动分化”派生标签</li><li>变化贡献分解（按词）</li><li>数据覆盖日历</li><li>人工判断记录（采纳 / 暂不处理）与批量操作</li><li>⌘K 命令面板与清单快捷键</li><li>本期结论（规则生成）与对数均值变化拆解</li><li>周期优化工作流：收割 / 否定 / 投放层调价建议</li><li>亚马逊批量操作表导出与动作日志、上期效果回看（需后端保存）</li><li>清单视图标签（可扩展为保存自定义视图）</li><li>不建议本期：账户同步、自动执行、库存利润联动</li></ul></section>
   </div>
   <p class="muted" style="font-size:12px">原型中带虚线“新增”标记的元素，是基于现有数据派生的新展示，不属于现有已完成能力。全部数字为演示合成数据。</p>
   </div>`;
@@ -1993,8 +2096,240 @@ function modal(){
   return '';
 }
 
+// ---------- 周期优化 ----------
+// 每周一轮：准备与回看 → 诊断 → 收割 → 否定 → 调价 → 确认导出。规则阈值来自“分析规则”。
+const CYC_STEPS=[['prep','准备与回看'],['diag','诊断'],['harvest','收割'],['neg','否定'],['bid','调价'],['export','确认导出']];
+const BIDK=[['down','亏损降价'],['down0','无单降价'],['pause','暂停'],['up','盈利提价'],['keep','维持'],['watch','观察']];
+const ACTK=new Set(['down','down0','pause','up']);
+const confHTML=c=>`<span class="cf ${c}">${({high:'高',mid:'中',low:'需复核'})[c]}</span>`;
+const isSel=a=>a.id in S.cyc.sel?S.cyc.sel[a.id]:a.conf!=='low';
+const isBrandT=t=>S.rules.brand.some(b=>t.includes(b)), isCompT=t=>S.rules.comp.some(b=>t.includes(b));
+const r2=v=>Math.max(.02,Math.round(v*100)/100);
+const asinX=t=>`asin="${t.replace(/^asin="?|"$/g,'').toUpperCase()}"`;
+function tgroups(R){
+  const map=new Map();
+  for(const r of R.rows){const key=r.camp+'|'+r.ag+'|'+r.target+'|'+r.match;let g=map.get(key);if(!g){g={key,camp:r.camp,ag:r.ag,target:r.target,match:r.match,z:Z(),zb:Z()};map.set(key,g)}addTo(g.z,sumRow(r,R.Ai[0],R.Ai[1]));addTo(g.zb,sumRow(r,R.Bi[0],R.Bi[1]))}
+  return [...map.values()];
+}
+let cycMemo={k:null,v:null};
+function cycleData(R){
+  const key=JSON.stringify([S.projectId,S.shown,S.rules]);
+  if(cycMemo.k===key)return cycMemo.v;
+  const T=thr(S.rules),Ru=S.rules,wk=7/Math.max(1,R.covA.n),harvest=[],neg=[],bids=[];
+  if(S.shown.source==='term'){
+    for(const k of R.kws){
+      if(k.kwtype==='品牌词')continue;
+      const hasExact=k.rows.some(x=>x.r.match==='exact'||x.r.match==='asin');
+      const from=k.rows.filter(x=>x.r.match==='auto'||x.r.match==='broad'||x.r.match==='phrase');
+      if(!hasExact&&from.length){
+        const z=Z();from.forEach(x=>addTo(z,x.a));const a=derive(z);
+        if(a.orders>=Ru.harvestMin&&a.acos!=null&&a.acos<=T.acos){
+          const rpc=a.sales/a.clicks,bid=r2(Math.min(a.cpc*1.6,Math.max(a.cpc*.9,rpc*T.acos))),asin=k.kwtype==='ASIN';
+          harvest.push({id:'h|'+k.key,type:'harvest',key:k.key,asin,a,rpc,bid,from:from.map(x=>x.r),conf:a.orders>=3?'high':'mid',to:asin?{camp:'SP-ASIN-Competitor',ag:'AG-PAT-Rival-ASIN'}:{camp:'SP-Exact-Core',ag:'AG-Exact-Growth'}});
+        }
+      }
+      for(const x of k.rows){
+        if(x.r.match==='exact'||x.r.match==='asin')continue;
+        const a=x.a;
+        if(a.orders===0&&a.clicks>=T.minC&&(a.clicks>=T.noConv||a.spend>=Ru.cpa*1.5)){
+          const brand=isBrandT(k.key);
+          neg.push({id:'n|'+x.r.id,type:'neg',key:k.key,r:x.r,a,asin:k.kwtype==='ASIN',brand,comp:isCompT(k.key),allZero:k.A.orders===0,nCamp:k.camps.length,waste:a.spend*wk,conf:brand?'low':(a.clicks>=T.noConv*1.5||a.spend>=Ru.cpa*2?'high':'mid')});
+        }
+      }
+    }
+  }
+  for(const g of tgroups(R)){
+    const a=derive(g.z);if(a.impr===0)continue;
+    let kind='keep',chg=0,why='ACOS 在目标附近，维持';
+    if(a.orders===0&&a.clicks<T.minC){kind='watch';why=`点击 ${a.clicks} 次，未到最低样本 ${T.minC}`}
+    else if(a.orders===0&&a.clicks>=T.noConv){if(g.match==='auto'){kind='down0';chg=-Ru.maxDown;why=`点击 ${a.clicks} 次无订单（自动组降到上限）`}else{kind='pause';chg=-1;why=`点击 ${a.clicks} 次 ≥ ${T.noConv} 且无订单`}}
+    else if(a.orders===0){kind='down0';chg=-Ru.noOrdDown;why=`点击 ${a.clicks} 次无订单，阶梯降价`}
+    else if(a.acos>T.acos*1.1){kind='down';chg=Math.max(-Ru.maxDown,Math.min(-.05,T.acos/a.acos-1));why=`ACOS ${pct(a.acos)} > 目标 ${pct(T.acos)}${T.acos/a.acos-1<-Ru.maxDown?'，降幅封顶':''}`}
+    else if(a.orders>=2&&a.acos<=T.acos*.7){const low=a.impr*wk<1500;kind='up';chg=Ru.up+(low?.05:0);why=`ACOS ${pct(a.acos)} ≤ 目标 70%${low?'，曝光偏少':''}`}
+    const brand=isBrandT(g.target);
+    const ref=ACTK.has(kind)&&kind!=='pause'?r2(a.cpc*(1+chg)):null;
+    const save=kind==='pause'?a.spend*wk:(kind==='down'||kind==='down0')?a.clicks*wk*(a.cpc-ref):0;
+    const extra=kind==='up'?a.clicks*wk*(ref-a.cpc):0;
+    bids.push({id:'b|'+g.key,type:'bid',kind,chg,ref,g,a,why,kwEnt:['exact','phrase','broad'].includes(g.match),save,extra,conf:brand&&(kind==='pause'||kind==='down0')?'low':(a.clicks>=T.minC*2||a.orders>=3?'high':'mid')});
+  }
+  harvest.sort((x,y)=>y.a.orders-x.a.orders||x.a.acos-y.a.acos);
+  neg.sort((x,y)=>y.a.spend-x.a.spend);
+  bids.sort((x,y)=>(y.save+y.extra)-(x.save+x.extra)||y.a.spend-x.a.spend);
+  const v={harvest,neg,bids,wk};cycMemo={k:key,v};return v;
+}
+function cycImpact(cd){
+  const h=cd.harvest.filter(isSel),n=cd.neg.filter(isSel),b=cd.bids.filter(x=>ACTK.has(x.kind)&&isSel(x));
+  return {h:h.length,n:n.length,down:b.filter(x=>x.kind==='down'||x.kind==='down0').length,pause:b.filter(x=>x.kind==='pause').length,up:b.filter(x=>x.kind==='up').length,
+    negSave:n.reduce((t,x)=>t+x.waste,0),bidSave:b.reduce((t,x)=>t+x.save,0),upCost:b.reduce((t,x)=>t+x.extra,0),total:h.length+n.length+b.length};
+}
+function prevCycle(R){
+  if(!R.hasB)return null;
+  const T=thr(S.rules),out=[];
+  for(const g of tgroups(R)){
+    const b=derive(g.zb),a=derive(g.z),ctx=g.camp+' / '+g.ag;
+    if(b.orders>=1&&b.acos>T.acos*1.1&&b.clicks>=T.minC){
+      const res=a.spend===0?['neu','已无花费']:a.acos==null?['bad','无订单']:a.acos<b.acos*.95?['good','改善']:a.acos>b.acos*1.05?['bad','变差']:['neu','持平'];
+      out.push({act:'降价',d:`${Math.round(Math.max(-S.rules.maxDown,T.acos/b.acos-1)*100)}%`,obj:g.target,ctx,m:'acos',bv:b.acos,av:a.acos,res,w:b.spend});
+    }else if(b.orders>=2&&b.acos<=T.acos*.7&&b.clicks>=T.minC){
+      const res=a.acos!=null&&a.acos<=T.acos&&a.sales>b.sales*1.05?['good','改善']:a.acos!=null&&a.acos>T.acos?['bad','变差']:['neu','持平'];
+      out.push({act:'提价',d:`+${Math.round(S.rules.up*100)}%`,obj:g.target,ctx,m:'sales',bv:b.sales,av:a.sales,res,w:b.spend});
+    }
+  }
+  if(S.shown.source==='term')for(const r of R.rows){
+    if(r.match==='exact'||r.match==='asin')continue;
+    const b=derive(sumRow(r,R.Bi[0],R.Bi[1])),a=derive(sumRow(r,R.Ai[0],R.Ai[1]));
+    if(b.orders===0&&b.clicks>=T.noConv)out.push({act:'否定精准',d:'',obj:r.term,ctx:r.camp+' / '+r.ag,m:'spend',bv:b.spend,av:a.spend,res:a.spend<.5?['good','已止损']:['warn','仍有花费，需核实'],w:b.spend});
+  }
+  return out.sort((x,y)=>y.w-x.w).slice(0,14);
+}
+function bulkRows(cd){
+  const rows=[],cap=m=>({exact:'Exact',phrase:'Phrase',broad:'Broad'})[m]||'—';
+  cd.harvest.filter(isSel).forEach(h=>{
+    rows.push([h.asin?'Product Targeting':'Keyword','Create',h.to.camp,h.to.ag,h.asin?asinX(h.key):h.key,h.asin?'—':'Exact',h.bid.toFixed(2),'enabled']);
+    const seen=new Set();h.from.forEach(r=>{const k=r.camp+'|'+r.ag;if(seen.has(k))return;seen.add(k);rows.push([h.asin?'Negative Product Targeting':'Negative Keyword','Create',r.camp,r.ag,h.asin?asinX(h.key):h.key,h.asin?'—':'Negative Exact','','enabled'])});
+  });
+  cd.neg.filter(isSel).forEach(n=>rows.push([n.asin?'Negative Product Targeting':'Negative Keyword','Create',n.r.camp,n.r.ag,n.asin?asinX(n.key):n.key,n.asin?'—':'Negative Exact','','enabled']));
+  cd.bids.filter(b=>ACTK.has(b.kind)&&isSel(b)).forEach(b=>rows.push([b.kwEnt?'Keyword':'Product Targeting','Update',b.g.camp,b.g.ag,b.g.target,b.kwEnt?cap(b.g.match):'—',b.kind==='pause'?'':b.ref.toFixed(2),b.kind==='pause'?'paused':'enabled']));
+  return rows;
+}
+function cycMd(){
+  const R=(!S.noProject&&!proj().empty)?calc(S.shown):null;if(!R)return '';
+  const cd=cycleData(R),im=cycImpact(cd);
+  if(!im.total)return '本周期没有选中的优化动作。';
+  const L=[`- 状态：${S.cyc.completed?'已完成（'+S.cyc.completed+'）':'进行中，尚未在“确认导出”中完成'}`,
+    `- 收割 ${im.h} 个搜索词 → 精准投放，并在来源活动添加否定精准`,
+    `- 否定 ${im.n} 个无效搜索词，预计每周节省约 ${money0(im.negSave)}`,
+    `- 降价 ${im.down} 个、暂停 ${im.pause} 个投放，预计每周节省约 ${money0(im.bidSave)}（按点击量不变粗估）`,
+    `- 提价 ${im.up} 个盈利投放，花费每周最多增加约 ${money0(im.upCost)}`];
+  const top=cd.harvest.filter(isSel).slice(0,3).map(h=>`\`${h.key}\`（${h.a.orders} 单，ACOS ${pct(h.a.acos)}，出价 ${cur()}${h.bid.toFixed(2)}）`);
+  if(top.length)L.push(`- 重点收割：${top.join('、')}`);
+  L.push('- 下周期在“准备与回看”中检查这些动作的效果');
+  return L.join('\n');
+}
+function guide(step){
+  const T=thr(S.rules),Ru=S.rules;
+  const G={
+    prep:`<div class="gs"><h4>${ic('lightbulb')}资深做法</h4><p>每周固定一天做一轮。依据<b>最近 14 天、排除最近 ${Ru.lag} 天</b>的数据：SP 报表按点击后 7 天归因，最近几天的订单会陆续补入，ACOS 会虚高；单周样本太少，长尾词常常只有几次点击。</p></div>
+      <div class="gs"><h4>${ic('history')}先回看，再动手</h4><p>上期改了什么、效果如何。没改善或变差的对象本周优先复查，而不是继续加码；否定后仍有花费，先确认后台是否已执行。</p></div>
+      <div class="gs"><h4>${ic('target')}确认目标</h4><p>目标 ACOS 应低于盈亏平衡 ACOS（≈ 广告前毛利率），两者之差就是广告的利润空间。新品期可开启“新品模式”放宽。</p></div>`,
+    diag:`<div class="gs"><h4>${ic('lightbulb')}先定位问题在哪一层</h4><ul><li><b>曝光、CTR 下降</b>：排名、竞价或主图问题</li><li><b>CVR 下降</b>：先查价格、评论、库存、Listing 等广告以外的原因，再动出价</li><li><b>CPC 上升</b>：竞争加剧，关注 ACOS 是否失控</li></ul></div>
+      <div class="gs"><h4>${ic('layers')}再看活动</h4><p>ACOS 超标的活动是本周调价重点；达标且花费上涨的活动，检查是否受预算限制（报表没有预算使用率，需到后台确认）。</p></div>`,
+    harvest:`<div class="gs"><h4>${ic('sprout')}收割规则</h4><p>自动 / 广泛 / 词组中，<b>订单 ≥ ${Ru.harvestMin} 且 ACOS ≤ ${pct(T.acos)}</b>，且该词还没有精准投放。</p><div class="formula">建议出价 = 每次点击收入 × 目标 ACOS
+限制在当前 CPC 的 0.9–1.6 倍</div></div>
+      <div class="gs"><h4>${ic('git-compare-arrows')}收割后做什么</h4><p>在来源广告组添加<b>否定精准</b>，让这部分流量只走精准投放，避免自己和自己竞价；批量表中已自动带上。ASIN 词加入商品投放活动。</p></div>`,
+    neg:`<div class="gs"><h4>${ic('ban')}否定规则</h4><p><b>点击 ≥ ${T.noConv}</b> 或 <b>花费 ≥ ${cur()}${(Ru.cpa*1.5).toFixed(0)}</b>（目标 CPA 的 1.5 倍），且没有订单。</p></div>
+      <div class="gs"><h4>${ic('lightbulb')}注意</h4><ul><li>否定精准只屏蔽这一个搜索词；与产品不相关的词根（型号、材质、用途不符）用否定词组</li><li>品牌词、高相关核心词不直接否定，先降价观察</li><li>精准投放的词不在这里否定，到“调价”中暂停</li></ul></div>`,
+    bid:`<div class="gs"><h4>${ic('gauge')}在投放层调价</h4><p>搜索词本身不能出价，出价只能改在关键词 / 定向上，所以这里按投放汇总。</p><div class="formula">目标出价 = 每次点击收入 × 目标 ACOS
+         = 当前 CPC × 目标 ACOS ÷ 实际 ACOS</div></div>
+      <div class="gs"><h4>${ic('list-checks')}分桶规则</h4><ul><li>亏损有单：按公式下调，单次不超过 ${Math.round(Ru.maxDown*100)}%</li><li>有点击无单：阶梯降价 ${Math.round(Ru.noOrdDown*100)}%，点击达 ${T.noConv} 次仍无单则暂停</li><li>盈利（ACOS ≤ 目标 70%）：提价 ${Math.round(Ru.up*100)}%，曝光偏少再加 5%</li><li>点击不足 ${T.minC} 次：继续观察</li></ul><p>报表不含当前出价，参考出价由 CPC 推算；上传前请按后台实际出价同比例调整。</p></div>`,
+    export:`<div class="gs"><h4>${ic('file-spreadsheet')}上传前</h4><p>批量表需要 Campaign ID、Ad Group ID 等字段，用后台下载的批量表匹配后上传。本工具不会直接修改亚马逊广告。</p></div>
+      <div class="gs"><h4>${ic('history')}形成闭环</h4><p>完成本周期后，动作会写入复盘报告并保存为日志；下周期在“准备与回看”中对比执行前后的数据。</p></div>`};
+  return `<aside class="panel guide" aria-label="本步说明">${G[step]}</aside>`;
+}
+function vCycle(){
+  const gt=gate();if(gt)return gt;
+  const R=calc(S.shown);
+  if(!R.kws.length)return banners(R)+noData(R);
+  const sh=S.shown,C=S.cyc,cd=cycleData(R),im=cycImpact(cd),T=thr(S.rules),Ru=S.rules;
+  const act=cd.bids.filter(x=>ACTK.has(x.kind));
+  const si=CYC_STEPS.findIndex(x=>x[0]===C.step);
+  const sub={prep:'窗口检查 · 上期回看',diag:'流量 · 转化 · 成本',harvest:'搜索词 → 精准投放',neg:'止损无效花费',bid:'投放层出价',export:'批量表 · 动作日志'};
+  const cnt={harvest:cd.harvest.filter(isSel).length,neg:cd.neg.filter(isSel).length,bid:act.filter(isSel).length,export:im.total};
+  const steps=`<nav class="cyc-steps" aria-label="周期优化步骤">${CYC_STEPS.map(([k,l],i)=>{const dn=C.done.has(k)&&C.step!==k;return `<button class="cstep ${C.step===k?'on':''} ${dn?'done':''}" data-act="cycStep" data-v="${k}" aria-current="${C.step===k?'step':'false'}"><span class="cn"><i>${dn?ic('check'):i+1}</i><span>${sub[k]}</span></span><b>${l}</b>${cnt[k]!=null?`<span class="cc" title="已选动作数">${cnt[k]}</span>`:''}</button>`}).join('')}</nav>`;
+  const termOnly=sh.source!=='term'?`<div class="bn warn">${ic('circle-alert')}<div class="bt2">收割与否定需要<b>搜索词报表</b>（投放报表看不到消费者实际搜了什么）。</div><div class="ba"><button class="btn sm primary" data-act="srcTerm">切换到搜索词报表</button></div></div>`:'';
+  const ck=(a)=>`<td class="ck"><input type="checkbox" class="pick" data-act="cycSel" data-id="${esc(a.id)}" ${isSel(a)?'checked':''} aria-label="选择"></td>`;
+  const ckAll=(v,list)=>`<th class="ck"><input type="checkbox" class="pick" data-act="cycAll" data-v="${v}" ${list.length&&list.every(isSel)?'checked':''} aria-label="全选"></th>`;
+  const kwBtn=k=>`<button class="lnk" data-act="open" data-key="${esc(k)}" title="${esc(k)}">${esc(k)}</button>`;
+  let body='',foot='';
+  if(C.step==='prep'){
+    const lag=Ru.lag,lagN=Math.max(0,di(sh.A.e)-(END-lag));
+    const checks=[
+      ['ok',`数据已更新至 ${md(LAST)}`,`${proj().files} 个归档文件 · ${srcLabel(sh.source)}`,''],
+      lagN?['warn',`A 期包含最近 ${lagN} 天（${md(ds(END-lag+1))}–${md(sh.A.e)}）的未结算数据`,'按点击后 7 天归因，这几天的订单还会补入，ACOS 会偏高、新词会被误判为无单',`<button class="btn sm primary" data-act="cycWin">改用推荐窗口：近 14 天，截至 ${md(ds(END-lag))}</button>`]:['ok',`A 期已避开最近 ${lag} 天未结算数据`,'',''],
+      R.covA.n<10?['warn',`A 期只有 ${R.covA.n} 天，长尾词样本偏少`,'出价判断建议用 14 天窗口；本周仍可先处理样本充足的词',lagN?'':`<button class="btn sm" data-act="cycWin">用 14 天窗口</button>`]:['ok',`A 期 ${R.covA.n} 天，样本足够`,'',''],
+      (R.covA.n<R.covA.days||R.covB.n<R.covB.days)?['warn',`数据覆盖不足：A ${R.covA.n}/${R.covA.days} 天，B ${R.covB.n}/${R.covB.days} 天`,'缺日不补零；量指标已按日均对比',`<button class="btn sm" data-act="nav" data-v="data">查看覆盖</button>`]:['ok','A / B 期数据完整','',''],
+      sh.source==='term'?['ok','使用搜索词报表','可以做收割与否定','']:['warn','当前为投放报表','只能调价；收割与否定需要搜索词报表',`<button class="btn sm" data-act="srcTerm">切换</button>`],
+      T.acos<Ru.be?['ok',`目标 ACOS ${pct(T.acos)} 低于盈亏平衡 ACOS ${pct(Ru.be)}`,`留有 ${((Ru.be-T.acos)*100).toFixed(1)}pt 广告利润空间${Ru.newMode?'（新品模式已放宽）':''}`,`<button class="btn sm ghost" data-act="nav" data-v="rules">修改</button>`]:['warn',`目标 ACOS ${pct(T.acos)} 不低于盈亏平衡 ACOS ${pct(Ru.be)}`,'按此目标投放会亏损，请确认是否处于推广期',`<button class="btn sm" data-act="nav" data-v="rules">调整目标</button>`]];
+    const pv=prevCycle(R);
+    const cntR=k=>pv?pv.filter(x=>x.res[0]===k).length:0;
+    const fmtM=(m,v)=>v==null?NA:m==='acos'?pct(v):money0(v);
+    body=`<section class="panel"><div class="panel-h"><h3>决策窗口检查</h3><span class="muted" style="font-size:12px">先确认数据可信，再做判断</span></div><div class="panel-b"><ul class="checks">${checks.map(([c,t,d,b])=>`<li class="${c}">${ic(c==='ok'?'circle-check':'triangle-alert')}<span class="ct2">${t}${d?`<small>${d}</small>`:''}</span>${b}</li>`).join('')}</ul></div></section>
+    <section class="panel"><div class="panel-h"><h3>上期动作回看</h3><span class="newb">新增</span><span class="muted" style="font-size:12px">${pv?`依据 ${rLabel(sh.B)} 数据制定、${md(sh.A.s)} 执行（演示记录）· 效果 = A 对比 B`:'没有 B 期数据，无法回看'}</span></div>
+      <div class="panel-b">${pv&&pv.length?`<div class="rsum"><div class="rt"><b>${pv.length}</b><span>上期动作</span></div><div class="rt good"><b>${cntR('good')}</b><span>改善 / 已止损</span></div><div class="rt"><b>${cntR('neu')}</b><span>持平</span></div><div class="rt bad"><b>${cntR('bad')}</b><span>变差</span></div><div class="rt warn"><b>${cntR('warn')}</b><span>需核实执行</span></div></div>
+      <div class="scx"><table class="lt ctab" style="min-width:740px"><thead><tr><th>动作</th><th>对象</th><th>活动 / 广告组</th><th class="num">执行前 (B)</th><th class="num">执行后 (A)</th><th>结果</th></tr></thead><tbody>
+      ${pv.map(x=>`<tr><td><b style="font-weight:600">${x.act}</b> <span class="muted tn">${x.d}</span></td><td><span class="lnk" style="cursor:default" title="${esc(x.obj)}">${esc(x.obj)}</span></td><td class="sm2" title="${esc(x.ctx)}">${esc(x.ctx)}</td><td class="num">${({acos:'ACOS ',sales:'销售 ',spend:'花费 '})[x.m]}${fmtM(x.m,x.bv)}</td><td class="num">${fmtM(x.m,x.av)}</td><td><span class="rs ${x.res[0]}">${x.res[1]}</span></td></tr>`).join('')}
+      </tbody></table></div><p class="hint2" style="margin:10px 0 0">前后对比没有剔除季节、竞品与库存等因素，只作方向参考。正式使用时，动作来自上期“完成本周期”保存的日志。</p>`:`<div class="muted">没有可回看的上期动作。</div>`}</div></section>`;
+    foot=`<span class="fs">检查 ${checks.filter(c=>c[0]==='warn').length?`<b>${checks.filter(c=>c[0]==='warn').length}</b> 项需注意`:'全部通过'}</span>`;
+  }
+  else if(C.step==='diag'){
+    const camps=[...new Set(R.rows.map(r=>r.camp))].map(c=>{const rows=R.rows.filter(r=>r.camp===c),za=Z(),zb=Z();rows.forEach(r=>{addTo(za,sumRow(r,R.Ai[0],R.Ai[1]));addTo(zb,sumRow(r,R.Bi[0],R.Bi[1]))});const a=derive(za),b=derive(zb),sa=a.spend/Math.max(1,R.covA.n),sb=R.hasB?b.spend/Math.max(1,R.covB.n):null;
+      const hint=a.acos==null?(a.spend>0?['bad','有花费无销售，优先检查']:['neu','—']):a.acos>T.acos*1.1?['bad','ACOS 超标 → 本周重点调价']:(sb&&sa/sb>1.3?['warn','达标且花费上涨 → 检查预算是否受限']:['good','达标 → 维持']);
+      const pend=act.filter(x=>x.g.camp===c).length+cd.neg.filter(x=>x.r.camp===c).length;
+      return {c,a,sa,sb,hint,pend}}).sort((x,y)=>y.sa-x.sa);
+    body=`${insight(R)}
+    <section class="panel"><div class="panel-h"><h3>活动表现</h3><span class="muted" style="font-size:12px">按 A 期日均花费排序 · 目标 ACOS ${pct(T.acos)}</span></div><div class="panel-b scx"><table class="lt ctab" style="min-width:740px"><thead><tr><th>广告活动</th><th class="num">A 花费 / 天</th><th class="num">日均变化</th><th class="num">A 销售额</th><th class="num">ACOS</th><th class="num">CVR</th><th>判断</th><th class="num">待处理</th><th></th></tr></thead><tbody>
+    ${camps.map(x=>`<tr><td><b style="font-weight:600">${esc(x.c)}</b></td><td class="num">${money0(x.sa)}</td><td class="num">${x.sb?dlt('spend',x.sa,x.sb):'<span class="nobase">无基准</span>'}</td><td class="num">${fv('sales',x.a.sales)}</td><td class="num ${acosCls(x.a.acos)}">${fv('acos',x.a.acos)}</td><td class="num">${fv('cvr',x.a.cvr)}</td><td><span class="rs ${x.hint[0]}">${x.hint[1]}</span></td><td class="num">${x.pend||'—'}</td><td style="text-align:right">${x.pend?`<button class="btn sm ghost" data-act="cycCamp" data-v="${esc(x.c)}" data-go="1">处理${ic('arrow-right')}</button>`:''}</td></tr>`).join('')}
+    </tbody></table><p class="hint2" style="margin:10px 0 0">预算提示只基于花费趋势；报表没有预算使用率，是否受限需到后台确认。</p></div></section>`;
+    foot=`<span class="fs">本周待处理：收割 <b>${cd.harvest.length}</b> · 否定 <b>${cd.neg.length}</b> · 调价 <b>${act.length}</b></span>`;
+  }
+  else if(C.step==='harvest'){
+    const L=cd.harvest;
+    body=`${termOnly}<section class="panel"><div class="panel-h"><h3>收割候选</h3><span class="newb">新增</span><span class="muted" style="font-size:12px">${L.length} 个搜索词 · 订单 ≥ ${Ru.harvestMin} 且 ACOS ≤ ${pct(T.acos)} · 尚无精准投放</span></div><div class="panel-b scx">${L.length?`<table class="lt ctab" style="min-width:760px"><thead><tr>${ckAll('harvest',L)}<th>搜索词 → 去向</th><th>来源</th><th class="num">点击</th><th class="num">订单</th><th class="num">ACOS</th><th class="num">每次点击收入</th><th class="num">建议出价</th><th>置信度</th></tr></thead><tbody>
+    ${L.map(h=>`<tr class="${isSel(h)?'on':''}">${ck(h)}<td class="sm2" style="max-width:250px">${kwBtn(h.key)}${h.asin?' <span class="tag obs">ASIN</span>':''}<small>→ ${esc(h.to.camp)} / ${esc(h.to.ag)} · ${h.asin?'商品投放':'精准'}</small></td><td class="sm2" title="${esc(h.from.map(r=>r.camp+' / '+r.ag+' · '+MLAB[r.match]).join('\n'))}">${esc(h.from[0].camp)}<small>${h.from.length>1?`等 ${h.from.length} 处 · `:''}${[...new Set(h.from.map(r=>MLAB[r.match]))].join(' / ')}</small></td><td class="num">${h.a.clicks}</td><td class="num">${h.a.orders}</td><td class="num lo-acos">${pct(h.a.acos)}</td><td class="num">${cur()}${h.rpc.toFixed(2)}</td><td class="num"><b>${cur()}${h.bid.toFixed(2)}</b><small class="muted" style="display:block;font-size:11px">CPC ${cur()}${h.a.cpc.toFixed(2)}</small></td><td>${confHTML(h.conf)}</td></tr>`).join('')}
+    </tbody></table>`:`<div class="empty-row">${ic('sprout')}<div style="margin-top:6px">本周没有符合条件的收割词。</div></div>`}</div></section>`;
+    foot=`<span class="fs">已选 <b>${L.filter(isSel).length}</b> / ${L.length} 个收割词 · 将新建 ${L.filter(isSel).length} 个投放并在来源添加否定</span>`;
+  }
+  else if(C.step==='neg'){
+    const L=cd.neg,sel=L.filter(isSel);
+    body=`${termOnly}<section class="panel"><div class="panel-h"><h3>否定候选</h3><span class="newb">新增</span><span class="muted" style="font-size:12px">${L.length} 处 · 点击 ≥ ${T.noConv} 或花费 ≥ ${cur()}${(Ru.cpa*1.5).toFixed(0)}，且无订单</span></div><div class="panel-b scx">${L.length?`<table class="lt ctab" style="min-width:760px"><thead><tr>${ckAll('neg',L)}<th>搜索词</th><th>所在活动 / 广告组</th><th class="num">点击</th><th class="num">花费</th><th class="num">每周浪费</th><th>方式</th><th>置信度</th></tr></thead><tbody>
+    ${L.map(n=>`<tr class="${isSel(n)?'on':''}">${ck(n)}<td>${kwBtn(n.key)}</td><td class="sm2" title="${esc(n.r.camp+' / '+n.r.ag)}">${esc(n.r.camp)}<small>${esc(n.r.ag)} · ${MLAB[n.r.match]}</small></td><td class="num">${n.a.clicks}</td><td class="num">${fv('spend',n.a.spend)}</td><td class="num"><b class="hi-acos">${money0(n.waste)}</b></td><td class="sm2" style="max-width:200px">${n.brand?'<span class="rs warn">人工复核 · 品牌词</span>':n.asin?'否定 ASIN':'否定精准'}<small>${n.allZero&&n.nCamp>1?`${n.nCamp} 个活动均无订单`:n.comp?'竞品词':n.allZero?'':'其他活动有订单，只否定这里'}</small></td><td>${confHTML(n.conf)}</td></tr>`).join('')}
+    </tbody></table>`:`<div class="empty-row">${ic('ban')}<div style="margin-top:6px">本周没有需要否定的搜索词。</div></div>`}</div></section>`;
+    foot=`<span class="fs">已选 <b>${sel.length}</b> / ${L.length} 处 · 预计每周节省约 <b>${money0(im.negSave)}</b></span>`;
+  }
+  else if(C.step==='bid'){
+    const campsAll=[...new Set(cd.bids.map(x=>x.g.camp))];
+    const inC=x=>!C.camp||x.g.camp===C.camp;
+    const L=cd.bids.filter(x=>x.kind===C.bk&&inC(x)),actv=ACTK.has(C.bk);
+    const adjH=b=>b.kind==='pause'?`<span class="adj pause">${ic('circle-pause')}暂停</span>`:b.kind==='up'?`<span class="adj up">${ic('arrow-up-right')}+${Math.round(b.chg*100)}%</span>`:(b.kind==='down'||b.kind==='down0')?`<span class="adj ${b.kind}">${ic('arrow-down-right')}${Math.round(b.chg*100)}%</span>`:`<span class="adj ${b.kind}">${b.kind==='keep'?'维持':'观察'}</span>`;
+    body=`<section class="panel"><div class="vtabs" role="tablist" aria-label="调价分桶" style="padding:0 14px">${BIDK.map(([k,l])=>`<button role="tab" aria-selected="${C.bk===k}" data-act="cycBk" data-v="${k}">${l}<b>${cd.bids.filter(x=>x.kind===k&&inC(x)).length}</b></button>`).join('')}</div>
+      <div class="cchips"><button class="chk ${!C.camp?'on':''}" data-act="cycCamp" data-v="">全部活动</button>${campsAll.map(c=>`<button class="chk ${C.camp===c?'on':''}" data-act="cycCamp" data-v="${esc(c)}"><span>${esc(c)}</span></button>`).join('')}</div>
+      <div class="panel-b scx">${L.length?`<table class="lt ctab" style="min-width:820px"><thead><tr>${actv?ckAll('bid',L):'<th class="ck"></th>'}<th>投放 / 定向</th><th class="num">点击</th><th class="num">订单</th><th class="num">ACOS</th><th class="num">每次点击收入</th><th>建议 · 参考出价</th><th style="min-width:170px">依据 · 置信度</th></tr></thead><tbody>
+      ${L.map(b=>`<tr class="${actv&&isSel(b)?'on':''} ${actv?'':'mute'}">${actv?ck(b):'<td class="ck"></td>'}<td class="sm2" style="max-width:250px"><b class="lnk" style="cursor:default;max-width:180px" title="${esc(b.g.target)}">${esc(b.g.target)}</b> <span class="muted" style="font-size:11.5px">${MLAB[b.g.match]}</span><small title="${esc(b.g.camp+' / '+b.g.ag)}">${esc(b.g.camp)} / ${esc(b.g.ag)}</small></td><td class="num">${b.a.clicks}</td><td class="num">${b.a.orders}</td><td class="num ${acosCls(b.a.acos)}">${fv('acos',b.a.acos)}</td><td class="num">${b.a.clicks?cur()+(b.a.sales/b.a.clicks).toFixed(2):NA}</td><td style="white-space:nowrap">${adjH(b)}${b.ref!=null?` <b style="font-family:var(--font-num);font-weight:600">${cur()}${b.ref.toFixed(2)}</b>`:''}<small class="muted" style="display:block;font-size:11px;margin-top:2px">当前 CPC ${fv('cpc',b.a.cpc)}</small></td><td class="sm2" style="min-width:170px;max-width:230px;white-space:normal">${esc(b.why)}${actv?` ${confHTML(b.conf)}`:''}</td></tr>`).join('')}
+      </tbody></table>`:`<div class="empty-row">${ic('gauge')}<div style="margin-top:6px">这一类没有投放${C.camp?'（当前活动）':''}。</div></div>`}
+      <div class="note" style="margin-top:12px">${ic('info')}<span>报表不含当前出价。参考出价 = 当前 CPC ×（1 + 调整幅度）；上传前请按后台实际出价同比例调整。</span></div></div></section>`;
+    foot=`<span class="fs">已选 降价 <b>${im.down}</b> · 暂停 <b>${im.pause}</b> · 提价 <b>${im.up}</b> · 预计每周节省约 <b>${money0(im.bidSave)}</b>，提价最多增加 <b>${money0(im.upCost)}</b></span>`;
+  }
+  else{
+    const rows=bulkRows(cd),acc=Object.keys(S.decisions).filter(k=>k.startsWith(S.projectId+'|')&&S.decisions[k].st==='adopt').length;
+    body=`<div class="tiles">
+      <div class="tile"><span class="ti g">${ic('sprout')}</span><div><b>${im.h}</b><span>收割 → 精准投放</span><small>同时在来源添加 ${cd.harvest.filter(isSel).reduce((t,h)=>t+new Set(h.from.map(r=>r.camp+r.ag)).size,0)} 条否定精准</small></div></div>
+      <div class="tile"><span class="ti r">${ic('ban')}</span><div><b>${im.n}</b><span>否定无效搜索词</span><small>预计每周节省约 ${money0(im.negSave)}</small></div></div>
+      <div class="tile"><span class="ti w">${ic('arrow-down-right')}</span><div><b>${im.down+im.pause}</b><span>降价 ${im.down} · 暂停 ${im.pause}</span><small>预计每周节省约 ${money0(im.bidSave)}</small></div></div>
+      <div class="tile"><span class="ti g">${ic('arrow-up-right')}</span><div><b>${im.up}</b><span>盈利投放提价</span><small>花费每周最多增加约 ${money0(im.upCost)}</small></div></div>
+      <div class="tile hl"><span class="ti a">${ic('piggy-bank')}</span><div><b>${money0(im.negSave+im.bidSave)}</b><span>预计每周节省</span><small>按点击量不变粗估，下周期回看验证</small></div></div>
+      <div class="tile"><span class="ti">${ic('user-round-check')}</span><div><b>${acc}</b><span>关键词详情中已采纳</span><small>写入复盘“本轮人工判断”</small></div></div>
+    </div>
+    <section class="panel"><div class="panel-h"><h3>亚马逊批量操作表预览</h3><span class="newb">新增</span><span class="muted" style="font-size:12px">共 ${rows.length} 行 · Sponsored Products</span><div class="r"><button class="btn sm" data-act="cycExport" data-v="log">${ic('file-down')}导出动作日志</button><button class="btn sm primary${S.loading||S.err?' dis':''}" data-act="cycExport" data-v="bulk">${ic('download')}导出批量操作表</button></div></div>
+      <div class="panel-b scx">${rows.length?`<table class="lt ctab bulkt" style="min-width:1060px"><thead><tr><th>Entity</th><th>Operation</th><th>Campaign</th><th>Ad Group</th><th>Keyword / Targeting</th><th>Match Type</th><th class="num">Bid</th><th>State</th></tr></thead><tbody>${rows.slice(0,14).map(r=>`<tr>${r.map((c,i)=>`<td class="${i===6?'num':''}">${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>${rows.length>14?`<div class="muted" style="font-size:12px;padding:10px 2px 0">… 另有 ${rows.length-14} 行，导出后查看全部</div>`:''}`:'<div class="muted">还没有选中的动作。</div>'}
+      <div class="note" style="margin-top:12px">${ic('info')}<span>预览为简化列；导出文件按亚马逊批量操作模板生成。Campaign ID、Ad Group ID、Keyword ID 需与后台下载的批量表匹配后再上传。</span></div></div></section>
+    <section class="panel"><div class="panel-h"><h3>上传后核对</h3></div><div class="panel-b"><ul class="ctodo"><li>${ic('square')}后台批量上传结果没有报错行</li><li>${ic('square')}新建的精准投放已启用，出价与建议一致</li><li>${ic('square')}来源活动的否定精准已生效</li><li>${ic('square')}一周后回到“准备与回看”查看本次动作效果</li></ul></div></section>`;
+    foot=`<span class="fs">本周已选 <b>${im.total}</b> 项动作 · 预计每周节省约 <b>${money0(im.negSave+im.bidSave)}</b>${C.completed?` · 已于 ${C.completed} 完成`:''}</span>`;
+  }
+  const nx=CYC_STEPS[si+1],pv2=CYC_STEPS[si-1];
+  const footer=`<div class="cyc-foot">${foot}<span class="sp"></span>${pv2?`<button class="btn" data-act="cycStep" data-v="${pv2[0]}">${ic('arrow-left')}上一步</button>`:''}${nx?`<button class="btn primary" data-act="cycStep" data-v="${nx[0]}">下一步：${nx[1]}${ic('arrow-right')}</button>`:`<button class="btn primary${C.completed?' dis':''}" data-act="cycDone">${ic('circle-check')}${C.completed?'本周期已完成':'完成本周期'}</button>`}</div>`;
+  const ksel=S.sel&&R.kws.find(k=>k.key===S.sel);
+  return `
+  <div class="ph"><div class="tt"><h1>第 ${isoW(sh.A.e)} 周 · 关键词周期优化</h1><span class="meta tn">${esc(proj().name)} · 决策窗口 A ${rLabel(sh.A)}（${R.covA.n} 天）对比 B ${rLabel(sh.B)} · ${srcLabel(sh.source)}${covChip(R,false)}</span></div>
+    <div class="act">${C.completed?`<span class="status ok">${ic('circle-check')}本周期已完成</span>`:''}<button class="btn" data-act="genReport">${ic('file-pen-line')}生成本周复盘</button><button class="btn primary" data-act="cycStep" data-v="export">${ic('download')}导出本周动作 · ${im.total}</button></div></div>
+  ${banners(R)}
+  ${steps}
+  <div class="cyc-body"><div class="cyc-main">${body}</div>${guide(C.step)}</div>
+  ${footer}
+  ${ksel?`<div class="cyc-drawer">${detail(R,R.kws)}</div>`:''}`;
+}
+
 // ---------- 命令面板 ⌘K ----------
-const PAGE_ITEMS=[['overview','经营总览','layout-dashboard'],['diagnosis','变化诊断','git-compare-arrows'],['keywords','关键词决策','list-checks'],['reports','复盘报告','file-text'],['data','数据中心','database'],['projects','项目','folder-kanban'],['rules','分析规则','sliders-horizontal'],['spec','方案说明','book-open']];
+const PAGE_ITEMS=[['cycle','周期优化','refresh-ccw'],['overview','经营总览','layout-dashboard'],['diagnosis','变化诊断','git-compare-arrows'],['keywords','关键词决策','list-checks'],['reports','复盘报告','file-text'],['data','数据中心','database'],['projects','项目','folder-kanban'],['rules','分析规则','sliders-horizontal'],['spec','方案说明','book-open']];
 function cmdItems(q){
   q=(q||'').trim().toLowerCase();
   const out=[];
@@ -2116,7 +2451,7 @@ function smChart(el,R,k){
 
 // ---------- 渲染 ----------
 const app=document.getElementById('app');
-const VIEWS={overview:vOverview,diagnosis:vDiagnosis,keywords:vKeywords,reports:vReports,data:vData,projects:vProjects,rules:vRules,spec:vSpec};
+const VIEWS={cycle:vCycle,overview:vOverview,diagnosis:vDiagnosis,keywords:vKeywords,reports:vReports,data:vData,projects:vProjects,rules:vRules,spec:vSpec};
 function render(){
   const ae=document.activeElement, focusId=ae&&ae.id, selS=ae&&'selectionStart' in ae?(()=>{try{return ae.selectionStart}catch(e){return null}})():null;
   const scrolls={};document.querySelectorAll('[data-scroll]').forEach(el=>scrolls[el.dataset.scroll]=[el.scrollTop,el.scrollLeft]);
@@ -2124,12 +2459,13 @@ function render(){
   const fill=S.view==='keywords'&&!S.noProject&&!proj().empty&&!S.loadError&&calc(S.shown)&&calc(S.shown).kws.length;
   app.innerHTML=rail()+topbar()+`<main class="main${fill?' fill':''}${render.v!==S.view?' enter':''}" id="main">${(VIEWS[S.view]||vOverview)()}</main>`+tabbar()+modal()+cmdPalette()+(S.toast?`<div class="toast" role="status">${ic(S.toast.icon)}${esc(S.toast.msg)}</div>`:'');
   render.v=S.view;
-  const nm=document.getElementById('main');if(nm&&prevView===S.view)nm.scrollTop=mainTop;
+  const nm=document.getElementById('main');if(nm&&prevView===S.view&&!render.resetScroll)nm.scrollTop=mainTop;render.resetScroll=false;
   document.querySelectorAll('[data-scroll]').forEach(el=>{const s=scrolls[el.dataset.scroll];if(s){el.scrollTop=s[0];el.scrollLeft=s[1]}});
   const tw=document.getElementById('tw');if(tw)tw.style.setProperty('--wrapw',(tw.clientWidth-2)+'px');
   if(S.cmd){const c=document.getElementById('cmdq');if(c&&focusId!=='cmdq'){c.focus();c.setSelectionRange(c.value.length,c.value.length)}const a=document.getElementById('cmd-'+S.cmd.i);if(a)a.scrollIntoView({block:'nearest'})}
   if(focusId){const f=document.getElementById(focusId);if(f){f.focus({preventScroll:true});if(selS!=null&&f.setSelectionRange&&/text|search/.test(f.type||'text'))try{f.setSelectionRange(selS,selS)}catch(e){}}}
   if(render.focusKey){const b=document.querySelector(`tr.r[data-key="${CSS.escape(render.focusKey)}"] .kwn`);if(b)b.focus({preventScroll:false});render.focusKey=null}
+  {const cs=document.querySelector('.cstep.on'),st=cs&&cs.parentElement;if(st&&st.scrollWidth>st.clientWidth)st.scrollLeft=cs.offsetLeft-(st.clientWidth-cs.clientWidth)/2}
   drawCharts();
 }
 
@@ -2137,7 +2473,7 @@ function render(){
 function openDraft(which){const r=S.scope[which];S.draft={which,s:r.s,e:r.e,month:r.e.slice(0,7),pick:0,refA:clone(S.scope.A)}}
 function switchProject(id){
   S.projectId=id;S.noProject=false;S.loadError=false;S.scope=defScope();S.scope.source=S.shown?S.shown.source:'term';S.shown=clone(S.scope);S.err=null;S.loading=false;
-  S.list={view:'all',tag:'all',q:'',orders:'all',sort:{k:'A_spend',d:-1},page:1,size:S.list.size};S.picked.clear();S.sel=null;S.last=null;S.expanded.clear();S.ruleDraft=null;
+  S.list={view:'all',tag:'all',q:'',orders:'all',sort:{k:'A_spend',d:-1},page:1,size:S.list.size};S.picked.clear();S.cyc={step:'prep',done:new Set(),sel:{},bk:'down',camp:null,completed:null};S.sel=null;S.last=null;S.expanded.clear();S.ruleDraft=null;
 }
 const ACT={
   nav:t=>{S.view=t.dataset.v;S.pop=null;if(location.hash!=='#'+S.view)history.replaceState(null,'','#'+S.view)},
@@ -2194,6 +2530,15 @@ const ACT={
   diagWin:t=>{S.diag.win=+t.dataset.v},
   diagMetric:t=>{S.diag.metric=t.dataset.v},
   diagWf:t=>{S.diag.wf=t.dataset.v},
+  cycStep:t=>{const C=S.cyc;if(C.step!==t.dataset.v)C.done.add(C.step);C.step=t.dataset.v;S.sel=null;S.view='cycle';render.resetScroll=true;history.replaceState(null,'','#cycle')},
+  cycSel:t=>{const cd=cycleData(calc(S.shown)),a=[...cd.harvest,...cd.neg,...cd.bids].find(x=>x.id===t.dataset.id);if(a)S.cyc.sel[a.id]=!isSel(a)},
+  cycAll:t=>{const cd=cycleData(calc(S.shown)),v=t.dataset.v,list=v==='harvest'?cd.harvest:v==='neg'?cd.neg:cd.bids.filter(x=>x.kind===S.cyc.bk&&(!S.cyc.camp||x.g.camp===S.cyc.camp));const all=list.length&&list.every(isSel);list.forEach(a=>{S.cyc.sel[a.id]=!all})},
+  cycBk:t=>{S.cyc.bk=t.dataset.v},
+  cycCamp:t=>{S.cyc.camp=t.dataset.v||null;if(t.dataset.go){const cd=cycleData(calc(S.shown));const c=t.dataset.v;const order=['down','down0','pause','up'];S.cyc.bk=order.find(k=>cd.bids.some(x=>x.kind===k&&x.g.camp===c))||'down';S.cyc.done.add(S.cyc.step);S.cyc.step='bid';render.resetScroll=true}},
+  cycWin:()=>{const lag=S.rules.lag;const A={s:addD(LAST,-(lag+13)),e:addD(LAST,-lag)};S.scope.A=A;S.scope.B={s:addD(A.s,-14),e:addD(A.s,-1)};refresh();toast('已改用推荐窗口：近 14 天，排除最近 '+lag+' 天未结算数据')},
+  srcTerm:()=>{S.scope.source='term';refresh()},
+  cycExport:t=>{toast(t.dataset.v==='log'?'演示：动作日志（.csv）已生成，原型不下载文件':'演示：批量操作表（.xlsx）已按亚马逊格式生成，原型不下载文件','file-down')},
+  cycDone:()=>{const d=new Date();S.cyc.done.add('export');S.cyc.completed=`${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;toast('本周期已完成：动作已写入本周复盘，下周期在“准备与回看”中查看效果')},
   bMode:t=>{S.bMode=t.dataset.v;store.set('bmode',S.bMode)},
   diagApply:()=>{const g=S.diag;if(g.mode==='event'){S.scope.A={s:g.event,e:addD(g.event,g.win-1)};S.scope.B={s:addD(g.event,-g.win),e:addD(g.event,-1)}}else{S.scope.A={s:addD(g.wA,-6),e:g.wA};S.scope.B={s:addD(g.wB,-6),e:g.wB}}refresh()},
   dataStage:t=>{S.data.stage=t.dataset.v},
@@ -2243,7 +2588,7 @@ document.addEventListener('click',e=>{
   const inPop=e.target.closest('.pop');
   if(!t){if(S.pop&&!inPop){S.pop=null;render()}return}
   if(t.tagName==='A')e.preventDefault();
-  if(t.tagName==='INPUT'&&t.type==='checkbox'&&!['colT','pick','pickAll'].includes(t.dataset.act))return;
+  if(t.tagName==='INPUT'&&t.type==='checkbox'&&!['colT','pick','pickAll','cycSel','cycAll'].includes(t.dataset.act))return;
   if(S.pop&&!inPop&&t.dataset.act!=='pop'&&t.dataset.act!=='closepop')S.pop=null;
   const fn=ACT[t.dataset.act];
   if(fn&&fn(t,e)===false)return;
