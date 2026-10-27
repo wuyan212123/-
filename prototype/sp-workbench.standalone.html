@@ -18,7 +18,7 @@
   --accent:#2f5fef; --accent-2:#2149cf; --accent-weak:#edf2ff; --accent-line:#c3d1fc; --on-accent:#ffffff;
   --a:#2f5fef; --b:#9ba5b6; --b-weak:#eff1f5; --b-ink:#5a6476;
   --good:#0b935d; --good-weak:#e4f5ec; --bad:#dc3c37; --bad-weak:#fdeceb; --warn:#b86f00; --warn-weak:#fdf3df;
-  --c1:#2f5fef; --c2:#eb6834; --c1-fill:rgba(47,95,239,.13);
+  --c1:#2f5fef; --c2:#eb6834; --c1-fill:rgba(47,95,239,.13); --band-a:#eef3ff; --band-b:#f2f4f7;
   --nav-bg:#f6f7f9; --nav-bg-2:#ffffff; --nav-fg:#667085; --nav-fg-2:#101828; --nav-line:#e7eaef; --nav-dim:#98a2b3;
   --scrim:rgba(13,20,36,.42);
   --sh-1:0 1px 2px rgba(16,24,40,.035);
@@ -35,7 +35,7 @@
   --accent:#6f94ff; --accent-2:#93afff; --accent-weak:#18244a; --accent-line:#2c4382; --on-accent:#0a0f1f;
   --a:#6f94ff; --b:#6b7689; --b-weak:#1c2332; --b-ink:#a6b0c0;
   --good:#3fcb8b; --good-weak:#0f2a1f; --bad:#ff6b63; --bad-weak:#351718; --warn:#f0b14a; --warn-weak:#2f240e;
-  --c1:#5b87ff; --c2:#e8692a; --c1-fill:rgba(91,135,255,.2);
+  --c1:#5b87ff; --c2:#e8692a; --c1-fill:rgba(91,135,255,.2); --band-a:rgba(111,148,255,.09); --band-b:rgba(255,255,255,.035);
   --nav-bg:#0a0e16; --nav-bg-2:#161d2b; --nav-fg:#8a95ab; --nav-fg-2:#eef2f8; --nav-line:#1c2433; --nav-dim:#5a6478;
   --scrim:rgba(0,0,0,.6);
   --sh-1:0 1px 2px rgba(0,0,0,.35);
@@ -49,7 +49,7 @@
   --accent:#6f94ff; --accent-2:#93afff; --accent-weak:#18244a; --accent-line:#2c4382; --on-accent:#0a0f1f;
   --a:#6f94ff; --b:#6b7689; --b-weak:#1c2332; --b-ink:#a6b0c0;
   --good:#3fcb8b; --good-weak:#0f2a1f; --bad:#ff6b63; --bad-weak:#351718; --warn:#f0b14a; --warn-weak:#2f240e;
-  --c1:#5b87ff; --c2:#e8692a; --c1-fill:rgba(91,135,255,.2);
+  --c1:#5b87ff; --c2:#e8692a; --c1-fill:rgba(91,135,255,.2); --band-a:rgba(111,148,255,.09); --band-b:rgba(255,255,255,.035);
   --nav-bg:#0a0e16; --nav-bg-2:#161d2b; --nav-fg:#8a95ab; --nav-fg-2:#eef2f8; --nav-line:#1c2433; --nav-dim:#5a6478;
   --scrim:rgba(0,0,0,.6);
   --sh-1:0 1px 2px rgba(0,0,0,.35);
@@ -788,9 +788,64 @@ table.g.dense .kwn small{display:none}
 .scope{flex-wrap:nowrap}
 .cmd-trigger{min-width:180px}
 @media (max-width:1499px){.status .stx{display:none}.status{padding:0 7px}}
+@media (max-width:1279px){.top .proj{max-width:200px}.top .proj .pt small{display:none}.top>.vsep{display:none}.top{gap:10px}}
 @media (max-width:1439px){.rng .rd{display:none}.cmd-trigger{min-width:0;padding:0 9px}.cmd-trigger .ct,.cmd-trigger .kbd{display:none}}
 @media (max-width:1279px){.cmd-trigger{min-width:0;padding:0 9px}.cmd-trigger .ct,.cmd-trigger .kbd{display:none}.prog .ps:not(.cur){display:none}.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:760px){.cmd-trigger{display:none}.vt-hint{display:none}.prog{width:100%}.keys{display:none}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* ---------- v4：先给结论再给证据（本期结论、变化拆解）；覆盖提示收为标记；B 列可看变化；手机卡片列表 ---------- */
+.ovl{display:flex;flex-direction:column;gap:16px;min-width:0}
+.ovl .trend-panel{flex:1}
+.trend-panel .chart{min-height:260px}
+.insight{padding:16px 18px;display:flex;flex-direction:column;gap:8px}
+.ins-h{display:flex;align-items:center;gap:8px;font-size:12px;flex-wrap:wrap}
+.ins-tag{display:inline-flex;align-items:center;gap:5px;font-weight:600;color:var(--accent)}
+.ins-tag svg{width:14px;height:14px}
+.ins-h .newb{margin-left:auto}
+.ins-t{margin:2px 0 0;font-size:18px;font-weight:600;letter-spacing:-.01em;line-height:1.4;text-wrap:balance}
+.ins-t em{font-style:normal;color:var(--bad)}
+.ins-t em.up{color:var(--good)}
+.ins-s{margin:0;color:var(--fg-2);font-size:13px}
+.ins-s b{font-family:var(--font-num);font-weight:600;color:var(--fg)}
+.fxrow{display:flex;align-items:stretch;gap:6px;flex-wrap:wrap;margin-top:4px}
+.fx{display:flex;flex-direction:column;gap:1px;padding:8px 12px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line);min-width:92px;flex:1}
+.fx .fl{font-size:11.5px;color:var(--fg-3);white-space:nowrap}
+.fx b{font:600 16px var(--font-num);font-variant-numeric:tabular-nums}
+.fx small{font:500 11.5px var(--font-num);color:var(--fg-3);white-space:nowrap}
+.fx.up b{color:var(--good)} .fx.down b{color:var(--bad)} .fx.flat b{color:var(--fg-2)}
+.fx.main{border-color:var(--accent-line);background:var(--accent-weak)}
+.fx.main .fl::after{content:" · 主因";color:var(--accent);font-weight:600}
+.fx-op{align-self:center;color:var(--fg-3);font-size:12px}
+.ins-k{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;margin-top:2px}
+.kwchip{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:13px;border:1px solid var(--line);background:var(--surface);font-size:12px;max-width:100%}
+.kwchip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kwchip:hover{border-color:var(--accent-line);color:var(--accent)}
+.kwchip b{font:600 12px var(--font-num)} .kwchip b.neg{color:var(--bad)} .kwchip b.pos{color:var(--good)}
+.ins-k .btn{margin-left:auto}
+.covchip{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 9px;border-radius:11px;border:0;background:var(--warn-weak);color:var(--warn);font-size:11.5px;font-weight:500;margin-left:6px;vertical-align:1px;white-space:nowrap}
+.covchip svg{width:13px;height:13px}
+.covchip:hover{box-shadow:inset 0 0 0 1px var(--warn)}
+.ph .meta .pa{vertical-align:middle}
+.wsp{width:110px;height:24px;display:block}
+.dfx{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.dfx .fx{padding:6px 9px;min-width:70px}
+.dfx .fx b{font-size:14px}
+.kcards{display:flex;flex-direction:column;gap:8px;padding:10px}
+.kcard{display:flex;flex-direction:column;gap:6px;text-align:left;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:12px 14px;width:100%}
+.kcard.sel{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-weak)}
+.kc-h{display:flex;align-items:center;gap:8px;justify-content:space-between;min-width:0}
+.kc-h b{font-size:14px;font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kc-sub{font-size:11.5px;color:var(--fg-3)}
+.kc-m{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding-top:8px;border-top:1px solid var(--line)}
+.kc-m>span{display:flex;flex-direction:column;gap:3px;min-width:0;align-items:flex-start}
+.kc-m small{font-size:11px;color:var(--fg-3)}
+.kc-m b{font:600 15px var(--font-num)}
+.main.enter>*{animation:rise .28s cubic-bezier(.2,.7,.2,1) both}
+.main.enter>*:nth-child(2){animation-delay:.03s}.main.enter>*:nth-child(3){animation-delay:.06s}.main.enter>*:nth-child(4){animation-delay:.09s}.main.enter>*:nth-child(n+5){animation-delay:.12s}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.kw.open .keys{display:none}
+.kw.open .ft .hide-m{display:none}
+@media (max-width:760px){.fx{min-width:calc(50% - 4px)}.fx-op{display:none}.ins-t{font-size:16px}.ins-k .btn{margin-left:0}.wsp{width:80px}}
 </style>
 
 <div id="app"></div>
@@ -1028,11 +1083,11 @@ const S={
   scope:defScope(),shown:null,loading:false,err:null,failNext:false,updatedAt:'10:42',
   pop:null,draft:null,fdraft:null,
   list:{view:'all',tag:'all',q:'',orders:'all',sort:{k:'A_spend',d:-1},page:1,size:50},
-  decisions:store.get('dec',{}),picked:new Set(),density:store.get('density','comfy'),ovMetric:'sales',cmd:null,
+  decisions:store.get('dec',{}),picked:new Set(),bMode:store.get('bmode','value'),density:store.get('density','comfy'),ovMetric:'sales',cmd:null,
   expanded:new Set(),sel:null,last:null,
   cols:store.get('cols',DEF_COLS).filter(id=>CD[id]),colW:store.get('colW',{}),
   rules:clone(DEF_RULES),ruleDraft:null,aiTested:false,
-  diag:{mode:'custom',event:'2026-10-06',win:7,metric:'sales',wA:LAST,wB:addD(LAST,-7)},
+  diag:{mode:'custom',event:'2026-10-06',win:7,metric:'sales',wf:'sales',wA:LAST,wB:addD(LAST,-7)},
   data:{stage:'preview',fix:{s:'',e:''}},
   report:{type:'weekly',src:'rule',state:'done',sel:'cur',genAt:'2026-10-27 10:48'},
   toast:null,modal:null
@@ -1282,15 +1337,74 @@ function banners(R,opt={}){
   if(S.loading)h+=`<div class="bn busy">${ic('loader-circle','spin')}<div class="bt2">正在更新到新范围 <b>A ${rLabel(S.scope.A)} · B ${rLabel(S.scope.B)}</b>。下方仍是上次结果（A ${rLabel(sh.A)} · B ${rLabel(sh.B)}），更新完成前不能导出。</div></div>`;
   else if(S.err)h+=`<div class="bn err">${ic('triangle-alert')}<div class="bt2"><b>范围更新失败：</b>${esc(S.err)}。下方仍显示上次结果：${srcLabel(sh.source)} · A ${rLabel(sh.A)} · B ${rLabel(sh.B)}。旧结果不能作为新范围导出。</div><div class="ba"><button class="btn sm" data-act="revert">恢复为显示范围</button><button class="btn sm primary" data-act="retry">${ic('refresh-cw')}重试</button></div></div>`;
   if(R&&!R.hasB)h+=`<div class="bn warn">${ic('circle-alert')}<div class="bt2"><b>B 期 ${rLabel(sh.B)} 没有可用数据。</b>新增、消失和提升等对比判断已暂停，只按目标阈值给出 ACOS 超目标、高点击无转化等提示。</div><div class="ba"><button class="btn sm" data-act="pop" data-pop="date-B">调整 B 期</button></div></div>`;
-  else if(R&&!opt.noCov&&(R.covA.n<R.covA.days||R.covB.n<R.covB.days)){
-    const parts=[];if(R.covA.n<R.covA.days)parts.push(`A 期 ${R.covA.n}/${R.covA.days} 天${R.covA.miss.length?`（缺 ${R.covA.miss.map(md).join('、')}）`:''}`);if(R.covB.n<R.covB.days)parts.push(`B 期 ${R.covB.n}/${R.covB.days} 天${R.covB.miss.length?`（缺 ${R.covB.miss.map(md).join('、')}）`:''}`);
-    h+=`<div class="bn info">${ic('calendar-x-2')}<div class="bt2"><b style="color:var(--fg)">数据覆盖不足：</b>${parts.join('，')}。缺日不补零，总量变化会偏大，${opt.kpi?'下方花费、销售额、订单的变化已改为按日均对照。':'对比时请参考日均。'}</div></div>`;
-  }
   return h;
 }
 function noData(R){
   const f=S.shown.f, fn=nF(f);
   return emptyBox('search-x','当前范围没有匹配记录',`${srcLabel(S.shown.source)} · A ${rLabel(S.shown.A)} · B ${rLabel(S.shown.B)}${fn?` · ${fn} 项筛选`:''}。数据在这个范围内为空，并不代表真实零值。`,`${fn?`<button class="btn" data-act="clearScopeF">${ic('filter-x')}清除筛选</button>`:''}<button class="btn primary" data-act="resetDates">改为最近 7 天对比前 7 天</button>`,f.term?`<div class="howto"><span>精确搜索词：${esc(f.term)}</span></div>`:'');
+}
+
+// ---------- 变化拆解 ----------
+// 对数均值分解（LMDI）：总变化 = Σ 各因素贡献，且无残差。量指标在 A/B 覆盖天数不同时按日均计算。
+function decompAB(A,B,nA,nB,m){
+  const per=nA!==nB,fA=per?1/nA:1,fB=per?1/nB:1,aov=x=>x.orders?x.sales/x.orders:null;
+  let tA,tB,fac,unit='money';
+  if(m==='sales'){tA=A.sales*fA;tB=B.sales*fB;fac=[['曝光',A.impr*fA,B.impr*fB,1],['CTR',A.ctr,B.ctr,1],['CVR',A.cvr,B.cvr,1],['客单价',aov(A),aov(B),1]]}
+  else if(m==='spend'){tA=A.spend*fA;tB=B.spend*fB;fac=[['曝光',A.impr*fA,B.impr*fB,1],['CTR',A.ctr,B.ctr,1],['CPC',A.cpc,B.cpc,1]]}
+  else{tA=A.acos;tB=B.acos;unit='pt';fac=[['CPC',A.cpc,B.cpc,1],['CVR',A.cvr,B.cvr,-1],['客单价',aov(A),aov(B),-1]]}
+  if(!(tA>0&&tB>0)||fac.some(f=>!(f[1]>0&&f[2]>0)))return null;
+  const L=Math.abs(tA-tB)<1e-12?tA:(tA-tB)/Math.log(tA/tB);
+  return {m,tA,tB,per,unit,steps:fac.map(([l,a,b,sg])=>({l,a,b,chg:a/b-1,v:L*Math.log(a/b)*sg}))};
+}
+const decomp=(R,m)=>R.hasB?decompAB(R.A,R.B,R.covA.n,R.covB.n,m):null;
+function fmtD(d,v,sign){
+  if(d.unit==='pt')return sign?((v>0?'+':v<0?'−':'')+Math.abs(v*100).toFixed(1)+'pt'):(v*100).toFixed(1)+'%';
+  const a=Math.abs(v),t=cur()+(a<10&&sign?a.toFixed(1):nf0.format(Math.round(a)));
+  return sign?(v>0?'+':v<0?'−':'')+t:t;
+}
+const facV=(l,v)=>l==='CPC'||l==='客单价'?cur()+v.toFixed(2):l==='曝光'?nf0.format(Math.round(v)):(v*100).toFixed(2)+'%';
+const pcs=v=>Math.abs(v)<.005?'持平':(v>0?'+':'−')+Math.abs(v*100).toFixed(1)+'%';
+function fxChips(d,small){
+  const main=[...d.steps].sort((a,b)=>Math.abs(b.v)-Math.abs(a.v))[0];
+  const sem={sales:1,spend:0,acos:-1}[d.m];
+  return d.steps.map(s=>{const cls=Math.abs(s.chg)<.005?'flat':sem===0?'flat':((s.v>0)===(sem>0)?'up':'down');return `<div class="fx ${cls}${!small&&s===main&&Math.abs(s.v)>0?' main':''}" title="${s.l}：A ${facV(s.l,s.a)} · B ${facV(s.l,s.b)}${d.per&&s.l==='曝光'?'（日均）':''}"><span class="fl">${s.l}</span><b>${pcs(s.chg)}</b><small>贡献 ${fmtD(d,s.v,true)}${d.per&&d.unit==='money'?'/天':''}</small></div>`}).join(small?'':'<span class="fx-op">×</span>');
+}
+function insight(R){
+  if(!R.hasB)return `<section class="panel insight"><div class="ins-h"><span class="ins-tag">${ic('sparkles')}本期结论</span></div><p class="ins-s">B 期没有可用数据，暂不生成对比结论。调整 B 期后会自动给出。</p></section>`;
+  const dS=decomp(R,'sales'),dP=decomp(R,'spend'),dA=decomp(R,'acos');
+  if(!dS)return '';
+  const sChg=dS.tA/dS.tB-1,pChg=dP?dP.tA/dP.tB-1:null;
+  const main=[...dS.steps].sort((a,b)=>Math.abs(b.v)-Math.abs(a.v))[0];
+  const verb=v=>Math.abs(v)<.005?'持平':v>0?'上升':'下降';
+  const dayW=dS.per?'日均':'';
+  const head=Math.abs(sChg)<.005?`广告销售额${dayW}与 B 期基本持平`:`广告销售额${dayW}<em class="${sChg>0?'up':''}">${sChg>0?'增长':'下降'} ${Math.abs(sChg*100).toFixed(1)}%</em>，主要来自${main.l}${verb(main.chg)}`;
+  const sub=`${dayW?'日均':''}销售额 <b>${fmtD(dS,dS.tA)}</b>（B ${fmtD(dS,dS.tB)}）；花费${dayW}${verb(pChg)}${pChg!=null&&Math.abs(pChg)>=.005?` <b>${pcs(pChg)}</b>`:''}${dA?`，ACOS 从 <b>${pct(dA.tB)}</b> 变为 <b>${pct(dA.tA)}</b>`:''}。下方为销售额 = 曝光 × CTR × CVR × 客单价 的拆解。`;
+  const dk=R.kws.map(k=>({k,d:k.A.sales-k.B.sales})).filter(x=>x.d!==0).sort((a,b)=>a.d-b.d);
+  const pick=sChg<0?dk.slice(0,3):dk.slice(-3).reverse();
+  return `<section class="panel insight" aria-label="本期结论">
+    <div class="ins-h"><span class="ins-tag">${ic('sparkles')}本期结论</span><span class="muted">规则生成 · 非 AI · 由汇总基础量计算</span><span class="newb">新增</span></div>
+    <h2 class="ins-t">${head}</h2>
+    <p class="ins-s">${sub}</p>
+    <div class="fxrow" aria-label="销售额拆解">${fxChips(dS)}</div>
+    <div class="ins-k"><span class="muted">${sChg<0?'拖累最大的词':'贡献最大的词'}（销售额合计变化）</span>${pick.map(x=>`<button class="kwchip" data-act="openKw" data-key="${esc(x.k.key)}" title="${esc(x.k.key)}"><span>${esc(x.k.key)}</span><b class="${x.d<0?'neg':'pos'}">${x.d<0?'−':'+'}${money0(Math.abs(x.d))}</b></button>`).join('')}<button class="btn sm ghost" data-act="nav" data-v="diagnosis">查看完整拆解${ic('arrow-right')}</button></div>
+  </section>`;
+}
+function wkSpark(k){
+  const end=di(S.shown.A.e),v=[];
+  for(let w=7;w>=0;w--){const e=end-w*7,s0=e-6;let t=0;k.rows.forEach(x=>{t+=sumRow(x.r,s0,e).spend});v.push(t)}
+  const mx=Math.max(...v)||1,X=i=>(i/7*100).toFixed(1),Y=x=>(21-x/mx*18).toFixed(1);
+  const pts=v.map((x,i)=>X(i)+','+Y(x)).join(' ');
+  return `<svg class="wsp" viewBox="0 0 100 24" preserveAspectRatio="none" role="img" aria-label="近 8 周花费：${v.map(x=>money0(x)).join('、')}"><polygon points="0,24 ${pts} 100,24" style="fill:var(--c1-fill)"/><polyline points="${pts}" fill="none" style="stroke:var(--c1)" stroke-width="1.75" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>`;
+}
+function covChip(R,kpi){
+  if(!R||!R.hasB)return '';
+  const a=R.covA,b=R.covB;if(a.n>=a.days&&b.n>=b.days)return '';
+  const parts=[];if(a.n<a.days)parts.push(`A ${a.n}/${a.days} 天`);if(b.n<b.days)parts.push(`B ${b.n}/${b.days} 天`);
+  return ` <span class="pa"><button class="covchip" data-act="pop" data-pop="cov" aria-haspopup="dialog" title="数据覆盖不足，点击查看">${ic('calendar-x-2')}覆盖不足 · ${parts.join(' · ')}${kpi?' · 已按日均对比':''}</button>${S.pop==='cov'?popCov(R,kpi):''}</span>`;
+}
+function popCov(R,kpi){
+  const row=(l,c,r)=>`<dt>${l}</dt><dd class="tn">${r.s} 至 ${r.e}<br>${c.n}/${c.days} 天有数据${c.miss.length?` · <span style="color:var(--warn)">缺 ${c.miss.map(md).join('、')}</span>`:''}${c.inData<c.days?` · ${c.days-c.inData} 天超出数据范围`:''}</dd>`;
+  return `${scrimM()}<div class="pop" role="dialog" aria-label="数据覆盖" style="width:340px"><div class="pop-h">数据覆盖</div><div class="pop-b" style="display:flex;flex-direction:column;gap:10px"><dl class="kv-list">${row('A 期',R.covA,S.shown.A)}${row('B 期',R.covB,S.shown.B)}</dl><p class="hint2" style="margin:0">缺日不补零，总量变化会偏大。${kpi?'花费、销售额、订单的变化已改为按日均对照；':'对比请参考日均列；'}比率指标直接比较。</p></div><div class="pop-f"><button class="btn sm" data-act="nav" data-v="data">${ic('database')}查看数据覆盖</button></div></div>`;
 }
 
 // ---------- 经营总览 ----------
@@ -1316,7 +1430,7 @@ function vOverview(){
     const a=R.A[k], b=R.hasB?R.B[k]:null;
     let delta, sub;
     if(!R.hasB){delta='<span class="nobase">无基准</span>';sub=''}
-    else if(VOL.has(k)&&daysDiff){const da=a/R.covA.n, db=R.B[k]/R.covB.n;delta=dlt(k,da,db)+'<span class="muted" style="font-size:11px">日均</span>';sub=`B ${k==='orders'?nf0.format(b):money0(b)} · 日均 ${k==='orders'?da.toFixed(1):money0(da)}`}
+    else if(VOL.has(k)&&daysDiff){const da=a/R.covA.n, db=R.B[k]/R.covB.n;delta=dlt(k,da,db)+'<span class="muted" style="font-size:11px">日均</span>';sub=`日均 ${k==='orders'?da.toFixed(1):money0(da)} · B ${k==='orders'?db.toFixed(1):money0(db)}`}
     else{delta=dlt(k,a,b);sub=`B ${fvt(k,b)}`}
     const hint={spend:'花费上涨本身不代表变差，需结合销售额与 ACOS',acos:'花费 ÷ 广告销售额，由汇总基础量计算',cvr:'订单 ÷ 点击',cpc:'花费 ÷ 点击'}[k]||'';
     const on=S.ovMetric===k;
@@ -1335,15 +1449,16 @@ function vOverview(){
   const prog=`<div class="prog" aria-label="本轮进度"><span class="ps done">${ic('circle-check')}数据截至 ${md(LAST)}</span><span class="ps done">${ic('circle-check')}A/B 已设定</span><button class="ps ${allDone?'done':'cur'}" data-act="toView" data-v="risk">${ic(allDone?'circle-check':'circle-dot')}处理风险词 ${doneN}/${risky.length}</button><button class="ps ${allDone?'cur':''}" data-act="nav" data-v="reports">${ic('circle')}生成复盘</button></div>`;
   const base28=(()=>{const s=di(sh.A.s)-28,e=di(sh.A.s)-1;const c=coverage(D,s,e);if(c.n===0)return null;const z=Z();R.rows.forEach(r=>addTo(z,sumRow(r,s,e)));const d=derive(z);return{s:ds(Math.max(0,s)),e:ds(e),c,d,wk:c.n/7}})();
   return `
-  <div class="ph"><div class="tt"><h1>经营总览</h1><span class="meta">${esc(P.name)} · ${srcLabel(sh.source)} · A ${rLabel(sh.A)} 对比 B ${rLabel(sh.B)}</span></div>
+  <div class="ph"><div class="tt"><h1>经营总览</h1><span class="meta">${esc(P.name)} · ${srcLabel(sh.source)} · A ${rLabel(sh.A)} 对比 B ${rLabel(sh.B)}${covChip(R,true)}</span></div>
     <div class="act">${prog}<button class="btn primary" data-act="nav" data-v="keywords">打开关键词清单${ic('arrow-right')}</button></div></div>
   ${banners(R,{kpi:true})}
   <section class="kpis" role="tablist" aria-label="核心指标，点选切换趋势图">${kpi('spend','广告花费')}${kpi('sales','广告销售额')}${kpi('orders','广告订单')}${kpi('acos','ACOS')}${kpi('cvr','CVR')}${kpi('cpc','CPC')}</section>
   <div class="kcap"><span>点选指标卡切换下方趋势图</span><span><i class="ln" style="background:var(--c1)"></i>小图：A 逐日</span><span><i class="ln dash"></i>B 逐日（按第 N 天对齐）</span></div>
   <div class="cols2">
-    <section class="panel trend-panel"><div class="panel-h"><h3>${({spend:'广告花费',sales:'广告销售额',orders:'广告订单',acos:'ACOS',cvr:'CVR',cpc:'CPC'})[S.ovMetric]} · 每日趋势</h3><div class="r legend"><span><i class="sw" style="background:var(--c1)"></i>每日值</span><span><i class="sw" style="background:var(--accent-weak);box-shadow:inset 0 0 0 1px var(--accent-line)"></i>A 期</span><span><i class="sw" style="background:var(--b-weak);box-shadow:inset 0 0 0 1px var(--line-2)"></i>B 期</span></div></div>
+    <div class="ovl">${insight(R)}
+    <section class="panel trend-panel"><div class="panel-h"><h3>${({spend:'广告花费',sales:'广告销售额',orders:'广告订单',acos:'ACOS',cvr:'CVR',cpc:'CPC'})[S.ovMetric]} · 每日趋势</h3><div class="r legend"><span><i class="sw" style="background:var(--c1)"></i>每日值</span><span><i class="sw" style="background:var(--band-a);box-shadow:inset 0 0 0 1px var(--accent-line)"></i>A 期</span><span><i class="sw" style="background:var(--band-b);box-shadow:inset 0 0 0 1px var(--line-2)"></i>B 期</span></div></div>
       <div class="panel-b"><div class="chart" data-chart="trend"></div>
-      <div class="muted" style="font-size:11.5px;margin-top:6px">${ic('info')} 阴影为 A / B 期。缺日不补零，曲线在 ${R.D.miss.size?[...R.D.miss].map(t=>md(ds(t))).join('、'):'—'} 断开。</div></div></section>
+      <div class="muted" style="font-size:11.5px;margin-top:6px">${ic('info')} 阴影为 A / B 期。缺日不补零，曲线在 ${R.D.miss.size?[...R.D.miss].map(t=>md(ds(t))).join('、'):'—'} 断开。</div></div></section></div>
     <section class="panel"><div class="panel-h"><h3>需要优先处理</h3><span class="r muted" style="font-size:12px">按涉及金额排序 · 点击进入清单并保留范围</span></div>
       <div class="panel-b q" style="padding-top:0">
         <div class="qg">风险</div>
@@ -1359,8 +1474,8 @@ function vOverview(){
   </div>
   <div class="cols2">
     <section class="panel"><div class="panel-h"><h3>重点关键词</h3><span class="muted" style="font-size:12px">按 A 花费前 8</span><div class="r"><button class="btn sm ghost" data-act="nav" data-v="keywords">全部 ${R.kws.length} 个词${ic('arrow-right')}</button></div></div>
-      <div class="panel-b scx" style="padding-top:6px"><table class="ct" style="min-width:600px"><thead><tr><th>关键词</th><th style="text-align:left">标签</th><th>A 花费</th><th>A ACOS</th><th>销售额变化</th><th style="text-align:left">建议</th></tr></thead><tbody>
-      ${top.map(k=>`<tr><td style="max-width:240px;overflow:hidden;text-overflow:ellipsis"><a href="#keywords" data-act="openKw" data-key="${esc(k.key)}">${esc(k.key)}</a></td><td style="text-align:left"><div class="tags">${k.tags.slice(0,2).map(tagHTML).join('')}${k.tags.length>2?`<span class="tag more">+${k.tags.length-2}</span>`:''}</div></td><td><span class="nbw">${fv('spend',k.A.spend)}<i style="width:${(k.A.spend/(top[0].A.spend||1)*100).toFixed(1)}%"></i></span></td><td class="${acosCls(k.A.acos)}">${fv('acos',k.A.acos)}</td><td>${R.hasB?dlt('sales',k.A.sales,k.B.sales):'<span class="nobase">无基准</span>'}</td><td style="text-align:left">${suggCell(k)}</td></tr>`).join('')}
+      <div class="panel-b scx" style="padding-top:6px"><table class="ct" style="min-width:720px"><thead><tr><th>关键词</th><th style="text-align:left">标签</th><th>A 花费</th><th style="text-align:left">近 8 周花费</th><th>A ACOS</th><th>销售额变化</th><th style="text-align:left">建议</th></tr></thead><tbody>
+      ${top.map(k=>`<tr><td style="max-width:240px;overflow:hidden;text-overflow:ellipsis"><a href="#keywords" data-act="openKw" data-key="${esc(k.key)}">${esc(k.key)}</a></td><td style="text-align:left"><div class="tags">${k.tags.slice(0,2).map(tagHTML).join('')}${k.tags.length>2?`<span class="tag more">+${k.tags.length-2}</span>`:''}</div></td><td><span class="nbw">${fv('spend',k.A.spend)}<i style="width:${(k.A.spend/(top[0].A.spend||1)*100).toFixed(1)}%"></i></span></td><td style="text-align:left">${wkSpark(k)}</td><td class="${acosCls(k.A.acos)}">${fv('acos',k.A.acos)}</td><td>${R.hasB?dlt('sales',k.A.sales,k.B.sales):'<span class="nobase">无基准</span>'}</td><td style="text-align:left">${suggCell(k)}</td></tr>`).join('')}
       </tbody></table></div></section>
     <section class="panel"><div class="panel-h"><h3>数据覆盖与口径</h3><div class="r"><button class="btn sm ghost" data-act="help">${ic('circle-help')}口径</button></div></div>
       <div class="panel-b"><dl class="kv-list">
@@ -1398,7 +1513,7 @@ function listRows(R){
   if(L.q){const q=L.q.toLowerCase();arr=arr.filter(k=>k.key.includes(q)||k.camps.some(c=>c.toLowerCase().includes(q)))}
   if(L.orders==='with')arr=arr.filter(k=>k.A.orders>0);else if(L.orders==='without')arr=arr.filter(k=>k.A.orders===0);
   const {k,d}=L.sort;
-  const val=x=>{if(k==='kw')return x.key;if(k==='tags')return x.tags.length;if(k==='match')return x.matches.join();if(k==='sugg')return x.sugg.length;if(k==='adgroup')return x.ags.join();if(k==='target')return x.targets.join();if(k==='kwtype')return x.kwtype;const [p,m]=k.split('_');return (p==='A'?x.A:x.B)[m]};
+  const val=x=>{if(k==='kw')return x.key;if(k==='tags')return x.tags.length;if(k==='match')return x.matches.join();if(k==='sugg')return x.sugg.length;if(k==='adgroup')return x.ags.join();if(k==='target')return x.targets.join();if(k==='kwtype')return x.kwtype;const [p,m]=k.split('_');if(p==='B'&&S.bMode==='delta'){const a=x.A[m],b=x.B[m];if(a==null||b==null)return null;return PCT.has(m)?a-b:(b?(a-b)/b:(a>0?1e9:0))}return (p==='A'?x.A:x.B)[m]};
   arr=[...arr].sort((x,y)=>{const a=val(x),b=val(y);if(a==null&&b==null)return 0;if(a==null)return 1;if(b==null)return -1;return (typeof a==='string'?a.localeCompare(b):a-b)*d});
   return arr;
 }
@@ -1411,6 +1526,7 @@ function cell(c,k,R){
   if(c.id==='target')return `<span title="${esc(k.targets.join('\n'))}">${k.targets.length>1?`${k.targets.length} 个 · `:''}${esc(k.targets[0])}</span>`;
   if(c.id==='kwtype')return k.kwtype;
   if(c.ab==='b'&&!R.hasB)return '<span class="nobase">无基准</span>';
+  if(c.ab==='b'&&S.bMode==='delta')return dlt(c.k,k.A[c.k],k.B[c.k]);
   return fv(c.k,(c.ab==='a'?k.A:k.B)[c.k]);
 }
 function vKeywords(){
@@ -1423,12 +1539,12 @@ function vKeywords(){
   const page=all.slice((L.page-1)*L.size,L.page*L.size);
   const pmax={spend:Math.max(0,...page.map(k=>k.A.spend)),sales:Math.max(0,...page.map(k=>k.A.sales))};
   const cols=S.cols.map(id=>CD[id]);
-  const W=id=>S.colW[id]||CD[id].w;
+  const W=id=>{const w=S.colW[id]||CD[id].w;return S.bMode==='delta'&&id.startsWith('B_')?Math.max(w,112):w};
   const tw=cols.reduce((s,c)=>s+W(c.id),0);
   const tc=R.tagCount;
   const chip=(t)=>`<button class="tchip ${L.tag===t?'on':''}" data-act="tag" data-v="${t}"><span class="dot" style="background:var(--${({risk:'bad',opp:'good',chg:'accent',warn:'warn',obs:'fg-3'})[TAGKIND[t]]})"></span>${t}<b>${tc[t]||0}</b></button>`;
   const grp=(l,ts)=>{const v=ts.filter(t=>tc[t]||L.tag===t);return v.length?`<span class="tgl">${l}</span>`+v.map(chip).join(''):''};
-  const th=c=>{const sorted=L.sort.k===c.id;return `<th class="${c.num?'num':''} ${c.id==='kw'?'kwc':''} ${sorted?'sorted':''} ${c.ab?'c'+c.ab:''}" data-act="sort" data-k="${c.id}" aria-sort="${sorted?(L.sort.d>0?'ascending':'descending'):'none'}" title="${c.ab?(c.ab==='a'?'A 分析期 ':'B 对比期 '):''}${c.l}"><span class="thc">${c.id==='kw'?`<input type="checkbox" class="pick" data-act="pickAll" ${page.length&&page.every(k=>S.picked.has(k.key))?'checked':''} aria-label="选择本页全部" title="选择本页全部">`:''}${c.ab?`<span class="ab ${c.ab}">${c.ab.toUpperCase()}</span>`:''}${c.l}${sorted?ic(L.sort.d>0?'arrow-up':'arrow-down'):''}</span><span class="rz" role="separator" aria-orientation="vertical" aria-label="调整「${c.l}」列宽，可用左右方向键" tabindex="0" data-rz="${c.id}" aria-valuenow="${W(c.id)}"></span></th>`};
+  const th=c=>{const sorted=L.sort.k===c.id;return `<th class="${c.num?'num':''} ${c.id==='kw'?'kwc':''} ${sorted?'sorted':''} ${c.ab?'c'+c.ab:''}" data-act="sort" data-k="${c.id}" aria-sort="${sorted?(L.sort.d>0?'ascending':'descending'):'none'}" title="${c.ab?(c.ab==='a'?'A 分析期 ':S.bMode==='delta'?'A 相对 B 的变化 ':'B 对比期 '):''}${c.l}"><span class="thc">${c.id==='kw'?`<input type="checkbox" class="pick" data-act="pickAll" ${page.length&&page.every(k=>S.picked.has(k.key))?'checked':''} aria-label="选择本页全部" title="选择本页全部">`:''}${c.ab?`<span class="ab ${c.ab}">${c.ab==='b'&&S.bMode==='delta'?'Δ':c.ab.toUpperCase()}</span>`:''}${c.l}${sorted?ic(L.sort.d>0?'arrow-up':'arrow-down'):''}</span><span class="rz" role="separator" aria-orientation="vertical" aria-label="调整「${c.l}」列宽，可用左右方向键" tabindex="0" data-rz="${c.id}" aria-valuenow="${W(c.id)}"></span></th>`};
   const rowsH=page.map(k=>{
     const ex=S.expanded.has(k.key), sel=S.sel===k.key, last=S.last===k.key&&!sel;
     const cells=cols.map(c=>{
@@ -1444,7 +1560,7 @@ function vKeywords(){
   const busy=S.loading||S.err;
   const customW=Object.keys(S.colW).length>0;
   return `
-  <div class="ph"><div class="tt"><h1>关键词决策</h1><span class="meta tn">${srcLabel(sh.source)} · A ${rLabel(sh.A)} vs B ${rLabel(sh.B)} · ${R.kws.length} 个词 · ${nf0.format(R.nRows)} 行活动明细</span></div>
+  <div class="ph"><div class="tt"><h1>关键词决策</h1><span class="meta tn">${srcLabel(sh.source)} · A ${rLabel(sh.A)} vs B ${rLabel(sh.B)} · ${R.kws.length} 个词 · ${nf0.format(R.nRows)} 行活动明细${covChip(R,false)}</span></div>
     <div class="act">
       <button class="btn" data-act="genReport">${ic('file-pen-line')}生成复盘</button>
       <div class="pa"><button class="btn primary${busy?' dis':''}" data-act="pop" data-pop="export" title="${busy?'结果尚未更新到当前范围，暂不能导出':''}">${ic('download')}导出 Excel${ic('chevron-down')}</button>${S.pop==='export'?popExport(R):''}</div>
@@ -1459,12 +1575,13 @@ function vKeywords(){
         ${L.tag!=='all'?`<button class="btn ghost sm icon" data-act="tag" data-v="all" title="清除标签" aria-label="清除标签">${ic('x')}</button>`:''}
         <div class="seg" role="group" aria-label="订单"><button data-act="ord" data-v="all" aria-pressed="${L.orders==='all'}">全部</button><button data-act="ord" data-v="with" aria-pressed="${L.orders==='with'}">有订单</button><button data-act="ord" data-v="without" aria-pressed="${L.orders==='without'}">无订单</button></div>
         <span class="sp"></span>
+        <div class="seg hide-m" role="group" aria-label="B 列显示" title="B 列显示 B 期数值，或 A 相对 B 的变化"><button data-act="bMode" data-v="value" aria-pressed="${S.bMode!=='delta'}">B 值</button><button data-act="bMode" data-v="delta" aria-pressed="${S.bMode==='delta'}">变化</button></div>
         <div class="seg hide-m" role="group" aria-label="行高"><button data-act="density" data-v="comfy" aria-pressed="${S.density!=='dense'}">舒适</button><button data-act="density" data-v="dense" aria-pressed="${S.density==='dense'}">紧凑</button></div>
         <div class="pa"><button class="btn" data-act="pop" data-pop="cols">${ic('columns-3')}<span class="hide-m">显示列</span> <span class="muted tn">${S.cols.length}/29</span></button>${S.pop==='cols'?popCols():''}</div>
       </div>`}
       <div class="tbl-wrap ${S.loading?'stale':''}" id="tw" data-scroll="tw">
-        <table class="g ${S.density==='dense'?'dense':''}" style="width:${tw}px"><colgroup>${cols.map(c=>`<col data-col="${c.id}" style="width:${W(c.id)}px">`).join('')}</colgroup>
-        <thead><tr>${cols.map(th).join('')}</tr></thead><tbody>${rowsH}${empty}</tbody></table>
+        ${innerWidth<=760?kcards(page,R):`<table class="g ${S.density==='dense'?'dense':''}" style="width:${tw}px"><colgroup>${cols.map(c=>`<col data-col="${c.id}" style="width:${W(c.id)}px">`).join('')}</colgroup>
+        <thead><tr>${cols.map(th).join('')}</tr></thead><tbody>${rowsH}${empty}</tbody></table>`}
       </div>
       <div class="ft">
         <span class="tn">${total?`第 ${(L.page-1)*L.size+1}–${Math.min(total,L.page*L.size)} 个，共 ${total} 个词`:'0 个词'}${listActive?` <span class="muted">（范围内 ${R.kws.length}）</span>`:''}</span>
@@ -1477,6 +1594,15 @@ function vKeywords(){
     </section>
     ${S.sel?detail(R,all):''}
   </div>`;
+}
+function kcards(page,R){
+  if(!page.length)return `<div class="empty-row">${ic('list-x')}<div style="margin:6px 0 10px"><b>当前清单视图下没有词。</b><br><span class="muted">视图、标签、搜索和订单筛选只影响清单显示。</span></div><button class="btn sm" data-act="clearList">清除清单筛选</button></div>`;
+  return `<div class="kcards">${page.map(k=>`<button class="kcard${S.sel===k.key?' sel':''}" data-act="open" data-key="${esc(k.key)}">
+    <span class="kc-h"><b>${esc(k.key)}</b>${decBadge(k.key)}</span>
+    <span class="kc-sub">${k.camps.length} 个活动 · ${k.kwtype}${k.tags.includes('活动分化')?' · 活动间分化':''}</span>
+    <span class="tags">${k.tags.slice(0,3).map(tagHTML).join('')}${k.tags.length>3?`<span class="tag more">+${k.tags.length-3}</span>`:''}</span>
+    <span class="kc-m">${[['spend','A 花费'],['orders','A 订单'],['acos','A ACOS']].map(([m,l])=>`<span><small>${l}</small><b class="${m==='acos'?acosCls(k.A.acos):''}">${fv(m,k.A[m])}</b>${R.hasB?dlt(m,k.A[m],k.B[m]):'<span class="nobase">无基准</span>'}</span>`).join('')}</span>
+    <span class="kc-s">${suggCell(k)}</span></button>`).join('')}</div>`;
 }
 function popTagPick(R){
   const tc=R.tagCount, L=S.list;
@@ -1545,6 +1671,7 @@ function detail(R,all){
       <div class="det-s"><h4>${ic('lightbulb')}建议与依据<span class="r">${k.sugg.length} 条 · 按活动给出</span></h4>${sg||`<div class="muted" style="font-size:12.5px">当前规则下没有建议动作${k.tags.includes('样本不足')?'：A 点击少于最低样本，保持观察。':'。'}</div>`}</div>
       <div class="det-s"><h4>${ic('table-2')}A / B 指标<span class="r tn">A ${rLabel(S.shown.A)} · B ${rLabel(S.shown.B)}</span></h4>
         <div class="mcards">${['spend','sales','orders','acos','clicks','cvr'].map(m=>{const a=k.A[m],b=nb?null:k.B[m],mx=Math.max(a||0,b||0)||1;return `<div class="mc"><span class="mcl">${MLABEL[m]}</span><span class="mcv ${m==='acos'?acosCls(a):''}">${fv(m,a)}</span><span class="mcb"><span>B ${nb?'无基准':fvt(m,b)}</span>${nb?'':dlt(m,a,b)}</span><span class="pbar"><i style="width:${((a||0)/mx*100).toFixed(1)}%"></i>${nb?'':`<i class="b" style="width:${((b||0)/mx*100).toFixed(1)}%"></i>`}</span></div>`}).join('')}</div>
+        ${(()=>{const d=nb?null:decompAB(k.A,k.B,R.covA.n,R.covB.n,'sales');return d?`<div class="dfx" aria-label="该词销售额拆解">${fxChips(d,true)}</div><p class="hint2" style="margin:6px 0 0">销售额 = 曝光 × CTR × CVR × 客单价${d.per?'，按日均':''}；“贡献”为各因素带来的销售额变化</p>`:''})()}
         <details class="allm"><summary>${ic('chevron-right')}查看全部 11 项指标</summary><table class="mt"><thead><tr><th>指标</th><th><span class="ab a">A</span></th><th><span class="ab b">B</span></th><th>变化</th></tr></thead><tbody>
         ${MET.map(([m,l])=>`<tr><td>${l}</td><td>${fv(m,k.A[m])}</td><td class="bv">${nb?'<span class="nobase">无基准</span>':fv(m,k.B[m])}</td><td>${nb?'':dlt(m,k.A[m],k.B[m])}</td></tr>`).join('')}
         </tbody></table></details></div>
@@ -1579,9 +1706,11 @@ function vDiagnosis(){
   const maxD=Math.max(1e-9,...contrib.map(x=>Math.abs(x.d)));
   const totD=R.hasB?R.A[m]-R.B[m]:0;
   return `
-  <div class="ph"><div class="tt"><h1>变化诊断</h1><span class="meta">与之前相比发生了什么 · ${srcLabel(sh.source)}</span></div><div class="act"><button class="btn" data-act="genReportCmp">${ic('file-pen-line')}生成周期对比报告</button></div></div>
+  <div class="ph"><div class="tt"><h1>变化诊断</h1><span class="meta">与之前相比发生了什么 · ${srcLabel(sh.source)}${covChip(R,false)}</span></div><div class="act"><button class="btn" data-act="genReportCmp">${ic('file-pen-line')}生成周期对比报告</button></div></div>
   <div class="mode"><div class="seg">${[['custom','自定义 A/B'],['archive','归档周期'],['event','大促前后']].map(([v,l])=>`<button data-act="diagMode" data-v="${v}" aria-pressed="${dg.mode===v}">${l}</button>`).join('')}</div>${modeCtl}</div>
   ${banners(R,{kpi:false})}
+  <section class="panel"><div class="panel-h"><h3>变化拆解</h3><span class="newb">新增</span><span class="muted" style="font-size:12px">${({sales:'销售额 = 曝光 × CTR × CVR × 客单价',spend:'花费 = 曝光 × CTR × CPC',acos:'ACOS = CPC ÷ (CVR × 客单价)'})[S.diag.wf]}</span><div class="r"><div class="seg">${[['sales','销售额'],['spend','花费'],['acos','ACOS']].map(([v,l])=>`<button data-act="diagWf" data-v="${v}" aria-pressed="${S.diag.wf===v}">${l}</button>`).join('')}</div></div></div>
+    <div class="panel-b"><div class="chart" data-chart="wf" style="height:260px"></div><p class="hint2" style="margin:8px 0 0">采用对数均值分解：各因素贡献相加正好等于总变化，没有无法解释的残差${R.covA.n!==R.covB.n?'；A/B 天数不同，量指标按日均计算':''}。${(()=>{const d=decomp(R,S.diag.wf);if(!d)return '';const f=wfScale(d).floor;return f>0?`纵轴从 ${fmtD(d,f)} 起，总额柱带断轴记号。`:''})()}${({sales:'绿色＝推高销售额，红色＝拉低销售额。',spend:'花费涨跌本身不分好坏，各因素统一用灰色。',acos:'绿色＝压低 ACOS（有利），红色＝推高 ACOS。'})[S.diag.wf]}</p></div></section>
   <div class="cols2">
     <section class="panel"><div class="panel-h"><h3>指标对照</h3><span class="muted tn" style="font-size:12px">A ${R.covA.n} 天 · B ${R.covB.n} 天${dd?' · 天数不同，请看日均列':''}</span></div>
       <div class="panel-b scx"><table class="ct" style="min-width:560px"><thead><tr><th>指标</th><th><span class="ab a">A</span> 合计</th><th><span class="ab b">B</span> 合计</th><th>变化</th><th>A 日均</th><th>B 日均</th><th>日均变化</th></tr></thead><tbody>${rowsT}</tbody></table>
@@ -1789,6 +1918,12 @@ function vSpec(){
     <tr><td>Google Ads 建议页</td><td>建议按影响排序；可采纳或忽略并改变优化进度；卡片与表格两种视图</td><td>“需要优先处理”按涉及金额排序并显示已处理数；详情中“采纳 / 暂不处理”记录人工判断，汇入复盘；总览顶部显示本轮进度</td></tr>
     <tr><td>Vercel Geist</td><td>克制配色、单一强调色、细线代替重阴影、字重不超过 600</td><td>改用 Geist 字体与等宽数字；卡片阴影收至最轻；保留唯一强调色钴蓝</td></tr>
   </tbody></table></div></section>
+  <section class="panel"><div class="panel-h"><h3>v4：先结论、再证据</h3></div><div class="panel-b"><ul style="margin:0">
+    <li><b>本期结论</b>：总览左上角用一句话回答“表现怎样、为什么”，销售额拆成 曝光 × CTR × CVR × 客单价，标出主因与影响最大的词。全部由规则计算，标注“非 AI”。</li>
+    <li><b>变化拆解</b>：诊断页新增瀑布图，销售额 / 花费 / ACOS 三种拆法；采用对数均值分解，各因素贡献之和等于总变化。关键词详情也给出该词的拆解。</li>
+    <li><b>覆盖提示</b>：从整行横幅收为页头的“覆盖不足”标记，点击查看缺日与口径，首屏让给数据。</li>
+    <li><b>表格</b>：B 列可切换为“变化”（按指标含义着色，可排序）；手机端改为卡片列表；总览重点词增加近 8 周花费小图。</li>
+  </ul></div></section>
   <div class="dir">
     <section class="panel"><h3>方向一 · 流程向导型</h3><p style="margin:0">导航即步骤：导入 → 对比 → 清单 → 复盘。每一步完成后进入下一步，范围在第二步确定并沿用。</p>
       <ul><li>适合新用户和固定的每周例行复盘</li><li>高频的“总览 ↔ 清单 ↔ 详情”往返要按步骤走，老用户觉得冗长</li><li>项目、规则等管理功能混在流程里，主次不清</li></ul></section>
@@ -1826,8 +1961,8 @@ function vSpec(){
   </tbody></table></div></section>
   <div class="prio">
     <section class="panel"><h4><span class="lv">P0</span>布局调整</h4><ul style="margin:0"><li>顶部常驻范围条与状态胶囊</li><li>关键词页表格主体 + 右侧详情</li><li>总览“需要优先处理”带标签跳转</li><li>管理功能归入工作区分组</li></ul></section>
-    <section class="panel"><h4><span class="lv">P1</span>交互优化</h4><ul style="margin:0"><li>日期弹层：预设分组、日历缺日标记、归档周</li><li>旧结果标记、失败重试、禁止导出旧结果</li><li>导出范围说明弹层</li><li>来源活动展开与加总校验、列宽与分页</li><li>三种宽度适配</li></ul></section>
-    <section class="panel"><h4><span class="lv">P2</span>新增范围 <span class="newb">需评审</span></h4><ul style="margin:0"><li>“活动分化”派生标签</li><li>变化贡献分解（按词）</li><li>数据覆盖日历</li><li>人工判断记录（采纳 / 暂不处理）与批量操作</li><li>⌘K 命令面板与清单快捷键</li><li>清单视图标签（可扩展为保存自定义视图）</li><li>不建议本期：账户同步、自动执行、库存利润联动</li></ul></section>
+    <section class="panel"><h4><span class="lv">P1</span>交互优化</h4><ul style="margin:0"><li>日期弹层：预设分组、日历缺日标记、归档周</li><li>旧结果标记、失败重试、禁止导出旧结果</li><li>导出范围说明弹层</li><li>来源活动展开与加总校验、列宽与分页</li><li>三种宽度适配</li><li>覆盖提示收为页头标记 + 弹层</li><li>B 列可切换为“变化”</li><li>手机端关键词卡片列表</li></ul></section>
+    <section class="panel"><h4><span class="lv">P2</span>新增范围 <span class="newb">需评审</span></h4><ul style="margin:0"><li>“活动分化”派生标签</li><li>变化贡献分解（按词）</li><li>数据覆盖日历</li><li>人工判断记录（采纳 / 暂不处理）与批量操作</li><li>⌘K 命令面板与清单快捷键</li><li>本期结论（规则生成）与对数均值变化拆解</li><li>清单视图标签（可扩展为保存自定义视图）</li><li>不建议本期：账户同步、自动执行、库存利润联动</li></ul></section>
   </div>
   <p class="muted" style="font-size:12px">原型中带虚线“新增”标记的元素，是基于现有数据派生的新展示，不属于现有已完成能力。全部数字为演示合成数据。</p>
   </div>`;
@@ -1894,6 +2029,7 @@ function drawCharts(){
     const type=el.dataset.chart;
     if(type==='trend')trendChart(el,R);
     else if(type==='sm')smChart(el,R,el.dataset.k);
+    else if(type==='wf')wfChart(el,R);
   });
 }
 function svgEl(w,h,inner){return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img">${inner}</svg>`}
@@ -1910,7 +2046,7 @@ function trendChart(el,R){
   let g='<defs><linearGradient id="gS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--c1);stop-opacity:.26"/><stop offset="1" style="stop-color:var(--c1);stop-opacity:0"/></linearGradient></defs>';
   for(let i=0;i<=4;i++){const v=mx*i/4,y=Y(v);g+=`<line class="grid" x1="${pl}" x2="${W-pr}" y1="${y}" y2="${y}"/><text class="ax" x="${pl-10}" y="${y+4}" text-anchor="end">${axL(v)}</text>`}
   const band=(a,b,lab,cls)=>{const x1=X(Math.max(0,a-s))-(iw/(n-1||1))/2,x2=X(Math.min(n-1,b-s))+(iw/(n-1||1))/2;if(b<s||a>e)return '';return `<rect x="${Math.max(pl,x1)}" y="${pt}" width="${Math.min(W-pr,x2)-Math.max(pl,x1)}" height="${ih}" style="fill:${cls}" /><rect x="${Math.max(pl,x1)+4}" y="${pt-23}" width="34" height="17" rx="8.5" style="fill:${lab==='A'?'var(--a)':'var(--b)'}"/><text x="${Math.max(pl,x1)+21}" y="${pt-10.5}" text-anchor="middle" style="font:600 10.5px var(--font-ui);fill:${lab==='A'?'var(--on-accent)':'#fff'}">${lab} 期</text>`};
-  g+=band(R.Bi[0],R.Bi[1],'B','var(--b-weak)')+band(R.Ai[0],R.Ai[1],'A','var(--accent-weak)');
+  g+=band(R.Bi[0],R.Bi[1],'B','var(--band-b)')+band(R.Ai[0],R.Ai[1],'A','var(--band-a)');
   const segs=[];let cs=[];d.forEach((x,i)=>{if(x&&x[K]!=null)cs.push([X(i),Y(x[K])]);else if(cs.length){segs.push(cs);cs=[]}});if(cs.length)segs.push(cs);
   segs.forEach(sg=>{g+=`<path d="M${sg[0][0]},${Y(0)}L${sg.map(p=>p.join(',')).join('L')}L${sg[sg.length-1][0]},${Y(0)}Z" style="fill:url(#gS)"/><path d="M${sg.map(p=>p.join(',')).join('L')}" fill="none" style="stroke:var(--c1)" stroke-width="2.25" stroke-linejoin="round"/>`});
   d.forEach((x,i)=>{if(!x)g+=`<line x1="${X(i)}" x2="${X(i)}" y1="${pt}" y2="${pt+ih}" style="stroke:var(--bad)" stroke-dasharray="2 3" opacity=".6"/><text class="ax" x="${X(i)}" y="${pt+ih-4}" text-anchor="middle" style="fill:var(--bad)">缺</text>`});
@@ -1929,6 +2065,34 @@ function trendChart(el,R){
     tip.hidden=false;const tx=X(i)+12;tip.style.left=(tx+180>W?X(i)-192:tx)+'px';tip.style.top='8px';
   });
   svg.querySelector('.hit').addEventListener('mouseleave',()=>{tip.hidden=true;xh.setAttribute('visibility','hidden')});
+}
+function wfScale(d){
+  let run=d.tB;const lv=[d.tB,d.tA];d.steps.forEach(x=>{lv.push(run);run+=x.v;lv.push(run)});
+  const lo=Math.min(...lv),hi=Math.max(...lv),spn=(hi-lo)||hi*.1;
+  return {floor:Math.max(0,lo-spn*.7),ceil:hi+spn*.22};
+}
+function wfChart(el,R){
+  const m=S.diag.wf||'sales',d=decomp(R,m);
+  if(!d){el.innerHTML=`<div class="muted" style="padding:60px 0;text-align:center">${R.hasB?'有因素为 0（如无订单），无法拆解':'没有 B 基准，无法拆解'}</div>`;return}
+  const W=el.clientWidth,H=el.clientHeight,pl=8,pr=8,pt=28,pb=46;
+  const cats=[{l:'B 期',t:'tot',v:d.tB}].concat(d.steps.map(x=>({l:x.l,t:'d',v:x.v,chg:x.chg})),[{l:'A 期',t:'tot',v:d.tA}]);
+  let run=d.tB;const bars=cats.map(c=>{if(c.t==='tot')return Object.assign({},c,{y0:0,y1:c.v});const y0=run,y1=run+c.v;run=y1;return Object.assign({},c,{y0,y1})});
+  // 纵轴截取到有变化的区间，否则总额柱会把各因素的小幅贡献压成一条线；被截断的总额柱画断轴记号
+  const {floor,ceil}=wfScale(d);
+  const n=cats.length,bw=(W-pl-pr)/n,barW=Math.min(68,bw*.56),X=i=>pl+bw*i+bw/2,Y=v=>pt+(H-pt-pb)*(1-(v-floor)/(ceil-floor));
+  const sem={sales:1,spend:0,acos:-1}[m];
+  let g=`<line class="base" x1="${pl}" x2="${W-pr}" y1="${Y(floor)}" y2="${Y(floor)}"/>`;
+  bars.forEach((b,i)=>{
+    const lo0=b.t==='tot'?floor:Math.min(b.y0,b.y1),top=Y(Math.max(b.y0,b.y1)),bot=Y(lo0),h=Math.max(2,bot-top);
+    const col=b.t==='tot'?(i===0?'var(--b)':'var(--a)'):(sem===0||Math.abs(b.chg)<.005?'var(--b-ink)':((b.v>0)===(sem>0)?'var(--good)':'var(--bad)'));
+    g+=`<rect x="${X(i)-barW/2}" y="${top}" width="${barW}" height="${h}" rx="4" style="fill:${col}"><title>${b.l}：${b.t==='tot'?fmtD(d,b.v):fmtD(d,b.v,true)}</title></rect>`;
+    if(b.t==='tot'&&floor>0){const yb=bot-14;g+=`<path d="M${X(i)-barW/2-2},${yb+3} l${barW/4+1},-4 l${barW/4+1},4 l${barW/4+1},-4 l${barW/4+1},4" fill="none" style="stroke:var(--surface)" stroke-width="3"/>`}
+    if(i<n-1)g+=`<line x1="${X(i)+barW/2}" x2="${X(i+1)-barW/2}" y1="${Y(b.y1)}" y2="${Y(b.y1)}" style="stroke:var(--fg-3)" stroke-dasharray="3 3" opacity=".6"/>`;
+    g+=`<text x="${X(i)}" y="${top-8}" text-anchor="middle" style="font:600 12.5px var(--font-num);fill:var(--fg)">${b.t==='tot'?fmtD(d,b.v):fmtD(d,b.v,true)}</text>`;
+    g+=`<text x="${X(i)}" y="${H-26}" text-anchor="middle" style="font:500 12px var(--font-ui);fill:var(--fg-2)">${b.l}</text>`;
+    g+=`<text x="${X(i)}" y="${H-9}" text-anchor="middle" style="font:500 11px var(--font-num);fill:var(--fg-3)">${b.t==='tot'?(i===0?rLabel(S.shown.B):rLabel(S.shown.A)):pcs(b.chg)}</text>`;
+  });
+  el.innerHTML=svgEl(W,H,g);
 }
 function smChart(el,R,k){
   const a=R.daily(R.Ai[0],R.Ai[1]), b=R.hasB?R.daily(R.Bi[0],R.Bi[1]):[];
@@ -1958,7 +2122,7 @@ function render(){
   const scrolls={};document.querySelectorAll('[data-scroll]').forEach(el=>scrolls[el.dataset.scroll]=[el.scrollTop,el.scrollLeft]);
   const mainEl=document.getElementById('main'), mainTop=mainEl?mainEl.scrollTop:0, prevView=render.v;
   const fill=S.view==='keywords'&&!S.noProject&&!proj().empty&&!S.loadError&&calc(S.shown)&&calc(S.shown).kws.length;
-  app.innerHTML=rail()+topbar()+`<main class="main${fill?' fill':''}" id="main">${(VIEWS[S.view]||vOverview)()}</main>`+tabbar()+modal()+cmdPalette()+(S.toast?`<div class="toast" role="status">${ic(S.toast.icon)}${esc(S.toast.msg)}</div>`:'');
+  app.innerHTML=rail()+topbar()+`<main class="main${fill?' fill':''}${render.v!==S.view?' enter':''}" id="main">${(VIEWS[S.view]||vOverview)()}</main>`+tabbar()+modal()+cmdPalette()+(S.toast?`<div class="toast" role="status">${ic(S.toast.icon)}${esc(S.toast.msg)}</div>`:'');
   render.v=S.view;
   const nm=document.getElementById('main');if(nm&&prevView===S.view)nm.scrollTop=mainTop;
   document.querySelectorAll('[data-scroll]').forEach(el=>{const s=scrolls[el.dataset.scroll];if(s){el.scrollTop=s[0];el.scrollLeft=s[1]}});
@@ -2029,6 +2193,8 @@ const ACT={
   diagMode:t=>{S.diag.mode=t.dataset.v},
   diagWin:t=>{S.diag.win=+t.dataset.v},
   diagMetric:t=>{S.diag.metric=t.dataset.v},
+  diagWf:t=>{S.diag.wf=t.dataset.v},
+  bMode:t=>{S.bMode=t.dataset.v;store.set('bmode',S.bMode)},
   diagApply:()=>{const g=S.diag;if(g.mode==='event'){S.scope.A={s:g.event,e:addD(g.event,g.win-1)};S.scope.B={s:addD(g.event,-g.win),e:addD(g.event,-1)}}else{S.scope.A={s:addD(g.wA,-6),e:g.wA};S.scope.B={s:addD(g.wB,-6),e:g.wB}}refresh()},
   dataStage:t=>{S.data.stage=t.dataset.v},
   importGo:()=>{S.data.stage='importing';setTimeout(()=>{S.data.stage='done';render()},1400)},
