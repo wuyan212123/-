@@ -1,0 +1,330 @@
+<title>MEEDEN 选品地图</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a toolbar over a pannable mind map, with a detail rail on the right (stacks below on phones). Violet ground echoes MEEDEN's own planning map. */
+:root{
+  --bg:#F4F3F9; --panel:#FFFFFF; --ink:#1F1A30; --muted:#6A6482; --line:#CDC8DF; --accent:#5B3FD1; --accent-soft:#E9E4FB;
+  --ok:#23895B; --part:#B57A0C; --plan:#2C66CC; --gap:#D4492C; --unk:#8C88A0; --pend:#8C88A0;
+  --f-display:"Noto Serif SC","Songti SC",serif; --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif; --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1B1630; --panel:#251F3E; --ink:#EEEBF8; --muted:#A49EBF; --line:#433A68; --accent:#A592FF; --accent-soft:#332A57;
+  --ok:#4CC38A; --part:#E5B04A; --plan:#72A2F6; --gap:#FF7B5E; --unk:#9B96B3; --pend:#9B96B3; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#1B1630; --panel:#251F3E; --ink:#EEEBF8; --muted:#A49EBF; --line:#433A68; --accent:#A592FF; --accent-soft:#332A57;
+  --ok:#4CC38A; --part:#E5B04A; --plan:#72A2F6; --gap:#FF7B5E; --unk:#9B96B3; --pend:#9B96B3; color-scheme:dark }
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.55}
+.wrap{padding-block:20px 28px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));max-width:1500px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px}
+h1{font-family:var(--f-display);font-size:26px;margin:0;letter-spacing:.02em;text-wrap:balance}
+.sub{color:var(--muted);font-size:13px;margin:2px 0 0}
+.stats{display:flex;flex-wrap:wrap;gap:6px}
+.stat{font-size:12px;padding:3px 10px;border-radius:999px;background:var(--panel);border:1px solid var(--line);font-variant-numeric:tabular-nums;white-space:nowrap}
+.stat b{font-family:var(--f-mono);font-weight:500}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:12.5px;padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.chip .dot{width:9px;height:9px;border-radius:50%}
+.chip.st[aria-pressed="false"]{opacity:.42}
+#onlyStar[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.chip:focus-visible,.btn:focus-visible,input:focus-visible,.opp:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn{font:inherit;font-size:12.5px;padding:5px 12px;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.sep{width:1px;height:22px;background:var(--line);margin:0 2px}
+#q{font:inherit;font-size:13px;padding:5px 10px;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--ink);width:180px;max-width:100%}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;align-items:start}
+@media (max-width:900px){.main{grid-template-columns:minmax(0,1fr)}}
+.mapbox{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:10px;height:min(74vh,820px);min-height:460px;overflow:hidden}
+#map{width:100%;height:100%;display:block;cursor:grab;touch-action:none}
+#map:active{cursor:grabbing}
+.hint{position:absolute;left:12px;bottom:10px;font-size:11.5px;color:var(--muted);background:var(--panel);padding:2px 8px;border-radius:6px;border:1px solid var(--line)}
+.link{fill:none;stroke:var(--line);stroke-width:1.4}
+.node text{fill:var(--ink);font-size:13px;dominant-baseline:middle;paint-order:stroke;stroke:var(--panel);stroke-width:4px;stroke-linejoin:round}
+.node .lvl1{font-family:var(--f-display);font-size:17px;font-weight:700}
+.node .lvl2{font-size:15px;font-weight:700}
+.node .lvl3{font-size:14px;font-weight:500}
+.node .cnt{font-family:var(--f-mono);font-size:11px;font-weight:500}
+.node .muted{fill:var(--muted)}
+.node.out text.lbl{fill:var(--muted);text-decoration:line-through}
+.node.hit text.lbl{fill:var(--accent);font-weight:700}
+.node{cursor:pointer}
+.node:focus{outline:none}
+.node:focus-visible circle.k{stroke:var(--accent);stroke-width:3}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0;max-height:min(78vh,820px);overflow:auto}
+.panel h2{font-family:var(--f-display);font-size:18px;margin:0;text-wrap:balance}
+.panel h3{font-size:12px;letter-spacing:.08em;color:var(--muted);margin:6px 0 0;font-weight:500}
+.panel p{margin:0;font-size:13px}
+.opp{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:8px;align-items:baseline;text-align:left;width:100%;font:inherit;font-size:13px;padding:7px 8px;border-radius:6px;border:1px solid transparent;background:transparent;color:var(--ink);cursor:pointer}
+.opp:hover{background:var(--accent-soft)}
+.opp .k{font-family:var(--f-mono);color:var(--accent);font-size:12px}
+.opp .u{font-family:var(--f-mono);font-size:12px;color:var(--muted);white-space:nowrap}
+dl{display:grid;grid-template-columns:88px minmax(0,1fr);gap:6px 10px;margin:0;font-size:13px}
+dt{color:var(--muted)}
+dd{margin:0;overflow-wrap:anywhere}
+.badge{display:inline-block;font-size:12px;padding:1px 9px;border-radius:999px;color:var(--bg);font-weight:500}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+a{color:var(--accent)}
+.note{font-size:12px;color:var(--muted)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>MEEDEN 选品地图</h1>
+      <p class="sub">__SUBTITLE__</p>
+    </div>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <div class="toolbar" role="toolbar" aria-label="筛选与视图">
+    <span class="note">MEEDEN 状态：</span>
+    <span id="chips"></span>
+    <span class="sep" aria-hidden="true"></span>
+    <button class="chip" id="onlyStar" aria-pressed="false" type="button">★ 只看立项评审</button>
+    <span class="sep" aria-hidden="true"></span>
+    <input id="q" type="search" placeholder="搜索形态或英文词，如 marker" aria-label="搜索">
+    <button class="btn" id="expandAll" type="button">全部展开</button>
+    <button class="btn" id="collapse" type="button">收起到小类</button>
+    <button class="btn" id="fit" type="button">适配视图</button>
+  </div>
+
+  <div class="main">
+    <div class="mapbox">
+      <svg id="map" role="img" aria-label="MEEDEN 选品地图：大类、小类、细分形态与 MEEDEN 状态"></svg>
+      <div class="hint">点节点展开 / 收起 · 拖动平移 · 滚轮或双指缩放</div>
+    </div>
+    <aside class="panel" id="panel" aria-live="polite"></aside>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script>
+const DATA = __DATA__;
+const ST = [
+  {k:"已有",v:"--ok"},{k:"部分覆盖",v:"--part"},{k:"规划中",v:"--plan"},{k:"空白",v:"--gap"},{k:"未核对",v:"--unk"}
+];
+const colorVar = s => ({"已有":"--ok","部分覆盖":"--part","规划中":"--plan","空白":"--gap","未核对":"--unk","待扫描":"--pend"})[s] || "--unk";
+const css = v => `var(${v})`;
+const active = new Set(ST.map(s=>s.k));
+let onlyStar = false, query = "";
+
+// ids
+(function tag(n, p){ n.path = p ? p + "/" + n.n : n.n; (n.children||[]).forEach(c=>tag(c, n.path)); })(DATA, "");
+const isLeaf = n => !n.children;
+const leavesOf = n => isLeaf(n) ? [n] : n.children.flatMap(leavesOf);
+const allLeaves = leavesOf(DATA).filter(l=>l.st!=="待扫描");
+
+// stats
+const cnt = k => allLeaves.filter(l=>l.st===k).length;
+const stars = allLeaves.filter(l=>l.concl==="立项评审");
+document.getElementById("stats").innerHTML =
+  `<span class="stat">已扫描形态 <b>${allLeaves.length}</b></span>` +
+  ST.map(s=>`<span class="stat"><span style="color:${css(s.v)}">●</span> ${s.k} <b>${cnt(s.k)}</b></span>`).join("") +
+  `<span class="stat" style="border-color:${css("--accent")}">★ 立项评审 <b>${stars.length}</b></span>`;
+
+// chips
+const chipsEl = document.getElementById("chips");
+chipsEl.style.display="inline-flex"; chipsEl.style.flexWrap="wrap"; chipsEl.style.gap="6px";
+ST.forEach(s=>{
+  const b=document.createElement("button"); b.type="button"; b.className="chip st"; b.setAttribute("aria-pressed","true");
+  b.innerHTML=`<span class="dot" style="background:${css(s.v)}"></span>${s.k}`;
+  b.onclick=()=>{ active.has(s.k)?active.delete(s.k):active.add(s.k); b.setAttribute("aria-pressed",active.has(s.k)); render(); };
+  chipsEl.appendChild(b);
+});
+
+// collapse state: start at 小类 level
+const collapsed = new Set();
+function collapseToSub(){
+  collapsed.clear();
+  (function walk(n, depth){
+    if (isLeaf(n)) return;
+    const kidsAreLeaves = n.children.every(isLeaf);
+    if (depth>=1 && (kidsAreLeaves || n.pending)) { collapsed.add(n.path); }
+    n.children.forEach(c=>walk(c, depth+1));
+  })(DATA, 0);
+}
+collapseToSub();
+
+function leafVisible(l){
+  if (l.st==="待扫描") return !onlyStar && !query;
+  if (!active.has(l.st)) return false;
+  if (onlyStar && l.concl!=="立项评审") return false;
+  if (query){ const q=query.toLowerCase(); if(!(l.n+" "+(l.kw||"")+" "+(l.map||"")).toLowerCase().includes(q)) return false; }
+  return true;
+}
+function filtered(n){
+  if (isLeaf(n)) return leafVisible(n) ? n : null;
+  const kids = n.children.map(filtered).filter(Boolean);
+  if (!kids.length && n!==DATA) return null;
+  return Object.assign({}, n, {children:kids, _src:n});
+}
+
+// svg
+const svg = d3.select("#map");
+const g = svg.append("g");
+const gLinks = g.append("g"), gNodes = g.append("g");
+const zoom = d3.zoom().scaleExtent([0.25, 2.2]).on("zoom", e => g.attr("transform", e.transform));
+svg.call(zoom).on("dblclick.zoom", null);
+const COLX = [0, 190, 330, 480, 640];
+const DX = 30;
+
+function counts(src){
+  const ls = leavesOf(src).filter(l=>l.st!=="待扫描");
+  const c = {}; ls.forEach(l=>c[l.st]=(c[l.st]||0)+1);
+  return {c, star: ls.filter(l=>l.concl==="立项评审").length, n: ls.length};
+}
+
+let lastRoot=null;
+function render(){
+  const data = filtered(DATA) || {n:DATA.n, children:[]};
+  const forceOpen = onlyStar || !!query;
+  const root = d3.hierarchy(data, d => (d.children && (forceOpen || !collapsed.has(d.path))) ? d.children : null);
+  d3.tree().nodeSize([DX, 1]).separation((a,b)=> a.parent===b.parent ? 1 : 1.25)(root);
+  root.each(d => d.y = COLX[Math.min(d.depth, COLX.length-1)] + Math.max(0,d.depth-4)*150);
+  lastRoot = root;
+
+  const links = gLinks.selectAll("path").data(root.links(), d => d.target.data.path);
+  links.join("path").attr("class","link")
+    .attr("d", d3.linkHorizontal().x(d=>d.y).y(d=>d.x));
+
+  const nodes = gNodes.selectAll("g.node").data(root.descendants(), d => d.data.path);
+  const enter = nodes.enter().append("g").attr("class","node").attr("tabindex",0).attr("role","button");
+  enter.append("circle").attr("class","k");
+  enter.append("text").attr("class","lbl");
+  enter.append("text").attr("class","cnt");
+  const all = enter.merge(nodes);
+  nodes.exit().remove();
+
+  all.attr("transform", d => `translate(${d.y},${d.x})`)
+     .attr("aria-label", d => d.data.n + (d.data.st ? "，" + d.data.st : ""))
+     .classed("out", d => d.data.concl==="淘汰")
+     .classed("hit", d => !!query && isLeaf(d.data) && d.data.st!=="待扫描");
+
+  all.select("circle.k")
+    .attr("r", d => d.depth===0 ? 8 : isLeaf(d.data) ? 5.5 : 6.5)
+    .attr("fill", d => {
+      if (d.depth===0) return css("--accent");
+      if (isLeaf(d.data)) return css(colorVar(d.data.st));
+      const src = d.data._src || d.data;
+      return (collapsed.has(src.path) && !forceOpen) ? css("--accent") : css("--panel");
+    })
+    .attr("stroke", d => isLeaf(d.data) ? (d.data.concl==="立项评审" ? css("--ink") : "none") : css("--accent"))
+    .attr("stroke-width", d => isLeaf(d.data) ? 2 : 1.6);
+
+  all.select("text.lbl")
+    .attr("x", d => d.depth===0 ? -12 : 11)
+    .attr("text-anchor", d => d.depth===0 ? "end" : "start")
+    .attr("class", d => "lbl " + (d.depth===0 ? "lvl1" : d.depth===1 ? "lvl1" : !isLeaf(d.data) && d.depth===2 ? "lvl2" : !isLeaf(d.data) ? "lvl3" : "") + (d.data.st==="待扫描" || d.data.pending ? " muted" : ""))
+    .text(d => (isLeaf(d.data) && d.data.concl==="立项评审" ? "★ " : "") + d.data.n);
+
+  all.select("text.cnt").each(function(d){
+    const t = d3.select(this); t.selectAll("tspan").remove();
+    const lbl = this.parentNode.querySelector("text.lbl");
+    const w = d.depth===0 ? 0 : lbl.getComputedTextLength();
+    t.attr("x", 11 + w + 10).attr("text-anchor","start");
+    if (d.depth===0) return;
+    if (isLeaf(d.data)){
+      if (d.data.units) t.append("tspan").attr("class","muted").text(`${(d.data.units/1000>=1? (d.data.units/1000)+"K" : d.data.units)}+/月`);
+      return;
+    }
+    const src = d.data._src || d.data;
+    if (src.pending) return;
+    if (d.depth===1) return;
+    const k = counts(src);
+    ST.forEach(s=>{ if(k.c[s.k]) t.append("tspan").style("fill",css(s.v)).text(`●${k.c[s.k]} `); });
+    if (k.star) t.append("tspan").style("fill",css("--accent")).text(`★${k.star}`);
+  });
+
+  all.on("click", (e,d) => onNode(d)).on("keydown", (e,d)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); onNode(d);} });
+}
+
+function onNode(d){
+  const src = d.data._src || d.data;
+  if (isLeaf(d.data)) { showLeaf(d.data); return; }
+  if (d.depth===0) return;
+  if (onlyStar || query) return;
+  collapsed.has(src.path) ? collapsed.delete(src.path) : collapsed.add(src.path);
+  render();
+  if (src.pending) showPending(src);
+}
+
+function fit(){
+  const box = g.node().getBBox(); const W = svg.node().clientWidth, H = svg.node().clientHeight;
+  if (!box.width) return;
+  let s = Math.max(0.35, Math.min(1.1, (W-40)/box.width, (H-40)/box.height));
+  let tx = (W - box.width*s)/2 - box.x*s;
+  if (W < 700 && s < 0.7) { s = 0.7; tx = 12 - box.x*s; }
+  const t = d3.zoomIdentity.translate(tx, (H - box.height*s)/2 - box.y*s).scale(s);
+  svg.transition().duration(350).call(zoom.transform, t);
+}
+function focusPath(path){
+  const node = lastRoot.descendants().find(d=>d.data.path===path); if(!node) return;
+  const W = svg.node().clientWidth, H = svg.node().clientHeight, s = 1;
+  svg.transition().duration(400).call(zoom.transform, d3.zoomIdentity.translate(W*0.45 - node.y*s, H/2 - node.x*s).scale(s));
+}
+
+// panel
+const panel = document.getElementById("panel");
+const fmt = n => n==null ? "—" : "$" + Math.round(n).toLocaleString("en-US");
+function showHome(){
+  panel.innerHTML = `<h2>本轮机会清单</h2>
+  <p class="note">空白或部分覆盖、且头部单品过门槛（月销 ≥ 1500 单或 ≥ $4 万）。数字是亚马逊「过去一个月购买」标签的下限，立项前需复核。</p>
+  <div id="opps"></div>
+  <h3>怎么看</h3>
+  <p class="note">圆点颜色 = MEEDEN 美国站状态；灰色大类 = 待扫描；★ = 建议立项评审；删除线 = 已淘汰。小类后面的数字是各状态的形态数量。点任意形态看对标单品、销量和 ASIN。</p>`;
+  const box = panel.querySelector("#opps");
+  stars.slice().sort((a,b)=>(a.pri||"Z9").localeCompare(b.pri||"Z9")).forEach((l,i)=>{
+    const b=document.createElement("button"); b.type="button"; b.className="opp";
+    b.innerHTML=`<span class="k">${l.pri||("A"+(i+1))}</span><span>${l.n}</span><span class="u">${l.units?(l.units/1000)+"K+":""}</span>`;
+    b.onclick=()=>{ revealLeaf(l); showLeaf(l); };
+    box.appendChild(b);
+  });
+}
+function revealLeaf(l){
+  const parts = l.path.split("/"); let p = "";
+  parts.forEach(x=>{ p = p ? p+"/"+x : x; collapsed.delete(p); });
+  render(); setTimeout(()=>focusPath(l.path), 30);
+}
+function row(k,v){ return v ? `<dt>${k}</dt><dd>${v}</dd>` : ""; }
+function showLeaf(l){
+  const est = (l.units && l.price) ? l.units*l.price : null;
+  const asin = l.asin ? `<a href="https://www.amazon.com/dp/${l.asin}" target="_blank" rel="noopener">${l.asin}</a>` : "";
+  const parent = l.path.split("/").slice(1,-1).join(" › ");
+  panel.innerHTML = `<button class="btn" type="button" id="back">← 机会清单</button>
+  <p class="note">${parent} · ${l.id}</p>
+  <h2>${l.concl==="立项评审"?"★ ":""}${l.n}</h2>
+  <p><span class="badge" style="background:${css(colorVar(l.st))}">${l.st}</span> &nbsp;结论：<b>${l.concl||"—"}</b></p>
+  <dl>
+    ${row("规格维度", l.spec)}${row("英文核心词", l.kw)}${row("导图对应", l.map)}
+    ${row("MEEDEN 证据", asin)}${row("其他证据", l.other)}
+    ${row("头部对标", l.bench)}
+    ${row("月购买量", l.units ? `<span class="num">${l.units.toLocaleString("en-US")}+</span> 单/月` : "")}
+    ${row("参考售价", l.price ? `<span class="num">$${l.price}</span>` : "")}
+    ${row("估算月销售额", est ? `<span class="num">${fmt(est)}</span>` : "")}
+    ${row("新增信号", l.new)}${row("风险", l.risk)}${row("备注", l.note)}
+  </dl>`;
+  panel.querySelector("#back").onclick = showHome;
+}
+function showPending(n){
+  panel.innerHTML = `<button class="btn" type="button" id="back">← 机会清单</button>
+  <h2>${n.n}</h2><p class="note">按导图结构列出，待按开品流程逐个扫描。</p>` +
+  n.children.map(c=>`<h3>${c.n}</h3><dl>${row("导图现状",c.now)}${row("导图空位",c.gap)}${row("待纳入形态",c.forms)}</dl>`).join("");
+  panel.querySelector("#back").onclick = showHome;
+}
+
+// controls
+document.getElementById("onlyStar").onclick = e => { onlyStar=!onlyStar; e.currentTarget.setAttribute("aria-pressed",onlyStar); render(); setTimeout(fit,20); };
+document.getElementById("expandAll").onclick = () => { collapsed.clear(); render(); setTimeout(fit,20); };
+document.getElementById("collapse").onclick = () => { collapseToSub(); render(); setTimeout(fit,20); };
+document.getElementById("fit").onclick = fit;
+let qt; document.getElementById("q").addEventListener("input", e => { clearTimeout(qt); qt=setTimeout(()=>{ query=e.target.value.trim(); render(); setTimeout(fit,20); },180); });
+
+showHome(); render();
+const go = () => fit();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(()=>{ render(); go(); }); else setTimeout(go,50);
+window.addEventListener("resize", ()=>{ clearTimeout(window.__rz); window.__rz=setTimeout(fit,150); });
+</script>
