@@ -8,10 +8,11 @@
 
 关键规则：
 
-1. 唯一数据源是 `selection_map/data/product_map.json`。不要手改 `MEEDEN选品地图.xlsx` 或 `MEEDEN选品地图_思维导图.html`，它们由 `python3 selection_map/build.py` 生成。
+1. 唯一数据源是 `selection_map/data/product_map.json`。不要手改 `MEEDEN选品地图.xlsx` 或 `MEEDEN选品地图_思维导图.html`。流程：`python3 selection_map/ingest.py`（导入工具导出、算指标与评分）→ `python3 selection_map/build.py`（生成）；改过脚本必须跑通 `python3 selection_map/tests/test_ingest.py`。
 2. 分类结构必须挂在公司 2027 产品规划导图的框架上（大类 → 组 → 小类 → 形态），不要自创大类。
 3. 每个「已有」必须有 MEEDEN 的 ASIN 证据；每个销量数字必须有对标单品和来源。查不到就填 `null` 并标「待查」，**绝不编造或推算数字**。
 4. 已分配的编号（如 `C001`）永不修改、不复用。
 5. 下一个要扫描的大类见手册第 10 节（当前：艺术家具&收纳）。
 6. 交付前跑完手册第 8 节的质量检查清单，并更新手册第 11 节的进度。
-7. `docs/选品地图_V2优化方案.md` 是待确认的草案。业务方确认生效前，仍按 V1 执行手册操作，不要提前改数据结构。
+7. V2 已生效（2026-11-02）。指标定义、评分规则和导出规范见 `docs/选品地图_V2优化方案.md`；没有工具导出数据时按手册第 6 节的「降级模式」执行。
+8. 指标由脚本计算，不要手填 `seg_*`、`cr*`、`n_pass`、`gate_*`、`mos_*`、`conclusion_suggested` 等字段；脚本不会改人工结论 `conclusion`。

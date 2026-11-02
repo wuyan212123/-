@@ -90,6 +90,8 @@ a{color:var(--accent)}
     <button class="btn" id="expandAll" type="button">全部展开</button>
     <button class="btn" id="collapse" type="button">收起到小类</button>
     <button class="btn" id="fit" type="button">适配视图</button>
+    <label class="note" for="cmode">着色</label>
+    <select id="cmode" class="btn" aria-label="节点着色方式"><option value="st">按 MEEDEN 状态</option><option value="mos">按机会评分</option><option value="conf">按数据可信度</option></select>
   </div>
 
   <div class="main">
@@ -109,6 +111,18 @@ const ST = [
 ];
 const colorVar = s => ({"已有":"--ok","部分覆盖":"--part","规划中":"--plan","空白":"--gap","未核对":"--unk","待扫描":"--pend"})[s] || "--unk";
 const css = v => `var(${v})`;
+let cmode = "st";
+function leafColor(l){
+  if (cmode==="mos"){
+    if (l.st==="待扫描") return css("--pend");
+    if (l.mos==null) return css("--line");
+    return l.mos>=70 ? css("--ok") : l.mos>=55 ? css("--part") : css("--unk");
+  }
+  if (cmode==="conf"){
+    return l.conf==="高" ? css("--ok") : l.conf==="中" ? css("--part") : l.conf==="低" ? css("--gap") : css("--line");
+  }
+  return css(colorVar(l.st));
+}
 const active = new Set(ST.map(s=>s.k));
 let onlyStar = false, query = "";
 
@@ -208,7 +222,7 @@ function render(){
     .attr("r", d => d.depth===0 ? 8 : isLeaf(d.data) ? 5.5 : 6.5)
     .attr("fill", d => {
       if (d.depth===0) return css("--accent");
-      if (isLeaf(d.data)) return css(colorVar(d.data.st));
+      if (isLeaf(d.data)) return leafColor(d.data);
       const src = d.data._src || d.data;
       return (collapsed.has(src.path) && !forceOpen) ? css("--accent") : css("--panel");
     })
@@ -228,6 +242,7 @@ function render(){
     t.attr("x", 11 + w + 10).attr("text-anchor","start");
     if (d.depth===0) return;
     if (isLeaf(d.data)){
+      if (cmode==="mos" && d.data.mos!=null) { t.append("tspan").style("fill",css("--accent")).text(`${d.data.mos} 分`); return; }
       if (d.data.units) t.append("tspan").attr("class","muted").text(`${(d.data.units/1000>=1? (d.data.units/1000)+"K" : d.data.units)}+/月`);
       return;
     }
@@ -270,12 +285,13 @@ function focusPath(path){
 // panel
 const panel = document.getElementById("panel");
 const fmt = n => n==null ? "—" : "$" + Math.round(n).toLocaleString("en-US");
+const pctf = v => v==null ? "" : Math.round(v*100) + "%";
 function showHome(){
   panel.innerHTML = `<h2>本轮机会清单</h2>
   <p class="note">空白或部分覆盖、且头部单品过门槛（月销 ≥ 1500 单或 ≥ $4 万）。数字是亚马逊「过去一个月购买」标签的下限，立项前需复核。</p>
   <div id="opps"></div>
   <h3>怎么看</h3>
-  <p class="note">圆点颜色 = MEEDEN 美国站状态；灰色大类 = 待扫描；★ = 建议立项评审；删除线 = 已淘汰。小类后面的数字是各状态的形态数量。点任意形态看对标单品、销量和 ASIN。</p>`;
+  <p class="note">圆点颜色默认 = MEEDEN 美国站状态（可切换为机会评分、数据可信度）；灰色大类 = 待扫描；★ = 建议立项评审；删除线 = 已淘汰。小类后面的数字是各状态的形态数量。点任意形态看对标单品、销量和 ASIN。</p>`;
   const box = panel.querySelector("#opps");
   stars.slice().sort((a,b)=>(a.pri||"Z9").localeCompare(b.pri||"Z9")).forEach((l,i)=>{
     const b=document.createElement("button"); b.type="button"; b.className="opp";
@@ -305,6 +321,14 @@ function showLeaf(l){
     ${row("月购买量", l.units ? `<span class="num">${l.units.toLocaleString("en-US")}+</span> 单/月` : "")}
     ${row("参考售价", l.price ? `<span class="num">$${l.price}</span>` : "")}
     ${row("估算月销售额", est ? `<span class="num">${fmt(est)}</span>` : "")}
+    ${row("级别覆盖", l.lv)}
+    ${row("Top10 月销售额", l.seg!=null ? `<span class="num">${fmt(l.seg)}</span>` : "")}
+    ${row("达标单品数", l.npass!=null ? `<span class="num">${l.npass}</span>` : "")}
+    ${row("第一品牌份额", pctf(l.cr1))}
+    ${row("三道闸", l.g ? `G1 ${l.g[0]||"待数据"} · G2 ${l.g[1]||"待数据"} · G3 ${l.g[2]||"—"}` : "")}
+    ${row("机会评分", l.mos!=null ? `<span class="num">${l.mos}</span> / 100` : (l.sugg && l.sugg.startsWith("待数据") ? "待导入工具数据" : ""))}
+    ${row("建议结论", l.sugg)}
+    ${row("数据可信度", l.conf ? `${l.conf}（${l.src||""}，${l.asof||""}）` : "")}
     ${row("新增信号", l.new)}${row("风险", l.risk)}${row("备注", l.note)}
   </dl>`;
   panel.querySelector("#back").onclick = showHome;
@@ -321,6 +345,7 @@ document.getElementById("onlyStar").onclick = e => { onlyStar=!onlyStar; e.curre
 document.getElementById("expandAll").onclick = () => { collapsed.clear(); render(); setTimeout(fit,20); };
 document.getElementById("collapse").onclick = () => { collapseToSub(); render(); setTimeout(fit,20); };
 document.getElementById("fit").onclick = fit;
+document.getElementById("cmode").onchange = e => { cmode = e.target.value; render(); };
 let qt; document.getElementById("q").addEventListener("input", e => { clearTimeout(qt); qt=setTimeout(()=>{ query=e.target.value.trim(); render(); setTimeout(fit,20); },180); });
 
 showHome(); render();

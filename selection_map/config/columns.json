@@ -1,0 +1,46 @@
+{
+ "_说明": "工具导出文件的列名别名。左边是标准字段，右边是各工具可能使用的列名（不区分大小写，忽略空格和括号里的单位）。拿到真实导出文件后，把实际列名补进对应数组即可，不用改代码。",
+ "product": {
+  "asin": ["ASIN", "asin", "子ASIN", "父ASIN"],
+  "brand": ["品牌", "Brand", "品牌名"],
+  "title": ["标题", "商品标题", "产品标题", "Title", "Product Name", "Product Title"],
+  "price": ["价格", "售价", "价格($)", "Price", "Price $", "Price($)"],
+  "units": ["月销量", "近30天销量", "30天销量", "月销量(估)", "Monthly Sales", "ASIN Sales", "Est. Monthly Sales", "Sales", "Units Sold"],
+  "revenue": ["月销售额", "近30天销售额", "月销售额($)", "Monthly Revenue", "ASIN Revenue", "Est. Monthly Revenue", "Revenue"],
+  "reviews": ["评论数", "评分数", "Review Count", "Reviews", "Ratings", "Rating Count"],
+  "rating": ["评分", "星级", "Rating", "Ratings Avg"],
+  "launch_date": ["上架时间", "上架日期", "Date First Available", "Creation Date", "Launch Date", "First Available"],
+  "seller_country": ["卖家所属地", "卖家国籍", "卖家所在地", "Seller Country/Region", "Seller Country", "Seller Location"],
+  "bsr": ["大类BSR", "BSR", "大类排名", "Sales Rank", "BSR Rank"],
+  "category_path": ["类目路径", "类目", "节点路径", "Category", "Category Path"],
+  "size_tier": ["尺寸分段", "尺寸段", "Size Tier"],
+  "fba_fee": ["FBA运费", "FBA费用", "FBA配送费", "FBA Fees", "FBA Fee"],
+  "sponsored": ["是否广告", "广告", "Sponsored", "Ad"]
+ },
+ "keyword": {
+  "keyword": ["关键词", "Keyword", "Keyword Phrase", "Search Term"],
+  "volume": ["月搜索量", "搜索量", "月搜索量(估)", "Search Volume", "Monthly Search Volume"]
+ },
+ "meeden_asin": {
+  "asin": ["ASIN", "asin"],
+  "sku": ["SKU", "MSKU", "内部编码", "产品编码", "FNSKU"],
+  "title": ["标题", "品名", "Title", "Product Name"],
+  "status": ["状态", "在售状态", "Listing状态", "Status"],
+  "launch_date": ["上架时间", "Open Date", "Date"]
+ },
+ "meeden_sales": {
+  "asin": ["ASIN", "asin"],
+  "units": ["月均销量", "近3个月月均销量", "销量", "Units", "Units Ordered"],
+  "revenue": ["月均销售额", "销售额", "Sales", "Ordered Product Sales"],
+  "return_rate": ["退货率", "Return Rate"],
+  "rating": ["评分", "星级", "Rating"]
+ },
+ "trend": {
+  "month": ["月份", "Month", "日期", "Date"],
+  "value": ["销量", "月销量", "搜索量", "Units", "Search Volume", "Value"]
+ },
+ "nodes": {
+  "node_id": ["节点ID", "Node ID", "node_id", "BrowseNode"],
+  "node_path": ["节点路径", "类目路径", "Node Path", "Path"]
+ }
+}
