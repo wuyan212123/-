@@ -1,0 +1,641 @@
+<title>MEEDEN 产品地图</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: header + category tree on the left, filterable record table on the right, editor drawer over the right edge. Same violet identity as the MEEDEN mind map. */
+:root{
+  --bg:#F4F3F9; --panel:#FFFFFF; --panel2:#F8F7FC; --ink:#1F1A30; --muted:#6A6482; --line:#D6D1E6; --accent:#5B3FD1; --accent-ink:#FFFFFF; --accent-soft:#ECE7FD;
+  --ok:#23895B; --ok-soft:#E1F3EA; --part:#A66F09; --part-soft:#FBF0D9; --plan:#2C66CC; --plan-soft:#E3ECFB; --gap:#C8432A; --gap-soft:#FBE6E1; --unk:#7F7B94; --unk-soft:#EEEDF3;
+  --shadow:0 10px 40px rgba(31,26,48,.18);
+  --f-display:"Noto Serif SC","Songti SC",serif; --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif; --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1B1630; --panel:#251F3E; --panel2:#2B2447; --ink:#EEEBF8; --muted:#A49EBF; --line:#433A68; --accent:#A592FF; --accent-ink:#1B1630; --accent-soft:#352C5C;
+  --ok:#4CC38A; --ok-soft:#1F3A33; --part:#E5B04A; --part-soft:#3D3222; --plan:#72A2F6; --plan-soft:#22304F; --gap:#FF7B5E; --gap-soft:#45272A; --unk:#9B96B3; --unk-soft:#302A48;
+  --shadow:0 10px 40px rgba(0,0,0,.5); color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#1B1630; --panel:#251F3E; --panel2:#2B2447; --ink:#EEEBF8; --muted:#A49EBF; --line:#433A68; --accent:#A592FF; --accent-ink:#1B1630; --accent-soft:#352C5C;
+  --ok:#4CC38A; --ok-soft:#1F3A33; --part:#E5B04A; --part-soft:#3D3222; --plan:#72A2F6; --plan-soft:#22304F; --gap:#FF7B5E; --gap-soft:#45272A; --unk:#9B96B3; --unk-soft:#302A48;
+  --shadow:0 10px 40px rgba(0,0,0,.5); color-scheme:dark }
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.55}
+button,input,select,textarea{font:inherit;color:inherit}
+.wrap{padding-block:18px 32px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));max-width:1560px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;justify-content:space-between}
+h1{font-family:var(--f-display);font-size:25px;margin:0;letter-spacing:.02em;text-wrap:balance}
+.sub{margin:2px 0 0;color:var(--muted);font-size:13px}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.btn{padding:6px 12px;border-radius:7px;border:1px solid var(--line);background:var(--panel);cursor:pointer;font-size:13px;white-space:nowrap}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.danger{color:var(--gap);border-color:var(--gap)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+a.btn{text-decoration:none;display:inline-flex;align-items:center}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.stats{display:flex;flex-wrap:wrap;gap:6px}
+.stat{font-size:12px;padding:3px 10px;border-radius:999px;background:var(--panel);border:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
+.stat b{font-family:var(--f-mono);font-weight:500}
+.banner{padding:9px 14px;border-radius:8px;font-size:13px;border:1px solid var(--line);background:var(--panel)}
+.banner.warn{background:var(--part-soft);border-color:var(--part)}
+.banner.err{background:var(--gap-soft);border-color:var(--gap)}
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:860px){.layout{grid-template-columns:minmax(0,1fr)}}
+nav.tree{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 10px);max-height:calc(100vh - 40px);overflow:auto}
+@media (max-width:860px){nav.tree{position:static;max-height:260px}}
+.tnode{display:flex;justify-content:space-between;gap:8px;width:100%;text-align:left;border:0;background:transparent;padding:5px 8px;border-radius:6px;cursor:pointer;font-size:13px}
+.tnode:hover{background:var(--panel2)}
+.tnode.on{background:var(--accent-soft);color:var(--accent);font-weight:700}
+.tnode .n{font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
+.tnode.l0{font-weight:700;font-size:14px}
+.tnode.l1{padding-left:18px}
+.tnode.l2{padding-left:32px;font-size:12.5px}
+.tnode .pend{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:0 6px}
+.main{display:flex;flex-direction:column;gap:10px;min-width:0}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px}
+.filters input[type=search]{padding:6px 10px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);width:220px;max-width:100%}
+.filters select{padding:5px 8px;border:1px solid var(--line);border-radius:7px;background:var(--panel2)}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--panel);cursor:pointer;font-size:12.5px}
+.chip[aria-pressed=false]{opacity:.45}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.count{margin-left:auto;font-size:12.5px;color:var(--muted)}
+.skel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.skel h3{margin:0 0 6px;font-size:14px}
+.skel table{width:100%;border-collapse:collapse;font-size:12.5px}
+.skel td,.skel th{border-top:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+.tablebox{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow-x:auto}
+table.rec{width:100%;border-collapse:collapse;font-size:13px;min-width:1080px}
+table.rec th{position:sticky;top:0;background:var(--panel2);text-align:left;font-weight:500;color:var(--muted);font-size:12px;padding:8px;border-bottom:1px solid var(--line);cursor:pointer;white-space:nowrap;user-select:none}
+table.rec th[aria-sort]::after{content:" ↑";color:var(--accent)}
+table.rec th[aria-sort=descending]::after{content:" ↓"}
+table.rec td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+table.rec tr{cursor:pointer}
+table.rec tbody tr:hover{background:var(--panel2)}
+table.rec tr.arch td{opacity:.5}
+.mono{font-family:var(--f-mono);font-size:12px;font-variant-numeric:tabular-nums}
+td.nw{white-space:nowrap}
+@media (max-width:640px){
+  .tablebox{overflow:visible;background:transparent;border:0}
+  table.rec{min-width:0;font-size:13px}
+  table.rec thead{display:none}
+  table.rec tbody{display:flex;flex-direction:column;gap:8px}
+  table.rec tbody tr{display:grid;grid-template-columns:auto 1fr auto;gap:2px 10px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+  table.rec td{border:0;padding:0}
+  table.rec td.c-id{grid-row:1;grid-column:1}
+  table.rec td.c-form{grid-row:1;grid-column:2;font-weight:700}
+  table.rec td.c-meeden_status{grid-row:1;grid-column:3}
+  table.rec td.c-sub,table.rec td.c-sugg,table.rec td.c-conclusion,table.rec td.c-gates{grid-column:1/-1;font-size:12.5px}
+  table.rec td.c-sub{color:var(--muted)}
+  table.rec td.c-sugg::before{content:"建议：";color:var(--muted)}
+  table.rec td.c-conclusion::before{content:"人工：";color:var(--muted)}
+  table.rec td.c-gates::before{content:"三道闸 ";color:var(--muted)}
+  table.rec td.c-lv,table.rec td.c-monthly_units,table.rec td.c-price_usd,table.rec td.c-seg,table.rec td.c-mos,table.rec td.c-confidence,table.rec td.c-upd{display:none}
+  table.rec td.empty{grid-column:1/-1}
+}
+.r{text-align:right}
+.pill{display:inline-block;padding:1px 8px;border-radius:999px;font-size:12px;white-space:nowrap}
+.s-已有{background:var(--ok-soft);color:var(--ok)} .s-部分覆盖{background:var(--part-soft);color:var(--part)} .s-规划中{background:var(--plan-soft);color:var(--plan)} .s-空白{background:var(--gap-soft);color:var(--gap)} .s-未核对{background:var(--unk-soft);color:var(--unk)}
+.g{display:inline-block;min-width:22px;text-align:center;font-size:11px;border-radius:4px;padding:0 3px;margin-right:2px}
+.g-过{background:var(--ok-soft);color:var(--ok)} .g-不过{background:var(--gap-soft);color:var(--gap)} .g-n{background:var(--unk-soft);color:var(--unk)}
+.c-high{color:var(--ok)} .c-mid{color:var(--part)} .c-low{color:var(--gap)}
+.pri{font-family:var(--f-mono);font-size:11px;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:0 4px;margin-right:4px}
+.empty{padding:40px 16px;text-align:center;color:var(--muted)}
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(20,16,36,.35);z-index:20}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(620px,100%);background:var(--panel);z-index:21;box-shadow:var(--shadow);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-right:env(safe-area-inset-right,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.dhead{display:flex;align-items:flex-start;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.dhead h2{font-family:var(--f-display);font-size:19px;margin:0;flex:1;min-width:0;overflow-wrap:anywhere}
+.dbody{flex:1;overflow:auto;padding:14px 18px 24px;display:flex;flex-direction:column;gap:16px}
+.dfoot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 18px;border-top:1px solid var(--line);background:var(--panel2)}
+.dfoot .msg{flex:1;min-width:160px;font-size:12.5px;color:var(--muted)}
+fieldset{border:1px solid var(--line);border-radius:9px;padding:10px 12px 12px;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+fieldset legend{font-size:12px;color:var(--muted);padding:0 6px;letter-spacing:.06em}
+fieldset .full{grid-column:1/-1}
+@media (max-width:520px){fieldset{grid-template-columns:1fr}}
+label.f{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--muted);min-width:0}
+label.f input,label.f select,label.f textarea{padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--panel2);font-size:13px;min-width:0;width:100%}
+label.f textarea{min-height:58px;resize:vertical}
+label.f input:read-only{opacity:.7}
+.hint{font-size:11.5px;color:var(--muted)}
+.flags{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px}
+.flags label{display:inline-flex;gap:5px;align-items:center}
+.asins{display:flex;flex-direction:column;gap:6px}
+.arow{display:grid;grid-template-columns:minmax(0,1.3fr) 82px minmax(0,1fr) 30px;gap:6px;align-items:center}
+.arow input,.arow select{padding:5px 7px;border:1px solid var(--line);border-radius:6px;background:var(--panel2);font-size:12.5px;min-width:0;width:100%}
+.calc{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:10px 12px;font-size:13px;display:flex;flex-direction:column;gap:8px}
+.calc h4{margin:0;font-size:12px;color:var(--muted);font-weight:500;letter-spacing:.06em}
+.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px 14px}
+.kv div{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dashed var(--line);padding-bottom:2px}
+.kv span:first-child{color:var(--muted);font-size:12px}
+.lvl{width:100%;border-collapse:collapse;font-size:12.5px}
+.lvl td,.lvl th{border-top:1px solid var(--line);padding:4px 6px;text-align:left}
+.hist{font-size:12.5px;display:flex;flex-direction:column;gap:6px}
+.hist .it{border-left:2px solid var(--line);padding-left:8px}
+.hist .t{color:var(--muted);font-size:11.5px}
+.conflict{background:var(--part-soft);border:1px solid var(--part);border-radius:8px;padding:10px;font-size:13px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:8px;font-size:13px;z-index:40}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>MEEDEN 产品地图</h1>
+      <p class="sub" id="sub">按 2027 产品规划导图记录每个细分形态：MEEDEN 覆盖、市场数据、三道闸、机会评分和结论</p>
+    </div>
+    <div class="actions">
+      <button class="btn primary" id="bNew" type="button" hidden>+ 新增形态</button>
+      <button class="btn" id="bLog" type="button">活动记录</button>
+      <button class="btn" id="bExpJ" type="button">导出 JSON</button>
+      <button class="btn" id="bExpC" type="button">导出 CSV</button>
+      <button class="btn" id="bImp" type="button" hidden>导入 JSON</button>
+      <input type="file" id="fImp" accept=".json,application/json" hidden>
+      <a class="btn" href="https://claude.ai/artifact/8niUdHwDaivCgh4uLcR8y3" target="_blank" rel="noopener">思维导图 ↗</a>
+    </div>
+  </header>
+  <div class="stats" id="stats"></div>
+  <div id="banner" class="banner">正在连接数据库…</div>
+  <div class="layout">
+    <nav class="tree" id="tree" aria-label="分类"></nav>
+    <div class="main">
+      <div class="filters" role="search">
+        <input type="search" id="q" placeholder="搜索形态、英文词、ASIN、对标" aria-label="搜索">
+        <span id="stChips" style="display:inline-flex;flex-wrap:wrap;gap:6px"></span>
+        <select id="fConc" aria-label="结论">
+          <option value="">全部结论</option><option value="立项评审">建议：立项评审</option><option value="观察池">建议：观察池</option>
+          <option value="待数据">建议：待数据</option><option value="老品升级">建议：老品升级</option><option value="按导图推进">建议：按导图推进</option>
+          <option value="淘汰">建议：淘汰 / C 档</option><option value="h:">人工结论：已填写</option>
+        </select>
+        <select id="fConf" aria-label="可信度"><option value="">全部可信度</option><option>高</option><option>中</option><option>低</option><option value="-">无数据</option></select>
+        <label class="chip"><input type="checkbox" id="fOpp"> 只看机会（A/B）</label>
+        <label class="chip"><input type="checkbox" id="fArch"> 显示已归档</label>
+        <span class="count" id="count"></span>
+      </div>
+      <div id="skel" hidden></div>
+      <div class="tablebox"><table class="rec" id="tbl"><thead><tr id="thead"></tr></thead><tbody id="tbody"></tbody></table></div>
+    </div>
+  </div>
+</div>
+<div id="layer"></div>
+
+<script>
+/*__SCORING__*/
+</script>
+<script>
+"use strict";
+const ST = ["已有","部分覆盖","规划中","空白","未核对"];
+const STC = {"已有":"--ok","部分覆盖":"--part","规划中":"--plan","空白":"--gap","未核对":"--unk"};
+const FLAGS = {hazmat:"危险品",lithium:"锂电池",child:"儿童合规",prop65:"Prop 65",patent:"专利",brand_ip:"品牌词",oversize:"超大件",fragile:"易碎",liquid:"液体"};
+const CONCL = ["","立项评审","观察池","淘汰","老品升级","按导图推进","待查","待人工复核"];
+const MANUAL = ["category","group","subcategory","form","spec","keyword_en","framework_ref","scene","meeden_status","evidence_asin","evidence_other","meeden_asins",
+  "benchmark","monthly_units","price_usd","data_source","as_of","confidence","evidence_ref","trend_signal","risk","risk_flags","conclusion","note","checked_on",
+  "priority","synergy","opp_risk","next_step","level_anchors","archived","archived_note"];
+const DEFAULT_META = {thresholds:{pass_units:1500,pass_revenue_usd:40000,g1_min_pass:2,g2_cr1_max:0.6,g2_yoy_min:-0.2},mos:{tier_a:70,tier_b:55},
+  category_order:["耗材","画架","艺术家具&收纳","快消工具","礼品&套装","DIY 产品","儿童产品"],
+  prefixes:{"耗材":"C","画架":"E","艺术家具&收纳":"F","快消工具":"T","礼品&套装":"G","DIY 产品":"D","儿童产品":"K"},
+  attack_categories:["艺术家具&收纳","耗材"],future_categories:["DIY 产品","儿童产品"],skeleton:[]};
+
+const S = {db:null, user:null, dl:null, uid:null, canWrite:null, canAdmin:false, meta:DEFAULT_META, recs:new Map(), loaded:false,
+  sel:{cat:null,group:null,sub:null}, q:"", st:new Set(ST), conc:"", conf:"", opp:false, arch:false, sort:{k:"id",dir:1}, names:{}};
+const $ = id => document.getElementById(id);
+function h(tag, attrs, ...kids){
+  const e = document.createElement(tag);
+  for (const [k,v] of Object.entries(attrs||{})){
+    if (v==null || v===false) continue;
+    if (k==="class") e.className=v; else if (k==="text") e.textContent=v; else if (k.startsWith("on")) e.addEventListener(k.slice(2),v);
+    else if (k==="style") e.style.cssText=v; else e.setAttribute(k, v===true?"":v);
+  }
+  for (const c of kids.flat()){ if (c==null||c===false) continue; e.append(c instanceof Node ? c : document.createTextNode(String(c))); }
+  return e;
+}
+const num = x => typeof x==="number" && isFinite(x);
+const fmtN = x => num(x) ? Math.round(x).toLocaleString("en-US") : "";
+const fmtUSD = x => num(x) ? "$" + (x>=100 ? Math.round(x).toLocaleString("en-US") : x.toFixed(2)) : "";
+const fmtPct = x => num(x) ? Math.round(x*100) + "%" : "";
+const today = () => new Date().toISOString().slice(0,10);
+function toast(t){ const e=h("div",{class:"toast",role:"status",text:t}); document.body.append(e); setTimeout(()=>e.remove(),2600); }
+function banner(text, kind){ const b=$("banner"); if(!text){ b.hidden=true; return; } b.hidden=false; b.className="banner"+(kind?" "+kind:""); b.textContent=text; }
+function scoreOf(r){ return MeedenScoring.score(r, S.meta); }
+function lvText(r){
+  const lv=r.levels||{}; if (["L1","L2","L3"].every(k=>(lv[k]||{}).seg_units==null)) return "待导出";
+  return ["L1","L2","L3"].map(k=>{ const L=lv[k]||{}; return k+":"+(!L.seg_units?"无":(L.meeden_asins&&L.meeden_asins.length?"✓":"空")); }).join(" ");
+}
+
+// ---------- 数据 ----------
+async function start(){
+  render();
+  const [db,user,dl] = await Promise.all([claude.use("db"), claude.use("user"), claude.use("downloads")]);
+  S.db=db; S.user=user; S.dl=dl;
+  if (!db){ banner("这个页面需要在 claude.ai 里登录后打开，才能读取产品地图数据。","err"); return; }
+  if (user){
+    S.uid = await user.id();
+    S.canWrite = await user.can("data.write");
+    S.canAdmin = await user.canEdit();
+  }
+  $("bNew").hidden = S.canWrite===false; $("bImp").hidden = !S.canAdmin;
+  const timer = setTimeout(()=>{ if(!S.loaded) banner("数据还没连上，可能是网络问题；页面会自动重试。","warn"); },10000);
+  db.doc("meta/app").onSnapshot(s=>{ if(s.exists) S.meta=Object.assign({},DEFAULT_META,s.data()); render(); }, e=>banner("读取配置失败："+e.message,"err"));
+  db.collection("forms").onSnapshot(snap=>{
+    for (const ch of snap.docChanges()){
+      if (ch.type==="removed") S.recs.delete(ch.doc.id); else S.recs.set(ch.doc.id, ch.doc.data());
+    }
+    if (!snap.metadata.fromCache){ S.loaded=true; clearTimeout(timer); }
+    banner(S.canWrite===false ? "只读：你的权限只能查看。需要编辑请联系页面所有者把你设为参与者。" : null);
+    render();
+  }, e=>{ clearTimeout(timer); banner(e.code==="revoked" ? "访问已变更，请刷新页面。" : "读取数据失败："+e.message,"err"); });
+}
+function allRecs(){ return [...S.recs.values()]; }
+function visible(){
+  const q=S.q.trim().toLowerCase();
+  return allRecs().filter(r=>{
+    if (!S.arch && r.archived) return false;
+    if (S.sel.cat && r.category!==S.sel.cat) return false;
+    if (S.sel.group && r.group!==S.sel.group) return false;
+    if (S.sel.sub!=null && (r.subcategory||"")!==S.sel.sub) return false;
+    if (!S.st.has(r.meeden_status)) return false;
+    if (S.opp && !r.priority) return false;
+    if (S.conf){ if (S.conf==="-" ? r.confidence : r.confidence!==S.conf) return false; }
+    if (S.conc){
+      if (S.conc==="h:"){ if(!r.conclusion) return false; }
+      else { const sg=scoreOf(r).conclusion_suggested||""; if (S.conc==="淘汰" ? !(sg.startsWith("淘汰")||sg.startsWith("C 档")) : !sg.startsWith(S.conc)) return false; }
+    }
+    if (q){
+      const hay=[r.id,r.form,r.keyword_en,r.spec,r.benchmark,r.evidence_asin,r.evidence_other,r.note,r.framework_ref,(r.meeden_asins||[]).map(a=>a.asin).join(" ")].join(" ").toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+// ---------- 渲染 ----------
+function render(){ renderStats(); renderTree(); renderChips(); renderSkel(); renderTable(); }
+function renderStats(){
+  const rs=allRecs().filter(r=>!r.archived), c=k=>rs.filter(r=>r.meeden_status===k).length;
+  const el=$("stats"); el.replaceChildren(
+    h("span",{class:"stat"},"形态 ",h("b",{},rs.length)),
+    ...ST.map(k=>h("span",{class:"stat"},h("span",{class:"dot",style:`background:var(${STC[k]})`})," ",k," ",h("b",{},c(k)))),
+    h("span",{class:"stat"},"建议立项评审 ",h("b",{},rs.filter(r=>scoreOf(r).conclusion_suggested==="立项评审").length)),
+    h("span",{class:"stat"},"A/B 机会 ",h("b",{},rs.filter(r=>r.priority).length)),
+    h("span",{class:"stat"},"高可信度 ",h("b",{},rs.filter(r=>r.confidence==="高").length)));
+}
+function renderTree(){
+  const rs=allRecs().filter(r=>!r.archived||S.arch), tree=$("tree"), order=S.meta.category_order||[];
+  const sel=S.sel, node=(label,n,lvl,on,click,extra)=>h("button",{type:"button",class:`tnode l${lvl}${on?" on":""}`,onclick:click},h("span",{},label,extra||null),h("span",{class:"n"},n));
+  const kids=[node("全部",rs.length,0,!sel.cat,()=>{S.sel={cat:null,group:null,sub:null};render();})];
+  for (const cat of order){
+    const cr=rs.filter(r=>r.category===cat);
+    const pend = !cr.length && (S.meta.skeleton||[]).some(s=>s.category===cat);
+    kids.push(node(cat,cr.length,0,sel.cat===cat&&!sel.group,()=>{S.sel={cat,group:null,sub:null};render();}, pend?h("span",{class:"pend",style:"margin-left:6px"},"待扫描"):null));
+    if (sel.cat!==cat) continue;
+    const groups=[...new Set(cr.map(r=>r.group))];
+    for (const g of groups){
+      const gr=cr.filter(r=>r.group===g);
+      kids.push(node(g,gr.length,1,sel.group===g&&sel.sub==null,()=>{S.sel={cat,group:g,sub:null};render();}));
+      const subs=[...new Set(gr.map(r=>r.subcategory||""))].filter(Boolean);
+      if (sel.group===g) for (const s of subs) kids.push(node(s,gr.filter(r=>(r.subcategory||"")===s).length,2,sel.sub===s,()=>{S.sel={cat,group:g,sub:s};render();}));
+    }
+  }
+  tree.replaceChildren(...kids);
+}
+function renderChips(){
+  const box=$("stChips");
+  if (box.childElementCount) { [...box.children].forEach(b=>b.setAttribute("aria-pressed", S.st.has(b.dataset.k))); return; }
+  for (const k of ST){
+    const b=h("button",{type:"button",class:"chip","aria-pressed":"true","data-k":k,onclick:()=>{S.st.has(k)?S.st.delete(k):S.st.add(k);renderChips();renderTable();}},h("span",{class:"dot",style:`background:var(${STC[k]})`}),k);
+    box.append(b);
+  }
+}
+function renderSkel(){
+  const box=$("skel"), cat=S.sel.cat, sk=(S.meta.skeleton||[]).filter(s=>s.category===cat);
+  if (!cat || !sk.length || allRecs().some(r=>r.category===cat)){ box.hidden=true; return; }
+  box.hidden=false; box.className="skel";
+  box.replaceChildren(h("h3",{},`${cat}：待扫描（导图骨架）`),
+    h("p",{class:"hint"},"按执行手册扫描后，用「新增形态」逐个记录，或由仓库导出 JSON 后导入。"),
+    h("table",{},h("thead",{},h("tr",{},h("th",{},"小类"),h("th",{},"导图现状"),h("th",{},"导图空位"),h("th",{},"待纳入的市场形态"))),
+      h("tbody",{},sk.map(s=>h("tr",{},h("td",{},s.subcategory),h("td",{},s.framework_now),h("td",{},s.framework_gaps),h("td",{},s.forms_to_check))))));
+}
+const COLS = [
+  {k:"id",t:"编号",v:r=>r.id,cls:"mono"},
+  {k:"form",t:"形态",v:r=>r.form},
+  {k:"sub",t:"组 / 小类",v:r=>r.group+(r.subcategory?" · "+r.subcategory:"")},
+  {k:"meeden_status",t:"MEEDEN",v:r=>r.meeden_status,html:r=>h("span",{class:"pill s-"+r.meeden_status},r.meeden_status)},
+  {k:"lv",t:"级别覆盖",v:r=>lvText(r),cls:"mono"},
+  {k:"monthly_units",t:"头部月销",v:r=>r.monthly_units??-1,html:r=>fmtN(r.monthly_units),cls:"mono r"},
+  {k:"price_usd",t:"售价",v:r=>r.price_usd??-1,html:r=>fmtUSD(r.price_usd),cls:"mono r"},
+  {k:"seg",t:"Top10 销售额",v:r=>r.seg_revenue_top10??-1,html:r=>fmtUSD(r.seg_revenue_top10),cls:"mono r"},
+  {k:"gates",t:"三道闸",cls:"nw",v:r=>{const s=scoreOf(r);return [s.gate_g1,s.gate_g2,s.gate_g3].join();},html:r=>{const s=scoreOf(r);return h("span",{},[s.gate_g1,s.gate_g2,s.gate_g3].map((g,i)=>h("span",{class:"g g-"+(g||"n"),title:["G1 需求","G2 健康","G3 硬伤"][i]+"："+(g||"待数据")},g==="过"?"✓":g==="不过"?"✕":"·")));}},
+  {k:"mos",t:"评分",v:r=>{const s=scoreOf(r);return s.mos_complete?s.mos_score:-1;},html:r=>{const s=scoreOf(r);return s.mos_complete?String(s.mos_score):"";},cls:"mono r"},
+  {k:"sugg",t:"建议结论",v:r=>scoreOf(r).conclusion_suggested||""},
+  {k:"conclusion",t:"人工结论",v:r=>(r.priority||"")+(r.conclusion||""),html:r=>h("span",{},r.priority?h("span",{class:"pri"},r.priority):null,r.conclusion||"")},
+  {k:"confidence",t:"可信度",v:r=>r.confidence||"",html:r=>h("span",{class:r.confidence==="高"?"c-high":r.confidence==="中"?"c-mid":r.confidence==="低"?"c-low":""},r.confidence||"—")},
+  {k:"upd",t:"更新",v:r=>r.updated_at||r.checked_on||"",html:r=>(r.updated_at||r.checked_on||"").slice(0,10),cls:"mono nw"},
+];
+function renderTable(){
+  const head=$("thead");
+  if (!head.childElementCount) for (const c of COLS) head.append(h("th",{scope:"col","data-k":c.k,onclick:()=>{S.sort = S.sort.k===c.k ? {k:c.k,dir:-S.sort.dir} : {k:c.k,dir:1}; renderTable();}},c.t));
+  [...head.children].forEach(th=>{ if(th.dataset.k===S.sort.k) th.setAttribute("aria-sort",S.sort.dir>0?"ascending":"descending"); else th.removeAttribute("aria-sort"); });
+  const col=COLS.find(c=>c.k===S.sort.k)||COLS[0];
+  const rows=visible().sort((a,b)=>{ const x=col.v(a),y=col.v(b); return (x>y?1:x<y?-1:a.id.localeCompare(b.id))*S.sort.dir; });
+  $("count").textContent = `${rows.length} / ${allRecs().filter(r=>!r.archived).length} 个形态`;
+  const body=$("tbody");
+  if (!rows.length){
+    const msg = !S.loaded ? "正在加载…" : (!S.recs.size ? "地图里还没有形态。编辑者可以用「导入 JSON」导入仓库的 product_map.json，或用「新增形态」逐个添加。" : "没有符合筛选条件的形态。");
+    body.replaceChildren(h("tr",{},h("td",{colspan:COLS.length,class:"empty"},msg))); return;
+  }
+  body.replaceChildren(...rows.map(r=>h("tr",{class:r.archived?"arch":null,tabindex:0,onclick:()=>openEditor(r.id),onkeydown:e=>{if(e.key==="Enter")openEditor(r.id);}},
+    COLS.map(c=>h("td",{class:"c-"+c.k+(c.cls?" "+c.cls:"")}, c.html? c.html(r) : c.v(r))))));
+}
+
+// ---------- 编辑器 ----------
+function blankRecord(cat){
+  const L=()=>({price_range:null,top1:null,seg_units:null,meeden_asins:[],framework_hint:null});
+  return {id:null,category:cat,group:"",subcategory:"",form:"",spec:"",keyword_en:"",framework_ref:"",scene:[],meeden_status:"未核对",
+    evidence_asin:"",evidence_other:"",meeden_asins:[],benchmark:"",monthly_units:null,price_usd:null,data_source:null,as_of:null,confidence:null,evidence_ref:null,
+    trend_signal:"",risk:"",risk_flags:[],conclusion:"",note:"",checked_on:today(),priority:"",synergy:"",opp_risk:"",next_step:"",level_anchors:null,
+    browse_nodes:[],keyword_cluster:[],levels:{L1:L(),L2:L(),L3:L()},own_units:null,own_share:null,own_rating:null,own_return_rate:null,
+    seg_units_top10:null,seg_revenue_top10:null,n_pass:null,search_volume:null,yoy_growth:null,season_index:null,peak_months:null,cr1:null,cr3:null,
+    reviews_median_top10:null,n_new_top50:null,new_avg_units:null,share_cn_sellers:null,share_big_brand:null,rating_avg_top10:null,low_star_share:null,cpc_suggested:null,
+    price_p25:null,price_p50:null,price_p75:null,size_tier:null,fba_fee_est:null,price_fee_ratio:null,archived:false};
+}
+let ED=null; // {orig, rec, isNew}
+function closeEditor(){ $("layer").replaceChildren(); ED=null; }
+function openEditor(id, cat){
+  const orig = id ? S.recs.get(id) : null;
+  if (id && !orig) return;
+  const rec = structuredClone(orig || blankRecord(cat || S.sel.cat || (S.meta.category_order||[])[0]));
+  ED={orig, rec, isNew:!orig, openedAt: orig ? (orig.updated_at||"") : ""};
+  drawEditor();
+  if (orig) loadHistory(id);
+}
+function field(label, key, type, opts){
+  opts=opts||{}; const r=ED.rec, ro = S.canWrite===false || opts.ro;
+  let input;
+  const set = v => { r[key]=v; refreshCalc(); };
+  if (type==="textarea") input=h("textarea",{id:"e_"+key,readonly:ro,oninput:e=>set(e.target.value)}), input.value=r[key]||"";
+  else if (type==="select"){ input=h("select",{id:"e_"+key,disabled:ro,onchange:e=>set(e.target.value||(opts.nullEmpty?null:""))},(opts.options||[]).map(o=>h("option",{value:o},o||"（空）"))); input.value=r[key]??""; }
+  else if (type==="number"){ input=h("input",{id:"e_"+key,type:"number",step:"any",min:"0",readonly:ro,oninput:e=>set(e.target.value===""?null:Number(e.target.value))}); input.value=r[key]??""; }
+  else if (type==="date"){ input=h("input",{id:"e_"+key,type:"date",readonly:ro,oninput:e=>set(e.target.value||null)}); input.value=r[key]||""; }
+  else { input=h("input",{id:"e_"+key,type:"text",readonly:ro,list:opts.list||null,oninput:e=>set(e.target.value),placeholder:opts.ph||null,pattern:opts.pattern||null}); input.value=r[key]??""; }
+  return h("label",{class:"f"+(opts.full?" full":""),for:"e_"+key},label,input,opts.hint?h("span",{class:"hint"},opts.hint):null);
+}
+function drawEditor(){
+  const r=ED.rec, ro=S.canWrite===false, cats=S.meta.category_order||[];
+  const groups=[...new Set(allRecs().filter(x=>x.category===r.category).map(x=>x.group).filter(Boolean))];
+  const subs=[...new Set(allRecs().filter(x=>x.category===r.category&&x.group===r.group).map(x=>x.subcategory).filter(Boolean))];
+  const scene=h("div",{class:"flags full"},["Life","Learning","Workplace"].map(s=>h("label",{},h("input",{type:"checkbox",disabled:ro,checked:(r.scene||[]).includes(s),onchange:e=>{const a=new Set(r.scene||[]);e.target.checked?a.add(s):a.delete(s);r.scene=[...a];}}),{"Life":"Life 家庭/生活","Learning":"Learning 学习/教育","Workplace":"Workplace 工作/创作"}[s])));
+  const flags=h("div",{class:"flags full"},Object.entries(FLAGS).map(([k,t])=>h("label",{},h("input",{type:"checkbox",disabled:ro,checked:(r.risk_flags||[]).includes(k),onchange:e=>{const a=new Set(r.risk_flags||[]);e.target.checked?a.add(k):a.delete(k);r.risk_flags=[...a];refreshCalc();}}),t)));
+  const asinBox=h("div",{class:"asins full",id:"asinBox"});
+  const drawAsins=()=>{
+    asinBox.replaceChildren(h("div",{class:"hint"},"MEEDEN 在售 ASIN（每个 ASIN 一行；级别填 L1/L2/L3）"),
+      ...(r.meeden_asins||[]).map((a,i)=>h("div",{class:"arow"},
+        h("input",{value:a.asin||"",readonly:ro,"aria-label":"ASIN",oninput:e=>{a.asin=e.target.value.trim().toUpperCase();}}),
+        (()=>{const s=h("select",{disabled:ro,"aria-label":"级别",onchange:e=>{a.level=e.target.value||null;}},["","L1","L2","L3"].map(o=>h("option",{value:o},o||"级别?")));s.value=a.level||"";return s;})(),
+        h("input",{value:a.status||"",readonly:ro,"aria-label":"在售状态",placeholder:"在售状态",oninput:e=>{a.status=e.target.value;}}),
+        ro?h("span"):h("button",{type:"button",class:"btn",title:"移除","aria-label":"移除",onclick:()=>{r.meeden_asins.splice(i,1);drawAsins();}},"×"))),
+      ro?null:h("button",{type:"button",class:"btn",style:"align-self:flex-start",onclick:()=>{(r.meeden_asins=r.meeden_asins||[]).push({asin:"",level:null,status:"在售"});drawAsins();}},"+ 添加 ASIN"));
+  };
+  drawAsins();
+  const anchors=h("div",{class:"full",style:"display:grid;grid-template-columns:1fr 1fr;gap:10px"},
+    ["L1_max","L2_max"].map(k=>h("label",{class:"f"},k==="L1_max"?"L1 价格上限（$，可选）":"L2 价格上限（$，可选）",
+      (()=>{const i=h("input",{type:"number",step:"any",min:"0",readonly:ro,oninput:e=>{r.level_anchors=Object.assign({},r.level_anchors||{}); if(e.target.value==="") delete r.level_anchors[k]; else r.level_anchors[k]=Number(e.target.value); if(!Object.keys(r.level_anchors).length) r.level_anchors=null;}});i.value=(r.level_anchors||{})[k]??"";return i;})())));
+  const catSel = ED.isNew
+    ? field("大类","category","select",{options:cats})
+    : h("label",{class:"f"},"大类",h("input",{value:r.category,readonly:true}));
+  const body=h("div",{class:"dbody"},
+    h("fieldset",{},h("legend",{},"基本信息"),catSel,
+      h("label",{class:"f"},"编号",h("input",{value:r.id||"保存时自动分配",readonly:true})),
+      field("组","group","text",{list:"dlGroup",ph:"如 颜料"}),field("小类","subcategory","text",{list:"dlSub",ph:"组下不再细分时留空"}),
+      field("细分形态 *","form","text",{full:true,ph:"如 酒精马克笔"}),field("规格维度","spec","text",{full:true}),
+      field("英文核心词 *","keyword_en","text",{full:true,hint:"1–3 个买家搜索词，用 / 分隔；第一个词用于导出 Top 50"}),
+      field("导图对应","framework_ref","text",{full:true,hint:"如「酒精马克笔 L1/L2（规划中）」「笔类·新小类」"}),
+      h("div",{class:"full"},h("div",{class:"hint"},"主场景"),scene),
+      h("datalist",{id:"dlGroup"},groups.map(g=>h("option",{value:g}))),h("datalist",{id:"dlSub"},subs.map(g=>h("option",{value:g})))),
+    h("fieldset",{},h("legend",{},"MEEDEN 覆盖"),
+      field("MEEDEN 美国站状态","meeden_status","select",{options:ST}),field("主要证据 ASIN","evidence_asin","text",{ph:"B0XXXXXXXX"}),
+      asinBox,field("其他证据","evidence_other","textarea",{full:true})),
+    h("fieldset",{},h("legend",{},"头部单品（降级模式手填；导入工具数据后由脚本覆盖）"),
+      field("头部对标单品","benchmark","text",{full:true}),field("头部月销（单，下限）","monthly_units","number"),field("参考售价（$）","price_usd","number"),
+      field("数据来源","data_source","text",{full:true,hint:"A=工具导出 / B=亚马逊前台 / C=搜索收录，如「C:搜索引擎收录的亚马逊页面」"}),
+      field("数据日期","as_of","date"),field("可信度","confidence","select",{options:["","高","中","低"],nullEmpty:true}),field("证据文件 / 链接","evidence_ref","text",{full:true})),
+    h("fieldset",{},h("legend",{},"风险与趋势"),h("div",{class:"full"},h("div",{class:"hint"},"风险标识（危险品会被第三道闸直接淘汰）"),flags),
+      field("风险说明","risk","textarea",{full:true}),field("新增 / 上升信号","trend_signal","text",{full:true})),
+    h("fieldset",{},h("legend",{},"结论"),
+      field("人工结论","conclusion","select",{options:CONCL}),field("机会优先级","priority","text",{ph:"A1… / B1…，非机会留空"}),
+      field("组套协同","synergy","textarea",{full:true}),field("风险 / 难点","opp_risk","textarea",{full:true}),field("下一步","next_step","textarea",{full:true}),
+      field("备注","note","textarea",{full:true}),field("核对日期","checked_on","date"),anchors),
+    h("div",{class:"calc",id:"calc"}),
+    h("div",{class:"calc",id:"hist"},h("h4",{},"修改记录"),h("div",{class:"hist",id:"histList"},ED.isNew?"新形态，还没有记录。":"加载中…")));
+  const msg=h("span",{class:"msg",id:"emsg"}, ro ? "只读" : (ED.isNew ? "带 * 的必填" : "改动会记录到活动记录"));
+  const foot=h("div",{class:"dfoot"},msg,
+    (!ro && !ED.isNew) ? h("button",{type:"button",class:"btn danger",onclick:toggleArchive},r.archived?"恢复":"归档") : null,
+    h("button",{type:"button",class:"btn",onclick:closeEditor},"关闭"),
+    ro?null:h("button",{type:"button",class:"btn primary",id:"bSave",onclick:()=>save(false)},"保存"));
+  const drawer=h("div",{class:"drawer",role:"dialog","aria-modal":"true","aria-label":"编辑形态"},
+    h("div",{class:"dhead"},h("h2",{},ED.isNew?"新增形态":(r.id+" · "+r.form)), r.archived?h("span",{class:"pill s-未核对"},"已归档"):null),body,foot);
+  $("layer").replaceChildren(h("div",{class:"scrim",onclick:closeEditor}),drawer);
+  refreshCalc();
+  setTimeout(()=>drawer.querySelector("input:not([readonly]),select:not([disabled])")?.focus(),30);
+}
+function refreshCalc(){
+  const box=$("calc"); if(!box||!ED) return;
+  const r=ED.rec, s=scoreOf(r), lv=r.levels||{};
+  const kv=(k,v)=>h("div",{},h("span",{},k),h("span",{class:"mono"},v===""||v==null?"—":v));
+  box.replaceChildren(...[h("h4",{},"计算结果（由导入脚本的数据实时计算，不可手改）"),
+    h("div",{class:"kv"},kv("G1 需求",s.gate_g1||"待数据"),kv("G2 健康",s.gate_g2||"待数据"),kv("G3 硬伤",s.gate_g3),kv("机会评分",s.mos_complete?s.mos_score+" / 100":"待数据"),
+      kv("建议结论",s.conclusion_suggested),kv("Top10 月销售额",fmtUSD(r.seg_revenue_top10)),kv("Top10 月销量",fmtN(r.seg_units_top10)),kv("达标单品数",r.n_pass),
+      kv("第一品牌份额",fmtPct(r.cr1)),kv("前三品牌份额",fmtPct(r.cr3)),kv("评论中位数",fmtN(r.reviews_median_top10)),kv("近 12 月新品",r.n_new_top50),
+      kv("价格 P50",fmtUSD(r.price_p50)),kv("同比",fmtPct(r.yoy_growth)),kv("季节指数",r.season_index),kv("搜索量",fmtN(r.search_volume)),
+      kv("MEEDEN 月销",fmtN(r.own_units)),kv("MEEDEN 份额",fmtPct(r.own_share))),
+    s.mos_complete ? h("div",{class:"hint"},"评分构成："+Object.entries(s.mos_breakdown).map(([k,v])=>k+" "+v).join(" · ")) : null,
+    s.data_gaps&&s.data_gaps.length ? h("div",{class:"hint"},"缺少：" + s.data_gaps.join("、")) : null,
+    h("table",{class:"lvl"},h("thead",{},h("tr",{},h("th",{},"级别"),h("th",{},"价格区间"),h("th",{},"档内月销"),h("th",{},"档内头部"),h("th",{},"MEEDEN"))),
+      h("tbody",{},["L1","L2","L3"].map(k=>{const L=lv[k]||{},t=L.top1;return h("tr",{},h("td",{},k),h("td",{class:"mono"},L.price_range?`$${L.price_range[0]}–$${L.price_range[1]}`:"—"),h("td",{class:"mono"},fmtN(L.seg_units)||"—"),h("td",{},t?`${t.brand||""} ${fmtN(t.units)}`:"—"),h("td",{class:"mono"},(L.meeden_asins||[]).join("、")||"—"));})))].filter(Boolean));
+}
+async function loadHistory(id){
+  const list=$("histList"); if(!list||!S.db) return;
+  try{
+    const snap=await S.db.collection("log").where("form_id","==",id).orderBy("at","desc").limit(30).get();
+    const items=snap.docs.map(d=>d.data());
+    const ps = S.user && items.length ? await S.user.profiles([...new Set(items.map(i=>i.by).filter(Boolean))]) : {};
+    if (!$("histList")) return;
+    list.replaceChildren(...(items.length?items.map(i=>logItem(i,ps)):[document.createTextNode("还没有修改记录。")]));
+  }catch(e){ list.textContent="读取修改记录失败："+(e.message||e.code); }
+}
+const ACT={create:"新增",edit:"修改",archive:"归档",restore:"恢复",import:"导入"};
+function logItem(i,ps){
+  const who = i.by ? ((ps[i.by]&&ps[i.by].name)||"某位成员") : "仓库导入";
+  const ch = i.changes ? Object.entries(i.changes).map(([k,v])=>`${k}：${short(v[0])} → ${short(v[1])}`).join("；") : (i.detail||"");
+  return h("div",{class:"it"},h("div",{class:"t"},`${(i.at||"").replace("T"," ").slice(0,16)} · ${who} · ${ACT[i.action]||i.action}${i.form_id&&!ED?" · "+i.form_id+" "+(i.form||""):""}`),ch?h("div",{},ch):null);
+}
+const short = v => { if (v==null||v==="") return "空"; const s = typeof v==="string" ? v : JSON.stringify(v); return s.length>60 ? s.slice(0,60)+"…" : s; };
+function diff(a,b){ const out={}; for (const k of MANUAL){ const x=a?a[k]:undefined, y=b[k]; if (JSON.stringify(x??null)!==JSON.stringify(y??null)) out[k]=[x??null,y??null]; } return out; }
+function validate(r){
+  if (!r.category) return "请选择大类";
+  if (!(r.form||"").trim()) return "请填写细分形态";
+  if (!(r.keyword_en||"").trim()) return "请填写英文核心词";
+  if (!(r.group||"").trim()) return "请填写组";
+  if (r.priority && !/^[AB]\d+$/.test(r.priority)) return "机会优先级要写成 A1、B2 这样的格式";
+  for (const a of r.meeden_asins||[]) if (a.asin && !/^B0[0-9A-Z]{8}$/.test(a.asin)) return "ASIN 格式不对："+a.asin;
+  if (r.evidence_asin && !/^B0[0-9A-Z]{8}$/.test(r.evidence_asin)) return "主要证据 ASIN 格式不对";
+  if (r.meeden_status==="已有" && !r.evidence_asin && !(r.meeden_asins||[]).some(a=>a.asin)) return "状态为「已有」时必须至少填一个 MEEDEN ASIN";
+  for (const k of ["monthly_units","price_usd"]) if (r[k]!=null && !(num(r[k])&&r[k]>=0)) return "数字字段不能为负";
+  return null;
+}
+function setMsg(t,err){ const m=$("emsg"); if(m){ m.textContent=t; m.style.color=err?"var(--gap)":""; } }
+async function log(entry){ try{ await S.db.collection("log").add(Object.assign({at:new Date().toISOString(),by:S.uid||null},entry)); }catch(e){ /* 记录失败不影响保存 */ } }
+async function claimId(cat){
+  const pre=(S.meta.prefixes||{})[cat]; if(!pre) throw new Error("这个大类还没有编号前缀");
+  let n=Math.max(0,...allRecs().filter(r=>r.id&&r.id.startsWith(pre)).map(r=>parseInt(r.id.slice(pre.length),10)||0))+1;
+  for (let tries=0; tries<20; tries++, n++){
+    const id=pre+String(n).padStart(3,"0"), ref=S.db.doc("forms/"+id);
+    const lease=await ref.acquire({holder:S.uid||("t"+Math.random().toString(36).slice(2)),ttlMs:5000});
+    if (!lease.acquired) continue;
+    const cur=await ref.get(); if (cur.exists && cur.data().form) continue;
+    return id;
+  }
+  throw new Error("分配编号失败，请稍后再试");
+}
+async function save(force){
+  if (!ED || !S.db) return;
+  const r=ED.rec, err=validate(r); if (err){ setMsg(err,true); return; }
+  ["form","keyword_en","group","subcategory","spec","framework_ref"].forEach(k=>{ if(typeof r[k]==="string") r[k]=r[k].trim(); });
+  r.meeden_asins=(r.meeden_asins||[]).filter(a=>a.asin);
+  const btn=$("bSave"); if(btn) btn.disabled=true; setMsg("保存中…");
+  try{
+    const now=new Date().toISOString();
+    if (ED.isNew){
+      const id=await claimId(r.category); r.id=id;
+      const doc=Object.assign({},r,{created_at:now,created_by:S.uid||null,updated_at:now,updated_by:S.uid||null});
+      await S.db.doc("forms/"+id).set(doc);
+      await log({action:"create",form_id:id,form:r.form,changes:null,detail:`新增「${r.form}」`});
+      toast("已新增 "+id); closeEditor(); return;
+    }
+    const ref=S.db.doc("forms/"+r.id), cur=(await ref.get()).data()||{};
+    if (!force && (cur.updated_at||"")!==ED.openedAt){
+      setMsg(""); if(btn) btn.disabled=false;
+      const box=h("div",{class:"conflict",role:"alert"},`这个形态在你编辑期间被修改过（${(cur.updated_at||"").replace("T"," ").slice(0,16)}）。`,
+        h("button",{type:"button",class:"btn",onclick:()=>{closeEditor();openEditor(r.id);}},"放弃我的修改，重新打开"),
+        h("button",{type:"button",class:"btn danger",onclick:()=>{box.remove();save(true);}},"仍然保存（覆盖对方改动）"));
+      $("emsg").before(box); return;
+    }
+    const ch=diff(cur,r);
+    if (!Object.keys(ch).length){ setMsg("没有改动"); if(btn) btn.disabled=false; return; }
+    const patch={updated_at:now,updated_by:S.uid||null}; for (const k of Object.keys(ch)) patch[k]=r[k]??null;
+    await ref.update(patch);
+    await log({action:"edit",form_id:r.id,form:r.form,changes:ch});
+    toast("已保存 "+r.id); closeEditor();
+  }catch(e){
+    if(btn) btn.disabled=false;
+    setMsg(e.code==="invalid_argument" ? "没有写入权限，或内容格式不对。" : e.code==="quota_exceeded" ? "数据库容量已满，请联系页面所有者。" : "保存失败："+(e.message||e.code),true);
+    if (e.code==="invalid_argument" && S.canWrite==null){ S.canWrite=false; }
+  }
+}
+async function toggleArchive(){
+  const r=ED.rec, to=!r.archived;
+  try{
+    await S.db.doc("forms/"+r.id).update({archived:to,updated_at:new Date().toISOString(),updated_by:S.uid||null});
+    await log({action:to?"archive":"restore",form_id:r.id,form:r.form,changes:{archived:[!to,to]}});
+    toast(to?"已归档 "+r.id+"（编号保留，不会被复用）":"已恢复 "+r.id); closeEditor();
+  }catch(e){ setMsg("操作失败："+(e.message||e.code),true); }
+}
+
+// ---------- 活动记录 ----------
+async function openLog(){
+  const list=h("div",{class:"hist"},"加载中…");
+  const drawer=h("div",{class:"drawer",role:"dialog","aria-modal":"true","aria-label":"活动记录"},
+    h("div",{class:"dhead"},h("h2",{},"活动记录（最近 100 条）")),h("div",{class:"dbody"},list),
+    h("div",{class:"dfoot"},h("span",{class:"msg"},"点一条记录打开对应形态"),h("button",{type:"button",class:"btn",onclick:closeEditor},"关闭")));
+  $("layer").replaceChildren(h("div",{class:"scrim",onclick:closeEditor}),drawer);
+  if (!S.db){ list.textContent="数据库不可用。"; return; }
+  try{
+    const snap=await S.db.collection("log").orderBy("at","desc").limit(100).get(), items=snap.docs.map(d=>d.data());
+    const ps = S.user && items.length ? await S.user.profiles([...new Set(items.map(i=>i.by).filter(Boolean))]) : {};
+    list.replaceChildren(...(items.length?items.map(i=>{const e=logItem(i,ps); if(i.form_id&&S.recs.has(i.form_id)){e.style.cursor="pointer";e.onclick=()=>openEditor(i.form_id);} return e;}):[document.createTextNode("还没有活动记录。")]));
+  }catch(e){ list.textContent="读取失败："+(e.message||e.code); }
+}
+
+// ---------- 导出 ----------
+function exportObj(){
+  const recs=allRecs().sort((a,b)=>a.id.localeCompare(b.id));
+  const {skeleton, ...meta}=S.meta;
+  return {meta:Object.assign({},meta,{exported_from:"MEEDEN 产品地图（网页）",exported_at:new Date().toISOString(),manual_fields:MANUAL}),records:recs,skeleton:skeleton||[]};
+}
+async function saveFile(filename,data){
+  if (!S.dl){ toast("这个视图不支持下载文件"); return; }
+  try{ await S.dl.save({filename,data}); toast("已导出 "+filename); }
+  catch(e){ if(e.code!=="declined") toast(e.code==="rate_limited"?"已有一个下载确认框，请先处理":"导出失败："+(e.message||e.code)); }
+}
+function csvCell(v){ const s = v==null ? "" : (typeof v==="object" ? JSON.stringify(v) : String(v)); return /[",\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s; }
+function exportCSV(){
+  const cols=[["编号","id"],["大类","category"],["组","group"],["小类","subcategory"],["形态","form"],["规格","spec"],["英文核心词","keyword_en"],["导图对应","framework_ref"],
+    ["MEEDEN 状态","meeden_status"],["主要 ASIN","evidence_asin"],["头部单品","benchmark"],["头部月销","monthly_units"],["售价","price_usd"],["Top10 月销售额","seg_revenue_top10"],
+    ["达标单品数","n_pass"],["第一品牌份额","cr1"],["G1",null],["G2",null],["G3",null],["机会评分",null],["建议结论",null],["人工结论","conclusion"],["优先级","priority"],
+    ["可信度","confidence"],["数据来源","data_source"],["数据日期","as_of"],["备注","note"],["已归档","archived"],["更新时间","updated_at"]];
+  const lines=[cols.map(c=>c[0]).join(",")];
+  for (const r of allRecs().sort((a,b)=>a.id.localeCompare(b.id))){
+    const s=scoreOf(r), calc={"G1":s.gate_g1,"G2":s.gate_g2,"G3":s.gate_g3,"机会评分":s.mos_complete?s.mos_score:"","建议结论":s.conclusion_suggested};
+    lines.push(cols.map(([t,k])=>csvCell(k?r[k]:calc[t])).join(","));
+  }
+  saveFile(`MEEDEN产品地图_${today().replace(/-/g,"")}.csv`, "﻿"+lines.join("\n"));
+}
+
+// ---------- 导入（编辑者） ----------
+const COMPUTED=["browse_nodes","keyword_cluster","levels","level_cut","own_units","own_share","own_rating","own_return_rate","seg_units_top10","seg_revenue_top10","n_pass","search_volume",
+  "yoy_growth","season_index","peak_months","cr1","cr3","reviews_median_top10","n_new_top50","new_avg_units","share_cn_sellers","share_big_brand","rating_avg_top10","low_star_share",
+  "cpc_suggested","price_p25","price_p50","price_p75","size_tier","fba_fee_est","price_fee_ratio","v1_snapshot"];
+const FROM_TOOL=["benchmark","monthly_units","price_usd","data_source","as_of","confidence","evidence_ref"];
+async function importFile(file){
+  let obj; try{ obj=JSON.parse(await file.text()); }catch(e){ toast("不是有效的 JSON 文件"); return; }
+  const recs=Array.isArray(obj.records)?obj.records:null;
+  if (!recs || !recs.every(r=>r&&typeof r.id==="string"&&/^[A-Z]\d{3,}$/.test(r.id)&&r.form)){ toast("文件里没有符合格式的 records（需要 product_map.json）"); return; }
+  const add=recs.filter(r=>!S.recs.has(r.id)), upd=recs.filter(r=>S.recs.has(r.id));
+  const box=h("div",{class:"dbody"},
+    h("p",{},`文件：${file.name}`),h("p",{},`新增 ${add.length} 个形态，更新 ${upd.length} 个形态的计算字段。`),
+    h("p",{class:"hint"},"规则：新形态整条写入。已有的形态只更新导入脚本算出的字段（细分市场指标、分级、自有销量）；工具数据（可信度为「高」）同时更新头部单品和数据来源。网页里人工填写的结论、状态、备注等不会被覆盖。"),
+    h("label",{class:"chip",style:"align-self:flex-start"},h("input",{type:"checkbox",id:"impMeta",checked:true})," 同时更新门槛、分类顺序和待扫描骨架"));
+  const go=h("button",{type:"button",class:"btn primary",onclick:async()=>{
+    go.disabled=true; const msg=$("impMsg"); let done=0, fail=0; const now=new Date().toISOString();
+    const jobs=[...add.map(r=>({r,isNew:true})),...upd.map(r=>({r,isNew:false}))];
+    const run=async({r,isNew})=>{
+      try{
+        if (isNew){ await S.db.doc("forms/"+r.id).set(Object.assign({},r,{archived:!!r.archived,created_at:now,created_by:S.uid||null,updated_at:now,updated_by:S.uid||null})); }
+        else {
+          const patch={}; for (const k of COMPUTED) if (k in r) patch[k]=r[k]??null;
+          if (r.confidence==="高") for (const k of FROM_TOOL) patch[k]=r[k]??null;
+          if (Object.keys(patch).length) await S.db.doc("forms/"+r.id).update(patch);
+        }
+        done++;
+      }catch(e){ fail++; }
+      msg.textContent=`已处理 ${done+fail} / ${jobs.length}`+(fail?`，失败 ${fail}`:"");
+    };
+    for (let i=0;i<jobs.length;i+=6) await Promise.all(jobs.slice(i,i+6).map(run));
+    if ($("impMeta").checked && obj.meta){
+      const m={}; for (const k of ["thresholds","mos","category_order","attack_categories","future_categories","version"]) if (obj.meta[k]!=null) m[k]=obj.meta[k];
+      if (Array.isArray(obj.skeleton)) m.skeleton=obj.skeleton;
+      try{ await S.db.doc("meta/app").update(m); }catch(e){ try{ await S.db.doc("meta/app").set(Object.assign({},DEFAULT_META,m)); }catch(e2){ fail++; } }
+    }
+    await log({action:"import",form_id:null,form:null,detail:`导入 ${file.name}：新增 ${add.length}，更新 ${upd.length}${fail?`，失败 ${fail}`:""}`});
+    msg.textContent=`完成：新增 ${add.length}，更新 ${upd.length}`+(fail?`，失败 ${fail}`:"");
+    toast("导入完成");
+  }},"开始导入");
+  const drawer=h("div",{class:"drawer",role:"dialog","aria-modal":"true","aria-label":"导入"},h("div",{class:"dhead"},h("h2",{},"导入 product_map.json")),box,
+    h("div",{class:"dfoot"},h("span",{class:"msg",id:"impMsg"}),h("button",{type:"button",class:"btn",onclick:closeEditor},"关闭"),go));
+  $("layer").replaceChildren(h("div",{class:"scrim",onclick:closeEditor}),drawer);
+}
+
+// ---------- 事件 ----------
+document.addEventListener("keydown",e=>{ if(e.key==="Escape" && $("layer").childElementCount) closeEditor(); });
+$("bNew").onclick=()=>openEditor(null, S.sel.cat);
+$("bLog").onclick=openLog;
+$("bExpJ").onclick=()=>saveFile(`MEEDEN产品地图_${today().replace(/-/g,"")}.json`, JSON.stringify(exportObj(),null,1));
+$("bExpC").onclick=exportCSV;
+$("bImp").onclick=()=>$("fImp").click();
+$("fImp").onchange=e=>{ const f=e.target.files[0]; e.target.value=""; if(f) importFile(f); };
+let qt; $("q").oninput=e=>{ clearTimeout(qt); qt=setTimeout(()=>{S.q=e.target.value;renderTable();},150); };
+$("fConc").onchange=e=>{S.conc=e.target.value;renderTable();};
+$("fConf").onchange=e=>{S.conf=e.target.value;renderTable();};
+$("fOpp").onchange=e=>{S.opp=e.target.checked;renderTable();};
+$("fArch").onchange=e=>{S.arch=e.target.checked;render();};
+start();
+</script>

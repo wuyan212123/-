@@ -28,7 +28,9 @@ _ap.add_argument("--out-dir", default=ROOT)
 _args = _ap.parse_args()
 DB = json.load(open(_args.data, encoding="utf-8"))
 scoring.score_all(DB)
-META, RECS = DB["meta"], DB["records"]
+META = DB["meta"]
+# 已归档的形态（网页里「归档」）保留在 JSON 里、编号不复用，但不进 Excel 和思维导图
+RECS = [r for r in DB["records"] if not r.get("archived")]
 TH = META["thresholds"]
 OUT_XLSX = os.path.join(_args.out_dir, "MEEDEN选品地图.xlsx")
 OUT_HTML = os.path.join(_args.out_dir, "MEEDEN选品地图_思维导图.html")

@@ -16,3 +16,5 @@
 6. 交付前跑完手册第 8 节的质量检查清单，并更新手册第 11 节的进度。
 7. V2 已生效（2026-11-02）。指标定义、评分规则和导出规范见 `docs/选品地图_V2优化方案.md`；没有工具导出数据时按手册第 6 节的「降级模式」执行。
 8. 指标由脚本计算，不要手填 `seg_*`、`cr*`、`n_pass`、`gate_*`、`mos_*`、`conclusion_suggested` 等字段；脚本不会改人工结论 `conclusion`。
+9. 团队在网页版「MEEDEN 产品地图」（https://claude.ai/artifact/CUpXen3UurqdVRNi6ejMbi ）里记录人工字段。开工前先拿网页最新导出的 JSON 跑 `python3 selection_map/sync_app_export.py 导出文件.json`，交付后把新的 `product_map.json` 导入网页；改同步脚本要跑通 `python3 selection_map/tests/test_sync.py`。分工见手册第 6.1 节。
+10. 改 `scoring.py` 时必须同步改 `selection_map/app/scoring.js`，并跑 `python3 selection_map/app/check_scoring.py` 直到输出 ALL MATCH。
