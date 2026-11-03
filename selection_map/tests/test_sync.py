@@ -16,6 +16,9 @@ by = {r["id"]: r for r in recs}
 by["C001"]["note"] = "网页改的备注"
 by["C001"]["seg_units_top10"] = 999999                 # 计算字段：不应被网页覆盖
 by["C002"]["archived"] = True
+for r in recs:                                          # 网页默认值：archived=false、空串 → 不算改动
+    r.setdefault("archived", False)
+    if r.get("evidence_ref") is None: r["evidence_ref"] = ""
 by["C006"]["meeden_status"] = "已有"                    # 没有 ASIN → 拒绝
 by["C006"]["evidence_asin"] = ""; by["C006"]["meeden_asins"] = []
 new = copy.deepcopy(by["C010"]); new.update(id="C120", form="测试新形态", note="", created_at="x", updated_by="u_x")

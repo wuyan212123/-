@@ -43,7 +43,14 @@ def has_asin(r):
     return bool(r.get("evidence_asin")) or any(a.get("asin") for a in (r.get("meeden_asins") or []))
 
 
+def _blank(v):
+    # 没填的几种写法（缺字段、null、""、[]、{}、false）视为同一个值，避免网页默认值产生无意义的变更
+    return v is None or v is False or v == "" or v == [] or v == {}
+
+
 def same(a, b):
+    if _blank(a) and _blank(b):
+        return True
     return json.dumps(a, ensure_ascii=False, sort_keys=True) == json.dumps(b, ensure_ascii=False, sort_keys=True)
 
 
