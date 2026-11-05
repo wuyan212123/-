@@ -33,6 +33,7 @@
   --l1:#3f78b0; --l2:#3f8a5e; --l3:#b0702e; --l0:#c04848;
   --hi:#e47c78; --mid:#d9a05c; --lo:#74b48e; color-scheme:dark }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important}}
 body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:14px;line-height:1.6;
@@ -1852,6 +1853,7 @@ function renderChrome(){
   document.getElementById("cat-rules").innerHTML=`<h4>${esc(cat.name)}专用登记规则</h4><ul>${li(cat.rules)}</ul>`;
   document.getElementById("srclist").innerHTML=`${esc(cat.name)}参考来源：`+Object.values(cat.src).map(([n,u])=>`<a href="${u}" target="_blank" rel="noopener">${esc(n)}</a>`).join(" · ");
   document.getElementById("cat-tabs").innerHTML=CATS.map(c=>`<button type="button" data-tab="${c.id}" aria-pressed="${c.id===st.tab}">${esc(c.name)}</button>`).join("");
+  document.getElementById("cat-tabs").hidden = CATS.length<2;
 }
 
 /* ---------- 交互 ---------- */

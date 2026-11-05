@@ -349,6 +349,7 @@ function renderChrome(){
   document.getElementById("cat-rules").innerHTML=`<h4>${esc(cat.name)}专用登记规则</h4><ul>${li(cat.rules)}</ul>`;
   document.getElementById("srclist").innerHTML=`${esc(cat.name)}参考来源：`+Object.values(cat.src).map(([n,u])=>`<a href="${u}" target="_blank" rel="noopener">${esc(n)}</a>`).join(" · ");
   document.getElementById("cat-tabs").innerHTML=CATS.map(c=>`<button type="button" data-tab="${c.id}" aria-pressed="${c.id===st.tab}">${esc(c.name)}</button>`).join("");
+  document.getElementById("cat-tabs").hidden = CATS.length<2;
 }
 
 /* ---------- 交互 ---------- */
