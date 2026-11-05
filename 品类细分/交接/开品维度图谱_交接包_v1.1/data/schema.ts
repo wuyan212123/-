@@ -1,6 +1,6 @@
 /**
  * 开品维度图谱 v1.0 · 品类数据结构
- * data/pen.json、data/book.json 都符合 Category。
+ * data/pen.json、data/book.json、data/paint.json 都符合 Category。
  * 这些 JSON 是从 src/categories/*.js 原样导出的，内容与已确认版本完全一致，迁移时不得改动。
  */
 
@@ -59,7 +59,7 @@ export interface TypeItem {
 }
 
 export interface FigSpec {
-  k: "pens" | "dual" | "kit" | "spring" | "erase" | "refill" | "brush" | "pad" | "multi" | "book" | "block" | "cards" | "accordion" | "workbook" | "bookkit";
+  k: "pens" | "dual" | "kit" | "spring" | "erase" | "refill" | "brush" | "pad" | "multi" | "book" | "block" | "cards" | "accordion" | "workbook" | "bookkit" | "pans" | "tubes" | "cups" | "bottles" | "droppers" | "easel";
   [opt: string]: unknown;   // 见 src/engine/figs.js
 }
 

@@ -1,7 +1,7 @@
 
 /* ---------- 结构示意图（通用，不是实拍图） ----------
    fig({k:"pens", n, ink:"black"|"rainbow"|"custom", cols:[颜色，写 "ink" 表示跟随主题的黑色], tips:[标签], pack:"blister"|"pouch"|"wallet"|"box"})
-   其他 k：refill / brush / dual / kit / spring / erase / pad / multi / book / block / cards / accordion / workbook / bookkit
+   其他 k：refill / brush / dual / kit / spring / erase / pad / multi / book / block / cards / accordion / workbook / bookkit / pans / tubes / cups / bottles / droppers / easel
    新品类需要新图形时，在这里加一个 k 分支即可。 */
 const HUES = ["#d6453d","#e8892b","#e6c229","#5bab4a","#2a9d8f","#2f78c4","#5a4fcf","#a855b5","#d9579b","#8b5a2b","#6b7280","#1f8a70"];
 function fig(spec){
@@ -90,6 +90,36 @@ function fig(spec){
     s+=`<rect x="128" y="40" width="92" height="50" rx="4" class="sv-metal"/>`;
     for(let i=0;i<8;i++) s+=`<rect x="${134+(i%4)*21}" y="${46+Math.floor(i/4)*21}" width="16" height="16" rx="2" fill="${HUES[i]}"/>`;
     s+=`<path d="M136 112 L206 104" stroke="currentColor" stroke-width="3"/><path d="M206 104 Q218 100 222 106 Q214 110 206 108Z" class="sv-ink"/>`+lab(174,128,"颜料 + 画笔",8);
+  }
+  else if(spec.k==="pans"){            /* 固体水彩：金属盒 + 半块，n 块，rows 行 */
+    const n=spec.n||24, rows=spec.rows||(n>24?4:n>12?2:1), per=Math.ceil(n/rows), cw=Math.min(18,170/per), chh=Math.min(20,(84-(rows-1)*4)/rows);
+    s+=`<rect x="12" y="16" width="216" height="104" rx="6" class="sv-metal"/><rect x="18" y="22" width="${per*(cw+3)+6}" height="92" rx="3" class="sv-paper"/>`;
+    for(let i=0;i<n;i++){ const r=Math.floor(i/per), c=i%per; s+=`<rect x="${24+c*(cw+3)}" y="${28+r*(chh+4)}" width="${cw}" height="${chh}" rx="2" fill="${(spec.cols||HUES)[i%(spec.cols||HUES).length]}"${spec.shine?' stroke="#c9b37a" stroke-width="1.4"':""}/>`; }
+    s+=lab(W/2,138,spec.label||`${n} 色半块`,8);
+  } else if(spec.k==="tubes"){         /* 管装颜料：n 支横放 */
+    const n=Math.min(spec.n||12,12), step=96/n;
+    s+=`<rect x="10" y="10" width="220" height="114" rx="4" class="sv-paper"/>`;
+    for(let i=0;i<n;i++){ const y=18+i*step, col=(spec.cols||HUES)[i%12], h=Math.max(5,step-2.5);
+      s+=`<path d="M40 ${y} H170 L182 ${y+h*0.2} V${y+h*0.8} L170 ${y+h} H40 Z" class="sv-body"/><rect x="40" y="${y}" width="40" height="${h}" fill="${col}"/><rect x="182" y="${y+h*0.15}" width="14" height="${h*0.7}" class="sv-ink"/>`; }
+    s+=lab(W/2,140,spec.label||"管装",8);
+  } else if(spec.k==="cups"){          /* 果冻杯：两排带盖小杯 */
+    const n=spec.n||12, per=Math.ceil(n/2), cw=Math.min(26,200/per-4);
+    for(let i=0;i<n;i++){ const r=Math.floor(i/per), c=i%per, x=20+c*(cw+4), y=26+r*52, col=(spec.cols||HUES)[i%12];
+      s+=`<rect x="${x}" y="${y}" width="${cw}" height="34" rx="4" class="sv-paper"/><ellipse cx="${x+cw/2}" cy="${y+14}" rx="${cw/2-3}" ry="9" fill="${col}"/>`; }
+    s+=`<path d="M14 18 H226" class="sv-line" stroke-dasharray="3 2"/>`+lab(W/2,140,spec.label||"果冻杯 · 带盖",8);
+  } else if(spec.k==="bottles"){       /* 挤压瓶 */
+    const n=spec.n||6, step=200/n, bw=Math.min(26,step*0.7);
+    for(let i=0;i<n;i++){ const cx=20+step*i+step/2, col=(spec.cols||HUES)[i%12];
+      s+=`<rect x="${cx-bw/2}" y="44" width="${bw}" height="72" rx="6" class="sv-body"/><rect x="${cx-bw/2}" y="70" width="${bw}" height="34" fill="${col}"/><path d="M${cx-bw/3} 44 L${cx-bw/4} 30 H${cx+bw/4} L${cx+bw/3} 44 Z" class="sv-ink"/><rect x="${cx-2}" y="22" width="4" height="8" class="sv-ink"/>`; }
+    s+=lab(W/2,138,spec.label||"2 fl oz 挤压瓶",8);
+  } else if(spec.k==="droppers"){      /* 液体水彩滴瓶 */
+    for(let i=0;i<5;i++){ const cx=34+i*43, col=HUES[(i*2)%12];
+      s+=`<rect x="${cx-14}" y="60" width="28" height="56" rx="4" class="sv-paper"/><rect x="${cx-12}" y="80" width="24" height="34" rx="2" fill="${col}" opacity=".85"/><rect x="${cx-6}" y="44" width="12" height="16" class="sv-ink"/><ellipse cx="${cx}" cy="40" rx="8" ry="7" class="sv-ink"/>`; }
+    s+=lab(W/2,138,"滴管瓶 · 浓缩液体",8);
+  } else if(spec.k==="easel"){         /* 颜料 + 画布 + 画架 */
+    s+=`<path d="M60 128 L90 24 L120 128 M90 24 V128 M66 100 H114" class="sv-line" stroke-width="2"/><rect x="66" y="40" width="48" height="56" class="sv-paper"/><path d="M72 84 Q86 60 100 76 T110 66" fill="none" stroke="${HUES[5]}" stroke-width="2"/>`;
+    for(let i=0;i<5;i++){ const y=36+i*16; s+=`<path d="M140 ${y} H200 L208 ${y+3} V${y+9} L200 ${y+12} H140 Z" class="sv-body"/><rect x="140" y="${y}" width="18" height="12" fill="${HUES[i*2]}"/>`; }
+    s+=`<path d="M146 122 L220 110" stroke="currentColor" stroke-width="3"/>`+lab(90,144,"画架 + 画布",8)+lab(180,144,"颜料 + 画笔",8);
   }
   return `<svg viewBox="0 0 ${W} ${H}" class="fig" role="img" aria-label="结构示意图">${s}</svg>`;
 }
