@@ -72,7 +72,7 @@ svg.links{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
 .node.sec{font-family:var(--font-display);font-weight:600;font-size:16px;padding:8px 14px;color:var(--hue);border:2px solid var(--hue);width:178px}
 .node.sec .n{font-family:var(--font-body)}
 .node.grp{font-weight:700;color:var(--hue);border:1.5px dashed var(--hue);background:var(--paper);width:150px}
-.node.cat{font-weight:700;color:var(--hue);border:1.5px solid var(--hue);min-width:140px;white-space:nowrap}
+.node.cat{font-weight:700;color:var(--hue);border:1.5px solid var(--hue);width:140px}
 .node.dim{font-weight:500;max-width:240px}
 .node.val{font-size:12.5px;color:var(--ink-2);border-color:transparent;background:transparent;padding:2px 6px;max-width:300px}
 .node.val::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--hue);margin-right:7px;vertical-align:1px}
@@ -108,7 +108,7 @@ section.block > p{margin:0;color:var(--ink-2);max-width:80ch}
 .tbl{overflow-x:auto;background:var(--sheet);border:1px solid var(--rule);border-radius:12px}
 table{border-collapse:collapse;width:100%;min-width:1080px;font-size:13px}
 th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--rule)}
-th{white-space:nowrap;font-size:12px;color:var(--ink-3);font-weight:700;letter-spacing:.04em;background:var(--paper);position:sticky;top:0}
+th{font-size:12px;color:var(--ink-3);font-weight:700;letter-spacing:.04em;background:var(--paper);position:sticky;top:0}
 td.name{font-weight:700;min-width:150px}
 td .grpl{display:block;font-weight:400;font-size:11.5px;color:var(--ink-3)}
 td .combo{color:var(--prussian)}
@@ -123,6 +123,65 @@ tbody tr:hover{background:var(--paper)}
 .src{font-size:12px;color:var(--ink-3)}
 .src a{color:var(--prussian)}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:8px 14px;border-radius:8px;font-size:13px;z-index:20}
+
+/* 类型下的五项卡片 */
+.node.info{width:400px;padding:10px 12px;border-left:3px solid var(--hue);background:var(--sheet);cursor:default;font-size:12.5px}
+.node.info .ih{font-weight:700;font-size:13px;color:var(--hue);margin-bottom:6px}
+.node .more{color:var(--prussian)}
+.vd{display:inline-block;font:500 11px/1 var(--font-body);padding:3px 6px;border-radius:4px;color:#fff;white-space:nowrap}
+.vd.go{background:var(--lo)} .vd.warn{background:var(--mid)} .vd.no{background:var(--ink-3)}
+svg.fig{display:block;width:100%;max-width:300px;height:auto;margin:0 0 6px;color:var(--ink-3)}
+.sv-paper{fill:var(--sheet);stroke:var(--ink-2);stroke-width:1.2}
+.sv-body{fill:var(--sheet);stroke:var(--ink-2);stroke-width:1}
+.sv-ink{fill:var(--ink)} .sv-soft{fill:var(--prussian-soft)}
+.sv-line{fill:none;stroke:var(--ink-2);stroke-width:1.1}
+.sv-metal{fill:var(--rule);stroke:var(--ink-2)}
+.sv-acc{fill:var(--s3)}
+.sv-glue{fill:none;stroke:var(--prussian);stroke-width:3;stroke-dasharray:6 3}
+.sv-lab{fill:var(--ink-3);font-family:var(--font-body)}
+ol.exl{margin:4px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+ol.exl li{line-height:1.4}
+ol.exl a{color:var(--prussian);font-weight:500;text-decoration:underline;text-underline-offset:2px}
+ol.exl span{display:block;font-size:11.5px;color:var(--ink-3)}
+.fine{font-size:11px;color:var(--ink-3);margin:6px 0 0}
+table.dmap{width:100%;min-width:0;border-collapse:collapse;font-size:12px}
+table.dmap th,table.dmap td{padding:3px 4px;border-bottom:1px dashed var(--rule);text-align:left;vertical-align:top;background:none;position:static;white-space:normal;letter-spacing:0}
+table.dmap th{width:46%;font-weight:500;color:var(--ink)}
+.dlink{all:unset;cursor:pointer;color:var(--ink);border-bottom:1px dotted var(--ink-3)}
+.dlink:hover{color:var(--prussian)} .dlink:focus-visible{outline:2px solid var(--prussian)}
+.pc,.chk{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chk{grid-template-columns:1fr 1fr 1fr}
+.pc ul,.chk ul,.node.info ul{margin:2px 0 0;padding-left:16px}
+.node.info p{margin:2px 0 0;color:var(--ink-2)}
+h5{margin:6px 0 2px;font-size:12px;font-weight:700;color:var(--ink-2)}
+h5.plus{color:var(--lo)} h5.minus{color:var(--hi)} h5.must{color:var(--prussian)}
+.dinfo{font-size:13px;color:var(--ink-2)} .dinfo .chk{grid-template-columns:1fr}
+/* 白地图 */
+#t-grid{min-width:860px}
+#t-grid th{white-space:normal}
+#t-grid tbody th{background:var(--paper);font-size:13px;color:var(--ink);width:110px}
+#t-grid td{font-size:12.5px;color:var(--ink-2);width:auto}
+#t-grid td.g-red{background:color-mix(in srgb,var(--hi) 12%,transparent)}
+#t-grid td.g-amb{background:color-mix(in srgb,var(--mid) 10%,transparent)}
+#t-grid td.g-gap{background:color-mix(in srgb,var(--lo) 16%,transparent);color:var(--ink);font-weight:500;box-shadow:inset 0 0 0 2px var(--lo)}
+#t-grid td.g-none{color:var(--ink-3)}
+.gl{display:block;font:700 11px var(--font-body);margin-bottom:2px}
+.g-red .gl{color:var(--hi)} .g-amb .gl{color:var(--mid)} .g-gap .gl{color:var(--lo)}
+/* 类型档案 */
+.profiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+.prof{background:var(--sheet);border:1px solid var(--rule);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.pf-fig{background:var(--paper);padding:12px 16px 4px;border-bottom:1px solid var(--rule)}
+.pf-fig svg.fig{margin:0 auto;max-width:280px}
+.pf-body{padding:12px 16px 16px;display:flex;flex-direction:column;gap:4px;font-size:13px}
+.pf-grp{font-size:11.5px;color:var(--ink-3)}
+.prof h3{margin:0;font-family:var(--font-display);font-weight:600;font-size:17px}
+.pf-t{all:unset;cursor:pointer} .pf-t:hover{color:var(--prussian)} .pf-t:focus-visible{outline:2px solid var(--prussian)}
+.prof .row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.pf-price{font-size:12px;color:var(--ink-3)}
+.pf-combo{margin:2px 0;color:var(--prussian);font-size:12.5px}
+.pf-req{margin:0;color:var(--ink-2);font-size:12.5px}
+.pf-v{margin:6px 0 0;padding-top:8px;border-top:1px dashed var(--rule);color:var(--ink-2);font-size:12.5px}
+.prof ul{margin:2px 0 0;padding-left:16px;color:var(--ink-2)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
@@ -130,7 +189,7 @@ tbody tr:hover{background:var(--paper)}
   <header>
     <div>
       <h1>针管笔 · 水彩本 开品维度图谱</h1>
-      <p class="sub">思维导图分三大块：①市场上现在主要卖哪些类型的商品（每个类型由哪些维度组合而成）；②所有分类维度的定义和取值；③现有类型之间的缺口，以及对应的开品机会。点击节点展开，右侧查看详情和依据。</p>
+      <p class="sub">思维导图分三大块：① 市场上现在主要卖哪些类型的商品，每个类型下有示例商品、对应维度、优缺点、升级方向和新品属性清单；② 所有分类维度的定义和取值；③ 现有类型之间的缺口和开品机会。图下面是白地图、类型档案和两张对照表。</p>
     </div>
     <p class="scope"><b>依据怎么来的</b>：Amazon 美国站畅销榜标签和在售款、品牌官网与零售商页面、评测和论坛差评；国内是评测文章、电商页面和常见在售规格。<b>没有拿到实时销量数据</b>（第三方数据站在本环境无法访问），所以竞争程度、价格带是根据在售款和榜单整理的判断，每条结论都标了依据强度，开品前需要用卖家精灵 / Helium 10 / 生意参谋按“验证方法”跑一遍数据。</p>
   </header>
@@ -155,6 +214,7 @@ tbody tr:hover{background:var(--paper)}
     <span><i class="pill L0">门槛</i>合规门槛</span>
     <span><i class="comp hi">竞争 高</i><i class="comp mid">竞争 中</i><i class="comp lo">竞争 低</i></span>
     <span><i class="pri A">A</i><i class="pri B">B</i><i class="pri C">C</i>机会优先级</span>
+    <span><i class="vd go">可做</i><i class="vd warn">谨慎</i><i class="vd no">不建议</i>类型的机会判断</span>
   </div>
 
   <div class="main">
@@ -164,6 +224,18 @@ tbody tr:hover{background:var(--paper)}
     </div>
     <aside class="detail" id="detail" aria-live="polite"></aside>
   </div>
+
+  <section class="block">
+    <h2 id="h-grid">白地图</h2>
+    <p>把两个最关键的 L1 维度交叉，每格写现在有谁在卖。<b>红海</b>表示竞争激烈，<b>有供给</b>表示已有产品但不拥挤，<b>空白</b>（绿框）表示几乎没有产品，对应 ③ 里的机会。</p>
+    <div class="tbl"><table id="t-grid"></table></div>
+  </section>
+
+  <section class="block">
+    <h2 id="h-prof">类型档案</h2>
+    <p>每个主流类型一张卡：结构示意、示例商品链接、优缺点、新品必须具备和必须避免的点。点类型名可以在思维导图里展开它。示意图是结构示意，不是实拍，实物请点链接查看。</p>
+    <div class="profiles" id="profiles"></div>
+  </section>
 
   <section class="block">
     <h2 id="h-types">① 市场主流商品类型对照</h2>
@@ -626,10 +698,10 @@ const BOOK_TYPES = [
    pain:"木浆纸吃水差、易起毛", ev:["postcard"], evl:"有来源"},
   {t:"风琴折本",
    combo:["风琴本","木浆 / 混合媒介纸","220–350g","A6 / A5","8–16 折页","硬壳 + 弹力带"],
-   rep:"Seawhite Octopus A5（220g）、Derivan A6（350g，16 页）",
+   rep:"Hoidaai 15×100cm、CuppaClip 全棉 300g、MEEDEN 全棉、Etchr 风琴本；英澳市场有 Seawhite、Derivan",
    price:"US $10–25",
-   who:"全景写生、分镜、展示型创作", comp:"lo", compT:"低：供给少，偏小众",
-   pain:"纸多为混合媒介纸，不是专门水彩纸", ev:["seawhite","derivan"], evl:"有来源"},
+   who:"全景写生、分镜、展示型创作", comp:"mid", compT:"中：白牌在快速增加，品牌少",
+   pain:"多数未标纤维成分；折痕处易开裂", ev:["seawhite","derivan"], evl:"有来源"},
   {t:"预印线稿 / 主题练习本",
    combo:["预印线稿","木浆 180–300g","主题（花卉 / 动物 / 风景）","常配颜料成套"],
    rep:"花束主题水彩练习本、成人减压水彩套装（4 本 + 颜料）",
@@ -665,16 +737,16 @@ const BOOK_OPPS = [
   risk:"非标尺寸要单独设计生产线；需求量比常规尺寸小",
   verify:"拉 square watercolor sketchbook、panoramic watercolor sketchbook 的搜索量和竞品数量",
   from:"全棉写生本、平价写生本", ev:["etchrNew"], evl:"有来源"},
- {t:"全棉风琴折本",pri:"B",gap:"规格缺口",
-  why:"现有风琴本多用混合媒介纸（如 Seawhite 220g），不是专门的水彩纸；风琴本展开后在内容平台上的展示效果好。",
+ {t:"品牌化全棉风琴折本",pri:"C",gap:"规格缺口",
+  why:"风琴本展开后在内容平台上的展示效果好，供给在增加。但核对在售款后发现，全棉风琴本已有白牌在做（CuppaClip、MEEDEN、Etchr），空白比最初判断的小，机会主要在品质和品牌化。",
   spec:["风琴本","100% 全棉","300g","A6 / A5","12–16 折页","硬壳 + 弹力带"],
   diff:"“一整条连续风景”的展示，适合做短视频内容",
   price:"US $15–25",
   risk:"需求小；折痕处纸张容易开裂，工艺要求高",
   verify:"拉 accordion watercolor sketchbook 的搜索量，看是否有稳定增长",
   from:"风琴折本", ev:["seawhite","derivan"], evl:"有来源"},
- {t:"全棉水彩明信片礼盒",pri:"B",gap:"规格缺口",
-  why:"水彩明信片的白牌主要是木浆，全棉明信片少，礼品场景也没有专门做。",
+ {t:"水彩明信片礼盒（形状组合 + 信封）",pri:"C",gap:"场景缺口",
+  why:"核对在售款后发现，全棉明信片已有白牌（tumuarta 24 张、50 张全棉装），全棉本身不是空白。剩下的空间在礼品场景：形状组合、信封和礼盒包装，多数白牌只做散装。",
   spec:["明信片","100% 全棉","300g","4×6 + 方形 + 圆形组合","30–50 张","礼盒 + 信封"],
   diff:"礼品包装；可邮寄",
   price:"US $12–20",
@@ -682,7 +754,7 @@ const BOOK_OPPS = [
   verify:"拉 watercolor postcards 的搜索量季节曲线，看 Q4 峰值",
   from:"水彩明信片", ev:["postcard"], evl:"部分来源"},
  {t:"系列化预印线稿练习本",pri:"C",gap:"场景缺口",
-  why:"零基础和成人减压人群在增长，但现有线稿练习本内容同质化，纸偏薄。",
+  why:"零基础和成人减压人群在增长。Terself 等已经在做“系列主题 + 过程视频”，部分产品纸只有 120lb，后进入者的空间在纸张品质和题材差异。",
   spec:["预印线稿","木浆或混棉 300g","系列主题（花卉 / 建筑 / 动物）","附教程卡"],
   diff:"内容就是壁垒：分难度、有教程，做成系列复购",
   price:"US $12–20",
@@ -699,6 +771,357 @@ const BOOK_OPPS = [
   from:"跨品类：水彩本 × 针管笔", ev:[], evl:"经验判断"}
 ];
 
+/* ---------- 类型档案：示例商品 / 维度映射 / 优缺点 / 升级 / 判断 / 新品清单 ----------
+   ex: n 名称, u 链接, s 页面快照信息（徽章、评分、价格，均为搜索时的快照）
+   map: [② 中的维度名, 本类型的取值]
+   verdict: [等级, 说明]，等级：可做 / 可做（配套）/ 谨慎 / 不建议 */
+const AMZ = "https://www.amazon.com";
+const PROFILE = {
+/* ===== 针管笔 ===== */
+"黑色梯度套装（品牌专业款）":{
+ fig:{k:"pens",n:6,ink:"black",tips:["0.05","0.1","0.2","0.3","0.5","0.8"],pack:"blister"},
+ ex:[
+  {n:"STAEDTLER Pigment Liner 308 SB6P · 6 支 0.05–0.8",u:AMZ+"/dp/B004L87XRA",s:"快照：4.7★，13,425 条评分，19 个卖家 $8.91 起；金属长笔头可配尺规"},
+  {n:"Faber-Castell Pitt Artist Pen · 黑色 6 支混合笔头",u:AMZ+"/dp/B003U6LBRW",s:"Pitt 用 S/F/M/B 字母标号"},
+  {n:"Faber-Castell Pitt Essential Set · 4 支不同笔头",u:AMZ+"/dp/B004PN8HMG",s:"小套装入门款"},
+  {n:"Sakura Pigma Micron 系列（Amazon 搜索页）",u:AMZ+"/s?k=sakura+pigma+micron+pens",s:"Micron 梯度套装和单号装多个链接并存，进入后看 Best Seller 标签"},
+  {n:"京东 · 美术勾线笔排行（樱花 7 支套装等）",u:"https://www.jd.com/hotitem/6709c15188c7e0aeaf0.html",s:"国内参考：樱花套装评论量高"}],
+ map:[["笔型结构","一次性"],["笔头类型","纤维硬头，常加 1 支 BR 软头"],["笔头保护","Staedtler 金属护套 / Micron 塑料锥头"],["墨水基质","颜料型水性"],["防水性","干后完全防水"],["耐性与兼容性","档案级、耐光；Micron 有耐马克笔口碑"],["颜色方案","纯黑"],["实际线宽","0.05–0.8mm"],["粗细组合方式","梯度套装 / 梯度 + 软头"],["单件支数","小套 4–8 支"],["包装形式","吸塑卡、塑料笔袋"],["定位档","专业"]],
+ pros:["品牌信任度高，评论积累大（Staedtler 6 支套装 1.3 万条评分）","墨水稳定：防水、档案级，水彩勾线人群长期验证","每个号都能单独买，老用户有补货路径"],
+ cons:["单支价格高（约 $1.5–3/支）","品牌款的极细号同样容易压坏、断墨","包装简单，没有收纳和场景配件","品牌心智已经形成，新卖家正面竞争难度大"],
+ up:["金属护套笔头 + 极细号额外送备用","附线宽样张和防水实测卡","加收纳笔袋或笔帘","明确的耐酒精马克笔测试宣称"],
+ verdict:["谨慎","不建议正面复制品牌款。把它当作“耐用极细黑色套装”（机会 A）的对标：规格照它做全，在耐用和配套上超过它。"],
+ must:["颜料型防水墨水，实测后才写进卖点","每支同时标号和实际线宽 mm","至少 0.05–0.8 六种梯度","ASTM D-4236 标注"],
+ plus:["金属护套笔头","额外的 0.05 备用笔","收纳笔袋","耐马克笔宣称"],
+ avoid:["宣称防水但刷水会晕","0.05 用塑料锥头，容易缩头","帽子不气密导致到手干笔","号和线宽对不上"]},
+
+"黑色全能套装（白牌主场）":{
+ fig:{k:"pens",n:12,ink:"black",tips:["005","01","02","03","04","05","08","1.0","2.0","3.0","BR","CH"],pack:"pouch"},
+ ex:[
+  {n:"Ohuhu Fineliner · 8 种笔头（0.2–1mm + 软头）",u:AMZ+"/dp/B08BNZXRVX",s:"快照：Amazon's Choice；约 $8–12；宣称颜料型防水、建议先勾线再上酒精马克笔"},
+  {n:"Muchcute Micro Fineliner · 12 支黑色（0.2–3.0 + BR）",u:AMZ+"/dp/B0BNDN87NX",s:"快照：4.5★，4,579 条评分；有买家称其为 Micron 平替"},
+  {n:"TWOHANDS Art Fineliner · 12 支黑色",u:AMZ+"/dp/B088B9ZNXC",s:"快照：Amazon's Choice，Drawing Pens 类目 #17；附收纳袋"},
+  {n:"Ohuhu 8 支 + 速写本组合",u:AMZ+"/dp/B094JBQ59Z",s:"组合加赠的做法：笔 + 本子"}],
+ map:[["笔型结构","一次性"],["笔头类型","纤维硬头 + 软头 + 宽头"],["墨水基质","颜料型（宣称）"],["防水性","宣称防水，实际参差"],["颜色方案","纯黑"],["实际线宽","0.2–3.0mm"],["粗细组合方式","梯度 + 软头 + 宽头 / 凿头"],["单件支数","中套 8–12 支"],["包装形式","拉链笔袋、纸盒"],["组合加赠","部分加速写本"],["定位档","入门平价 / 中端"]],
+ pros:["单支价低、支数多，性价比强","一套覆盖勾线到填黑，适合初学者和送礼","评论量大，需求已经被验证"],
+ cons:["品质不稳定，批次干笔（有差评称约 1/3 写不出）","防水、耐马克笔的宣称和实际不符时差评集中","同质化严重，主要拼价格","极细号耐用度差"],
+ up:["出厂抽检 + 单支密封，解决到手干笔","真实防水视频","立式笔盒或可挂笔帘","附线宽对照卡和练习卡"],
+ verdict:["谨慎","需求最大，但已经是价格战。只有在品质稳定性上有明确、可展示的升级时才值得进。"],
+ must:["价格控制在 $15 以内","覆盖 0.05–3.0 + BR","防水实测后再宣称"],
+ plus:["笔袋或笔帘","线宽对照卡","练习卡 / 教程"],
+ avoid:["宣称和实际不符","软头劈叉","包装压坏导致干笔"]},
+
+"黑色单号多支装":{
+ fig:{k:"pens",n:6,ink:"black",tips:["05","05","05","05","05","05"],pack:"blister"},
+ ex:[
+  {n:"Sakura Pigma Micron 05 · 2 支装",u:AMZ+"/dp/B096KQQ192",s:"快照：$5.37–5.45"},
+  {n:"Sakura Pigma Micron 01 · 6 支装",u:AMZ+"/dp/B00K3KRJK6",s:"同系列还有 003 / 005 / 02 / 08 的 6 支装"},
+  {n:"Sakura Pigma Micron 005 · 6 支装",u:AMZ+"/dp/B00K3KRMFI",s:"极细号补货"},
+  {n:"STABILO point 88 · 黑色 10 支",u:AMZ+"/dp/B01BCE27BC",s:"0.4mm 书写用"}],
+ map:[["笔型结构","一次性"],["笔头类型","纤维头或塑料头"],["墨水基质","颜料型"],["颜色方案","纯黑"],["实际线宽","单一号"],["粗细组合方式","单号多支装"],["单件支数","2–12 支"],["包装形式","吸塑卡"]],
+ pros:["消耗品，复购强","关键词精准（“micron 05”“005 pen”）","可以给自家套装引流、做补货"],
+ cons:["价格非常敏感，利润薄","流量主要来自品牌词，白牌拿搜索难"],
+ up:["和自家套装做成“套装 + 补货”组合","0.03 / 0.05 极细号多支装","Subscribe & Save 订阅补货"],
+ verdict:["可做（配套）","适合作为自有套装的补货 SKU，不建议单独当主力新品。"],
+ must:["和套装同墨水、同笔头","每支标号和 mm"],
+ plus:["3 / 6 / 12 支数量变体"],
+ avoid:["单独打价格战"]},
+
+"国产学生平价针管笔":{
+ fig:{k:"pens",n:6,ink:"black",tips:["0.05","0.1","0.2","0.3","0.5","0.8"],pack:"box"},
+ ex:[
+  {n:"京东 · 美术勾线笔排行（晨光 / 得力 / 樱花）",u:"https://www.jd.com/hotitem/6709c15188c7e0aeaf0.html",s:"得力 12 支美术勾线笔、6 支儿童双头勾线笔评论量大"},
+  {n:"京东 · 勾线笔型号规格页",u:"https://www.jd.com/xinghao/6702d13e2c09a0aca34.html",s:"晨光多为双头油性勾线笔，不是典型针管笔"},
+  {n:"新浪众测：国产针管笔横评",u:"https://zhongce.sina.com.cn/article/view/73207",s:"晨光、得力、马可、马利约 ¥3–4/支"}],
+ map:[["笔型结构","一次性"],["笔头类型","纤维头"],["墨水基质","颜料或染料"],["颜色方案","纯黑"],["实际线宽","0.05–0.8 或 0.2–0.5"],["单件支数","单支 / 5–12 支盒装"],["包装形式","纸盒"],["目标人群","学生、儿童"],["定位档","入门平价"]],
+ pros:["渠道覆盖广，价格低","开学季刚需"],
+ cons:["漏墨、不顺滑、粗细不均","规格少","主要靠线下和平台渠道，线上差异化空间小"],
+ up:["学生专业款：颜料防水 + ¥3–5/支","制图课套装：针管笔 + 尺 + 模板"],
+ verdict:["不建议","跨境卖家不建议进入。国内渠道要看是否有学生渠道资源。"],
+ must:["价格 ¥3–5/支","通过 GB 21027 学生用品安全要求"],
+ plus:["颜料防水"],
+ avoid:["漏墨（笔帽和储墨结构要过关）"]},
+
+"彩色染料型 0.4 套装":{
+ fig:{k:"pens",n:10,ink:"rainbow",tips:Array(10).fill("0.4"),pack:"wallet",hex:true},
+ ex:[
+  {n:"Mr. Pen 彩色针管笔 · 24 色 0.4mm",u:AMZ+"/dp/B0DKT565MS",s:"快照：过去一个月购买 3K+；约 $5.6；三角杆"},
+  {n:"Mr. Pen 彩色针管笔 · 36 色 0.4mm",u:AMZ+"/dp/B086R75SCG",s:"同系列 12 / 18 / 24 / 36 / 40 色"},
+  {n:"STABILO point 88 · 10 色笔袋",u:AMZ+"/dp/B000SO1VUQ",s:"六角杆、金属护套笔头；官方规格不耐水"},
+  {n:"STABILO point 88 MINI · 18 色（含 5 荧光）",u:AMZ+"/dp/B00OAX1TPI",s:"短杆便携款，色系主题的做法"}],
+ map:[["笔型结构","一次性"],["笔头类型","纤维硬头"],["笔头保护","金属护套（STABILO）"],["墨水基质","染料型水性"],["防水性","不防水"],["颜色方案","多色彩色"],["色数规格","10–40 色"],["色系主题","基础色、荧光、粉彩"],["颜色 × 粗细混装","多色同粗细 0.4"],["包装形式","笔袋、塑料盒"],["笔杆形状","六角杆 / 三角杆"],["使用场景","手账、涂色书、笔记"]],
+ pros:["颜色多、鲜艳","价格低、走量（Mr. Pen 24 色月购 3K+）","手账、涂色书、学生笔记需求大"],
+ cons:["不耐水，不能配水彩","实物颜色和图片有色差","开盖易干"],
+ up:["主题色系（莫兰迪、复古）","立式收纳盒","附色卡 / 涂色页"],
+ verdict:["谨慎","量大但价格已经压到 24 色约 $5.6，利润空间小。只适合有成本优势的工厂型卖家。"],
+ must:["≥24 色","不透背（手账纸实测）","附色卡"],
+ plus:["主题色系","立式收纳"],
+ avoid:["宣称防水","颜色和主图不一致"]},
+
+"彩色颜料型防水套装":{
+ fig:{k:"pens",n:8,ink:"rainbow",tips:Array(8).fill("01"),pack:"blister"},
+ ex:[
+  {n:"Sakura Pigma Micron 005 · 8 色",u:AMZ+"/dp/B07TP9KF2K",s:"快照：$14.62–16.66；含黑、红、蓝、绿、棕、紫、Sepia、玫红"},
+  {n:"Sakura Pigma Micron 01 · 8 色",u:AMZ+"/dp/B0F9H2D6NP",s:"快照：$19.04，约 $2.38/支"},
+  {n:"STAEDTLER Pigment Liner · 6 色 0.5mm",u:AMZ+"/dp/B07NP334FZ",s:"颜料型彩色，同系列有 0.3mm"},
+  {n:"Muchcute 01 · 12 色（宣称防水）",u:AMZ+"/dp/B0DFC3KPWV",s:"白牌开始做彩色颜料款"}],
+ map:[["笔型结构","一次性"],["笔头类型","纤维硬头"],["墨水基质","颜料型水性"],["防水性","干后防水"],["耐性与兼容性","档案级；个别颜色耐光差"],["颜色方案","多色彩色"],["色数规格","6–12 色"],["颜色 × 粗细混装","多色同粗细"],["包装形式","吸塑卡"],["使用场景","水彩勾线、插画"],["定位档","专业 / 中端"]],
+ pros:["防水，可以配水彩","档案级，作品可保存","客单价和单支价都高"],
+ cons:["色数少（6–12 色）","单支贵","评测指出个别颜色不耐光"],
+ up:["24–36 色","按水彩常用色配色","多粗细彩色套装"],
+ verdict:["可做","对应机会 A“彩色颜料型防水针管笔 24–36 色”。白牌已开始做 12 色，要尽快在色数和防水实测上拉开差距。"],
+ must:["干后防水（刷水视频）","≥24 色","颜料型墨水"],
+ plus:["耐光等级标注","水彩配色"],
+ avoid:["色差","颜料沉淀导致堵头"]},
+
+"可换芯 / 注墨制图笔":{
+ fig:{k:"refill"},
+ ex:[
+  {n:"rOtring Isograph College Set · 0.2 / 0.3 / 0.5",u:AMZ+"/dp/B001W1036M",s:"快照：Amazon's Choice；$71.98（常规价 $89.29）；含墨水瓶、铅笔、圆规接头"},
+  {n:"rOtring Isograph Junior Set",u:AMZ+"/dp/B003UM3RJG",s:"便宜款，用墨水管而不是墨水瓶"},
+  {n:"Copic Multiliner SP College Set A",u:AMZ+"/dp/B002K943T8",s:"铝杆 3 支 + 替换墨囊，笔头可换"},
+  {n:"Copic Multiliner SP · 0.7 单支",u:AMZ+"/dp/B002UCYCDC",s:"墨囊可弹出更换"}],
+ map:[["笔型结构","可换墨囊 + 笔头 / 注墨式"],["笔头类型","纤维头（Copic）/ 钢针头（Rotring）"],["笔杆材质","铝合金 / 金属"],["墨水基质","颜料型"],["颜色方案","纯黑"],["单件支数","单支 / 3 支套装"],["组合加赠","墨水、铅笔、圆规接头、替芯"],["定位档","高端可换芯"],["使用场景","建筑 / 工程制图"]],
+ pros:["耐用，可持续","线宽最精准","专业形象，客单价高"],
+ cons:["很贵（Copic 约 $12.5/支，Rotring 套装 $70+）","注墨式需要清洗保养","用户群小"],
+ up:["$4–7/支 的平价可换芯","环保叙事","替芯订阅"],
+ verdict:["可做","对应机会 B“平价可换芯铝杆针管笔”，避开 Rotring 的专业制图市场，做插画和日常用户。"],
+ must:["墨囊和笔头可换","单独的替芯链接","铝杆"],
+ plus:["环保包装","替芯订阅"],
+ avoid:["替芯断货","结构复杂难装"]},
+
+"软头勾线笔":{
+ fig:{k:"brush"},
+ ex:[
+  {n:"Faber-Castell Pitt Big Brush · 黑色",u:AMZ+"/dp/B0026I4US2",s:"快照：4.7★，约 1.2K 条评分，$7.99"},
+  {n:"Faber-Castell Pitt Artist Pen Brush · 黑色单支",u:AMZ+"/dp/B000WL0UD4",s:"印度墨水颜料型"},
+  {n:"Copic Multiliner SP · 软头",u:AMZ+"/dp/B001RXQAPI",s:"可换芯软头"},
+  {n:"Faber-Castell Pitt Manga 套装",u:AMZ+"/dp/B007SQ3QKU",s:"漫画场景套装做法"}],
+ map:[["笔型结构","一次性 / 可换芯"],["笔头类型","软头 / 刷头"],["墨水基质","颜料型"],["颜色方案","纯黑为主"],["实际线宽","可变线宽"],["单件支数","单支 / 3–4 支"],["使用场景","漫画墨线、花体字"]],
+ pros:["线条有粗细变化，漫画、花体字刚需","单价比细头高"],
+ cons:["笔头容易劈叉、回弹变差","多数作为套装中的一支，单独需求有限"],
+ up:["软头粗细梯度套装（S / M / L）","细头 + 软头双头"],
+ verdict:["谨慎","单独做市场有限，更适合作为套装组成部分，或者做双头款（机会 C）。"],
+ must:["软头回弹耐用","颜料型防水"],
+ plus:["多种软头尺寸"],
+ avoid:["劈叉、掉毛"]},
+
+/* ===== 水彩本 ===== */
+"木浆线圈纸垫":{
+ fig:{k:"pad",bind:"top"},
+ ex:[
+  {n:"Canson XL Watercolor · 9×12 30 张",u:AMZ+"/dp/B004M59O4C",s:"折叠顶胶，140lb 冷压，无酸；官方定位学生练习"},
+  {n:"Canson XL Watercolor · 9×12 30 张 × 6 本",u:AMZ+"/dp/B07FG1L9M8",s:"快照：$58.64（原价 $68.99）"},
+  {n:"Strathmore 400 Visual Watercolor Journal · 140lb 22 张",u:"https://us.amazon.com/Strathmore-Visual-Watercolor-Journal-Sheets/dp/B003YIXDKE",s:"线圈，约 $8.29（第三方卖家）"},
+  {n:"ARTEZA Watercolor Paper · 9×12 32 张 × 2 本（胶装）",u:AMZ+"/dp/B07JWN7G18",s:"双面纹理；页面标题和详情张数不一致"}],
+ map:[["产品形态","纸垫"],["装订方式","顶胶 / 线圈"],["纤维成分","木浆"],["纹理","冷压"],["克重","300g（140lb）"],["尺寸体系","9×12 in"],["每本张数","22–32 张"],["封面硬度","纸板垫底"],["纸张等级","学生级"],["定位档","入门"]],
+ pros:["价格低，学生和初学者刚需","Canson、Strathmore 品牌信任强","规格标准，供应链成熟"],
+ cons:["湿画翻翘","反复叠色起毛","吸水差，颜色发灰"],
+ up:["混棉纸","加厚纸板 + 打孔易撕","附翻翘对比测试"],
+ verdict:["谨慎","不建议做同款木浆纸垫。机会在“混棉升级练习纸垫”（机会 B）。"],
+ must:["300g 冷压","无酸","9×12 主尺寸"],
+ plus:["打孔易撕","多尺寸组合"],
+ avoid:["克重虚标","纸面起毛"]},
+
+"木浆多本装 / 多尺寸组合":{
+ fig:{k:"multi"},
+ ex:[
+  {n:"ARTEZA Watercolor Sketchbook · 9×12 线圈精装 × 2 本",u:"https://us.amazon.com/ARTEZA-Watercolor-Sketchbook-2-Pack-Inches/dp/B07WRBFPSC",s:"每本 64 页、140lb；有黑 / 粉 / 灰封面变体"},
+  {n:"ARTEZA 儿童水彩纸 · 9×12 30 张 × 2 本（200g）",u:AMZ+"/dp/1947575112",s:"儿童线：克重降到 200g"},
+  {n:"Pentalic Aqua Journal · 5×8 × 2 本",u:"https://us.amazon.com/Pentalic-Aqua-Journal-Page-BOOKS/dp/B06XZJKJBG",s:"快照：约 $41–49"}],
+ map:[["产品形态","纸垫 / 书式本"],["装订方式","线圈"],["纤维成分","木浆"],["克重","200–300g"],["几本装","同款 2 本 / 多封面色"],["封面设计","多色可选（做变体）"],["目标人群","学生、儿童、家长"]],
+ pros:["客单价比单本高","封面颜色可以做变体","适合开学季和班级采购"],
+ cons:["纸质问题被多本装放大","白牌价格战"],
+ up:["多尺寸组合（大 + 小）","多纹理组合（细 / 中 / 粗）","混棉升级"],
+ verdict:["谨慎","作为“混棉升级练习纸垫”的销售形式更有意义，单独做木浆多本装价格战严重。"],
+ must:["300g","线圈耐用不脱"],
+ plus:["多尺寸组合","封面多色"],
+ avoid:["儿童款未做 CPSIA"]},
+
+"平价写生本（木浆 / 混棉）":{
+ fig:{k:"book",orient:"land",bind:"sewn",elastic:true},
+ ex:[
+  {n:"Pentalic Aqua Journal · 5×8 横翻 48 页",u:"https://amazon.com/Pentalic-Aqua-Journal-5x8-Inch/dp/B00479VQOE",s:"快照：4.7★，约 1,161 条评分；$21.97–23.02；6 帖锁线可平摊；松紧带、书签带、内袋"},
+  {n:"Pentalic Aqua Journal · 5.5×5.5 方形",u:AMZ+"/dp/B01M8Q374Q",s:"快照：约 $20.42"},
+  {n:"Pentalic Aqua Journal · 8.5×11 大尺寸",u:AMZ+"/dp/B01M5J354M",s:"快照：约 $36–38；同系列另有 3.5×5.375 口袋款（$15–16，带笔插）"},
+  {n:"Strathmore 400 水彩精装本 · 5.5×8.5 24 张",u:AMZ+"/dp/B0F97SS84F",s:"棕色哑光封面"}],
+ map:[["产品形态","书式本"],["装订方式","锁线精装（Pentalic）/ 线圈"],["开合与翻页","横翻、方形、竖翻"],["纤维成分","木浆 / 未标注棉"],["克重","300g（140lb）"],["尺寸体系","5×8、5.5×5.5、3.5×5.5"],["每本张数","24 张（48 页）"],["封面硬度","精装硬壳"],["附件功能","松紧带、书签带、内袋、笔插"],["使用场景","户外写生、旅行"]],
+ pros:["锁线款能平摊，写生体验好","附件齐（松紧带、书签带、内袋）","尺寸和比例选择多，同一系列能做多个变体"],
+ cons:["不是全棉，叠色、抬色效果一般","线圈款不平摊","价格已经到 $20+，离全棉不远"],
+ up:["换成全棉纸，价格保持在 $15–22","更多画幅比例"],
+ verdict:["可做","Pentalic 是“平价全棉平摊写生本”（机会 A）最直接的对标：结构照它做，纸换成全棉。"],
+ must:["锁线可 180° 平摊","300g","松紧带"],
+ plus:["书签带、内袋、笔插","横翻 / 方形变体"],
+ avoid:["线圈跨页断缝","精装压中缝"]},
+
+"全棉写生本":{
+ fig:{k:"book",orient:"spread",bind:"sewn"},
+ ex:[
+  {n:"Hahnemühle 全棉水彩本 · A5 横翻 250g 30 张",u:AMZ+"/dp/B09NY8JTTB",s:"表面施胶，适合湿画法"},
+  {n:"Hahnemühle 全棉水彩本 · A4 横翻",u:AMZ+"/dp/B09NY8MVRF",s:"同系列大尺寸"},
+  {n:"Hahnemühle 全棉方形本 · 14×14cm",u:AMZ+"/dp/B0HNB1QQGK",s:"方形画幅"},
+  {n:"Etchr 水彩本（Amazon 搜索页）",u:AMZ+"/s?k=etchr+watercolor+sketchbook",s:"A8–A4 及风琴本，多款标注“过去一个月常被购买”"},
+  {n:"Paul Rubens 全棉水彩本 · 7.87×5.43 × 2 本",u:AMZ+"/dp/B09WXX92G8",s:"300g，20 张 / 本"}],
+ map:[["产品形态","书式本"],["装订方式","锁线精装 / 裸背锁线"],["开合与翻页","横翻、竖翻、方形分款"],["纤维成分","100% 全棉"],["纹理","冷压为主，部分热压"],["克重","250–300g"],["尺寸体系","A5 / A4 / 方形"],["每本张数","20–30 张"],["纸张等级","艺术家级"],["定位档","专业"]],
+ pros:["纸质好，叠色、抬色、湿画都稳定","品牌溢价高","作品可以留存"],
+ cons:["贵（$20–65）","平价款品控不稳（宝虹有装订开裂差评）","部分精装不易平摊"],
+ up:["平价全棉 + 裸背锁线平摊","附全棉检测说明"],
+ verdict:["可做","对应机会 A“平价全棉平摊写生本”。"],
+ must:["100% 全棉，并能提供证明","锁线 180° 平摊","300g 冷压"],
+ plus:["横翻 / 竖翻 / 方形变体","松紧带"],
+ avoid:["胶装开裂","“含棉”冒充全棉"]},
+
+"全棉四面封胶块":{
+ fig:{k:"block"},
+ ex:[
+  {n:"Arches 水彩块 · 9×12 冷压",u:AMZ+"/dp/B005Z4545C",s:"140lb 20 张；另有 300lb 10 张款"},
+  {n:"Arches 水彩块 · 7×10 冷压",u:AMZ+"/dp/B01B204MSC",s:"快照：$31 起"},
+  {n:"Paul Rubens 全棉水彩块 · 10.82×7.79",u:AMZ+"/dp/B09N1LFQGC",s:"300g 20 张"},
+  {n:"Paul Rubens 方形水彩块 · 7.68×7.68",u:AMZ+"/dp/B0D3C6TH3H",s:"方形画幅"},
+  {n:"Paul Rubens 长幅水彩块 · 11.54×5.91",u:"https://us.amazon.com/Paul-Rubens-Watercolor-11-54-5-91/dp/B0D3C52R6L",s:"有买家指出封面写冷压、实际是热压"}],
+ map:[["产品形态","四面封胶块"],["装订方式","四面封胶"],["纤维成分","100% 全棉"],["纹理","冷压 / 热压 / 粗纹"],["克重","300g / 640g"],["画面比例","常规、方形、长幅"],["每本张数","10–20 张"],["纸张等级","艺术家级"],["定位档","专业"]],
+ pros:["不用裱纸，湿画不翻翘","Arches 是专业用户的标杆","尺寸、比例变体多"],
+ cons:["贵（Arches 7×10 约 $31 起）","新手不会起纸","Paul Rubens 页面纹理、克重标注互相矛盾，引起差评"],
+ up:["封面印起纸方法","规格标注准确","多纹理组合块"],
+ verdict:["谨慎","Paul Rubens 已占住平价全棉块，新进入要在标注准确、品控上胜出。"],
+ must:["四面封胶，留起纸缺口","标注准确（冷压 / 热压、克重）"],
+ plus:["起纸刀或说明","多纹理组合"],
+ avoid:["封面和实际纹理不符"]},
+
+"水彩明信片":{
+ fig:{k:"cards"},
+ ex:[
+  {n:"tumuarta 水彩明信片 · 4×6 全棉 24 张",u:AMZ+"/dp/B08GKTFF55",s:"140lb / 300g 冷压，全棉"},
+  {n:"50 张 100% 全棉水彩明信片",u:AMZ+"/dp/B0C5M64FQ7",s:"白牌已有全棉款"},
+  {n:"Canson Montval 水彩卡 · 5×7 6 张附信封",u:AMZ+"/dp/B00Q1RKFJM",s:"品牌款，带信封"},
+  {n:"Amazon 搜索：watercolor postcards blank 4x6",u:AMZ+"/s?k=watercolor+postcards+blank+4+x+6",s:"Moriquill、CXIIPOL、LOTMER 等 100 张装 300g"}],
+ map:[["产品形态","明信片 / 卡片"],["纤维成分","木浆为主，已有全棉款"],["克重","300g"],["尺寸体系","4×6 / 5×7"],["画面比例","长方、方形、圆形"],["每本张数","6–100 张"],["页面处理","圆角"],["使用场景","手工贺卡、旅行打卡"]],
+ pros:["客单价低、决策快","节日礼品属性","可以做形状组合"],
+ cons:["白牌多、价格低","木浆款吃水差"],
+ up:["礼盒 + 信封","方 + 圆 + 长方组合","季节主题包装"],
+ verdict:["谨慎","全棉明信片已有白牌在做，空白不大。只适合作为礼品季的补充 SKU。"],
+ must:["300g","圆角"],
+ plus:["附信封","礼盒"],
+ avoid:["纸张偏薄"]},
+
+"风琴折本":{
+ fig:{k:"accordion"},
+ ex:[
+  {n:"Hoidaai 风琴水彩本 · 15×100cm 冷压",u:AMZ+"/dp/B0DSKC4BL2",s:"每面 8 格，意大利纸，冷压 / 热压两款"},
+  {n:"CuppaClip 风琴水彩本 · 全棉 300g",u:AMZ+"/dp/B0FNR29DDV",s:"硬壳 + 松紧带，15 张"},
+  {n:"风琴本 · 15×200cm 300g",u:AMZ+"/dp/B0FY6T1NGL",s:"超长全景"},
+  {n:"Tosstuki A5 风琴本 · 2 本装",u:AMZ+"/dp/B0G2C3BXVG",s:"多本装"}],
+ map:[["产品形态","风琴折本"],["装订方式","无装订（风琴折）"],["开合与翻页","风琴展开"],["纤维成分","意大利纸未标棉 / 部分全棉"],["克重","300g"],["画面比例","长幅 / 全景"],["封面硬度","精装硬壳"],["附件功能","松紧带"]],
+ pros:["连续全景，展示效果好，适合做短视频内容","供给在增加，说明需求在涨"],
+ cons:["白牌多，品牌少","折痕处纸张容易开裂"],
+ up:["全棉 + 品牌化","可拆装或可裁切展示","附挂绳 / 展示架"],
+ verdict:["谨慎","全棉风琴本已有白牌（CuppaClip、MEEDEN），空白比预期小。机会在品质和品牌化，先看搜索量是否持续增长。"],
+ must:["300g 以上","折痕处不开裂"],
+ plus:["全棉","硬壳 + 松紧带"],
+ avoid:["纸张来源不明"]},
+
+"预印线稿 / 主题练习本":{
+ fig:{k:"workbook"},
+ ex:[
+  {n:"Watercolor Workbook · 12 色 + 3 支笔 + 线稿本",u:AMZ+"/dp/B0FG7LDC49",s:"12 幅预印线稿 + 颜料铁盒"},
+  {n:"National Park 预印线稿水彩本 · 15 幅 + 视频",u:AMZ+"/dp/B0H6J9TZ81",s:"二维码链接绘画过程视频"},
+  {n:"花卉主题水彩练习本 · 12 个项目",u:AMZ+"/dp/B0H23M2G9M",s:"左页参考图、右页线稿"},
+  {n:"圣诞主题水彩练习本 · 线圈平摊",u:AMZ+"/dp/B0G3PDYN62",s:"120lb 冷压"}],
+ map:[["产品形态","预印线稿水彩本"],["页面处理","预印线稿"],["纤维成分","木浆"],["克重","120lb–300g"],["装订方式","线圈 / 胶装"],["组合加赠","颜料、画笔、视频教程"],["使用场景","成人减压、零基础"]],
+ pros:["零基础友好，转化快","内容可以做成系列复购","可以带颜料做成套装"],
+ cons:["纸偏薄（部分只有 120lb）","内容同质化，Terself 等已经做了系列 + 视频"],
+ up:["300g 纸","分难度系列","配套视频教程"],
+ verdict:["谨慎","系列 + 视频的模式已经有人在做，后进入要在纸张或题材上差异化。"],
+ must:["≥200g 纸","线稿清晰"],
+ plus:["视频教程","系列主题"],
+ avoid:["线稿版权问题"]}
+};
+
+/* ---------- 白地图：两个关键维度交叉 ---------- */
+const GRID = {
+ pen:{rowT:"颜色方案",colT:"笔型 × 墨水",cols:["一次性 · 颜料型","一次性 · 染料型","可换芯 · 颜料型"],
+  rows:[
+   ["纯黑",[["red","黑色梯度套装、白牌全能套装、单号多支装"],["amb","国产学生款、point 88 黑色"],["gap","只有 Copic / Rotring（$12+/支），$4–7/支段空白 → 平价可换芯"]]],
+   ["灰阶 / 棕褐",[["gap","只有少数品牌零散单品 → 灰阶写生套装"],["none","—"],["none","—"]]],
+   ["彩色 6–16 色",[["amb","Micron 8 色、Staedtler 6 色、Muchcute 12 色"],["red","STABILO 10 / 18 色、Mr. Pen 12 / 18 色"],["none","—"]]],
+   ["彩色 24 色以上",[["gap","几乎没有 → 彩色颜料防水 24–36 色（A）"],["red","Mr. Pen 24 / 36 / 40 色、STABILO 25 色以上"],["none","—"]]]]},
+ book:{rowT:"纤维成分",colT:"产品形态 × 装订",cols:["纸垫（顶胶 / 线圈）","书式本 · 线圈","书式本 · 锁线平摊","四面封胶块","风琴本","明信片"],
+  rows:[
+   ["木浆",[["red","Canson XL、Strathmore、Arteza"],["amb","Arteza 线圈精装、白牌"],["amb","Pentalic、Strathmore 400 锁线（$20+）"],["none","—"],["amb","白牌意大利纸 300g"],["amb","白牌 50–100 张"]]],
+   ["混棉",[["gap","很少 → 混棉升级练习纸垫（B）"],["gap","很少"],["amb","少数（如 Kunst & Papier 35% 棉）"],["none","—"],["none","—"],["none","—"]]],
+   ["100% 全棉",[["amb","Paul Rubens、宝虹"],["amb","Strathmore 全棉线圈旅行本（不平摊）"],["gap","Hahnemühle / Etchr / W&N 在 $20–65；$15–22 段空白 → 平价全棉平摊本（A）"],["amb","Arches、Paul Rubens"],["amb","CuppaClip、MEEDEN、Etchr，在增加"],["amb","tumuarta、白牌 50 张"]]]]}
+};
+
+/* ---------- 结构示意图（不是实拍图，实物请点示例链接） ---------- */
+const HUES = ["#d6453d","#e8892b","#e6c229","#5bab4a","#2a9d8f","#2f78c4","#5a4fcf","#a855b5","#d9579b","#8b5a2b","#6b7280","#1f8a70"];
+function fig(spec){
+  const W=240,H=150; let s="";
+  const lab=(x,y,t,size=8,anchor="middle")=>`<text x="${x}" y="${y}" class="sv-lab" font-size="${size}" text-anchor="${anchor}">${t}</text>`;
+  if(spec.k==="pens"){
+    const n=spec.n, pad=14, avail=W-2*pad-16, step=avail/n, pw=Math.min(14,step*0.62);
+    // 包装
+    if(spec.pack==="blister"){ s+=`<rect x="6" y="6" width="${W-12}" height="${H-12}" rx="6" class="sv-paper"/><rect x="6" y="6" width="${W-12}" height="16" rx="6" class="sv-soft"/>`+lab(W/2,17,"吸塑卡",8); }
+    else if(spec.pack==="pouch"){ s+=`<rect x="6" y="10" width="${W-12}" height="${H-16}" rx="14" class="sv-paper"/><path d="M20 20 H${W-20}" class="sv-line" stroke-dasharray="3 2"/>`+lab(W-24,17,"笔袋",8,"end"); }
+    else if(spec.pack==="wallet"){ s+=`<rect x="6" y="14" width="${W-12}" height="${H-20}" rx="4" class="sv-paper"/><path d="M6 14 L${W/2} 30 L${W-6} 14" class="sv-line"/>`+lab(W/2,12,"笔袋 / 收纳夹",8); }
+    else { s+=`<rect x="6" y="8" width="${W-12}" height="${H-14}" rx="2" class="sv-paper"/>`+lab(W/2,19,"纸盒",8); }
+    for(let i=0;i<n;i++){
+      const cx=pad+8+step*i+step/2, top=28, capH=26, bodyH=62, tipH=10;
+      const col = spec.ink==="black" ? null : HUES[i%HUES.length];
+      const t=spec.tips[i]||"";
+      s+= col ? `<rect x="${cx-pw/2}" y="${top}" width="${pw}" height="${capH}" rx="2" fill="${col}"/>` : `<rect x="${cx-pw/2}" y="${top}" width="${pw}" height="${capH}" rx="2" class="sv-ink"/>`;
+      s+=`<rect x="${cx-pw/2}" y="${top+capH}" width="${pw}" height="${bodyH}" rx="1" class="sv-body"${spec.hex?' stroke-dasharray="2 1"':''}/>`;
+      if(t==="BR") s+=`<path d="M${cx-pw/2+1} ${top+capH+bodyH} Q${cx} ${top+capH+bodyH+tipH+6} ${cx+pw/2-1} ${top+capH+bodyH}" class="sv-ink"/>`;
+      else if(t==="CH") s+=`<path d="M${cx-pw/2+1} ${top+capH+bodyH} L${cx+pw/2-1} ${top+capH+bodyH} L${cx-pw/2+1} ${top+capH+bodyH+tipH}Z" class="sv-ink"/>`;
+      else { const tw=Math.max(1.4, Math.min(pw*0.5, (parseFloat(t)||0.3)*(t.length===3&&t[0]==="0"&&!t.includes(".")?10:4))); s+=`<path d="M${cx-pw/2+1} ${top+capH+bodyH} L${cx-tw/2} ${top+capH+bodyH+tipH} L${cx+tw/2} ${top+capH+bodyH+tipH} L${cx+pw/2-1} ${top+capH+bodyH}Z" class="sv-ink"/>`; }
+      s+=lab(cx,H-12,t,n>10?6.5:8);
+    }
+  } else if(spec.k==="refill"){
+    s+=`<rect x="20" y="40" width="150" height="16" rx="3" class="sv-metal"/><path d="M170 40 L196 46 L196 50 L170 56Z" class="sv-ink"/><rect x="196" y="47" width="14" height="2" class="sv-ink"/>`+lab(95,32,"铝杆（可重复用）",8);
+    s+=`<rect x="40" y="88" width="100" height="10" rx="2" class="sv-soft"/><rect x="40" y="88" width="70" height="10" rx="2" class="sv-ink" opacity=".75"/>`+lab(90,112,"替换墨囊",8);
+    s+=`<path d="M160 88 L184 92 L184 96 L160 100Z" class="sv-ink"/><rect x="184" y="93" width="12" height="2" class="sv-ink"/>`+lab(178,112,"替换笔头",8);
+    s+=`<path d="M90 60 V84 M180 60 V84" class="sv-line" stroke-dasharray="3 2"/>`+lab(W/2,138,"可换芯结构示意",8);
+  } else if(spec.k==="brush"){
+    for(let i=0;i<3;i++){ const cx=60+i*60; s+=`<rect x="${cx-8}" y="20" width="16" height="24" rx="2" class="sv-ink"/><rect x="${cx-8}" y="44" width="16" height="56" class="sv-body"/><path d="M${cx-7} 100 Q${cx-2} ${118+i*3} ${cx+1} ${124+i*4} Q${cx+6} ${116} ${cx+7} 100Z" class="sv-ink"/>`+lab(cx,140,["S","M","B"][i],8); }
+  } else if(spec.k==="pad"){
+    s+=`<rect x="54" y="22" width="132" height="116" class="sv-paper"/><rect x="54" y="132" width="132" height="6" class="sv-soft"/>`;
+    for(let i=0;i<12;i++) s+=`<circle cx="${62+i*10.5}" cy="20" r="3.4" class="sv-line"/>`;
+    s+=lab(120,84,"9 × 12 in",11)+lab(120,100,"300g 冷压 · 30 张",8);
+  } else if(spec.k==="multi"){
+    [[36,30],[66,20],[96,10]].forEach(([x,y],i)=>{ s+=`<rect x="${x}" y="${y+12}" width="104" height="${118-y}" class="${i===2?"sv-paper":"sv-soft"}" stroke="currentColor"/>`; for(let j=0;j<8;j++) s+=`<circle cx="${x}" cy="${y+22+j*12}" r="3" class="sv-line"/>`; });
+    s+=lab(150,82,"2–3 本装",11)+lab(150,98,"同款 / 多尺寸",8);
+  } else if(spec.k==="book"){
+    if(spec.orient==="spread"){
+      s+=`<path d="M20 36 Q70 28 120 38 V128 Q70 118 20 126Z" class="sv-paper"/><path d="M220 36 Q170 28 120 38 V128 Q170 118 220 126Z" class="sv-paper"/><path d="M120 38 V128" class="sv-line"/>`;
+      s+=lab(120,24,"180° 平摊跨页",9)+lab(70,86,"全棉 300g",8)+lab(170,86,"锁线装订",8);
+    } else {
+      s+=`<rect x="34" y="34" width="172" height="96" rx="4" class="sv-paper"/><rect x="34" y="34" width="10" height="96" class="sv-ink"/>`;
+      if(spec.elastic) s+=`<rect x="186" y="34" width="5" height="96" class="sv-acc"/>`;
+      s+=lab(122,82,"横翻 5 × 8 in",11)+lab(122,98,"锁线精装 · 松紧带",8);
+    }
+  } else if(spec.k==="block"){
+    for(let i=4;i>=0;i--) s+=`<rect x="${44+i*2}" y="${30+i*3}" width="150" height="96" class="sv-paper"/>`;
+    s+=`<rect x="44" y="30" width="150" height="96" class="sv-glue"/><rect x="110" y="122" width="16" height="4" class="sv-soft"/>`;
+    s+=lab(119,76,"四面封胶",11)+lab(119,92,"全棉 300g · 20 张",8)+lab(119,144,"↑ 起纸缺口",7);
+  } else if(spec.k==="cards"){
+    s+=`<rect x="18" y="40" width="92" height="64" class="sv-paper"/><rect x="124" y="40" width="54" height="54" class="sv-paper"/><circle cx="208" cy="67" r="24" class="sv-paper"/>`;
+    s+=lab(64,120,"4 × 6",8)+lab(151,110,"方形",8)+lab(208,110,"圆形",8);
+  } else if(spec.k==="accordion"){
+    let p="M20 50"; for(let i=0;i<8;i++){ p+=` L${20+(i+1)*25} ${i%2?50:66}`; }
+    s+=`<path d="${p} L220 106 ${[...Array(8)].map((_,i)=>`L${220-(i+1)*25} ${i%2?106:122}`).join(" ")} Z" class="sv-paper"/>`;
+    for(let i=1;i<8;i++) s+=`<path d="M${20+i*25} ${i%2?66:50} V${i%2?122:106}" class="sv-line"/>`;
+    s+=lab(120,140,"展开 15 × 100–200 cm",8);
+  } else if(spec.k==="workbook"){
+    s+=`<rect x="44" y="18" width="152" height="116" class="sv-paper"/>`;
+    s+=`<g class="sv-line"><circle cx="120" cy="66" r="10"/>${[0,1,2,3,4,5].map(i=>{const a=i*Math.PI/3; return `<ellipse cx="${120+20*Math.cos(a)}" cy="${66+20*Math.sin(a)}" rx="11" ry="7" transform="rotate(${i*60} ${120+20*Math.cos(a)} ${66+20*Math.sin(a)})"/>`;}).join("")}<path d="M120 86 Q116 110 120 126 M120 108 Q134 100 142 104"/></g>`;
+    s+=lab(120,146,"预印线稿 · 留白待上色",8);
+  }
+  return `<svg viewBox="0 0 ${W} ${H}" class="fig" role="img" aria-label="结构示意图">${s}</svg>`;
+}
+
+/* ---------- 合并档案 ---------- */
+[PEN_TYPES, BOOK_TYPES].forEach(T=>T.forEach(g=>g.items.forEach(it=>Object.assign(it, PROFILE[it.t]||{}))));
+const INFO = [["ex","示例商品"],["map","对应分类维度"],["pc","优势与缺点"],["up","升级方向与机会判断"],["chk","新品属性清单"]];
+
 /* ---------- 组装三大块 ---------- */
 function build(key, dimRoot, types, opps, dimGroups){
   const catify=(cat,i)=>({t:cat.t, role:"cat", hc:`var(--w${i+1})`,
@@ -708,8 +1131,9 @@ function build(key, dimRoot, types, opps, dimGroups){
   const priName={A:"A 优先验证",B:"B 次优先",C:"C 先观察"};
   return {t:dimRoot.t, sub:dimRoot.sub, def:dimRoot.def, rule:dimRoot.rule, kw:dimRoot.kw, role:"root", c:[
     {t:"① 市场主流商品类型", role:"sec", sec:"types", hc:"var(--s1)", n:`${types.length} 组 · ${nType} 个类型`,
-     about:"市场上现在主要在卖的商品类型。每个类型由 ② 里的若干维度取值组合而成，并写明代表品牌、价格带、人群、竞争程度和常见差评。",
-     c:types.map(g=>({t:g.g, role:"grp", c:g.items.map(it=>({...it, role:"type", grp:g.g}))}))},
+     about:"市场上现在主要在卖的商品类型。每个类型下面有五项：示例商品、对应分类维度、优势与缺点、升级方向与机会判断、新品属性清单。",
+     c:types.map(g=>({t:g.g, role:"grp", c:g.items.map(it=>({...it, role:"type", grp:g.g,
+        c:INFO.map(([k,t])=>({t, role:"info", kind:k, ref:it}))}))}))},
     {t:"② 分类维度", role:"sec", sec:"dims", hc:"var(--s2)", n:`${dims.length} 类维度，分 3 组`,
      about:"所有分类维度及取值。产品本体决定“是什么”，销售形态决定“怎么卖”，市场定位决定“卖给谁、卖什么价”。",
      c:dimGroups.map(([name,about,idxs])=>({t:name, role:"grp", about, c:idxs.map(i=>catify(dims[i],i))}))},
@@ -736,17 +1160,32 @@ const idx = {};
 function prep(root,key){ let i=0; const walk=(n,d,p,hc)=>{ n.id=key+"-"+(i++); n.d=d; n.p=p; n.hc=n.hc||hc; idx[n.id]=n; (n.c||[]).forEach(ch=>walk(ch,d+1,n,n.hc)); }; walk(root,0,null,"var(--ink-3)"); }
 prep(DATA.pen,"pen"); prep(DATA.book,"book");
 const all = key => Object.values(idx).filter(n=>n.id.startsWith(key+"-"));
-function foldValues(key){ const s=collapsed[key]; s.clear(); all(key).forEach(n=>{ if(n.role==="cat") s.add(n.id); }); }
+function foldValues(key){ const s=collapsed[key]; s.clear(); all(key).forEach(n=>{ if(n.role==="cat"||n.role==="type") s.add(n.id); }); }
 foldValues("pen"); foldValues("book");
 try{ const t=localStorage.getItem("mm-tab"); if(t && DATA[t]) st.tab=t; }catch(e){}
 
 /* ---------- 工具 ---------- */
 const esc = s => String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
 const compLabel = {hi:"竞争 高", mid:"竞争 中", lo:"竞争 低"};
+const vClass = v => v.startsWith("可做") ? "go" : v==="谨慎" ? "warn" : "no";
+const verdictTag = v => v ? `<span class="vd ${vClass(v[0])}">${esc(v[0])}</span>` : "";
 const tagPill = t => t ? `<i class="pill ${t}">${t==="L0"?"门槛":t}</i>` : "";
-function hay(n){ return [n.t,n.n,(n.kw||[]).join(" "),(n.combo||[]).join(" "),(n.spec||[]).join(" "),n.rep,n.why,n.pain].filter(Boolean).join(" ").toLowerCase(); }
-const matches = n => !!st.q && hay(n).includes(st.q.toLowerCase());
+function hay(n){ return [n.t,n.n,(n.kw||[]).join(" "),(n.combo||[]).join(" "),(n.spec||[]).join(" "),n.rep,n.why,n.pain,(n.ex||[]).map(e=>e.n).join(" ")].filter(Boolean).join(" ").toLowerCase(); }
+const matches = n => !!st.q && n.role!=="info" && hay(n).includes(st.q.toLowerCase());
 const evLinks = keys => (keys||[]).filter(k=>SRC[k]).map(k=>`<li><a href="${SRC[k][1]}" target="_blank" rel="noopener">${esc(SRC[k][0])}</a></li>`).join("");
+const dimNode = (tab,name) => all(tab).find(x=>x.role==="dim" && x.t===name);
+const li = a => (a||[]).map(x=>`<li>${esc(x)}</li>`).join("");
+
+/* 五项内容（画布卡片和详情面板共用） */
+function infoHTML(kind, it, tab){
+  switch(kind){
+    case "ex": return `${it.fig?fig(it.fig):""}<ol class="exl">${(it.ex||[]).map(e=>`<li><a href="${e.u}" target="_blank" rel="noopener">${esc(e.n)}</a><span>${esc(e.s)}</span></li>`).join("")}</ol><p class="fine">示意图是结构示意，不是实拍。评分、价格、徽章为搜索时的页面快照，以链接实时页面为准。</p>`;
+    case "map": return `<table class="dmap">${(it.map||[]).map(([d,v])=>{ const dn=dimNode(tab,d); return `<tr><th><button type="button" class="dlink" data-dim="${esc(d)}" title="在 ② 中定位">${tagPill(dn&&dn.tag)}${esc(d)}</button></th><td>${esc(v)}</td></tr>`; }).join("")}</table>`;
+    case "pc": return `<div class="pc"><div><h5 class="plus">优势</h5><ul>${li(it.pros)}</ul></div><div><h5 class="minus">缺点 / 差评</h5><ul>${li(it.cons)}</ul></div></div>`;
+    case "up": return `<h5>可升级的方向</h5><ul>${li(it.up)}</ul><h5>能否作为新品机会 ${verdictTag(it.verdict)}</h5><p>${esc(it.verdict&&it.verdict[1])}</p>`;
+    case "chk": return `<div class="chk"><div><h5 class="must">必须具备</h5><ul>${li(it.must)}</ul></div><div><h5 class="plus">建议加分</h5><ul>${li(it.plus)}</ul></div><div><h5 class="minus">必须避免</h5><ul>${li(it.avoid)}</ul></div></div>`;
+  }
+}
 
 /* ---------- 画布 ---------- */
 const cv=document.getElementById("cv"), lk=document.getElementById("lk"), sizer=document.getElementById("sizer"), vp=document.getElementById("vp");
@@ -755,12 +1194,12 @@ function nodeHTML(n, isCol){
   switch(n.role){
     case "root": return `${esc(n.t)}<small>${esc(n.sub)}</small>`;
     case "sec":  return `${esc(n.t)}${cnt}<span class="n">${esc(n.n)}</span>`;
-    case "grp":  return `${esc(n.t)}${cnt}`;
-    case "cat":  return `${esc(n.t)}${cnt}`;
+    case "grp": case "cat": return `${esc(n.t)}${cnt}`;
     case "dim":  return `${tagPill(n.tag)}${esc(n.t)}${cnt}`;
     case "val":  return `${esc(n.t)}${n.n?`<span class="n">${esc(n.n)}</span>`:""}`;
-    case "type": return `<div class="tt"><b>${esc(n.t)}</b><span class="comp ${n.comp}">${compLabel[n.comp]}</span></div><div class="combo">${n.combo.map(esc).join(" · ")}</div><div class="meta">${esc(n.price)}</div>`;
+    case "type": return `<div class="tt"><b>${esc(n.t)}</b><span class="comp ${n.comp}">${compLabel[n.comp]}</span>${verdictTag(n.verdict)}</div><div class="combo">${n.combo.map(esc).join(" · ")}</div><div class="meta">${esc(n.price)}${isCol?` · <span class="more">展开 5 项详情 ▸</span>`:""}</div>`;
     case "opp":  return `<div class="tt"><i class="pri ${n.pri}">${n.pri}</i><b>${esc(n.t)}</b><span class="gap">${esc(n.gap)}</span></div><div class="combo">${n.spec.map(esc).join(" · ")}</div><div class="meta">${esc(n.price)} · 依据：${esc(n.evl)}</div>`;
+    case "info": return `<div class="ih">${esc(n.t)}</div>${infoHTML(n.kind, n.ref, st.tab)}`;
   }
 }
 function render(){
@@ -770,20 +1209,20 @@ function render(){
   const els={};
   vis.forEach(n=>{
     const e=document.createElement("div");
-    e.className=`node ${n.role}${st.sel===n.id?" sel":""}${matches(n)?" hit":""}`;
+    e.className=`node ${n.role}${n.kind?" k-"+n.kind:""}${st.sel===n.id?" sel":""}${matches(n)?" hit":""}`;
     e.tabIndex=0; e.dataset.id=n.id; e.style.setProperty("--hue",n.hc);
     e.innerHTML=nodeHTML(n, cs.has(n.id)); cv.appendChild(e); els[n.id]=e;
     n.w=e.offsetWidth; n.h=e.offsetHeight;
   });
   const gapX = n => n.role==="root"?56 : n.role==="sec"?48 : 40;
-  const gapY = n => ({sec:28, grp:16, cat:12, type:10, opp:10, dim:8})[n.role] ?? 4;
+  const gapY = n => ({sec:28, grp:16, cat:12, type:12, opp:10, dim:8, info:10})[n.role] ?? 4;
   let y=56;
   const lay=n=>{
     n.x = n.p ? n.p.x + n.p.w + gapX(n.p) : 24;
     const kids = n.c && !cs.has(n.id) ? n.c : null;
     if(!kids){ n.y=y; y+=n.h+gapY(n); return; }
     kids.forEach(lay);
-    if(n.role==="sec") y+=24; else if(n.role==="grp"||n.role==="cat") y+=8;
+    if(n.role==="sec") y+=24; else if(["grp","cat","type"].includes(n.role)) y+=8;
     const a=kids[0], b=kids[kids.length-1];
     n.y=Math.max((a.y+a.h/2 + b.y+b.h/2)/2 - n.h/2, 0);
   };
@@ -792,9 +1231,9 @@ function render(){
   vis.forEach(n=>{ els[n.id].style.left=n.x+"px"; els[n.id].style.top=n.y+"px"; W=Math.max(W,n.x+n.w); H=Math.max(H,n.y+n.h); });
   W+=40; H+=40;
   let p="";
-  vis.forEach(n=>{ if(!n.p) return; const a=n.p; const x1=a.x+a.w, y1=a.y+a.h/2, x2=n.x, y2=n.y+n.h/2, mx=(x1+x2)/2;
+  vis.forEach(n=>{ if(!n.p) return; const a=n.p; const x1=a.x+a.w, y1=a.y+a.h/2, x2=n.x, y2=n.y+Math.min(n.h/2,22), mx=(x1+x2)/2;
     const sw = n.role==="sec"?2.4 : (n.role==="grp"||n.role==="cat")?1.8 : n.role==="val"?1:1.4;
-    p+=`<path d="M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}" stroke="${n.hc}" stroke-width="${sw}" stroke-opacity="${n.role==="val"?.55:.85}" fill="none"/>`; });
+    p+=`<path d="M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}" stroke="${n.hc}" stroke-width="${sw}" stroke-opacity="${n.role==="val"||n.role==="info"?.55:.85}" fill="none"/>`; });
   lk.setAttribute("width",W); lk.setAttribute("height",H); lk.innerHTML=p;
   cv.style.width=W+"px"; cv.style.height=H+"px"; cv.style.transform=`scale(${st.scale})`;
   sizer.style.width=W*st.scale+"px"; sizer.style.height=H*st.scale+"px";
@@ -805,19 +1244,27 @@ function scrollToNode(n, smooth){
   vp.scrollTo({left:Math.max(0,(n.x-40)*st.scale), top:Math.max(0, sizer.offsetTop + n.y*st.scale - 70), behavior:smooth?"smooth":"auto"});
 }
 function centerRoot(){ const r=DATA[st.tab]; if(r.y===undefined) return; vp.scrollTop=Math.max(0, sizer.offsetTop + (r.y+r.h/2)*st.scale - vp.clientHeight/2); vp.scrollLeft=0; }
+function focusNode(n, opts={}){
+  const s=collapsed[st.tab]; let c=n.p; while(c){ s.delete(c.id); c=c.p; }
+  if(opts.open) s.delete(n.id);
+  st.sel=n.id; render(); showDetail(n); scrollToNode(n,true);
+}
+function jumpDim(name){ const d=dimNode(st.tab,name); if(d){ focusNode(d,{open:true}); vp.scrollIntoView({behavior:"smooth",block:"nearest"}); } }
 
 /* ---------- 详情 ---------- */
 const det=document.getElementById("detail");
 function crumbs(n){ const a=[]; let c=n.p; while(c){ a.unshift(c.t); c=c.p; } return a.join(" › "); }
 function showDetail(n){
   n = n || DATA[st.tab];
+  if(n.role==="info") n=n.p;
   const lv={L1:"品类定义维度：决定开什么品",L2:"规格变体维度：决定 SKU / 变体",L3:"卖点差异维度：决定溢价和卖点",L0:"合规门槛：不满足就不能卖"};
   let h=`<div class="eyebrow">${esc(crumbs(n)||"品类定义与范围")}</div>`;
   if(n.role==="type"){
-    h+=`<h2>${esc(n.t)}</h2><div class="row"><span class="comp ${n.comp}">${esc(n.compT)}</span></div>`;
+    h+=`<h2>${esc(n.t)}</h2><div class="row"><span class="comp ${n.comp}">${esc(n.compT)}</span>${verdictTag(n.verdict)}</div>`;
     h+=`<h3>维度组合</h3><div class="chips">${n.combo.map(c=>`<span class="chip">${esc(c)}</span>`).join("")}</div>`;
-    h+=`<h3>代表品牌 / 商品</h3><p>${esc(n.rep)}</p><h3>价格带</h3><p>${esc(n.price)}</p><h3>主力人群与场景</h3><p>${esc(n.who)}</p><h3>常见差评</h3><p>${esc(n.pain)}</p>`;
-    const rel=Object.values(idx).filter(o=>o.role==="opp" && o.id.startsWith(st.tab+"-") && o.from.includes(n.t));
+    h+=`<h3>价格带</h3><p>${esc(n.price)}</p><h3>主力人群与场景</h3><p>${esc(n.who)}</p>`;
+    INFO.forEach(([k,t])=>{ h+=`<h3>${t}</h3><div class="dinfo">${infoHTML(k,n,st.tab)}</div>`; });
+    const rel=all(st.tab).filter(o=>o.role==="opp" && o.from.includes(n.t));
     if(rel.length) h+=`<h3>相关开品机会</h3><ul>${rel.map(o=>`<li>${o.pri} · ${esc(o.t)}</li>`).join("")}</ul>`;
     h+=`<h3>依据 <span class="evtag">${esc(n.evl)}</span></h3><ul class="ev">${evLinks(n.ev)}</ul>`;
   } else if(n.role==="opp"){
@@ -836,40 +1283,78 @@ function showDetail(n){
     if(n.def) h+=`<h3>${n.role==="root"?"品类定义":"定义"}</h3><p>${esc(n.def)}</p>`; else if(n.n) h+=`<h3>说明</h3><p>${esc(n.n)}</p>`;
     if(n.rule) h+=`<h3>${n.role==="root"?"范围边界":"判定 / 边界规则"}</h3><p>${esc(n.rule)}</p>`;
     if(n.c && n.role==="dim") h+=`<h3>取值（${n.c.length}）</h3><ul>${n.c.map(c=>`<li>${esc(c.t)}${c.n?`：<span style="color:var(--ink-3)">${esc(c.n)}</span>`:""}</li>`).join("")}</ul>`;
+    if(n.role==="dim"){ const used=all(st.tab).filter(x=>x.role==="type" && (x.map||[]).some(([d])=>d===n.t)); if(used.length) h+=`<h3>主流类型在这个维度上的取值</h3><ul>${used.map(x=>`<li><b>${esc(x.t)}</b>：${esc(x.map.find(([d])=>d===n.t)[1])}</li>`).join("")}</ul>`; }
     if(n.c && n.role==="cat") h+=`<h3>包含维度</h3><ul>${n.c.map(c=>`<li>${tagPill(c.tag)}${esc(c.t)}</li>`).join("")}</ul>`;
     if(n.kw) h+=`<h3>平台搜索关键词</h3><div class="chips">${n.kw.map(k=>`<span class="kw">${esc(k)}</span>`).join("")}</div>`;
     if(n.role==="val" && !n.n) h+=`<p class="empty">这是一个取值。点击上一级维度查看定义和判定规则。</p>`;
-    if(n.role==="root") h+=`<h3>怎么读这张图</h3><p>根节点下分三块：① 主流商品类型、② 分类维度、③ 缺口与开品机会。点击 ① 或 ③ 里的卡片查看完整信息；② 里点击维度分类展开取值。</p>`;
+    if(n.role==="root") h+=`<h3>怎么读这张图</h3><p>根节点下分三块：① 主流商品类型、② 分类维度、③ 缺口与开品机会。① 里的类型卡片点开后有五项：示例商品、对应分类维度、优势与缺点、升级方向与机会判断、新品属性清单。“对应分类维度”里的维度名可以点，会跳到 ② 里对应的位置。</p>`;
   }
   det.innerHTML=h;
 }
+det.addEventListener("click",e=>{ const b=e.target.closest("[data-dim]"); if(b) jumpDim(b.dataset.dim); });
+
+/* ---------- 白地图 ---------- */
+function renderGrid(){
+  const g=GRID[st.tab]; const lbl={red:"红海",amb:"有供给",gap:"空白",none:""};
+  let h=`<thead><tr><th>${esc(g.rowT)} ＼ ${esc(g.colT)}</th>${g.cols.map(c=>`<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>`;
+  g.rows.forEach(([r,cells])=>{ h+=`<tr><th>${esc(r)}</th>${cells.map(([s,t])=>`<td class="g-${s}">${s!=="none"?`<span class="gl">${lbl[s]}</span>`:""}${esc(t)}</td>`).join("")}</tr>`; });
+  document.getElementById("t-grid").innerHTML=h+"</tbody>";
+}
+
+/* ---------- 类型档案 ---------- */
+function renderProfiles(){
+  const T = st.tab==="pen" ? PEN_TYPES : BOOK_TYPES;
+  let h="";
+  T.forEach(g=>g.items.forEach(it=>{
+    h+=`<article class="prof"><div class="pf-fig">${it.fig?fig(it.fig):""}</div><div class="pf-body">
+      <div class="pf-grp">${esc(g.g)}</div><h3><button type="button" class="pf-t" data-t="${esc(it.t)}">${esc(it.t)}</button></h3>
+      <div class="row"><span class="comp ${it.comp}">${compLabel[it.comp]}</span>${verdictTag(it.verdict)}<span class="pf-price">${esc(it.price)}</span></div>
+      <p class="pf-combo">${it.combo.map(esc).join(" · ")}</p>
+      <h5>示例商品</h5><ol class="exl">${(it.ex||[]).slice(0,3).map(e=>`<li><a href="${e.u}" target="_blank" rel="noopener">${esc(e.n)}</a><span>${esc(e.s)}</span></li>`).join("")}</ol>
+      ${infoHTML("pc",it,st.tab)}
+      <h5>新品要求</h5><p class="pf-req"><b>必须</b>：${(it.must||[]).map(esc).join("；")}<br><b>避免</b>：${(it.avoid||[]).map(esc).join("；")}</p>
+      <p class="pf-v">${esc(it.verdict&&it.verdict[1])}</p></div></article>`;
+  }));
+  document.getElementById("profiles").innerHTML=h;
+}
+document.getElementById("profiles").addEventListener("click",e=>{
+  const b=e.target.closest(".pf-t"); if(!b) return;
+  const n=all(st.tab).find(x=>x.role==="type" && x.t===b.dataset.t); if(!n) return;
+  focusNode(n,{open:true}); vp.scrollIntoView({behavior:"smooth",block:"start"});
+});
 
 /* ---------- 表格 ---------- */
 function renderTables(){
   const T = st.tab==="pen" ? PEN_TYPES : BOOK_TYPES, O = st.tab==="pen" ? PEN_OPPS : BOOK_OPPS;
   const name = st.tab==="pen" ? "针管笔" : "水彩本";
-  document.getElementById("h-types").textContent=`① ${name} 市场主流商品类型对照`;
-  document.getElementById("h-opps").textContent=`③ ${name} 缺口与开品机会评估`;
-  let h=`<thead><tr><th>类型</th><th>维度组合</th><th>代表品牌 / 商品</th><th>价格带</th><th>主力人群</th><th>竞争</th><th>常见差评</th></tr></thead><tbody>`;
-  T.forEach(g=>g.items.forEach(it=>{ h+=`<tr data-t="${esc(it.t)}"><td class="name">${esc(it.t)}<span class="grpl">${esc(g.g)}</span></td><td class="small combo">${it.combo.map(esc).join(" · ")}</td><td class="small">${esc(it.rep)}</td><td class="small">${esc(it.price)}</td><td class="small">${esc(it.who)}</td><td><span class="comp ${it.comp}">${compLabel[it.comp]}</span></td><td class="small">${esc(it.pain)}</td></tr>`; }));
+  document.getElementById("h-grid").textContent=`${name}白地图：哪些组合已经红海，哪些还空着`;
+  document.getElementById("h-prof").textContent=`${name}类型档案`;
+  document.getElementById("h-types").textContent=`${name}主流类型对照表`;
+  document.getElementById("h-opps").textContent=`${name}缺口与开品机会评估`;
+  let h=`<thead><tr><th>类型</th><th>维度组合</th><th>代表品牌 / 商品</th><th>价格带</th><th>主力人群</th><th>竞争</th><th>机会判断</th><th>常见差评</th></tr></thead><tbody>`;
+  T.forEach(g=>g.items.forEach(it=>{ h+=`<tr data-t="${esc(it.t)}"><td class="name">${esc(it.t)}<span class="grpl">${esc(g.g)}</span></td><td class="small combo">${it.combo.map(esc).join(" · ")}</td><td class="small">${esc(it.rep)}</td><td class="small">${esc(it.price)}</td><td class="small">${esc(it.who)}</td><td><span class="comp ${it.comp}">${compLabel[it.comp]}</span></td><td>${verdictTag(it.verdict)}</td><td class="small">${esc(it.pain)}</td></tr>`; }));
   document.getElementById("t-types").innerHTML=h+"</tbody>";
   h=`<thead><tr><th>优先级</th><th>机会品</th><th>缺口类型</th><th>缺口依据</th><th>机会品维度组合</th><th>建议价格</th><th>风险</th><th>验证方法</th></tr></thead><tbody>`;
   O.forEach(o=>{ h+=`<tr data-t="${esc(o.t)}"><td><i class="pri ${o.pri}">${o.pri}</i></td><td class="name">${esc(o.t)}<span class="grpl">依据：${esc(o.evl)}</span></td><td><span class="gap">${esc(o.gap)}</span></td><td class="small">${esc(o.why)}</td><td class="small combo">${o.spec.map(esc).join(" · ")}</td><td class="small">${esc(o.price)}</td><td class="small">${esc(o.risk)}</td><td class="small">${esc(o.verify)}</td></tr>`; });
   document.getElementById("t-opps").innerHTML=h+"</tbody>";
+  renderGrid(); renderProfiles();
 }
 document.querySelectorAll("#t-types,#t-opps").forEach(t=>t.addEventListener("click",e=>{
   const tr=e.target.closest("tr[data-t]"); if(!tr) return;
   const n=all(st.tab).find(x=>(x.role==="type"||x.role==="opp") && x.t===tr.dataset.t); if(!n) return;
-  st.sel=n.id; render(); showDetail(n); scrollToNode(n,true); vp.scrollIntoView({behavior:"smooth",block:"start"});
+  focusNode(n); vp.scrollIntoView({behavior:"smooth",block:"start"});
 }));
 
 /* ---------- 交互 ---------- */
 cv.addEventListener("click",e=>{
+  if(e.target.closest("a")) return;
+  const d=e.target.closest("[data-dim]"); if(d){ jumpDim(d.dataset.dim); return; }
   const el=e.target.closest(".node"); if(!el) return; const n=idx[el.dataset.id];
+  if(n.role==="info"){ st.sel=n.id; render(); showDetail(n); return; }
   st.sel=n.id; if(n.c && n.role!=="root"){ const s=collapsed[st.tab]; s.has(n.id)?s.delete(n.id):s.add(n.id); }
   render(); showDetail(n);
 });
-cv.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ const el=e.target.closest(".node"); if(el){ e.preventDefault(); const id=el.dataset.id; el.click(); const again=cv.querySelector(`[data-id="${id}"]`); again&&again.focus(); } } });
+cv.addEventListener("keydown",e=>{ if((e.key==="Enter"||e.key===" ") && e.target.classList.contains("node")){ e.preventDefault(); const id=e.target.dataset.id; e.target.click(); const again=cv.querySelector(`[data-id="${id}"]`); again&&again.focus(); } });
 function switchTab(t){
   st.tab=t; st.sel=null;
   document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.tab===t));
@@ -878,8 +1363,7 @@ function switchTab(t){
 }
 document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>switchTab(b.dataset.tab)));
 document.querySelectorAll("[data-jump]").forEach(b=>b.addEventListener("click",()=>{
-  const n=all(st.tab).find(x=>x.role==="sec" && x.sec===b.dataset.jump); const s=collapsed[st.tab];
-  s.delete(n.id); render(); st.sel=n.id; showDetail(n); render(); scrollToNode(n,true);
+  const n=all(st.tab).find(x=>x.role==="sec" && x.sec===b.dataset.jump); focusNode(n,{open:true});
 }));
 document.getElementById("btn-all").addEventListener("click",()=>{ collapsed[st.tab].clear(); render(); });
 document.getElementById("btn-fold").addEventListener("click",()=>{ foldValues(st.tab); render(); centerRoot(); });
@@ -893,13 +1377,22 @@ let qt; document.getElementById("q").addEventListener("input",e=>{ clearTimeout(
 
 /* ---------- 大纲导出 ---------- */
 function outline(n,dep){
-  const ind="  ".repeat(dep), sub="  ".repeat(dep+1);
+  if(n.role==="info") return "";
+  const ind="  ".repeat(dep), sub="  ".repeat(dep+1), sub2="  ".repeat(dep+2);
   let line=`${ind}- ${n.pri?`[${n.pri}] `:""}${n.tag?`[${n.tag==="L0"?"门槛":n.tag}] `:""}${n.t}${n.n&&n.role==="val"?`（${n.n}）`:""}`;
-  if(n.role==="type") line+=`\n${sub}- 维度组合：${n.combo.join(" · ")}\n${sub}- 代表：${n.rep}\n${sub}- 价格带：${n.price}\n${sub}- 人群：${n.who}\n${sub}- 竞争：${n.compT}\n${sub}- 常见差评：${n.pain}`;
+  if(n.role==="type"){
+    line+=`\n${sub}- 维度组合：${n.combo.join(" · ")}\n${sub}- 价格带：${n.price}\n${sub}- 竞争：${n.compT}`;
+    line+=`\n${sub}- 示例商品\n${(n.ex||[]).map(e=>`${sub2}- ${e.n}：${e.u}`).join("\n")}`;
+    line+=`\n${sub}- 对应分类维度\n${(n.map||[]).map(([d,v])=>`${sub2}- ${d}：${v}`).join("\n")}`;
+    line+=`\n${sub}- 优势\n${(n.pros||[]).map(x=>`${sub2}- ${x}`).join("\n")}\n${sub}- 缺点\n${(n.cons||[]).map(x=>`${sub2}- ${x}`).join("\n")}`;
+    line+=`\n${sub}- 升级方向\n${(n.up||[]).map(x=>`${sub2}- ${x}`).join("\n")}\n${sub}- 机会判断：${n.verdict?n.verdict.join("，"):""}`;
+    line+=`\n${sub}- 新品必须具备\n${(n.must||[]).map(x=>`${sub2}- ${x}`).join("\n")}\n${sub}- 建议加分\n${(n.plus||[]).map(x=>`${sub2}- ${x}`).join("\n")}\n${sub}- 必须避免\n${(n.avoid||[]).map(x=>`${sub2}- ${x}`).join("\n")}`;
+    return line;
+  }
   if(n.role==="opp") line+=`\n${sub}- 缺口类型：${n.gap}\n${sub}- 缺口依据：${n.why}\n${sub}- 维度组合：${n.spec.join(" · ")}\n${sub}- 建议价格：${n.price}\n${sub}- 风险：${n.risk}\n${sub}- 验证方法：${n.verify}`;
   if(n.role==="dim"&&n.def) line+=`\n${sub}- 定义：${n.def}`;
   if(n.role==="dim"&&n.rule) line+=`\n${sub}- 判定：${n.rule}`;
-  return [line].concat((n.c||[]).map(c=>outline(c,dep+1))).join("\n");
+  return [line].concat((n.c||[]).map(c=>outline(c,dep+1)).filter(Boolean)).join("\n");
 }
 function toast(m){ const t=document.createElement("div"); t.className="toast"; t.textContent=m; document.body.appendChild(t); setTimeout(()=>t.remove(),2200); }
 document.getElementById("btn-copy").addEventListener("click",()=>{
