@@ -120,6 +120,12 @@ function fig(spec){
     s+=`<path d="M60 128 L90 24 L120 128 M90 24 V128 M66 100 H114" class="sv-line" stroke-width="2"/><rect x="66" y="40" width="48" height="56" class="sv-paper"/><path d="M72 84 Q86 60 100 76 T110 66" fill="none" stroke="${HUES[5]}" stroke-width="2"/>`;
     for(let i=0;i<5;i++){ const y=36+i*16; s+=`<path d="M140 ${y} H200 L208 ${y+3} V${y+9} L200 ${y+12} H140 Z" class="sv-body"/><rect x="140" y="${y}" width="18" height="12" fill="${HUES[i*2]}"/>`; }
     s+=`<path d="M146 122 L220 110" stroke="currentColor" stroke-width="3"/>`+lab(90,144,"画架 + 画布",8)+lab(180,144,"颜料 + 画笔",8);
+  } else if(spec.k==="sticks"){        /* 颜料棒：粗圆棒，半包纸套 */
+    const n=Math.min(spec.n||6,10), step=200/n, bw=Math.min(18,step*0.6);
+    s+=`<rect x="10" y="14" width="220" height="110" rx="4" class="sv-paper"/>`;
+    for(let i=0;i<n;i++){ const cx=20+step*i+step/2, col=(spec.cols||HUES)[i%12];
+      s+=`<rect x="${cx-bw/2}" y="26" width="${bw}" height="88" rx="${bw/2}" fill="${col}"/><rect x="${cx-bw/2}" y="62" width="${bw}" height="52" rx="2" class="sv-body"/>`; }
+    s+=lab(W/2,140,spec.label||"颜料棒",8);
   }
   return `<svg viewBox="0 0 ${W} ${H}" class="fig" role="img" aria-label="结构示意图">${s}</svg>`;
 }

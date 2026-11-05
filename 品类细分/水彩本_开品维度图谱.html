@@ -60,6 +60,19 @@ nav.snav{position:sticky;top:env(safe-area-inset-top,0px);z-index:8;background:v
 section.block{display:flex;flex-direction:column;gap:10px;scroll-margin-top:calc(var(--nav-h) + 16px)}
 section.block > h2{font-family:var(--font-display);font-weight:600;font-size:22px;margin:10px 0 0}
 section.block > p{margin:0;color:var(--ink-2);max-width:84ch}
+/* 品类切换的系列分隔 */
+.tab-sep{display:inline-flex;align-items:center;padding:0 6px 0 12px;font:500 11.5px var(--font-body);color:var(--ink-3);border-left:1px solid var(--rule);margin-left:4px}
+/* 系列总览 */
+.seriesbox{background:var(--sheet);border:1px solid var(--rule);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.seriesbox h3{margin:0;font-family:var(--font-display);font-weight:600;font-size:16px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.seriesbox h3 span{font:400 12.5px var(--font-body);color:var(--ink-3)}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+@media (max-width:640px){.sgrid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px}.sgrid .scard{flex:0 0 78%;scroll-snap-align:start}}
+.scard{all:unset;cursor:pointer;display:flex;flex-direction:column;gap:4px;border:1px solid var(--rule);border-radius:10px;padding:10px 12px;background:var(--paper);min-width:0}
+.scard:hover{border-color:var(--ink-3)} .scard:focus-visible{outline:2px solid var(--prussian)}
+.scard.on{border:2px solid var(--prussian);background:var(--sheet)}
+.scard b{font-size:15px;color:var(--ink)} .spos{font-size:12.5px;color:var(--ink-2)} .sstat{font:500 11.5px var(--font-mono);color:var(--ink-3)}
+.sopp{font-size:12px;color:var(--ink);line-height:1.7} .sopp .pri{width:16px;height:16px;font-size:9.5px;vertical-align:-3px}
 /* 品类范围卡 */
 .scopecard{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 20px;background:var(--sheet);border:1px solid var(--rule);border-radius:12px;padding:14px 16px}
 .scopecard div{min-width:0} .scopecard h5{margin:0 0 2px} .scopecard p{margin:0;font-size:13px;color:var(--ink-2)}
@@ -301,6 +314,7 @@ ol.reflinks li{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
 
   <section class="block" id="s-map">
     <h2 id="h-map">思维导图</h2>
+    <div class="seriesbox" id="seriesbox" hidden></div>
     <div class="scopecard" id="scopecard"></div>
     <div class="bar">
       <button class="btn s1" data-jump="types">① 在售类型</button>
@@ -886,7 +900,7 @@ src:{
 
 /* ---------- 结构示意图（通用，不是实拍图） ----------
    fig({k:"pens", n, ink:"black"|"rainbow"|"custom", cols:[颜色，写 "ink" 表示跟随主题的黑色], tips:[标签], pack:"blister"|"pouch"|"wallet"|"box"})
-   其他 k：refill / brush / dual / kit / spring / erase / pad / multi / book / block / cards / accordion / workbook / bookkit
+   其他 k：refill / brush / dual / kit / spring / erase / pad / multi / book / block / cards / accordion / workbook / bookkit / pans / tubes / cups / bottles / droppers / easel
    新品类需要新图形时，在这里加一个 k 分支即可。 */
 const HUES = ["#d6453d","#e8892b","#e6c229","#5bab4a","#2a9d8f","#2f78c4","#5a4fcf","#a855b5","#d9579b","#8b5a2b","#6b7280","#1f8a70"];
 function fig(spec){
@@ -975,6 +989,42 @@ function fig(spec){
     s+=`<rect x="128" y="40" width="92" height="50" rx="4" class="sv-metal"/>`;
     for(let i=0;i<8;i++) s+=`<rect x="${134+(i%4)*21}" y="${46+Math.floor(i/4)*21}" width="16" height="16" rx="2" fill="${HUES[i]}"/>`;
     s+=`<path d="M136 112 L206 104" stroke="currentColor" stroke-width="3"/><path d="M206 104 Q218 100 222 106 Q214 110 206 108Z" class="sv-ink"/>`+lab(174,128,"颜料 + 画笔",8);
+  }
+  else if(spec.k==="pans"){            /* 固体水彩：金属盒 + 半块，n 块，rows 行 */
+    const n=spec.n||24, rows=spec.rows||(n>24?4:n>12?2:1), per=Math.ceil(n/rows), cw=Math.min(18,170/per), chh=Math.min(20,(84-(rows-1)*4)/rows);
+    s+=`<rect x="12" y="16" width="216" height="104" rx="6" class="sv-metal"/><rect x="18" y="22" width="${per*(cw+3)+6}" height="92" rx="3" class="sv-paper"/>`;
+    for(let i=0;i<n;i++){ const r=Math.floor(i/per), c=i%per; s+=`<rect x="${24+c*(cw+3)}" y="${28+r*(chh+4)}" width="${cw}" height="${chh}" rx="2" fill="${(spec.cols||HUES)[i%(spec.cols||HUES).length]}"${spec.shine?' stroke="#c9b37a" stroke-width="1.4"':""}/>`; }
+    s+=lab(W/2,138,spec.label||`${n} 色半块`,8);
+  } else if(spec.k==="tubes"){         /* 管装颜料：n 支横放 */
+    const n=Math.min(spec.n||12,12), step=96/n;
+    s+=`<rect x="10" y="10" width="220" height="114" rx="4" class="sv-paper"/>`;
+    for(let i=0;i<n;i++){ const y=18+i*step, col=(spec.cols||HUES)[i%12], h=Math.max(5,step-2.5);
+      s+=`<path d="M40 ${y} H170 L182 ${y+h*0.2} V${y+h*0.8} L170 ${y+h} H40 Z" class="sv-body"/><rect x="40" y="${y}" width="40" height="${h}" fill="${col}"/><rect x="182" y="${y+h*0.15}" width="14" height="${h*0.7}" class="sv-ink"/>`; }
+    s+=lab(W/2,140,spec.label||"管装",8);
+  } else if(spec.k==="cups"){          /* 果冻杯：两排带盖小杯 */
+    const n=spec.n||12, per=Math.ceil(n/2), cw=Math.min(26,200/per-4);
+    for(let i=0;i<n;i++){ const r=Math.floor(i/per), c=i%per, x=20+c*(cw+4), y=26+r*52, col=(spec.cols||HUES)[i%12];
+      s+=`<rect x="${x}" y="${y}" width="${cw}" height="34" rx="4" class="sv-paper"/><ellipse cx="${x+cw/2}" cy="${y+14}" rx="${cw/2-3}" ry="9" fill="${col}"/>`; }
+    s+=`<path d="M14 18 H226" class="sv-line" stroke-dasharray="3 2"/>`+lab(W/2,140,spec.label||"果冻杯 · 带盖",8);
+  } else if(spec.k==="bottles"){       /* 挤压瓶 */
+    const n=spec.n||6, step=200/n, bw=Math.min(26,step*0.7);
+    for(let i=0;i<n;i++){ const cx=20+step*i+step/2, col=(spec.cols||HUES)[i%12];
+      s+=`<rect x="${cx-bw/2}" y="44" width="${bw}" height="72" rx="6" class="sv-body"/><rect x="${cx-bw/2}" y="70" width="${bw}" height="34" fill="${col}"/><path d="M${cx-bw/3} 44 L${cx-bw/4} 30 H${cx+bw/4} L${cx+bw/3} 44 Z" class="sv-ink"/><rect x="${cx-2}" y="22" width="4" height="8" class="sv-ink"/>`; }
+    s+=lab(W/2,138,spec.label||"2 fl oz 挤压瓶",8);
+  } else if(spec.k==="droppers"){      /* 液体水彩滴瓶 */
+    for(let i=0;i<5;i++){ const cx=34+i*43, col=HUES[(i*2)%12];
+      s+=`<rect x="${cx-14}" y="60" width="28" height="56" rx="4" class="sv-paper"/><rect x="${cx-12}" y="80" width="24" height="34" rx="2" fill="${col}" opacity=".85"/><rect x="${cx-6}" y="44" width="12" height="16" class="sv-ink"/><ellipse cx="${cx}" cy="40" rx="8" ry="7" class="sv-ink"/>`; }
+    s+=lab(W/2,138,"滴管瓶 · 浓缩液体",8);
+  } else if(spec.k==="easel"){         /* 颜料 + 画布 + 画架 */
+    s+=`<path d="M60 128 L90 24 L120 128 M90 24 V128 M66 100 H114" class="sv-line" stroke-width="2"/><rect x="66" y="40" width="48" height="56" class="sv-paper"/><path d="M72 84 Q86 60 100 76 T110 66" fill="none" stroke="${HUES[5]}" stroke-width="2"/>`;
+    for(let i=0;i<5;i++){ const y=36+i*16; s+=`<path d="M140 ${y} H200 L208 ${y+3} V${y+9} L200 ${y+12} H140 Z" class="sv-body"/><rect x="140" y="${y}" width="18" height="12" fill="${HUES[i*2]}"/>`; }
+    s+=`<path d="M146 122 L220 110" stroke="currentColor" stroke-width="3"/>`+lab(90,144,"画架 + 画布",8)+lab(180,144,"颜料 + 画笔",8);
+  } else if(spec.k==="sticks"){        /* 颜料棒：粗圆棒，半包纸套 */
+    const n=Math.min(spec.n||6,10), step=200/n, bw=Math.min(18,step*0.6);
+    s+=`<rect x="10" y="14" width="220" height="110" rx="4" class="sv-paper"/>`;
+    for(let i=0;i<n;i++){ const cx=20+step*i+step/2, col=(spec.cols||HUES)[i%12];
+      s+=`<rect x="${cx-bw/2}" y="26" width="${bw}" height="88" rx="${bw/2}" fill="${col}"/><rect x="${cx-bw/2}" y="62" width="${bw}" height="52" rx="2" class="sv-body"/>`; }
+    s+=lab(W/2,140,spec.label||"颜料棒",8);
   }
   return `<svg viewBox="0 0 ${W} ${H}" class="fig" role="img" aria-label="结构示意图">${s}</svg>`;
 }
@@ -1317,8 +1367,8 @@ document.querySelectorAll("#t-types,#t-opps").forEach(t=>t.addEventListener("cli
 function renderChrome(){
   const cat=CUR(), root=DATA[st.tab];
   const nType=cat.types.reduce((a,g)=>a+g.items.length,0), nDim=cat.dims.reduce((a,g)=>a+g.cats.reduce((b,c)=>b+c.c.length,0),0);
-  document.getElementById("h1").textContent=`品类开品维度图谱 · ${CATS.map(c=>c.name).join(" / ")}`;
-  document.getElementById("meta-line").innerHTML=[`模板 v1.0`,`${CATS.length} 个品类`,`当前：${cat.name}`,`数据快照 ${cat.updated}`,`${nType} 个类型 · ${nDim} 个维度 · ${cat.opps.length} 个机会假设`].map(x=>`<span>${esc(x)}</span>`).join("");
+  document.getElementById("h1").textContent=`品类开品维度图谱 · ${cat.series?cat.series+"系列 · ":""}${cat.name}`;
+  document.getElementById("meta-line").innerHTML=[`模板 v1.2`,`${CATS.length} 个品类`,`当前：${cat.name}`,`数据快照 ${cat.updated}`,`${nType} 个类型 · ${nDim} 个维度 · ${cat.opps.length} 个机会假设`].map(x=>`<span>${esc(x)}</span>`).join("");
   document.getElementById("h-map").textContent=`${cat.name}思维导图`;
   document.getElementById("h-grid").textContent=`${cat.name}白地图`;
   document.getElementById("h-prof").textContent=`${cat.name}类型档案`;
@@ -1329,9 +1379,25 @@ function renderChrome(){
   document.getElementById("score-def").innerHTML=SCORE_DEF.map(d=>`<b>${d.n} ×${d.w}</b><span>${esc(d.desc)}</span>`).join("");
   document.getElementById("cat-rules").innerHTML=`<h4>${esc(cat.name)}专用登记规则</h4><ul>${li(cat.rules)}</ul>`;
   document.getElementById("srclist").innerHTML=`${esc(cat.name)}参考来源：`+Object.values(cat.src).map(([n,u])=>`<a href="${u}" target="_blank" rel="noopener">${esc(n)}</a>`).join(" · ");
-  document.getElementById("cat-tabs").innerHTML=CATS.map(c=>`<button type="button" data-tab="${c.id}" aria-pressed="${c.id===st.tab}">${esc(c.name)}</button>`).join("");
+  let prevSeries=null;
+  document.getElementById("cat-tabs").innerHTML=CATS.map(c=>{ const lbl = c.series && c.series!==prevSeries ? `<span class="tab-sep">${esc(c.series)}系列</span>` : ""; prevSeries=c.series||null; return lbl+`<button type="button" data-tab="${c.id}" aria-pressed="${c.id===st.tab}">${esc(c.name)}</button>`; }).join("");
+  renderSeries(cat);
   document.getElementById("cat-tabs").hidden = CATS.length<2;
 }
+
+/* ---------- 系列总览（同一 series 的品类横向对比） ---------- */
+function renderSeries(cat){
+  const box=document.getElementById("seriesbox");
+  if(!cat.series){ box.hidden=true; box.innerHTML=""; return; }
+  const sib=CATS.filter(c=>c.series===cat.series);
+  box.hidden=false;
+  box.innerHTML=`<h3>${esc(cat.series)}系列总览 <span>${sib.length} 个体系，分别独立研究；点卡片切换</span></h3><div class="sgrid">${sib.map(c=>{
+    const nT=c.types.reduce((a,g)=>a+g.items.length,0), nD=c.dims.reduce((a,g)=>a+g.cats.reduce((b,x)=>b+x.c.length,0),0);
+    const top=c.opps.filter(o=>"AB".includes(o.pri)).sort((a,b)=>b.total-a.total).slice(0,3);
+    return `<button type="button" class="scard${c.id===cat.id?" on":""}" data-tab="${c.id}"><b>${esc(c.name)}</b><span class="spos">${esc(c.pos||"")}</span><span class="sstat">${nT} 个类型 · ${nD} 个维度 · ${c.opps.length} 个机会假设</span>${top.length?`<span class="sopp">${top.map(o=>`${priTag(o.pri)} ${esc(o.t)}`).join("<br>")}</span>`:`<span class="sopp fine">暂无 A / B 级机会</span>`}</button>`;
+  }).join("")}</div>`;
+}
+document.getElementById("seriesbox").addEventListener("click",e=>{ const b=e.target.closest(".scard"); if(b && b.dataset.tab!==st.tab) switchTab(b.dataset.tab); });
 
 /* ---------- 交互 ---------- */
 cv.addEventListener("click",e=>{

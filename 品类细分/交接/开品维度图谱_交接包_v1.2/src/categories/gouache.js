@@ -1,0 +1,269 @@
+/* ======================================================================
+   品类数据：水粉颜料（颜料系列，含果冻杯水粉）
+   结构说明见 _template.js。数据快照：2026-11
+   ====================================================================== */
+CATS.push({
+id:"gouache", name:"水粉颜料", en:"Gouache · Jelly Gouache", updated:"2026-11",
+series:"颜料", pos:"不透明、哑光；果冻杯由 HIMI 主导，国内艺考集训是独立大市场",
+
+scope:{
+  def:"不透明、哑光、以水调和的颜料，包括传统水粉（管装、罐装）、果冻杯水粉、丙烯水粉（干后防水，单独标注）和儿童蛋彩（Tempera）。",
+  include:"上述颜料的单色和套装；以水粉为主体的礼盒（+ 画本、画笔、喷壶、调色刀）。",
+  exclude:"透明水彩（见水彩颜料）、普通丙烯（见丙烯颜料）、海报颜料马克笔。",
+  adjacent:"海报马克笔、水粉纸 / 画本、调色盒、儿童手指画颜料。",
+  kw:["gouache paint set","jelly gouache","acrylic gouache","tempera paint","水粉颜料","果冻水粉","丙烯水粉"]
+},
+
+rules:[
+  "按配方分四类：传统水粉、果冻水粉、丙烯水粉、儿童蛋彩。丙烯水粉干后防水，不能再化开，必须单独标注。",
+  "容量单位按页面原样记（果冻杯常写 30g 或 30ml，双杯小杯写 12g 或 12ml），不自行换算。",
+  "双杯款：记“色数”和“杯数”，一杯两色时色数 = 杯数 × 2。",
+  "同一款果冻水粉常挂在多个品牌名下（HIMI、ARTME、ABEIER 等），记录时以制造商为准，品牌名单独列。",
+  "水粉干湿色差（干后变浅或变深）是常见问题，宣称“无色差”需要实测。",
+  "颜料编码、耐光等级按原标尺记录，未披露记“未披露”。",
+  "套装里的画笔、调色盘、喷壶、画本件数，不计入颜料数量。"
+],
+
+dims:[
+ {g:"产品本体", about:"颜料本身是什么：类型、剂型、性能、颜色。", cats:[
+  {t:"A 类型与剂型", c:[
+   {t:"水粉类型", tag:"L1", def:"按配方分的水粉大类。类型不同，干后状态和用法不同。",
+    rule:"以厂家说明为准。“Acrylic gouache / 丙烯水粉”归丙烯水粉。",
+    kw:["gouache","jelly gouache","acrylic gouache","tempera"],
+    c:[{t:"传统水粉",n:"阿拉伯胶 / 糊精，干后可重溶"},{t:"果冻水粉",n:"杯装，HIMI"},{t:"丙烯水粉",n:"干后防水，Turner、Holbein、Liquitex"},{t:"儿童蛋彩 / Tempera",n:"Crayola，可水洗"}]},
+   {t:"剂型", tag:"L1", def:"颜料以什么容器卖。决定便携、用量和价格。",
+    c:[{t:"管装",n:"12–40ml"},{t:"罐装",n:"100ml，国内集训"},{t:"单杯果冻",n:"30g / 30ml"},{t:"双杯小杯果冻",n:"12g / 12ml"},{t:"挤压瓶",n:"2oz 丙烯水粉、16–32oz Tempera"}]},
+   {t:"单件容量", tag:"L2", rule:"按页面原样记单位。",
+    c:[{t:"12ml / 12g"},{t:"15–20ml"},{t:"22–40ml"},{t:"30g / 30ml 杯"},{t:"59ml（2oz）瓶"},{t:"100ml 罐"},{t:"16–32oz 大瓶"}]},
+   {t:"容器与密封", tag:"L3", def:"开盖后会不会干，是果冻水粉最集中的抱怨。",
+    c:[{t:"旋盖管"},{t:"卡扣杯盖",n:"单杯"},{t:"双杯共用盖"},{t:"罐盖"},{t:"挤压瓶尖嘴"}]}]},
+  {t:"B 配方与性能", c:[
+   {t:"干后状态", tag:"L2", c:[{t:"可重溶",n:"传统、果冻水粉"},{t:"干后防水，可叠加",n:"丙烯水粉"},{t:"可水洗（衣物 / 皮肤）",n:"儿童蛋彩"}]},
+   {t:"覆盖力", tag:"L3", c:[{t:"高覆盖"},{t:"中等"},{t:"偏透明",n:"部分廉价款"},{t:"未披露"}]},
+   {t:"哑光与平整度", tag:"L3", def:"水粉平涂是否均匀、干后是否开裂。",
+    c:[{t:"哑光平涂均匀"},{t:"有笔触 / 不均"},{t:"厚涂易开裂"}]},
+   {t:"干湿色差", tag:"L3", def:"干后颜色和湿时是否一致。水粉常见浅色变深、深色变浅。",
+    rule:"宣称“无色差”需要实测。",
+    c:[{t:"基本一致"},{t:"干后变浅"},{t:"干后变深"},{t:"未披露"}]},
+   {t:"颜料信息披露", tag:"L3", c:[{t:"每色写明颜料编码",n:"设计师级"},{t:"只有色名 / 色号",n:"多数果冻、白牌"},{t:"未披露"}]},
+   {t:"耐光等级", tag:"L3", rule:"按原标尺记录。", c:[{t:"ASTM / 星级"},{t:"未披露"}]}]},
+  {t:"C 颜色", c:[
+   {t:"色数规格", tag:"L2", kw:["18 colors","24 colors","56 colors","112 colors"],
+    c:[{t:"≤ 18 色"},{t:"24–36 色"},{t:"48–56 色"},{t:"72–112 色",n:"HIMI 双杯"}]},
+   {t:"配色方案", tag:"L3", c:[{t:"基础全色"},{t:"粉彩 / 马卡龙"},{t:"复古 / 莫兰迪"},{t:"主题色（如 Gelato）"}]},
+   {t:"特效色", tag:"L2", c:[{t:"常规色"},{t:"金属色",n:"HIMI Metallic"},{t:"荧光",n:"Liquitex 荧光丙烯水粉"},{t:"多特效混装",n:"HIMI 56 色含 8 金属 6 荧光"}]}]},
+  {t:"D 合规", c:[
+   {t:"合规与安全", tag:"L0", rule:"ASTM D-4236；面向 12 岁以下需 CPSIA / CPC；含镉、钴颜料注意 Prop 65。",
+    c:[{t:"ASTM D-4236"},{t:"ACMI AP 认证"},{t:"CPSIA / CPC（儿童）"},{t:"Prop 65 警示"}]}]}
+ ]},
+ {g:"销售形态", about:"怎么卖：混装、收纳、配件。", cats:[
+  {t:"E 混装与数量", c:[
+   {t:"混装方式", tag:"L2",
+    c:[{t:"单色补充杯 / 单支"},{t:"同类型多色套装"},{t:"多特效混装"},{t:"跨工具礼盒",n:"+ 画本、喷壶、调色刀、水桶"}]},
+   {t:"数量登记口径", tag:"L3", c:[{t:"色数"},{t:"杯数 / 支数（双杯一杯两色）"},{t:"单件容量 × 数量"},{t:"配件件数"}]}]},
+  {t:"F 收纳与配件", c:[
+   {t:"收纳盒", tag:"L2", c:[{t:"手提收纳盒",n:"果冻水粉标配"},{t:"纸盒"},{t:"塑料托盘"},{t:"金属盒",n:"Schmincke"}]},
+   {t:"随附配件", tag:"L3", c:[{t:"画笔"},{t:"调色盘"},{t:"保湿喷壶"},{t:"调色刀"},{t:"折叠水桶"},{t:"画本"},{t:"补充杯"}]}]}
+ ]},
+ {g:"市场定位", about:"卖给谁、卖什么价。", cats:[
+  {t:"G 等级", c:[
+   {t:"颜料等级", tag:"L1", rule:"同等级内比较。",
+    c:[{t:"儿童 / 课堂级",n:"Crayola Tempera"},{t:"学生级（果冻、白牌管装）",n:"HIMI、Arteza"},{t:"艺考集训级（国内）",n:"青竹、米娅 MIYA M 系、马利、蒙玛特"},{t:"设计师 / 艺术家级",n:"W&N Designers、Holbein、Schmincke"}]}]},
+  {t:"H 场景与人群", c:[
+   {t:"使用场景", tag:"L3", c:[{t:"插画 / 手账"},{t:"艺考集训色彩"},{t:"设计稿 / 平涂"},{t:"墙绘 / 多层叠加"},{t:"儿童课堂"}]},
+   {t:"目标人群", tag:"L3", c:[{t:"插画爱好者"},{t:"美术生（艺考）"},{t:"设计师"},{t:"儿童 / 老师"},{t:"礼品购买者"}]}]}
+ ]}
+],
+
+types:[
+ {g:"果冻水粉", about:"杯装，HIMI 主导", items:[
+  {t:"单杯果冻水粉（30g · 18–56 色）", vol:"主流", volWhy:"HIMI 18 色约 5,153 条评分 4.7★；24、56 色多款在售。",
+   combo:["果冻水粉","单杯果冻","学生级","18–56 色","手提收纳盒"],
+   rep:"HIMI / Miya 18、24、56 色（56 色含 8 金属、6 荧光），Gelato 系列；同款挂 ARTME、ABEIER 等品牌名",
+   price:"US $15–45", who:"插画、手账、学生、礼品", comp:"hi", compT:"高：HIMI 一家独大，多品牌挂名",
+   pain:"开盖易干（可喷水复活）；不适合旅行", ev:["tinyHimi","himiReview"], evl:"有来源",
+   fig:{k:"cups",n:12},
+   ex:[["himi18","18 色"],["himi24","24 色 30ml，附画笔和调色盘"],["himi56","56 色，含 8 金属、6 荧光"],["himiGelato","Gelato 主题 18 色"]],
+   map:[["水粉类型","果冻水粉"],["剂型","单杯果冻"],["单件容量","30g / 30ml 杯"],["容器与密封","卡扣杯盖"],["干后状态","可重溶"],["颜料信息披露","只有色名 / 色号","u"],["色数规格","≤ 18 色 / 24–36 色 / 48–56 色"],["收纳盒","手提收纳盒"],["随附配件","画笔、调色盘"]],
+   pros:["外观讨喜，社媒传播强","上手容易","可单色补充"], cons:["开盖易干","HIMI 品牌心智太强"],
+   up:["更好的密封杯盖","主题色系"], verdict:["谨慎","需求大但被 HIMI 占住，只能在密封上做小改进。"],
+   must:["杯盖密封","AP / D-4236"], plus:["主题配色"], avoid:["开盖即干"]},
+  {t:"双杯小杯果冻水粉（12g · 36–112 色）", vol:"主流", volWhy:"HIMI 双杯 48 色页面显示月购 300+；36 / 72 / 112 色在售。",
+   combo:["果冻水粉","双杯小杯果冻","学生级","36–112 色"],
+   rep:"HIMI 双杯 36 / 48 / 72 / 112 色（12g）",
+   price:"US $25–70", who:"想要多色但不想买大杯的用户", comp:"hi", compT:"高：HIMI 主导",
+   pain:"小杯更容易干；色数多但单色量少", ev:["himiTwinLink"], evl:"有来源",
+   fig:{k:"cups",n:12,label:"双杯 · 12g"},
+   ex:[["himiTwin48","48 色 12g，月购 300+"],["himiTwin36","36 色 12ml"],["himiTwin112","112 色 12g"]],
+   map:[["水粉类型","果冻水粉"],["剂型","双杯小杯果冻"],["单件容量","12ml / 12g"],["容器与密封","双杯共用盖"],["色数规格","24–36 色 / 72–112 色"],["数量登记口径","杯数 / 支数（双杯一杯两色）"]],
+   pros:["色数多、单价低"], cons:["小杯更易干"], up:["—"], verdict:["谨慎","HIMI 已覆盖从 36 到 112 色。"],
+   must:["密封"], plus:["—"], avoid:["—"]},
+  {t:"特效果冻水粉（金属 / 荧光）", vol:"细分", volWhy:"HIMI 金属 12 色约 $13.49；金属 18 色 30ml 在售。",
+   combo:["果冻水粉","单杯 / 小杯","金属 / 荧光","12–18 色"],
+   rep:"HIMI Metallic 12 色 12g、HIMI 金属 18 色 30ml",
+   price:"US $13–30", who:"手账、贺卡", comp:"mid", compT:"中：HIMI 已做",
+   pain:"金属色在白纸上效果弱", ev:["himiTwinLink"], evl:"有来源",
+   fig:{k:"cups",n:12,cols:["#c9a227","#b87333","#d4af37","#a8a9ad","#c0c0c0","#e5c07b","#9a7b4f","#d9a5b3","#8fbcd4","#9fd4b5","#c8a2c8","#f0d58c"],label:"金属色果冻"},
+   ex:[["himiMetal12","金属 12 色 12g，约 $13.49，便携"],["himiMetal18","金属 18 色 30ml"]],
+   map:[["水粉类型","果冻水粉"],["特效色","金属色"],["色数规格","≤ 18 色"]],
+   pros:["视觉效果强"], cons:["场景窄"], up:["—"], verdict:["谨慎","HIMI 已做，作为套装特效色即可。"], must:["—"], plus:["—"], avoid:["—"]}
+ ]},
+ {g:"管装与罐装", about:"传统水粉", items:[
+  {t:"白牌管装水粉套装", vol:"细分", volWhy:"Arteza 24 色 12ml 在售，海外白牌管装水粉选择不多。",
+   combo:["传统水粉","管装","学生级","24 色","12ml"],
+   rep:"Arteza 水粉 24 色 12ml（带收纳托盘）",
+   price:"US $20–30", who:"插画、学生", comp:"mid", compT:"中",
+   pain:"管口干结；干湿色差", ev:["artezaGouacheLink"], evl:"有来源",
+   fig:{k:"tubes",n:8,label:"12ml 管装水粉"},
+   ex:[["artezaGouache","24 色 12ml，带收纳托盘"],["gouacheTubeSearch","搜索页：24 色 12ml 管装白牌多"]],
+   map:[["水粉类型","传统水粉"],["剂型","管装"],["单件容量","12ml / 12g"],["干后状态","可重溶"],["颜料信息披露","未披露","u"],["色数规格","24–36 色"]],
+   pros:["比果冻杯更适合精细控制"], cons:["管口干结"], up:["—"], verdict:["谨慎","海外市场被果冻水粉分流。"], must:["—"], plus:["—"], avoid:["—"]},
+  {t:"国内艺考集训水粉", vol:"主流", volWhy:"国内电商青竹、米娅 MIYA M 系等艺考集训套装评论数多。",
+   combo:["传统水粉","罐装 / 大管","艺考集训级（国内）","24–42 色","100ml 罐"],
+   rep:"青竹画材水粉套装、米娅 MIYA M 系、马利、蒙玛特 Mont Marte 12 色 100ml 罐装",
+   price:"国内 ¥60–200 / 套", who:"美术高考生、画室", comp:"hi", compT:"高：国内品牌渠道强",
+   pain:"大罐易干结、分层；学生更看重性价比和用量", ev:["jdGouache"], evl:"部分来源",
+   fig:{k:"bottles",n:6,label:"100ml 罐装"},
+   ex:[["jdGouacheRank","京东：青竹、米娅艺考集训水粉评论较多"],["jdGouacheMM","蒙玛特 12 色 100ml 罐装"]],
+   map:[["水粉类型","传统水粉"],["剂型","罐装"],["单件容量","100ml 罐"],["颜料等级","艺考集训级（国内）"],["使用场景","艺考集训色彩"],["目标人群","美术生（艺考）"]],
+   pros:["量大、刚需、复购"], cons:["国内渠道和价格战","出海不适用"], up:["—"], verdict:["谨慎","国内专属市场，跨境卖家不适用；国内卖家需要画室渠道。"],
+   must:["大罐防干"], plus:["—"], avoid:["分层"]},
+  {t:"设计师 / 艺术家级水粉", vol:"细分", volWhy:"W&N Designers 10 色带 Amazon's Choice；Schmincke Horadam 10 色金属盒在售。",
+   combo:["传统水粉","管装","设计师 / 艺术家级","10–18 色","12–37ml"],
+   rep:"Winsor & Newton Designers 10 × 12ml、单支 14 / 37ml；Holbein Designers；Schmincke Horadam 10 × 15ml 金属盒",
+   price:"US $40–120", who:"插画师、设计师", comp:"mid", compT:"中：老品牌",
+   pain:"贵", ev:["wnGouacheLink"], evl:"有来源",
+   fig:{k:"tubes",n:8,label:"12–37ml 设计师水粉"},
+   ex:[["wnGouache","W&N Designers 37ml 钛白"],["schminckeG","Schmincke Horadam 10 × 15ml 金属盒"]],
+   map:[["水粉类型","传统水粉"],["剂型","管装"],["颜料等级","设计师 / 艺术家级"],["颜料信息披露","每色写明颜料编码","m"],["覆盖力","高覆盖","m"]],
+   pros:["品质稳定"], cons:["价格高"], up:["—"], verdict:["不建议","老品牌壁垒高。"], must:["—"], plus:["—"], avoid:["—"]}
+ ]},
+ {g:"丙烯水粉", about:"哑光不透明，干后防水", items:[
+  {t:"丙烯水粉", vol:"细分", volWhy:"Turner 12–36 色、Holbein Acryla、Liquitex Acrylic Gouache 多款在售，均为品牌款。",
+   combo:["丙烯水粉","管装 / 瓶装","设计师 / 艺术家级","12–36 色","20–59ml"],
+   rep:"Turner Acryl Gouache 12 / 18 / 24 / 36 × 20ml、Holbein Acryla 18 × 12ml、Liquitex Acrylic Gouache 12 × 22ml、荧光 6 × 59ml",
+   price:"US $30–150", who:"插画师、手账、墙绘", comp:"lo", compT:"低：只有品牌款，价格高",
+   pain:"干后不能再化开，新手容易浪费；价格高", ev:["acrylicGouacheLink"], evl:"有来源",
+   fig:{k:"tubes",n:8,label:"20ml 丙烯水粉"},
+   ex:[["turner36","Turner 36 × 20ml"],["holbeinAG","Holbein Acryla 18 × 12ml"],["liqAG","Liquitex 荧光丙烯水粉 6 × 59ml"]],
+   map:[["水粉类型","丙烯水粉"],["干后状态","干后防水，可叠加","m"],["剂型","管装 / 挤压瓶"],["颜料等级","设计师 / 艺术家级"],["色数规格","≤ 18 色 / 24–36 色"],["使用场景","墙绘 / 多层叠加"]],
+   pros:["可叠加不被化开","哑光质感好"], cons:["只有品牌款，价格高"], up:["平价多色款"],
+   verdict:["可做","对应机会 B“平价多色丙烯水粉套装”。"], must:["干后防水实测"], plus:["主题配色"], avoid:["普通丙烯冒充丙烯水粉"]}
+ ]},
+ {g:"儿童与礼盒", about:"儿童 Tempera、跨工具礼盒", items:[
+  {t:"儿童蛋彩 / Tempera", vol:"主流", volWhy:"Crayola 可水洗 Tempera 多款在售，6 色款为儿童 Tempera 畅销。",
+   combo:["儿童蛋彩 / Tempera","挤压瓶","儿童 / 课堂级","6–12 色"],
+   rep:"Crayola 可水洗 Tempera（单色 32oz、12 × 16oz、6 色、12 色含闪粉）",
+   price:"US $5–40", who:"幼儿、家长、老师", comp:"hi", compT:"高：Crayola 主导",
+   pain:"部分颜色洗不净", ev:["crayolaLink"], evl:"有来源",
+   fig:{k:"bottles",n:5,label:"可水洗 · 大瓶"},
+   ex:[["crayolaTempera12","12 × 16oz 课堂装"],["crayolaKids6","6 色，儿童 Tempera 畅销"]],
+   map:[["水粉类型","儿童蛋彩 / Tempera"],["剂型","挤压瓶"],["单件容量","16–32oz 大瓶"],["干后状态","可水洗（衣物 / 皮肤）","m"],["合规与安全","CPSIA / CPC（儿童）","m"],["颜料等级","儿童 / 课堂级"]],
+   pros:["刚需，课堂复购"], cons:["Crayola 壁垒高"], up:["—"], verdict:["不建议","Crayola 占位，儿童合规成本高。"], must:["CPSIA / CPC"], plus:["—"], avoid:["—"]},
+  {t:"水粉礼盒（+ 画本 / 工具）", vol:"细分", volWhy:"HIMI Deluxe 等礼盒款在售。",
+   combo:["果冻水粉","单杯果冻","跨工具礼盒","24 色"],
+   rep:"HIMI Deluxe 24 色礼盒（画本、喷壶、调色盘、画笔、调色刀、折叠水桶、4 个补充杯）",
+   price:"US $35–60", who:"礼品、入门", comp:"mid", compT:"中",
+   pain:"配件品质参差", ev:["himiReview"], evl:"有来源",
+   fig:{k:"bookkit"},
+   ex:[["himiDeluxe","Deluxe 24 色礼盒，含画本、喷壶、调色刀、补充杯"],["gouacheKitSearch","搜索页：水粉 + 画本 / 工具礼盒"]],
+   map:[["混装方式","跨工具礼盒"],["随附配件","画本、喷壶、调色刀、水桶、补充杯"],["目标人群","礼品购买者"]],
+   pros:["客单价高"], cons:["配件拉低口碑"], up:["+ 水粉专用画本（与水彩本联动）"], verdict:["谨慎","可作为跨品类组合的方向。"], must:["—"], plus:["—"], avoid:["配件件数虚高"]}
+ ]}
+],
+
+opps:[
+ {t:"平价多色丙烯水粉套装", gap:"价格带缺口", score:{d:3,c:4,x:3,s:3,p:3,e:3},
+  why:"丙烯水粉干后防水、可多层叠加，适合插画、手账和墙绘。在售的只有 Turner、Holbein、Liquitex 等品牌款，价格高（多在 $30 以上），没有看到 24 色左右的平价款。",
+  spec:["丙烯水粉","管装 20ml","学生级","24 色","哑光","干后防水"],
+  diff:"主图演示“叠色不被化开”，和果冻水粉区分", price:"US $22–32",
+  risk:"配方和传统水粉不同，需要合格工厂；买家可能混淆两种水粉，listing 要讲清楚",
+  verify:"拉 acrylic gouache set 的搜索量和 Top 50 价格分布，看 $20–35 区间供给",
+  from:"丙烯水粉", ev:["acrylicGouacheLink"], evl:"部分来源"},
+ {t:"防干密封升级的果冻水粉", gap:"痛点缺口", score:{d:4,c:1,x:2,s:4,p:3,e:3},
+  why:"果冻水粉需求大，最集中的抱怨是开盖易干。但 HIMI 已占住品类，且已有双杯、补充杯等改进，密封改进很难在主图上体现。",
+  spec:["果冻水粉","单杯果冻","18–24 色","双层密封盖"], diff:"密封盖 + 保湿片", price:"US $18–28",
+  risk:"HIMI 品牌心智强；改进点不易展示", verify:"抓 HIMI Top 10 差评里 dry / dried out 的占比",
+  from:"单杯果冻水粉（30g · 18–56 色）", ev:["tinyHimi","himiReview"], evl:"有来源"},
+ {t:"水粉 + 专用画本礼盒（跨品类）", gap:"场景缺口", score:{d:3,c:3,x:3,s:3,p:3,e:2},
+  why:"水粉需要吸水好、不起皱的厚纸。现有礼盒的画本多是附带赠品，品质参差；可以和水彩本品类联动，做“水粉 + 专用厚画本”的组合。",
+  spec:["果冻或管装水粉 18–24 色","水粉专用厚画本","调色盘、画笔"], diff:"画本品质可展示", price:"US $30–45",
+  risk:"组件多", verify:"拉 gouache paint set with sketchbook 的搜索量", from:"水粉礼盒（+ 画本 / 工具）", ev:[], evl:"经验判断"},
+ {t:"附干湿色卡的水粉套装", state:"clue", gap:"痛点缺口",
+  why:"水粉干后颜色会变浅或变深，新手常因此调错色。如果套装附“湿色 / 干色”对照卡，可能是低成本的差异点；需要先用差评数据确认这是不是高频抱怨。",
+  spec:["任意水粉套装","附干湿对照色卡"], verify:"抓水粉 Top 20 差评里 color shift / dries lighter / darker 的占比", from:"单杯果冻水粉（30g · 18–56 色）", ev:[], evl:"经验判断"},
+ {t:"小杯旅行装果冻水粉", state:"out", gap:"规格缺口",
+  why:"最初判断果冻水粉不适合旅行，小杯便携款是空档。",
+  outWhy:"核实后 HIMI 已有双杯 12g（36–112 色）和金属 12 色 12g 便携款，不是空白。",
+  spec:["果冻水粉","小杯","便携"], from:"双杯小杯果冻水粉（12g · 36–112 色）", ev:["himiTwinLink"], evl:"有来源"}
+],
+
+grids:[
+ {id:"form",name:"类型 × 剂型",q:"哪种水粉类型，在哪种剂型上还没人做？",rowT:"水粉类型",colT:"剂型",
+  cols:["管装","罐装","单杯果冻","双杯小杯","挤压瓶"],
+  rk:["gouache paint","jelly gouache","acrylic gouache","tempera paint"], ck:["tubes set","jar","jelly cup 30g","twin cup 12g","bottles"],
+  rc:["水粉","果冻 水粉","丙烯 水粉","儿童 颜料"], cc:["管装","罐装","果冻 单杯","果冻 双杯","瓶装"],
+  rows:[
+   ["传统水粉",[["S2","Arteza、W&N Designers、Schmincke",{r:["artezaGouache","wnGouache"],t:["白牌管装水粉套装","设计师 / 艺术家级水粉"]}],["S3","国内集训罐装",{r:["jdGouacheMM"],t:["国内艺考集训水粉"]}],["X","—"],["X","—"],["L1","少"]]],
+   ["果冻水粉",[["X","—"],["X","—"],["R3","HIMI 18 / 24 / 56",{r:["himi18","himi24","himi56"],t:["单杯果冻水粉（30g · 18–56 色）"],o:"防干密封升级的果冻水粉",tier:[1,2,1]}],["R3","HIMI 双杯 36–112",{r:["himiTwin48","himiTwin112"],t:["双杯小杯果冻水粉（12g · 36–112 色）"],o:"小杯旅行装果冻水粉"}],["X","—"]]],
+   ["丙烯水粉",[["L2","只有 Turner、Holbein、Liquitex，价格高",{r:["turner36","holbeinAG"],t:["丙烯水粉"],o:"平价多色丙烯水粉套装",tier:[0,0,2],k:["acrylic gouache set 24"],ev:"有来源"}],["X","—"],["X","—"],["X","—"],["S1","Liquitex 2oz 瓶",{r:["liqAG"]}]]],
+   ["儿童蛋彩",[["X","—"],["S1","—"],["X","—"],["X","—"],["R3","Crayola Tempera",{r:["crayolaTempera12","crayolaKids6"],t:["儿童蛋彩 / Tempera"]}]]]]},
+
+ {id:"count",name:"类型 × 色数",q:"每种水粉在哪个色数段还空着？",rowT:"水粉类型 / 剂型",colT:"色数",
+  cols:["≤ 18 色","24–36 色","48–56 色","72 色以上"],
+  rk:["jelly gouache","jelly gouache twin cup","gouache paint tubes","acrylic gouache","designer gouache"], ck:["18 colors","24 colors","56 colors","112 colors"],
+  rc:["果冻 水粉","果冻 水粉 双杯","管装 水粉","丙烯 水粉","设计师 水粉"], cc:["18色","24色","56色","112色"],
+  rows:[
+   ["单杯果冻",[["R3","HIMI 18",{r:["himi18","himiGelato"]}],["R3","HIMI 24",{r:["himi24"]}],["S2","HIMI 56",{r:["himi56"]}],["X","—"]]],
+   ["双杯小杯果冻",[["S1","金属 12 色",{r:["himiMetal12"]}],["S3","HIMI 36",{r:["himiTwin36"]}],["S3","HIMI 48",{r:["himiTwin48"]}],["S2","HIMI 72 / 112",{r:["himiTwin112"]}]]],
+   ["管装传统水粉",[["S2","W&N Designers 10",{r:["wnGouache"]}],["S2","Arteza 24",{r:["artezaGouache"]}],["L1","少"],["X","—"]]],
+   ["丙烯水粉",[["S2","Holbein 18、Liquitex 12",{r:["holbeinAG"]}],["L2","Turner 24 / 36，价格高",{r:["turner36"],o:"平价多色丙烯水粉套装",ev:"有来源"}],["E1","—"],["X","—"]]],
+   ["设计师级",[["S2","Schmincke 10",{r:["schminckeG"]}],["L1","—"],["X","—"],["X","—"]]]]},
+
+ {id:"price",name:"套装结构 × 价格带",q:"每种套装在哪个价位还空着？",rowT:"套装结构",colT:"整套售价（美国站）",
+  cols:["< $15","$15–30","$30–60","$60+"], price:["0-1500","1500-3000","3000-6000","6000-100000"],
+  rk:["jelly gouache 18 24","jelly gouache twin cup","gouache tubes set","acrylic gouache set","tempera paint kids"],
+  rc:["果冻 水粉","果冻 水粉 双杯","管装 水粉","丙烯 水粉","儿童 颜料"], cc:["","","",""],
+  rows:[
+   ["单杯果冻 18–24 色",[["S1","—"],["R3","HIMI 18 / 24",{r:["himi18","himi24"]}],["S2","HIMI 56、Deluxe",{r:["himi56","himiDeluxe"]}],["X","—"]]],
+   ["双杯果冻 36–112 色",[["S1","金属 12 色约 $13.49",{r:["himiMetal12"]}],["S3","HIMI 36 / 48",{r:["himiTwin36","himiTwin48"]}],["S2","HIMI 72 / 112",{r:["himiTwin112"]}],["X","—"]]],
+   ["管装传统水粉",[["X","—"],["S2","Arteza 24",{r:["artezaGouache"]}],["S1","W&N Designers 10",{r:["wnGouache"]}],["S1","Schmincke",{r:["schminckeG"]}]]],
+   ["丙烯水粉",[["X","—"],["E2","平价款空白",{o:"平价多色丙烯水粉套装",k:["acrylic gouache set"],ev:"部分来源"}],["S2","Holbein、Liquitex",{r:["holbeinAG","liqAG"]}],["S2","Turner 36",{r:["turner36"]}]]],
+   ["儿童 Tempera",[["S3","Crayola 6 色",{r:["crayolaKids6"]}],["S2","Crayola 12 × 16oz",{r:["crayolaTempera12"]}],["S1","—"],["X","—"]]]]},
+
+ {id:"scene",name:"使用场景 × 关键卖点",q:"每个场景最在意的卖点，有没有产品明确满足？",rowT:"使用场景",colT:"关键卖点",
+  cols:["高覆盖","不易干 / 密封","干湿色差小","干后防水可叠加","可水洗","大容量 / 补充"],
+  rk:["gouache illustration","gouache art student","gouache design","gouache mural layering","kids tempera"], ck:["opaque","airtight","color shift","waterproof acrylic gouache","washable","refill"],
+  rc:["插画 水粉","艺考 水粉","设计 水粉","墙绘 水粉","儿童 颜料"], cc:["覆盖","密封","色差","防水","可水洗","补充装"],
+  rows:[
+   ["插画 / 手账",[["S3","—",{r:["himi24"]}],["L3","果冻水粉开盖易干",{r:["himi24","himiTwin48"],o:"防干密封升级的果冻水粉",ev:"有来源"}],["L0","—",{o:"附干湿色卡的水粉套装",clue:true}],["L2","丙烯水粉只有品牌款",{r:["turner36"],o:"平价多色丙烯水粉套装"}],["X","—"],["S2","HIMI 补充杯",{r:["himiRefill"]}]]],
+   ["艺考集训",[["S3","—",{r:["jdGouacheMM"]}],["S1","—"],["L1","—"],["X","—"],["X","—"],["S3","100ml 罐装",{r:["jdGouacheMM"]}]]],
+   ["设计稿 / 平涂",[["S3","W&N Designers",{r:["wnGouache"]}],["S2","—"],["S1","—"],["S1","—"],["X","—"],["S1","—"]]],
+   ["墙绘 / 多层叠加",[["S2","—"],["S1","—"],["X","—"],["L3","丙烯水粉贵、色数少",{r:["turner36","liqAG"],o:"平价多色丙烯水粉套装",ev:"有来源"}],["X","—"],["S1","—"]]],
+   ["儿童课堂",[["S1","—"],["S2","—"],["X","—"],["X","—"],["R3","Crayola",{r:["crayolaKids6"]}],["S3","32oz 单色",{r:["crayolaTempera12"]}]]]]}
+],
+
+refs:{
+ himi18:["HIMI 果冻水粉 18 色","https://www.amazon.com/dp/B07XCL1RXP"], himi24:["HIMI 果冻水粉 24 色","https://www.amazon.com/dp/B084V515RY"], himi56:["HIMI 56 色（含金属、荧光）","https://www.amazon.com/dp/B09ZBCLJHH"], himiGelato:["HIMI Gelato 18 色","https://www.amazon.com/dp/B0GZ3DFBYR"],
+ himiRefill:["HIMI 补充杯 4 个装","https://www.amazon.com/dp/B0DC9QL7FF"], himiDeluxe:["HIMI Deluxe 24 色礼盒","https://www.amazon.com/dp/B0F212PCS2"],
+ himiTwin36:["HIMI 双杯 36 色","https://www.amazon.com/dp/B0CLCKQ9WW"], himiTwin48:["HIMI 双杯 48 色","https://www.amazon.com/dp/B0C4T7RZ2R"], himiTwin112:["HIMI 双杯 112 色","https://www.amazon.com/dp/B0D4LZ3NZ6"],
+ himiMetal12:["HIMI 金属 12 色 12g","https://www.amazon.com/dp/B0CW5GDSB6"], himiMetal18:["HIMI 金属 18 色 30ml","https://www.amazon.com/clp/B0BNVBC669"],
+ artezaGouache:["Arteza 水粉 24 色 12ml","https://www.amazon.com/dp/B077Y6TVC8"], wnGouache:["W&N Designers 水粉 37ml","https://www.amazon.com/clp/B000OL5KQE"],
+ schminckeG:["Schmincke Horadam 水粉（搜索页）","https://www.amazon.com/professional-artist-gouache-paint-sets/s?k=schmincke+horadam+gouache+set"],
+ jdGouacheRank:["京东 · 水粉颜料（青竹、米娅等）","https://www.jd.com/tupian/1713cb6e2e5cd9802db5.html"], jdGouacheMM:["京东 · 蒙玛特 100ml 罐装水粉","https://www.jd.com/tupian/171323d92f53c16f02e5.html"],
+ turner36:["Turner 丙烯水粉（Amazon 搜索页）","https://www.amazon.com/acrylic-gouache-set/s?k=turner+acryl+gouache+set"], holbeinAG:["Holbein Acryla 丙烯水粉 18 色","https://www.amazon.com/clp/B06VVJF9K2"], liqAG:["Liquitex 荧光丙烯水粉 6 × 59ml","https://www.amazon.com/clp/B07HRHQHVG"],
+ gouacheTubeSearch:["Amazon 搜索：gouache paint set tubes","https://www.amazon.com/s?k=gouache+paint+set+tubes"], gouacheKitSearch:["Amazon 搜索：gouache paint set with sketchbook","https://www.amazon.com/s?k=gouache+paint+set+with+sketchbook"],
+ crayolaTempera12:["Crayola Artista II 可水洗 12 × 16oz","https://www.amazon.com/dp/B00TJ2RBGQ"], crayolaKids6:["Crayola 可水洗 6 色","https://www.amazon.com/dp/B09GWCRSQV"]
+},
+
+src:{
+ tinyHimi:["Tiny Workshops：HIMI 果冻水粉评测","https://tinyworkshops.com/himi-jelly-gouache-review/"],
+ himiReview:["Shihori Obata：HIMI 水粉评测","https://www.shihoriobata.com/blog/himi-gouache-set-review/"],
+ himiTwinLink:["HIMI 双杯 48 色（Amazon，月购 300+）","https://www.amazon.com/dp/B0C4T7RZ2R"],
+ artezaGouacheLink:["Arteza 水粉 24 色（Amazon）","https://www.amazon.com/dp/B077Y6TVC8"],
+ wnGouacheLink:["W&N Designers 水粉（Amazon）","https://www.amazon.com/clp/B000OL5KQE"],
+ acrylicGouacheLink:["Amazon 搜索：acrylic gouache set","https://www.amazon.com/acrylic-gouache-set/s?k=acrylic+gouache+set"],
+ jdGouache:["京东 · 水粉颜料","https://www.jd.com/tupian/1713cb6e2e5cd9802db5.html"],
+ crayolaLink:["Crayola 可水洗 Tempera（Amazon）","https://www.amazon.com/dp/B09GWCRSQV"]
+}
+});

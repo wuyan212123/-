@@ -60,6 +60,19 @@ nav.snav{position:sticky;top:env(safe-area-inset-top,0px);z-index:8;background:v
 section.block{display:flex;flex-direction:column;gap:10px;scroll-margin-top:calc(var(--nav-h) + 16px)}
 section.block > h2{font-family:var(--font-display);font-weight:600;font-size:22px;margin:10px 0 0}
 section.block > p{margin:0;color:var(--ink-2);max-width:84ch}
+/* 品类切换的系列分隔 */
+.tab-sep{display:inline-flex;align-items:center;padding:0 6px 0 12px;font:500 11.5px var(--font-body);color:var(--ink-3);border-left:1px solid var(--rule);margin-left:4px}
+/* 系列总览 */
+.seriesbox{background:var(--sheet);border:1px solid var(--rule);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.seriesbox h3{margin:0;font-family:var(--font-display);font-weight:600;font-size:16px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.seriesbox h3 span{font:400 12.5px var(--font-body);color:var(--ink-3)}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+@media (max-width:640px){.sgrid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px}.sgrid .scard{flex:0 0 78%;scroll-snap-align:start}}
+.scard{all:unset;cursor:pointer;display:flex;flex-direction:column;gap:4px;border:1px solid var(--rule);border-radius:10px;padding:10px 12px;background:var(--paper);min-width:0}
+.scard:hover{border-color:var(--ink-3)} .scard:focus-visible{outline:2px solid var(--prussian)}
+.scard.on{border:2px solid var(--prussian);background:var(--sheet)}
+.scard b{font-size:15px;color:var(--ink)} .spos{font-size:12.5px;color:var(--ink-2)} .sstat{font:500 11.5px var(--font-mono);color:var(--ink-3)}
+.sopp{font-size:12px;color:var(--ink);line-height:1.7} .sopp .pri{width:16px;height:16px;font-size:9.5px;vertical-align:-3px}
 /* 品类范围卡 */
 .scopecard{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 20px;background:var(--sheet);border:1px solid var(--rule);border-radius:12px;padding:14px 16px}
 .scopecard div{min-width:0} .scopecard h5{margin:0 0 2px} .scopecard p{margin:0;font-size:13px;color:var(--ink-2)}
@@ -301,6 +314,7 @@ ol.reflinks li{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
 
   <section class="block" id="s-map">
     <h2 id="h-map">思维导图</h2>
+    <div class="seriesbox" id="seriesbox" hidden></div>
     <div class="scopecard" id="scopecard"></div>
     <div class="bar">
       <button class="btn s1" data-jump="types">① 在售类型</button>

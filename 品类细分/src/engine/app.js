@@ -336,8 +336,8 @@ document.querySelectorAll("#t-types,#t-opps").forEach(t=>t.addEventListener("cli
 function renderChrome(){
   const cat=CUR(), root=DATA[st.tab];
   const nType=cat.types.reduce((a,g)=>a+g.items.length,0), nDim=cat.dims.reduce((a,g)=>a+g.cats.reduce((b,c)=>b+c.c.length,0),0);
-  document.getElementById("h1").textContent=`品类开品维度图谱 · ${CATS.map(c=>c.name).join(" / ")}`;
-  document.getElementById("meta-line").innerHTML=[`模板 v1.0`,`${CATS.length} 个品类`,`当前：${cat.name}`,`数据快照 ${cat.updated}`,`${nType} 个类型 · ${nDim} 个维度 · ${cat.opps.length} 个机会假设`].map(x=>`<span>${esc(x)}</span>`).join("");
+  document.getElementById("h1").textContent=`品类开品维度图谱 · ${cat.series?cat.series+"系列 · ":""}${cat.name}`;
+  document.getElementById("meta-line").innerHTML=[`模板 v1.2`,`${CATS.length} 个品类`,`当前：${cat.name}`,`数据快照 ${cat.updated}`,`${nType} 个类型 · ${nDim} 个维度 · ${cat.opps.length} 个机会假设`].map(x=>`<span>${esc(x)}</span>`).join("");
   document.getElementById("h-map").textContent=`${cat.name}思维导图`;
   document.getElementById("h-grid").textContent=`${cat.name}白地图`;
   document.getElementById("h-prof").textContent=`${cat.name}类型档案`;
@@ -348,9 +348,25 @@ function renderChrome(){
   document.getElementById("score-def").innerHTML=SCORE_DEF.map(d=>`<b>${d.n} ×${d.w}</b><span>${esc(d.desc)}</span>`).join("");
   document.getElementById("cat-rules").innerHTML=`<h4>${esc(cat.name)}专用登记规则</h4><ul>${li(cat.rules)}</ul>`;
   document.getElementById("srclist").innerHTML=`${esc(cat.name)}参考来源：`+Object.values(cat.src).map(([n,u])=>`<a href="${u}" target="_blank" rel="noopener">${esc(n)}</a>`).join(" · ");
-  document.getElementById("cat-tabs").innerHTML=CATS.map(c=>`<button type="button" data-tab="${c.id}" aria-pressed="${c.id===st.tab}">${esc(c.name)}</button>`).join("");
+  let prevSeries=null;
+  document.getElementById("cat-tabs").innerHTML=CATS.map(c=>{ const lbl = c.series && c.series!==prevSeries ? `<span class="tab-sep">${esc(c.series)}系列</span>` : ""; prevSeries=c.series||null; return lbl+`<button type="button" data-tab="${c.id}" aria-pressed="${c.id===st.tab}">${esc(c.name)}</button>`; }).join("");
+  renderSeries(cat);
   document.getElementById("cat-tabs").hidden = CATS.length<2;
 }
+
+/* ---------- 系列总览（同一 series 的品类横向对比） ---------- */
+function renderSeries(cat){
+  const box=document.getElementById("seriesbox");
+  if(!cat.series){ box.hidden=true; box.innerHTML=""; return; }
+  const sib=CATS.filter(c=>c.series===cat.series);
+  box.hidden=false;
+  box.innerHTML=`<h3>${esc(cat.series)}系列总览 <span>${sib.length} 个体系，分别独立研究；点卡片切换</span></h3><div class="sgrid">${sib.map(c=>{
+    const nT=c.types.reduce((a,g)=>a+g.items.length,0), nD=c.dims.reduce((a,g)=>a+g.cats.reduce((b,x)=>b+x.c.length,0),0);
+    const top=c.opps.filter(o=>"AB".includes(o.pri)).sort((a,b)=>b.total-a.total).slice(0,3);
+    return `<button type="button" class="scard${c.id===cat.id?" on":""}" data-tab="${c.id}"><b>${esc(c.name)}</b><span class="spos">${esc(c.pos||"")}</span><span class="sstat">${nT} 个类型 · ${nD} 个维度 · ${c.opps.length} 个机会假设</span>${top.length?`<span class="sopp">${top.map(o=>`${priTag(o.pri)} ${esc(o.t)}`).join("<br>")}</span>`:`<span class="sopp fine">暂无 A / B 级机会</span>`}</button>`;
+  }).join("")}</div>`;
+}
+document.getElementById("seriesbox").addEventListener("click",e=>{ const b=e.target.closest(".scard"); if(b && b.dataset.tab!==st.tab) switchTab(b.dataset.tab); });
 
 /* ---------- 交互 ---------- */
 cv.addEventListener("click",e=>{
