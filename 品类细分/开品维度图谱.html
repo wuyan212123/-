@@ -206,6 +206,12 @@ h5.plus{color:var(--lo)} h5.minus{color:var(--hi)} h5.must{color:var(--prussian)
 .co{margin-top:6px;font-size:12px;color:var(--ink);display:flex;gap:5px;align-items:center;font-weight:500}
 .co .pri{width:17px;height:17px;font-size:10px}
 .co.clue{color:var(--mid)}
+.lkc{margin-top:6px;font-size:11px;color:var(--prussian)}
+#t-grid td.c-X .lkc{display:none}
+ol.reflinks{list-style:none;padding-left:0}
+ol.reflinks li{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.rk{font:500 10.5px var(--font-body);padding:1px 6px;border-radius:4px;white-space:nowrap}
+.rk-p{background:var(--prussian-soft);color:var(--prussian)} .rk-s{border:1px solid var(--rule);color:var(--ink-2)}
 .gv-detail{background:var(--sheet);border:1px solid var(--rule);border-radius:12px;padding:14px 16px;min-height:60px}
 .gd-head{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .gd-head h3{margin:0 8px 0 0;font-family:var(--font-display);font-weight:600;font-size:18px}
@@ -273,7 +279,7 @@ h5.plus{color:var(--lo)} h5.minus{color:var(--hi)} h5.must{color:var(--prussian)
 
   <section class="block">
     <h2 id="h-grid">白地图</h2>
-    <p>用几个关键维度两两交叉，看每个组合现在的供给和需求。<b>供给</b>分红海、有供给、稀少、空白、不成立五级；<b>需求信号</b>单独标（● 越多越强，? 是待验证）。只有<b>供给稀少或空白、并且需求中等以上</b>的格子才算机会格（绿框）。空白但需求没证据的，标为“待验证”，不当作机会。</p>
+    <p>用几个关键维度两两交叉，看每个组合现在的供给和需求。点任意一格可以看到 1–3 个参考链接（优先给真实商品，供给少的格子会附搜索链接，方便自己核实）。<b>供给</b>分红海、有供给、稀少、空白、不成立五级；<b>需求信号</b>单独标（● 越多越强，? 是待验证）。只有<b>供给稀少或空白、并且需求中等以上</b>的格子才算机会格（绿框）。空白但需求没证据的，标为“待验证”，不当作机会。</p>
     <div class="gv-tabs" id="gv-tabs" role="group" aria-label="切换白地图视图"></div>
     <p class="gv-q" id="gv-q"></p>
     <div class="gv-sum" id="gv-sum"></div>
@@ -650,7 +656,7 @@ const PEN_TYPES = [
 /* ---------- 针管笔：缺口与机会 ---------- */
 const PEN_OPPS = [
  {t:"彩色颜料型防水针管笔 24–36 色",pri:"A",gap:"规格缺口",
-  why:"彩色主流是染料型，STABILO point 88 官方标注不耐水，不能配水彩；颜料型彩色以 Micron 8 色级别为主，色数少、单支贵。“多色 + 颜料防水”这个组合供给少，而水彩勾线人群是明确存在的。",
+  why:"彩色主流是染料型，STABILO point 88 官方标注不耐水，不能配水彩；颜料型彩色最多是 Micron 16 色（约 $34），多数只有 8 色，色数少、单支贵。“多色 + 颜料防水”这个组合供给少，而水彩勾线人群是明确存在的。",
   spec:["一次性","纤维头","颜料型水性","多色 24/36 色","同粗细 0.3 或 0.5","干后防水"],
   diff:"主图和视频直接演示“勾线 → 刷水 → 不晕”；按水彩常用色配色，不照搬手账色",
   price:"US $18–28/套",
@@ -681,8 +687,8 @@ const PEN_OPPS = [
   risk:"必须真的耐酒精，需要和主流马克笔逐一实测",
   verify:"拉 marker proof pen、copic proof fineliner 的搜索量；看马克笔大卖家是否已有自家勾线笔",
   from:"黑色梯度套装", ev:["micronJp"], evl:"部分来源"},
- {t:"灰阶 / 棕褐写生勾线套装",pri:"B",gap:"规格缺口",
-  why:"市场以纯黑和多色为主，灰阶和 Sepia 只在少数品牌里零散出现，适合写生、素描和复古风格。",
+ {t:"灰阶 / 棕褐写生勾线套装",pri:"C",gap:"规格缺口",
+  why:"补查后修正：Micron 已有冷灰 / 浅冷灰 8 支套装和 Sepia 4 支混合笔头装，灰阶和棕褐都不是空白。剩下的空间只在“灰阶 + 棕褐 + 多粗细”的写生组合，品类小，先观察。",
   spec:["一次性","纤维头","颜料型","冷灰 / 暖灰 / Sepia 3–4 色","每色 2–3 种粗细"],
   diff:"按写生需求配色，和水彩本做组合",
   price:"US $12–20/套",
@@ -778,7 +784,7 @@ const BOOK_OPPS = [
   verify:"拉 100% cotton watercolor sketchbook 的 Top 50，看价格分布；$15–22 区间如果链接少、新品评论增长快，就成立",
   from:"全棉写生本、平价写生本", ev:["baohong","strathWire","pentalic","etchr","vienrose"], evl:"有来源"},
  {t:"混棉升级练习纸垫多本装",pri:"B",gap:"痛点缺口",
-  why:"木浆纸垫是最大的市场，但差评集中在湿画翻翘和叠色起毛。纸里有棉会明显改善吸水和稳定性，介于 Canson XL 和全棉之间的产品少。",
+  why:"木浆纸垫是最大的市场，但差评集中在湿画翻翘和叠色起毛。纸里有棉会明显改善吸水和稳定性。现有混棉纸垫主要是 Fabriano Studio（25% 棉，9×12 只有 12 张），张数多、多本装的混棉产品仍然少。",
   spec:["纸垫","混棉 25–50%","线圈","冷压 300g","9×12 + 5.5×8.5 组合 2–3 本","打孔易撕"],
   diff:"和普通木浆做对比测试（同一张画湿画后的翻翘对比），突出“学生价、接近全棉的手感”",
   price:"US $15–22",
@@ -919,11 +925,12 @@ const PROFILE = {
  ex:[
   {n:"Sakura Pigma Micron 005 · 8 色",u:AMZ+"/dp/B07TP9KF2K",s:"快照：$14.62–16.66；含黑、红、蓝、绿、棕、紫、Sepia、玫红"},
   {n:"Sakura Pigma Micron 01 · 8 色",u:AMZ+"/dp/B0F9H2D6NP",s:"快照：$19.04，约 $2.38/支"},
+  {n:"Sakura Pigma Micron 01 · 16 色",u:AMZ+"/dp/B0F9H738PT",s:"快照：$34.31；目前色数最多的颜料型彩色套装，含 Sepia、冷灰"},
   {n:"STAEDTLER Pigment Liner · 6 色 0.5mm",u:AMZ+"/dp/B07NP334FZ",s:"颜料型彩色，同系列有 0.3mm"},
   {n:"Muchcute 01 · 12 色（宣称防水）",u:AMZ+"/dp/B0DFC3KPWV",s:"白牌开始做彩色颜料款"}],
  map:[["笔型结构","一次性"],["笔头类型","纤维硬头"],["墨水基质","颜料型水性"],["防水性","干后防水"],["耐性与兼容性","档案级；个别颜色耐光差"],["颜色方案","多色彩色"],["色数规格","6–12 色"],["颜色 × 粗细混装","多色同粗细"],["包装形式","吸塑卡"],["使用场景","水彩勾线、插画"],["定位档","专业 / 中端"]],
  pros:["防水，可以配水彩","档案级，作品可保存","客单价和单支价都高"],
- cons:["色数少（6–12 色）","单支贵","评测指出个别颜色不耐光"],
+ cons:["色数少（多数 6–12 色，最多 Micron 16 色）","单支贵","评测指出个别颜色不耐光"],
  up:["24–36 色","按水彩常用色配色","多粗细彩色套装"],
  verdict:["可做","对应机会 A“彩色颜料型防水针管笔 24–36 色”。白牌已开始做 12 色，要尽快在色数和防水实测上拉开差距。"],
  must:["干后防水（刷水视频）","≥24 色","颜料型墨水"],
@@ -1176,129 +1183,154 @@ function fig(spec){
 
 /* ---------- 白地图 2.0 ----------
    每格：[代码, 一句话, 可选项]
-   代码第 1 位 = 供给：R 红海 / S 有供给 / L 稀少 / E 空白 / X 伪空白或不适用
+   代码第 1 位 = 供给：R 红海 / S 有供给 / L 稀少 / E 空白 / X 不成立
    代码第 2 位 = 需求信号：3 强 / 2 中 / 1 弱 / 0 待验证
-   可选项：d 详细说明，r 代表商品 [[名称,链接]]，k 验证关键词，o 关联机会（③ 中的标题），t 关联类型（① 中的标题），
-           tier 价格分层 [低,中,高]（0 无 / 1 少量 / 2 较多），ev 依据强度，clue 新线索（还没进 ③） */
-const A_ = "https://www.amazon.com/dp/";
+   可选项：d 详细说明，r 代表商品 key（见 R），k 验证关键词，o 关联机会，t 关联类型，tier 价位分布 [低,中,高]，ev 依据强度，clue 新线索
+   每个视图：rk / ck = 生成 Amazon 搜索词用的行、列英文词；rc / cc = 生成京东搜索词用的中文词；price = 列是价格带时的 Amazon 价格筛选（美分） */
+const A_ = "https://www.amazon.com/dp/", C_ = "https://www.amazon.com/clp/";
 const R = {
- st308:["Staedtler 308 SB6P 6 支",A_+"B004L87XRA"], much12:["Muchcute 12 支黑色",A_+"B0BNDN87NX"], ohuhu8:["Ohuhu 8 种笔头",A_+"B08BNZXRVX"],
- mic05:["Micron 05 两支装",A_+"B096KQQ192"], mic005_6:["Micron 005 六支装",A_+"B00K3KRMFI"], p88blk:["point 88 黑色 10 支",A_+"B01BCE27BC"],
- copicA:["Copic SP College Set A",A_+"B002K943T8"], rotring:["Rotring Isograph College Set",A_+"B001W1036M"],
- mic8c:["Micron 005 八色",A_+"B07TP9KF2K"], mic8c01:["Micron 01 八色",A_+"B0F9H2D6NP"], st6c:["Staedtler 颜料型 6 色",A_+"B07NP334FZ"], much12c:["Muchcute 01 十二色",A_+"B0DFC3KPWV"],
- p88_10:["point 88 十色",A_+"B000SO1VUQ"], p88m18:["point 88 MINI 十八色",A_+"B00OAX1TPI"], mrpen24:["Mr. Pen 24 色",A_+"B0DKT565MS"], mrpen36:["Mr. Pen 36 色",A_+"B086R75SCG"],
- pitt6:["Pitt 黑色 6 支",A_+"B003U6LBRW"], pittBB:["Pitt Big Brush",A_+"B0026I4US2"], twohands:["TWOHANDS 12 支",A_+"B088B9ZNXC"],
- cansonXL:["Canson XL 9×12",A_+"B004M59O4C"], canson6:["Canson XL × 6 本",A_+"B07FG1L9M8"], artezaSp:["Arteza 线圈精装 × 2",A_+"B07WRBFPSC"], artezaKid:["Arteza 儿童 200g × 2",A_+"1947575112"],
- strath140:["Strathmore 400 线圈 140lb","https://us.amazon.com/dp/B003YIXDKE"], strathHB:["Strathmore 400 精装 5.5×8.5",A_+"B0F97SS84F"],
- pent58:["Pentalic 5×8 横翻",A_+"B00479VQOE"], pentSq:["Pentalic 5.5 方形",A_+"B01M8Q374Q"], pent811:["Pentalic 8.5×11",A_+"B01M5J354M"],
- hahA5:["Hahnemühle 全棉 A5 横翻",A_+"B09NY8JTTB"], hahA4:["Hahnemühle 全棉 A4",A_+"B09NY8MVRF"], hahSq:["Hahnemühle 14×14 方形",A_+"B0HNB1QQGK"],
- etchr:["Etchr（搜索页）","https://www.amazon.com/s?k=etchr+watercolor+sketchbook"], prJ:["Paul Rubens 全棉本 × 2",A_+"B09WXX92G8"],
- prBlk:["Paul Rubens 全棉块 10.8×7.8",A_+"B09N1LFQGC"], prSq:["Paul Rubens 方形块",A_+"B0D3C6TH3H"], prLong:["Paul Rubens 长幅块","https://us.amazon.com/dp/B0D3C52R6L"],
- arches910:["Arches 9×12 块",A_+"B005Z4545C"], arches710:["Arches 7×10 块",A_+"B01B204MSC"],
- cuppa:["CuppaClip 全棉风琴本",A_+"B0FNR29DDV"], hoidaai:["Hoidaai 风琴本 15×100",A_+"B0DSKC4BL2"], acc200:["风琴本 15×200",A_+"B0FY6T1NGL"],
- tumu:["tumuarta 全棉明信片 24 张",A_+"B08GKTFF55"], pc50:["全棉明信片 50 张",A_+"B0C5M64FQ7"], montval:["Canson Montval 卡 + 信封",A_+"B00Q1RKFJM"],
- wbKit:["线稿本 + 12 色 + 笔",A_+"B0FG7LDC49"], wbNP:["国家公园线稿本 + 视频",A_+"B0H6J9TZ81"], wbXmas:["圣诞线稿本（120lb）",A_+"B0G3PDYN62"]
+ st308:["Staedtler 308 SB6P 6 支 0.05–0.8",A_+"B004L87XRA"], much12:["Muchcute 12 支黑色 0.2–3.0+BR",A_+"B0BNDN87NX"], ohuhu8:["Ohuhu 8 种笔头",A_+"B08BNZXRVX"],
+ twohands:["TWOHANDS 12 支黑色",A_+"B088B9ZNXC"], pitt6:["Pitt 黑色 6 支",A_+"B003U6LBRW"], pittEss:["Pitt Essential 4 支",A_+"B004PN8HMG"],
+ mic05:["Micron 05 两支装",A_+"B096KQQ192"], mic005_6:["Micron 005 六支装",A_+"B00K3KRMFI"], mic01_6:["Micron 01 六支装",A_+"B00K3KRJK6"], p88blk:["STABILO point 88 黑色 10 支",A_+"B01BCE27BC"],
+ copicA:["Copic SP College Set A",A_+"B002K943T8"], copic07:["Copic SP 0.7 单支",A_+"B002UCYCDC"], copicBr:["Copic SP 软头",A_+"B001RXQAPI"],
+ rotring:["Rotring Isograph College Set",A_+"B001W1036M"], rotJr:["Rotring Isograph Junior",A_+"B003UM3RJG"],
+ micGrey:["Micron 冷灰 / 浅冷灰 8 支",A_+"B0B37S7BNC"], micSepia:["Micron Sepia 4 支混合笔头",A_+"B0027BVZX6"], micSepia3:["Micron Sepia 0.1mm 3 支",A_+"B01M9ANFWW"],
+ mic8c:["Micron 005 八色",A_+"B07TP9KF2K"], mic8c01:["Micron 01 八色",A_+"B0F9H2D6NP"], mic16:["Micron 01 十六色（约 $34）",A_+"B0F9H738PT"],
+ st6c:["Staedtler 颜料型 6 色 0.5",A_+"B07NP334FZ"], much12c:["Muchcute 01 十二色（宣称防水）",A_+"B0DFC3KPWV"],
+ p88_10:["STABILO point 88 十色",A_+"B000SO1VUQ"], p88m18:["STABILO point 88 MINI 十八色",A_+"B00OAX1TPI"], mrpen24:["Mr. Pen 24 色 0.4",A_+"B0DKT565MS"], mrpen36:["Mr. Pen 36 色 0.4",A_+"B086R75SCG"],
+ writech:["WRITECH 速干防蹭针管笔 9 支",A_+"B093GNQ77G"], lefty:["Lefty's 左撇子速干圆珠笔（参照）",A_+"B0CQTVT7XM"],
+ hanku16:["HANKU 圣经笔 16 色不透背",A_+"B0F1TF67MP"], kander:["Kander 圣经笔 12 色",A_+"B0G7Y8N1DW"], mrpenBible:["Mr. Pen 圣经手账套装",A_+"B08FHN7SQX"],
+ cansonXL:["Canson XL 水彩纸垫 9×12",A_+"B004M59O4C"], canson6:["Canson XL 9×12 × 6 本",A_+"B07FG1L9M8"], cansonXL1115:["Canson XL 11×15",C_+"B0049UXGD0"],
+ strath300:["Strathmore 300 胶装纸垫 11×15",C_+"B000KNLQIM"], strathBlk:["Strathmore 400 四面封胶块 11×15",C_+"B000KNLQSC"],
+ artezaSp:["Arteza 线圈精装 × 2",A_+"B07WRBFPSC"], artezaGl:["Arteza 胶装纸垫 × 2",A_+"B07JWN7G18"], artezaKid:["Arteza 儿童 200g × 2",A_+"1947575112"],
+ fabStudio:["Fabriano Studio 25% 棉纸垫 9×12（12 张）",A_+"B079XVHQNB"],
+ strath140:["Strathmore 400 线圈 140lb",  "https://us.amazon.com/dp/B003YIXDKE"], strathHB:["Strathmore 400 精装 5.5×8.5",A_+"B0F97SS84F"],
+ pent58:["Pentalic Aqua Journal 5×8 横翻",A_+"B00479VQOE"], pentSq:["Pentalic 5.5×5.5 方形",A_+"B01M8Q374Q"], pent811:["Pentalic 8.5×11",A_+"B01M5J354M"], pent2:["Pentalic 5×8 × 2 本","https://us.amazon.com/dp/B06XZJKJBG"],
+ moleP:["Moleskine 水彩本口袋 3.5×5.5",A_+"B07J3H7F19"], moleL:["Moleskine 水彩本 5×8.25",A_+"B075Z6SB5R"], moleAlb:["Moleskine 水彩相册口袋款（横向展开）",A_+"8883705602"],
+ hahA5:["Hahnemühle 全棉 A5 横翻",A_+"B09NY8JTTB"], hahA4:["Hahnemühle 全棉 A4 横翻",A_+"B09NY8MVRF"], hahSq:["Hahnemühle 全棉 14×14 方形",A_+"B0HNB1QQGK"],
+ etchr:["Etchr 全棉本（Amazon 搜索页）","https://www.amazon.com/s?k=etchr+watercolor+sketchbook"], prJ:["Paul Rubens 全棉本 × 2",A_+"B09WXX92G8"],
+ prBlk:["Paul Rubens 全棉块 10.8×7.8",A_+"B09N1LFQGC"], prSq:["Paul Rubens 全棉方形块",A_+"B0D3C6TH3H"], prLong:["Paul Rubens 全棉长幅块","https://us.amazon.com/dp/B0D3C52R6L"], prLeather:["Paul Rubens 皮面全棉块",A_+"B07N2T419Q"],
+ arches910:["Arches 9×12 全棉块",A_+"B005Z4545C"], arches710:["Arches 7×10 全棉块",A_+"B01B204MSC"], arches300:["Arches 300lb 9×12 块",A_+"B01J9UMQHQ"],
+ cuppa:["CuppaClip 全棉风琴本",A_+"B0FNR29DDV"], hoidaai:["Hoidaai 风琴本 15×100",A_+"B0DSKC4BL2"], acc200:["风琴本 15×200",A_+"B0FY6T1NGL"], tosstuki:["Tosstuki A5 风琴本 × 2",A_+"B0G2C3BXVG"],
+ tumu:["tumuarta 全棉明信片 24 张",C_+"B08GKTFF55"], pc50:["全棉明信片 50 张",C_+"B0C5M64FQ7"], montval:["Canson Montval 水彩卡 + 信封",C_+"B00Q1RKFJM"],
+ wbKit:["线稿本 + 12 色颜料 + 笔",A_+"B0FG7LDC49"], wbNP:["国家公园线稿本 + 视频",A_+"B0H6J9TZ81"], wbXmas:["圣诞线稿本（120lb，线圈）",A_+"B0G3PDYN62"], wbFlower:["花卉线稿本 12 幅",A_+"B0H23M2G9M"]
 };
-const r = (...ks) => ks.map(k=>R[k]);
+const r = (...ks) => ks;
 
 const GRIDS = {
 pen:[
  {id:"color",name:"颜色 × 笔型墨水",q:"哪种颜色方案，在哪种笔型和墨水上还没人做？",rowT:"颜色方案",colT:"笔型 · 墨水",
   cols:["一次性 · 颜料型","一次性 · 染料型","可换芯 · 颜料型"],
+  rk:["black","grey sepia","colored 12","colored 24 36"], ck:["pigment fineliner waterproof","fineliner pens","refillable fineliner"],
+  rc:["黑色","灰色 棕色","彩色 12色","彩色 24色"], cc:["针管笔 颜料 防水","针管笔","可换芯 针管笔"],
   rows:[
    ["纯黑",[
-     ["R3","三类黑色主流品都挤在这里",{r:r("st308","much12","mic05"),t:["黑色梯度套装（品牌专业款）","黑色全能套装（白牌主场）","黑色单号多支装"],tier:[2,2,2],ev:"有来源",o:"耐用极细黑色梯度套装",d:"市场主体，品牌和白牌在各价位都有大量产品。新品只能靠品质升级进入，对应机会“耐用极细黑色梯度套装”。",k:["fineliner set black","micro pen set","drawing pens waterproof"]}],
+     ["R3","三类黑色主流品都挤在这里",{r:r("st308","much12","mic05"),t:["黑色梯度套装（品牌专业款）","黑色全能套装（白牌主场）","黑色单号多支装"],tier:[2,2,2],ev:"有来源",o:"耐用极细黑色梯度套装",d:"市场主体，品牌和白牌在各价位都有大量产品。新品只能靠品质升级进入，对应机会“耐用极细黑色梯度套装”。"}],
      ["S1","国产学生款、point 88 黑色",{r:r("p88blk"),tier:[2,1,0],d:"黑色针管笔的买家大多看重防水，染料型黑色需求弱，主要是书写用途。",ev:"有来源"}],
-     ["L2","只有 Copic、Rotring，全在 $12+/支",{r:r("copicA","rotring"),tier:[0,0,2],o:"平价可换芯铝杆针管笔",t:["可换芯 / 注墨制图笔"],k:["refillable fineliner","refillable drawing pen","replaceable nib pen"],ev:"有来源",d:"供给只在高价位，$4–7/支 的平价可换芯几乎没有。需求信号来自可持续卖点和 Copic 用户群，强度待用搜索量确认。"}]]],
+     ["L2","只有 Copic、Rotring，全在 $12+/支",{r:r("copicA","rotJr"),tier:[0,0,2],o:"平价可换芯铝杆针管笔",t:["可换芯 / 注墨制图笔"],k:["refillable fineliner pen"],ev:"有来源",d:"供给只在高价位，$4–7/支 的平价可换芯几乎没有。需求信号来自可持续卖点和 Copic 用户群，强度待用搜索量确认。"}]]],
    ["灰阶 / 棕褐",[
-     ["L0","只有零散的 Sepia、灰色单支",{o:"灰阶 / 棕褐写生勾线套装",k:["sepia fineliner","grey fineliner set","warm grey pen"],ev:"经验判断",d:"Micron 等品牌有 Sepia 单色，但没有成体系的灰阶或棕褐套装。供给少，需求还没证据，先查搜索量。"}],
+     ["S1","Micron 有冷灰 8 支、Sepia 4 支混合笔头",{r:r("micGrey","micSepia","micSepia3"),o:"灰阶 / 棕褐写生勾线套装",tier:[1,1,0],ev:"有来源",d:"补查后修正：Micron 已有冷灰 / 浅冷灰 8 支套装和 Sepia 4 支混合笔头装，这一格不是空白。剩下的空间只在“灰阶 + 棕褐 + 多粗细”的写生组合，机会已降为 C。"}],
      ["X","写生用户要防水，染料灰阶意义不大"],
      ["X","需求太细，暂不考虑"]]],
    ["彩色 6–16 色",[
-     ["S3","Micron 8 色、Staedtler 6 色、Muchcute 12 色",{r:r("mic8c","st6c","much12c"),t:["彩色颜料型防水套装"],tier:[1,2,1],ev:"有来源",d:"品牌款色数少、单价高，白牌已开始做 12 色颜料款。"}],
+     ["S3","Micron 8 / 16 色、Staedtler 6 色、Muchcute 12 色",{r:r("mic8c","mic16","much12c"),t:["彩色颜料型防水套装"],tier:[1,2,1],ev:"有来源",d:"品牌款色数少、单价高（Micron 16 色约 $34），白牌已开始做 12 色颜料款。"}],
      ["R2","STABILO 10 / 18 色、Mr. Pen 12 / 18 色",{r:r("p88_10","p88m18"),t:["彩色染料型 0.4 套装"],tier:[2,2,1],ev:"有来源"}],
      ["X","—"]]],
    ["彩色 24 色以上",[
-     ["E2","没看到 24 色以上的颜料防水套装",{o:"彩色颜料型防水针管笔 24–36 色",k:["waterproof colored fineliner","pigment colored pens 24","archival colored pens"],ev:"有来源",d:"颜料型彩色目前最多 12 色左右，染料型已经做到 40 色以上。需求信号：彩色染料款销量大（Mr. Pen 24 色月购 3K+），水彩勾线人群需要防水，两者交集还没人做。"}],
+     ["E2","没看到 24 色以上的颜料防水套装",{r:r("mic16"),o:"彩色颜料型防水针管笔 24–36 色",k:["waterproof colored fineliner 24","pigment colored pens 24 colors"],ev:"有来源",d:"颜料型彩色目前最多是 Micron 16 色（约 $34），染料型已经做到 40 色以上。需求信号：彩色染料款销量大（Mr. Pen 24 色月购 3K+），水彩勾线人群需要防水，两者交集还没人做。参考链接里的 Micron 16 色是目前最接近的产品。"}],
      ["R3","Mr. Pen 24 / 36 / 40 色、STABILO 25 色以上",{r:r("mrpen24","mrpen36"),t:["彩色染料型 0.4 套装"],tier:[2,1,0],ev:"有来源",d:"24 色压到约 $5.6，价格战。"}],
      ["X","—"]]]]},
 
  {id:"price",name:"套装结构 × 价格带",q:"每种套装结构，在哪个价位还没人做？",rowT:"套装结构",colT:"整套售价（美国站）",
-  cols:["< $8","$8–15","$15–25","$25+"],
+  cols:["< $8","$8–15","$15–25","$25+"], price:["0-800","800-1500","1500-2500","2500-100000"],
+  rk:["micron pen pack","black fineliner set 6","black fineliner set 12 brush","colored fineliner pens 24","pigment colored fineliner set","pigment colored fineliner 24 colors","refillable fineliner set"],
+  rc:["针管笔 单支","针管笔 套装 6支","针管笔 套装 12支","彩色针管笔 24色","彩色 颜料 针管笔","彩色 颜料 针管笔 24色","可换芯 针管笔"], cc:["","","",""],
   rows:[
-   ["单支 / 单号多支",[["R3","Micron 05 两支装约 $5.4",{r:r("mic05")}],["S2","6–12 支单号装",{r:r("mic005_6","p88blk")}],["L1","少"],["X","—"]]],
-   ["黑色小套 4–8 支梯度",[["L1","白牌少"],["R3","Staedtler 6 支 $8.91 起、白牌",{r:r("st308")}],["S2","Micron、Pitt 品牌套装",{r:r("pitt6")}],["L1","少，多为礼盒"]]],
+   ["单支 / 单号多支",[["R3","Micron 05 两支装约 $5.4",{r:r("mic05")}],["S2","6–12 支单号装",{r:r("mic005_6","mic01_6","p88blk")}],["L1","少"],["X","—"]]],
+   ["黑色小套 4–8 支梯度",[["L1","白牌少"],["R3","Staedtler 6 支 $8.91 起、白牌",{r:r("st308","ohuhu8")}],["S2","Micron、Pitt 品牌套装",{r:r("pitt6","pittEss")}],["L1","少，多为礼盒"]]],
    ["黑色全能 8–16 支",[["S2","Ohuhu 低价时段",{r:r("ohuhu8")}],["R3","白牌主战场",{r:r("much12","twohands")}],
-     ["E2","带耐用升级和收纳的高配款几乎没有",{o:"耐用极细黑色梯度套装",k:["premium fineliner set","fineliner set with case"],ev:"经验判断",d:"白牌集中在 $8–15，品牌小套在 $15–25 但支数少。“支数全 + 品质稳定 + 收纳”放在 $15–25 的产品少。"}],["X","—"]]],
-   ["彩色染料 12–40 色",[["R3","Mr. Pen 24 色约 $5.6",{r:r("mrpen24")}],["R2","中套",{r:r("mrpen36","p88m18")}],["S1","STABILO 大套"],["L1","少"]]],
-   ["彩色颜料 6–16 色",[["X","成本做不到"],["S2","Muchcute 12 色",{r:r("much12c")}],["S2","Micron 8 色 $14.6–19",{r:r("mic8c","mic8c01")}],["L1","少"]]],
-   ["彩色颜料 24 色以上",[["X","成本做不到"],["X","成本做不到"],["E3","空白，对应机会 A",{o:"彩色颜料型防水针管笔 24–36 色",k:["waterproof colored fineliner 24"],ev:"有来源"}],["E2","36 色以上也空白"]]],
-   ["可换芯套装",[["X","—"],["X","—"],["E2","3 支 + 替芯的平价套装空白",{o:"平价可换芯铝杆针管笔",k:["refillable fineliner set"],ev:"有来源",d:"Copic College Set、Rotring 套装都在高价位（Rotring 约 $72）。"}],["S1","Copic、Rotring",{r:r("copicA","rotring")}]]]]},
+     ["E2","带耐用升级和收纳的高配款几乎没有",{o:"耐用极细黑色梯度套装",k:["premium fineliner set with case"],ev:"经验判断",d:"白牌集中在 $8–15，品牌小套在 $15–25 但支数少。“支数全 + 品质稳定 + 收纳”放在 $15–25 的产品少。"}],["X","—"]]],
+   ["彩色染料 12–40 色",[["R3","Mr. Pen 24 色约 $5.6",{r:r("mrpen24")}],["R2","中套",{r:r("mrpen36","p88m18")}],["S1","STABILO 大套",{r:r("p88_10")}],["L1","少"]]],
+   ["彩色颜料 6–16 色",[["X","成本做不到"],["S2","Muchcute 12 色",{r:r("much12c","st6c")}],["S2","Micron 8 色 $14.6–19",{r:r("mic8c","mic8c01")}],["S1","Micron 16 色约 $34",{r:r("mic16")}]]],
+   ["彩色颜料 24 色以上",[["X","成本做不到"],["X","成本做不到"],["E3","空白，对应机会 A",{o:"彩色颜料型防水针管笔 24–36 色",k:["waterproof colored fineliner 24"],ev:"有来源"}],["E2","36 色以上也空白",{k:["pigment fineliner 36 colors"]}]]],
+   ["可换芯套装",[["X","—"],["X","—"],["E2","3 支 + 替芯的平价套装空白",{r:r("rotJr"),o:"平价可换芯铝杆针管笔",k:["refillable fineliner set"],ev:"有来源",d:"Copic College Set、Rotring 套装都在高价位（Rotring College Set 约 $72），Junior 套装是最便宜的参照。"}],["S1","Copic、Rotring",{r:r("copicA","rotring")}]]]]},
 
  {id:"scene",name:"使用场景 × 关键卖点",q:"每个用户场景最在意的卖点，有没有产品明确满足？",rowT:"使用场景",colT:"关键卖点（有产品明确宣称并做到）",
   cols:["干后防水","耐酒精马克笔","极细且耐用","速干防蹭","不洇不透背","可换芯 / 环保"],
+  rk:["watercolor","alcohol marker","manga inking","bible journaling","architecture drafting","left handed"],
+  ck:["waterproof fineliner","marker proof fineliner","0.05 fineliner durable","quick dry fineliner","no bleed fineliner","refillable fineliner"],
+  rc:["水彩 勾线","马克笔 勾线","漫画 勾线","手账","建筑 制图","左撇子"], cc:["防水 针管笔","耐马克笔 针管笔","0.05 针管笔","速干 针管笔","不透背 针管笔","可换芯 针管笔"],
   rows:[
-   ["水彩勾线",[["S3","黑色已满足，彩色缺",{o:"彩色颜料型防水针管笔 24–36 色",r:r("st308","mic8c")}],["X","无关"],["L2","宣称极细的多，宣称耐用、防缩头的少",{o:"耐用极细黑色梯度套装",ev:"有来源",d:"差评集中在极细号压坏、缩头。"}],["X","无关"],["S1","—"],["L1","少"]]],
-   ["酒精马克笔上色",[["S1","相关性弱"],["L3","Micron 有口碑，多数白牌没写清楚",{o:"耐马克笔勾线套装（Marker-proof）",r:r("ohuhu8"),k:["marker proof pen","copic proof fineliner","alcohol marker safe liner"],ev:"部分来源",d:"Ohuhu 页面只写了“先勾线等干再上马克笔”。马克笔是大品类，用户需要明确承诺。"}],["S1","—"],["L2","勾完马上上色需要速干",{k:["quick dry fineliner","fast drying drawing pen"],ev:"经验判断",clue:true,d:"新线索，还没进 ③。马克笔用户勾线后立刻上色，墨水没干会被带花。可以作为“耐马克笔勾线套装”的附加卖点，先查搜索量。"}],["X","无关"],["S1","Copic SP 本身就面向马克笔用户",{r:r("copicA")}]]],
-   ["漫画墨线",[["S2","—"],["L2","同上",{o:"耐马克笔勾线套装（Marker-proof）"}],["S3","品牌和白牌都有极细号",{r:r("mic005_6")}],["L1","—"],["X","无关"],["S1","Copic SP"]]],
-   ["手账 / 圣经页",[["X","无关"],["X","无关"],["S1","—"],["S1","—"],["S3","白牌标题常写 No Bleed Bible",{r:r("much12c","p88_10")}],["L1","—"]]],
-   ["建筑 / 制图",[["S2","—"],["X","无关"],["S2","Staedtler 金属护套、Rotring 钢针",{r:r("st308","rotring")}],["S1","—"],["X","无关"],["S2","Rotring 注墨式",{r:r("rotring")}]]],
-   ["左撇子用户",[["X","—"],["X","—"],["X","—"],["E0","几乎没有针管笔把左撇子速干作为主卖点",{k:["left handed pens quick dry","smudge proof fineliner left handed"],ev:"经验判断",clue:true,d:"新线索，还没进 ③。左撇子写字时手会蹭过刚写的线，速干是刚需。需要先查搜索量。"}],["S1","—"],["X","—"]]]]}
+   ["水彩勾线",[["S3","黑色已满足，彩色缺",{o:"彩色颜料型防水针管笔 24–36 色",r:r("st308","mic8c")}],["X","无关"],["L2","宣称极细的多，宣称耐用、防缩头的少",{r:r("st308","mic005_6"),o:"耐用极细黑色梯度套装",ev:"有来源",d:"差评集中在极细号压坏、缩头。参考链接是目前口碑最好的两款极细号产品，可以对比它们的差评。"}],["X","无关"],["S1","水彩纸厚，透背不是问题",{r:r("st308")}],["L1","少",{r:r("copicA")}]]],
+   ["酒精马克笔上色",[["S1","相关性弱"],["L3","Micron 有口碑，多数白牌没写清楚",{o:"耐马克笔勾线套装（Marker-proof）",r:r("ohuhu8","copicA"),k:["marker proof pen","copic proof fineliner"],ev:"部分来源",d:"Ohuhu 页面只写了“先勾线等干再上马克笔”，Copic SP 本身面向 Copic 马克笔用户但价格高。马克笔是大品类，用户需要明确承诺。"}],["S1","—"],["L2","勾完马上上色需要速干",{r:r("writech"),k:["quick dry fineliner"],ev:"经验判断",clue:true,d:"新线索，还没进 ③。马克笔用户勾线后立刻上色，墨水没干会被带花。WRITECH 宣称速干防蹭，但没有面向马克笔用户。可以作为“耐马克笔勾线套装”的附加卖点，先查搜索量。"}],["X","无关"],["S1","Copic SP 本身就面向马克笔用户",{r:r("copicA","copic07")}]]],
+   ["漫画墨线",[["S2","—",{r:r("mic005_6")}],["L2","同上",{o:"耐马克笔勾线套装（Marker-proof）",r:r("ohuhu8")}],["S3","品牌和白牌都有极细号",{r:r("mic005_6","much12")}],["L1","—",{r:r("writech")}],["X","无关"],["S1","Copic SP",{r:r("copicBr")}]]],
+   ["手账 / 圣经页",[["X","无关"],["X","无关"],["S1","—",{r:r("mic005_6")}],["S1","—",{r:r("writech")}],["S3","大量白牌主打 No Bleed Bible",{r:r("hanku16","kander","mrpenBible")}],["L1","—"]]],
+   ["建筑 / 制图",[["S2","—",{r:r("st308")}],["X","无关"],["S2","Staedtler 金属护套、Rotring 钢针",{r:r("st308","rotring")}],["S1","—"],["X","无关"],["S2","Rotring 注墨式",{r:r("rotring","rotJr")}]]],
+   ["左撇子用户",[["X","—"],["X","—"],["X","—"],["E0","左撇子速干笔都是中性笔、圆珠笔，针管笔没有",{r:r("lefty","writech"),k:["left handed pens quick dry","smudge proof fineliner"],ev:"部分来源",clue:true,d:"新线索，还没进 ③。补查后发现：主打左撇子的速干笔都是圆珠笔或中性笔（如 Lefty's、Zebra Sarasa X20、Maped Visio）；WRITECH 等针管笔宣称速干防蹭，但没有面向左撇子。需要先查搜索量。"}],["S1","—"],["X","—"]]]]}
 ],
 book:[
  {id:"fiber",name:"纤维 × 形态装订",q:"哪种纸，在哪种形态和装订上还没人做？",rowT:"纤维成分",colT:"产品形态 · 装订",
   cols:["纸垫（顶胶 / 线圈）","书式本 · 线圈","书式本 · 锁线平摊","四面封胶块","风琴本","明信片"],
+  rk:["watercolor","cotton blend watercolor","100% cotton watercolor"], ck:["paper pad","spiral sketchbook","sketchbook lay flat sewn","block","accordion sketchbook","postcards"],
+  rc:["木浆 水彩","混棉 水彩","全棉 水彩"], cc:["纸本","线圈 水彩本","锁线 平摊 水彩本","四面封胶","风琴本","明信片"],
   rows:[
    ["木浆",[
-     ["R3","Canson XL、Strathmore、Arteza",{r:r("cansonXL","artezaKid"),t:["木浆线圈纸垫","木浆多本装 / 多尺寸组合"],tier:[2,1,0],ev:"有来源"}],
-     ["S2","Arteza 线圈精装、白牌",{r:r("artezaSp"),tier:[1,2,0]}],
-     ["S2","Pentalic、Strathmore 400 锁线（$20+）",{r:r("pent58","strathHB"),t:["平价写生本（木浆 / 混棉）"],tier:[0,2,1],ev:"有来源"}],
-     ["X","木浆做封胶意义不大，封胶的价值在高克重全棉"],
-     ["S1","白牌意大利纸 300g，多数没标纤维",{r:r("hoidaai","acc200")}],
-     ["S2","白牌 50–100 张"]]],
+     ["R3","Canson XL、Strathmore、Arteza",{r:r("cansonXL","strath300","artezaGl"),t:["木浆线圈纸垫","木浆多本装 / 多尺寸组合"],tier:[2,1,0],ev:"有来源"}],
+     ["S2","Arteza 线圈精装、Strathmore 400 线圈",{r:r("artezaSp","strath140"),tier:[1,2,0]}],
+     ["S2","Pentalic、Strathmore 400 精装、Moleskine（$20+）",{r:r("pent58","strathHB","moleL"),t:["平价写生本（木浆 / 混棉）"],tier:[0,2,1],ev:"有来源"}],
+     ["S1","Strathmore 400 四面封胶块",{r:r("strathBlk"),ev:"有来源",d:"补查后修正：之前判断“木浆做封胶意义不大”，但 Strathmore 400 系列有 11×15 四面封胶块，说明有一定需求。"}],
+     ["S1","白牌意大利纸 300g，多数没标纤维",{r:r("hoidaai","acc200","tosstuki")}],
+     ["S2","白牌 50–100 张",{k:["watercolor postcards 100 sheets"]}]]],
    ["混棉",[
-     ["L2","很少",{o:"混棉升级练习纸垫多本装",k:["cotton blend watercolor pad","25% cotton watercolor paper"],ev:"有来源",d:"木浆纸垫的差评集中在翻翘、起毛，混棉是介于木浆和全棉之间的升级，但在售的混棉纸垫很少。"}],
+     ["L2","Fabriano Studio 25% 棉，但只有 12 张，多本装几乎没有",{r:r("fabStudio"),o:"混棉升级练习纸垫多本装",k:["cotton blend watercolor pad","25% cotton watercolor paper"],ev:"有来源",d:"补查后修正：混棉纸垫有 Fabriano Studio（25% 棉、75% 无木素纤维素，9×12 只有 12 张）。木浆纸垫的差评集中在翻翘、起毛，混棉是介于木浆和全棉之间的升级，但张数多、多本装的混棉纸垫仍然少。"}],
      ["L1","很少"],
      ["S1","少数（如 Kunst & Papier 35% 棉，160g 偏薄）",{ev:"有来源"}],
      ["X","—"],["X","—"],["X","—"]]],
    ["100% 全棉",[
-     ["S2","Paul Rubens、宝虹",{r:r("prJ"),tier:[0,2,1]}],
-     ["S1","Strathmore 全棉线圈旅行本，不平摊",{ev:"有来源"}],
-     ["L3","有产品，但集中在 $20–65",{r:r("hahA5","etchr"),o:"平价全棉平摊写生本",t:["全棉写生本"],tier:[0,1,2],k:["100% cotton watercolor sketchbook","cotton watercolor journal lay flat"],ev:"有来源",d:"Hahnemühle、Etchr、W&N 都在 $20 以上，$15–22 区间稀少。平价款有装订开裂差评，所以“平价 + 平摊 + 品控好”是空档。"}],
-     ["S2","Arches、Paul Rubens",{r:r("arches710","prBlk"),t:["全棉四面封胶块"],tier:[0,2,2]}],
+     ["S2","Paul Rubens、宝虹",{r:r("prJ","prLeather"),tier:[0,2,1]}],
+     ["S1","Strathmore 全棉线圈旅行本，不平摊",{ev:"有来源",k:["strathmore 100% cotton watercolor journal"]}],
+     ["L3","有产品，但集中在 $20–65",{r:r("hahA5","etchr"),o:"平价全棉平摊写生本",t:["全棉写生本"],tier:[0,1,2],k:["100% cotton watercolor sketchbook"],ev:"有来源",d:"Hahnemühle、Etchr、W&N 都在 $20 以上，$15–22 区间稀少。平价款有装订开裂差评，所以“平价 + 平摊 + 品控好”是空档。"}],
+     ["S2","Arches、Paul Rubens",{r:r("arches710","prBlk","arches300"),t:["全棉四面封胶块"],tier:[0,2,2]}],
      ["S2","CuppaClip、MEEDEN、Etchr，在增加",{r:r("cuppa"),o:"品牌化全棉风琴折本",tier:[1,2,0]}],
      ["S1","tumuarta、白牌 50 张",{r:r("tumu","pc50"),tier:[1,1,0]}]]]]},
 
  {id:"price",name:"形态 × 价格带",q:"每种形态在哪个价位还空着？",rowT:"产品形态",colT:"单件售价（美国站）",
-  cols:["< $10","$10–15","$15–22","$22–35","$35+"],
+  cols:["< $10","$10–15","$15–22","$22–35","$35+"], price:["0-1000","1000-1500","1500-2200","2200-3500","3500-100000"],
+  rk:["watercolor paper pad","watercolor sketchbook","100% cotton watercolor sketchbook","100% cotton watercolor block","accordion watercolor sketchbook","watercolor postcards","watercolor workbook adults"],
+  rc:["水彩纸 木浆","水彩本 写生","全棉 水彩本","全棉 水彩 四面封胶","风琴 水彩本","水彩 明信片","水彩 线稿本"], cc:["","","","",""],
   rows:[
-   ["木浆纸垫",[["R3","Canson XL 单本",{r:r("cansonXL")}],["R2","2 本装",{r:r("artezaKid")}],["S1","—"],["X","—"],["S1","6 本批量装 $58",{r:r("canson6")}]]],
-   ["写生本（木浆 / 未标棉）",[["S2","Strathmore 线圈约 $8.29",{r:r("strath140")}],["S2","—"],["S3","Pentalic $20–23",{r:r("pent58","pentSq")}],["S1","—"],["L1","Pentalic 8.5×11 $36–38",{r:r("pent811")}]]],
-   ["全棉写生本",[["L0","Vienrose 促销 $7.79、Viviva 手工 $10，品质待查",{ev:"部分来源"}],["L2","少；A5 全棉平价款可以下探到这里",{o:"平价全棉平摊写生本",ev:"经验判断",d:"$10–15 的全棉本很少。成本上比较紧，但如果做 A5、20 张、软精装，有可能落到这个价位，作为机会 A 的低价变体。"}],["L3","稀少，对应机会 A",{o:"平价全棉平摊写生本",k:["100% cotton watercolor sketchbook"],ev:"有来源"}],["S3","Etchr、Hahnemühle",{r:r("hahA5","etchr")}],["S2","W&N、Hahnemühle A4",{r:r("hahA4")}]]],
-   ["全棉封胶块",[["X","—"],["L1","少，小尺寸全棉块可以试"],["S2","Paul Rubens 小尺寸 $15.99",{r:r("prBlk")}],["S2","Arches 7×10 $31 起",{r:r("arches710")}],["S2","Arches 大尺寸",{r:r("arches910")}]]],
-   ["风琴本",[["L1","少"],["S2","白牌",{r:r("hoidaai")}],["S2","—",{r:r("cuppa")}],["L1","品牌款少",{o:"品牌化全棉风琴折本"}],["X","—"]]],
-   ["明信片 / 卡片",[["S3","白牌 50–100 张"],["S2","全棉 24–50 张",{r:r("tumu","pc50")}],["L2","礼盒款少",{o:"水彩明信片礼盒（形状组合 + 信封）",k:["watercolor postcards gift set","watercolor cards with envelopes"],ev:"部分来源"}],["L0","大礼盒款少",{clue:true,d:"$22–35 的明信片礼盒几乎没有，可能是因为客单价撑不住。先看节日季搜索量。"}],["X","—"]]],
-   ["预印线稿练习本",[["S1","—"],["S2","—",{r:r("wbXmas")}],["S2","带颜料套装",{r:r("wbKit","wbNP")}],["L1","—"],["X","—"]]]]},
+   ["木浆纸垫",[["R3","Canson XL 单本",{r:r("cansonXL")}],["R2","2 本装",{r:r("artezaKid","artezaGl")}],["S1","—",{r:r("cansonXL1115")}],["X","—"],["S1","6 本批量装 $58",{r:r("canson6")}]]],
+   ["写生本（木浆 / 未标棉）",[["S2","Strathmore 线圈约 $8.29",{r:r("strath140")}],["S2","—",{r:r("strathHB")}],["S3","Pentalic $20–23",{r:r("pent58","pentSq")}],["S1","Moleskine 口袋约 $24",{r:r("moleP","moleL")}],["L1","Pentalic 8.5×11 $36–38",{r:r("pent811","pent2")}]]],
+   ["全棉写生本",[["L0","Vienrose 促销 $7.79、Viviva 手工 $10，品质待查",{clue:true,ev:"部分来源",k:["100% cotton watercolor journal"]}],["L2","少；A5 全棉平价款可以下探到这里",{o:"平价全棉平摊写生本",r:r("prJ"),ev:"经验判断",d:"$10–15 的全棉本很少。成本上比较紧，但如果做 A5、20 张、软精装，有可能落到这个价位，作为机会 A 的低价变体。"}],["L3","稀少，对应机会 A",{o:"平价全棉平摊写生本",r:r("prJ","pent58"),k:["100% cotton watercolor sketchbook"],ev:"有来源",d:"这个价位的全棉写生本很少。参考链接：Paul Rubens 全棉本是价格最接近的全棉产品；Pentalic 是同价位的结构标杆（锁线平摊、松紧带），但纸不是全棉。机会 A 就是“Pentalic 的结构 + 全棉纸”。"}],["S3","Etchr、Hahnemühle",{r:r("hahA5","etchr")}],["S2","W&N、Hahnemühle A4",{r:r("hahA4")}]]],
+   ["全棉封胶块",[["X","—"],["L1","少，小尺寸全棉块可以试"],["S2","Paul Rubens 小尺寸 $15.99",{r:r("prBlk","prLeather")}],["S2","Arches 7×10 $31 起",{r:r("arches710")}],["S2","Arches 大尺寸",{r:r("arches910","arches300")}]]],
+   ["风琴本",[["L1","少"],["S2","白牌",{r:r("hoidaai","tosstuki")}],["S2","—",{r:r("cuppa","acc200")}],["L1","品牌款少",{r:r("moleAlb"),o:"品牌化全棉风琴折本"}],["X","—"]]],
+   ["明信片 / 卡片",[["S3","白牌 50–100 张"],["S2","全棉 24–50 张",{r:r("tumu","pc50")}],["L2","礼盒款少",{r:r("montval"),o:"水彩明信片礼盒（形状组合 + 信封）",k:["watercolor cards with envelopes"],ev:"部分来源"}],["L0","大礼盒款少",{clue:true,d:"$22–35 的明信片礼盒几乎没有，可能是因为客单价撑不住。先看节日季搜索量。"}],["X","—"]]],
+   ["预印线稿练习本",[["S1","—"],["S2","—",{r:r("wbXmas","wbFlower")}],["S2","带颜料套装",{r:r("wbKit","wbNP")}],["L1","—"],["X","—"]]]]},
 
  {id:"scene",name:"使用场景 × 关键卖点",q:"每个用户场景最在意的卖点，有没有产品明确满足？",rowT:"使用场景",colT:"关键卖点",
   cols:["180° 平摊","不翻翘（全棉 / 封胶 / 高克重）","便携硬封面 + 松紧带","低价多张","教程 / 线稿","可邮寄 / 送礼"],
+  rk:["travel","professional","student","kids","beginner adults","card making"],
+  ck:["watercolor sketchbook lay flat","watercolor block cotton","hardcover watercolor journal elastic","watercolor paper pad bulk","watercolor workbook","watercolor postcards gift set"],
+  rc:["旅行 写生","专业","学生","儿童","零基础 成人","手作 贺卡"], cc:["平摊 水彩本","全棉 水彩","硬壳 水彩本","水彩纸 多张","水彩 线稿本","水彩 明信片 礼盒"],
   rows:[
-   ["户外写生 / 旅行",[["S2","Pentalic、Hahnemühle",{r:r("pent58","hahA5")}],["L3","全棉写生本贵",{o:"平价全棉平摊写生本"}],["S3","—",{r:r("pent58")}],["X","—"],["L1","—"],["L1","—"]]],
-   ["作品创作",[["X","—"],["S3","Arches 等",{r:r("arches910")}],["X","—"],["X","—"],["X","—"],["L1","—"]]],
-   ["学生练习",[["S1","线圈本"],["L3","木浆翻翘、起毛",{o:"混棉升级练习纸垫多本装"}],["X","—"],["R3","Canson XL、Arteza",{r:r("cansonXL","canson6")}],["L1","—"],["X","—"]]],
-   ["儿童",[["S1","—"],["L1","—"],["X","—"],["S3","Arteza 儿童 200g",{r:r("artezaKid")}],["S2","线稿练习本"],["S1","—"]]],
-   ["零基础成人",[["S2","线圈线稿本",{r:r("wbXmas")}],["L2","线稿本纸偏薄（部分 120lb）",{o:"系列化预印线稿练习本",ev:"有来源"}],["X","—"],["S1","—"],["S3","Terself 系列 + 视频",{r:r("wbNP","wbKit")}],["S2","带颜料的套装"]]],
-   ["手作贺卡",[["X","—"],["S1","—"],["X","—"],["S3","100 张装白牌"],["L1","—"],["L2","礼盒、信封少",{o:"水彩明信片礼盒（形状组合 + 信封）",r:r("montval")}]]]]},
+   ["户外写生 / 旅行",[["S2","Pentalic、Hahnemühle",{r:r("pent58","hahA5")}],["L3","全棉写生本贵",{r:r("hahA5","etchr"),o:"平价全棉平摊写生本"}],["S3","—",{r:r("pent58","moleP")}],["X","—"],["L1","—"],["L1","—"]]],
+   ["作品创作",[["X","—"],["S3","Arches 等",{r:r("arches910","arches300")}],["X","—"],["X","—"],["X","—"],["L1","—"]]],
+   ["学生练习",[["S1","线圈本",{r:r("artezaSp")}],["L3","木浆翻翘、起毛",{r:r("fabStudio"),o:"混棉升级练习纸垫多本装"}],["X","—"],["R3","Canson XL、Arteza",{r:r("cansonXL","canson6")}],["L1","—"],["X","—"]]],
+   ["儿童",[["S1","—",{r:r("artezaSp")}],["L1","—"],["X","—"],["S3","Arteza 儿童 200g",{r:r("artezaKid")}],["S2","线稿练习本",{r:r("wbFlower")}],["S1","—"]]],
+   ["零基础成人",[["S2","线圈线稿本",{r:r("wbXmas")}],["L2","线稿本纸偏薄（部分 120lb）",{r:r("wbXmas"),o:"系列化预印线稿练习本",ev:"有来源"}],["X","—"],["S1","—"],["S3","Terself 系列 + 视频",{r:r("wbNP","wbKit")}],["S2","带颜料的套装",{r:r("wbKit")}]]],
+   ["手作贺卡",[["X","—"],["S1","—",{r:r("tumu")}],["X","—"],["S3","100 张装白牌"],["L1","—"],["L2","礼盒、信封少",{o:"水彩明信片礼盒（形状组合 + 信封）",r:r("montval")}]]]]},
 
  {id:"size",name:"画幅 × 纤维",q:"哪种尺寸和比例，在哪种纸上还没人做？",rowT:"尺寸 / 画幅",colT:"纤维成分",
   cols:["木浆","混棉","100% 全棉"],
+  rk:["pocket","A5","9x12","11x15","square","panoramic"], ck:["watercolor sketchbook","cotton blend watercolor","100% cotton watercolor"],
+  rc:["口袋","A5","A4","A3","方形","长条"], cc:["水彩本","混棉 水彩","全棉 水彩"],
   rows:[
-   ["口袋 ≤ A6",[["S2","Pentalic 口袋款",{r:r("pent58")}],["L1","—"],["S2","Etchr 小尺寸",{r:r("etchr")}]]],
-   ["A5 / 5×8",[["S3","—",{r:r("pent58","strathHB")}],["L1","Kunst & Papier"],["S3","Hahnemühle、Etchr 很多，但贵",{r:r("hahA5","etchr"),o:"平价全棉平摊写生本",d:"A5 全棉不缺产品，缺的是 $15–22 的平价款，见“形态 × 价格带”。"}]]],
-   ["A4 / 9×12",[["R3","Canson XL、Arteza",{r:r("cansonXL","artezaSp")}],["L2","少",{o:"混棉升级练习纸垫多本装"}],["S2","—",{r:r("hahA4","arches910")}]]],
-   ["≥ A3 / 11×15",[["S2","Canson XL 11×15"],["E1","空白，但需求弱"],["S2","Arches 大尺寸"]]],
+   ["口袋 ≤ A6",[["S2","Moleskine、Pentalic 口袋款",{r:r("moleP","pent58")}],["L1","—"],["S2","Etchr 小尺寸",{r:r("etchr")}]]],
+   ["A5 / 5×8",[["S3","—",{r:r("pent58","strathHB","moleL")}],["L1","Kunst & Papier"],["S3","Hahnemühle、Etchr 很多，但贵",{r:r("hahA5","etchr"),o:"平价全棉平摊写生本",d:"A5 全棉不缺产品，缺的是 $15–22 的平价款，见“形态 × 价格带”。"}]]],
+   ["A4 / 9×12",[["R3","Canson XL、Arteza",{r:r("cansonXL","artezaSp")}],["L2","Fabriano Studio 9×12 只有 12 张",{r:r("fabStudio"),o:"混棉升级练习纸垫多本装"}],["S2","—",{r:r("hahA4","arches910")}]]],
+   ["≥ A3 / 11×15",[["S2","Canson XL 11×15、Strathmore 300",{r:r("cansonXL1115","strath300")}],["E1","空白，但需求弱"],["S2","Arches 大尺寸"]]],
    ["方形",[["S1","Pentalic 5.5 方形",{r:r("pentSq")}],["E0","—"],["S2","Hahnemühle、Paul Rubens、Etchr 都有",{r:r("hahSq","prSq"),o:"方形 / 全景比例写生本",ev:"有来源",d:"核对后发现方形全棉已有多家在做，“方形”本身不是空白。"}]]],
-   ["长幅 / 全景",[["L1","—"],["E0","—"],["S2","Paul Rubens 长幅、Etchr 全景、宝虹长条",{r:r("prLong","etchr"),o:"方形 / 全景比例写生本",ev:"有来源"}]]]]}
+   ["长幅 / 全景",[["L1","—",{r:r("moleAlb")}],["E0","—"],["S2","Paul Rubens 长幅、Etchr 全景、宝虹长条",{r:r("prLong","etchr"),o:"方形 / 全景比例写生本",ev:"有来源"}]]]]}
 ]};
 
 /* ---------- 合并档案 ---------- */
@@ -1485,6 +1517,16 @@ function cellInfo(c){ const code=c[0], sup=code[0], dem=code.length>1?+code[1]:n
   return {sup, dem, note:c[1], o, opp, clue}; }
 const oppByTitle = t => (st.tab==="pen"?PEN_OPPS:BOOK_OPPS).find(x=>x.t===t);
 function curView(){ return GRIDS[st.tab].find(v=>v.id===gst.view[st.tab]) || GRIDS[st.tab][0]; }
+function refLinks(v,ri,ci,ii){
+  const o=ii.o, prods=(o.r||[]).map(k=>R[k]).filter(Boolean).map(([n,u])=>({kind:"商品",n,u}));
+  const q=(o.k&&o.k[0]) || [v.rk[ri], v.price?"":(v.ck||[])[ci]].filter(Boolean).join(" ");
+  const search={kind:"Amazon 搜索",n:q+(v.price?`（${v.cols[ci]}）`:""),u:"https://www.amazon.com/s?k="+encodeURIComponent(q)+(v.price?"&rh=p_36%3A"+v.price[ci]:"")};
+  const low=ii.sup==="L"||ii.sup==="E";
+  const list = low ? prods.slice(0,2).concat([search]) : (prods.length>=3 ? prods.slice(0,3) : prods.concat([search]));
+  const cq=[(v.rc||[])[ri],(v.cc||[])[ci]].filter(Boolean).join(" ");
+  const jd = cq ? {n:cq,u:"https://search.jd.com/Search?keyword="+encodeURIComponent(cq)+"&enc=utf-8"} : null;
+  return {list, jd, low};
+}
 function renderGrid(){
   const views=GRIDS[st.tab], v=curView();
   document.getElementById("gv-tabs").innerHTML=views.map(x=>`<button type="button" class="gv-tab" data-v="${x.id}" aria-pressed="${x.id===v.id}">${esc(x.name)}</button>`).join("");
@@ -1504,6 +1546,7 @@ function renderGrid(){
       const cls=`c-${ii.sup}${ii.opp?" is-opp":""}${ii.clue?" is-clue":""}${sel?" is-sel":""}${gst.only&&!ii.opp&&!ii.clue?" is-dim":""}`;
       let inner=`<div class="ct"><span class="sl">${SUP[ii.sup]}</span>${ii.sup!=="X"&&ii.dem!==null?`<span class="dm d${ii.dem}" title="需求信号：${DEM[ii.dem]}">需求 ${ii.dem?"●".repeat(ii.dem)+"○".repeat(3-ii.dem):"?"}</span>`:""}</div>${ii.note&&ii.note!=="—"?`<div class="cn">${esc(ii.note)}</div>`:""}`;
       if(ii.o.tier) inner+=`<div class="tier" title="价位分布：低 / 中 / 高">${ii.o.tier.map((x,i)=>`<i class="t${x}"><em>${"低中高"[i]}</em></i>`).join("")}</div>`;
+      if(ii.sup!=="X"){ const L=refLinks(v,ri,ci,ii); inner+=`<div class="lkc">${L.list.length} 个参考链接</div>`; }
       if(ii.o.o){ const op=oppByTitle(ii.o.o); if(op) inner+=`<div class="co"><i class="pri ${op.pri}">${op.pri}</i>${esc(op.t)}</div>`; }
       else if(ii.clue) inner+=`<div class="co clue">新线索，待验证</div>`;
       h+=`<td class="${cls}" data-ri="${ri}" data-ci="${ci}" tabindex="${ii.sup==="X"?-1:0}">${inner}</td>`;
@@ -1522,7 +1565,10 @@ function renderCell(){
   h+=`<div class="gd-grid"><div><h5>判断</h5><p>${esc(o.d||(ii.note!=="—"?ii.note:"这一格目前只有供给判断，没有补充说明。"))}</p>`;
   if(o.tier) h+=`<h5>价位分布</h5><p>${o.tier.map((x,i)=>`${"低中高"[i]}价位：${["无","少量","较多"][x]}`).join("；")}</p>`;
   h+=`</div><div>`;
-  if(o.r&&o.r.length) h+=`<h5>代表商品</h5><ul class="ev">${o.r.map(([n,u])=>`<li><a href="${u}" target="_blank" rel="noopener">${esc(n)}</a></li>`).join("")}</ul>`;
+  if(ii.sup!=="X"){ const L=refLinks(v,ri,ci,ii);
+    h+=`<h5>参考链接（${L.list.length}）</h5><ol class="exl reflinks">${L.list.map(x=>`<li><span class="rk ${x.kind==="商品"?"rk-p":"rk-s"}">${x.kind}</span><a href="${x.u}" target="_blank" rel="noopener">${esc(x.n)}</a></li>`).join("")}</ol>`;
+    if(L.low) h+=`<p class="fine">这一格供给少，打开搜索链接看前两页：对口商品越少，说明空档越真实。</p>`;
+    if(L.jd) h+=`<p class="fine">国内参考：<a href="${L.jd.u}" target="_blank" rel="noopener">京东搜索“${esc(L.jd.n)}”</a></p>`; }
   if(o.k&&o.k.length) h+=`<h5>验证关键词 <button type="button" class="btn mini" id="gd-copy">复制</button></h5><div class="chips">${o.k.map(k=>`<span class="kw">${esc(k)}</span>`).join("")}</div><p class="fine">拿这些词去卖家精灵 / Helium 10 查月搜索量和 Top 50 竞品数，搜索量高、竞品少才算真机会。</p>`;
   const rel=[...(o.t||[]).map(t=>["type",t]), ...(o.o?[["opp",o.o]]:[])];
   if(rel.length) h+=`<h5>在思维导图中查看</h5><div class="chips">${rel.map(([k,t])=>`<button type="button" class="btn mini gd-go" data-k="${k}" data-t="${esc(t)}">${k==="opp"?"机会：":"类型："}${esc(t)}</button>`).join("")}</div>`;
