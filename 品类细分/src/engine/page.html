@@ -62,6 +62,7 @@ section.block > h2{font-family:var(--font-display);font-weight:600;font-size:22p
 section.block > p{margin:0;color:var(--ink-2);max-width:84ch}
 /* 品类切换的系列分隔 */
 .tab-sep{display:inline-flex;align-items:center;padding:0 6px 0 12px;font:500 11.5px var(--font-body);color:var(--ink-3);border-left:1px solid var(--rule);margin-left:4px}
+@media (max-width:640px){#cat-tabs{display:flex;flex-wrap:nowrap;overflow-x:auto;max-width:100%;border-radius:12px;scrollbar-width:none}#cat-tabs::-webkit-scrollbar{display:none}#cat-tabs button,#cat-tabs .tab-sep{flex:0 0 auto;white-space:nowrap}#cat-tabs button{padding:6px 12px}}
 /* 系列总览 */
 .seriesbox{background:var(--sheet);border:1px solid var(--rule);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
 .seriesbox h3{margin:0;font-family:var(--font-display);font-weight:600;font-size:16px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
@@ -165,6 +166,7 @@ svg.fig{display:block;width:100%;max-width:300px;height:auto;margin:0 0 6px;colo
 .sv-line{fill:none;stroke:var(--ink-2);stroke-width:1.1}
 .sv-metal{fill:var(--rule);stroke:var(--ink-2)}
 .sv-acc{fill:var(--s3)}
+.sv-wood{fill:#cfa77a;stroke:var(--ink-2);stroke-width:1} .sv-wl{fill:none;stroke:#a9794a;stroke-width:4;stroke-linecap:round} .sv-ml{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round}
 .sv-glue{fill:none;stroke:var(--prussian);stroke-width:3;stroke-dasharray:6 3}
 .sv-lab{fill:var(--ink-3);font-family:var(--font-body)}
 ol.exl{margin:4px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:5px}

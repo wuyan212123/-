@@ -62,6 +62,7 @@ section.block > h2{font-family:var(--font-display);font-weight:600;font-size:22p
 section.block > p{margin:0;color:var(--ink-2);max-width:84ch}
 /* 品类切换的系列分隔 */
 .tab-sep{display:inline-flex;align-items:center;padding:0 6px 0 12px;font:500 11.5px var(--font-body);color:var(--ink-3);border-left:1px solid var(--rule);margin-left:4px}
+@media (max-width:640px){#cat-tabs{display:flex;flex-wrap:nowrap;overflow-x:auto;max-width:100%;border-radius:12px;scrollbar-width:none}#cat-tabs::-webkit-scrollbar{display:none}#cat-tabs button,#cat-tabs .tab-sep{flex:0 0 auto;white-space:nowrap}#cat-tabs button{padding:6px 12px}}
 /* 系列总览 */
 .seriesbox{background:var(--sheet);border:1px solid var(--rule);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
 .seriesbox h3{margin:0;font-family:var(--font-display);font-weight:600;font-size:16px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
@@ -165,6 +166,7 @@ svg.fig{display:block;width:100%;max-width:300px;height:auto;margin:0 0 6px;colo
 .sv-line{fill:none;stroke:var(--ink-2);stroke-width:1.1}
 .sv-metal{fill:var(--rule);stroke:var(--ink-2)}
 .sv-acc{fill:var(--s3)}
+.sv-wood{fill:#cfa77a;stroke:var(--ink-2);stroke-width:1} .sv-wl{fill:none;stroke:#a9794a;stroke-width:4;stroke-linecap:round} .sv-ml{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round}
 .sv-glue{fill:none;stroke:var(--prussian);stroke-width:3;stroke-dasharray:6 3}
 .sv-lab{fill:var(--ink-3);font-family:var(--font-body)}
 ol.exl{margin:4px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
@@ -1644,7 +1646,8 @@ src:{
 
 /* ---------- 结构示意图（通用，不是实拍图） ----------
    fig({k:"pens", n, ink:"black"|"rainbow"|"custom", cols:[颜色，写 "ink" 表示跟随主题的黑色], tips:[标签], pack:"blister"|"pouch"|"wallet"|"box"})
-   其他 k：refill / brush / dual / kit / spring / erase / pad / multi / book / block / cards / accordion / workbook / bookkit / pans / tubes / cups / bottles / droppers / easel
+   其他 k：refill / brush / dual / kit / spring / erase / pad / multi / book / block / cards / accordion / workbook / bookkit / pans / tubes / cups / bottles / droppers / easel / sticks
+   stand：画架、画箱、画柜，用 v 指定结构（aframe / hframe / crank / flat / tripod / wc / pochade / french / kit / cn / tablebox / tableh / tablea / tablemetal / board / kids / kidstable / display / displaywood / mini / artbox / toolbox / taboret / flatfile / rack / dryrack / easelcab / roll）
    新品类需要新图形时，在这里加一个 k 分支即可。 */
 const HUES = ["#d6453d","#e8892b","#e6c229","#5bab4a","#2a9d8f","#2f78c4","#5a4fcf","#a855b5","#d9579b","#8b5a2b","#6b7280","#1f8a70"];
 function fig(spec){
@@ -1769,6 +1772,40 @@ function fig(spec){
     for(let i=0;i<n;i++){ const cx=20+step*i+step/2, col=(spec.cols||HUES)[i%12];
       s+=`<rect x="${cx-bw/2}" y="26" width="${bw}" height="88" rx="${bw/2}" fill="${col}"/><rect x="${cx-bw/2}" y="62" width="${bw}" height="52" rx="2" class="sv-body"/>`; }
     s+=lab(W/2,140,spec.label||"颜料棒",8);
+
+  } else if(spec.k==="stand"){         /* 画架 / 画箱 / 画柜：v 指定结构 */
+    const v=spec.v, cv=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" class="sv-paper"/><path d="M${x+6} ${y+h-10} Q${x+w*0.4} ${y+h*0.3} ${x+w*0.6} ${y+h*0.6} T${x+w-6} ${y+12}" fill="none" stroke="${HUES[5]}" stroke-width="2"/>`;
+    const wheels=(xs,y)=>xs.map(x=>`<circle cx="${x}" cy="${y}" r="4" class="sv-ink"/>`).join("");
+    const drawers=(x,y,w,h,n)=>{ let r=`<rect x="${x}" y="${y}" width="${w}" height="${h}" class="sv-wood"/>`; const dh=h/n; for(let i=0;i<n;i++) r+=`<rect x="${x+3}" y="${y+i*dh+2}" width="${w-6}" height="${dh-4}" class="sv-body"/><rect x="${x+w/2-6}" y="${y+i*dh+dh/2-1.5}" width="12" height="3" class="sv-ink"/>`; return r; };
+    const L={aframe:"A 字架",hframe:"H 架",crank:"H 架 · 摇柄升降",flat:"可平放 H 架",tripod:"铝合金三脚架",wc:"平放水彩写生架",french:"法式画箱架",pochade:"写生画箱 + 三脚架",tablebox:"抽屉画箱（桌面画架）",tableh:"桌面 H 架",tablea:"桌面 A 字 / 三角架",tablemetal:"金属桌面三脚架",board:"桌面倾斜画板",kids:"双面儿童画架 + 卷纸",kidstable:"儿童桌面画架",display:"金属展示架 + 指示牌",displaywood:"木质展示架",mini:"迷你画架多支装",artbox:"多抽屉木画箱",toolbox:"手提分层工具箱",taboret:"画室边柜 / 推车",flatfile:"平面图纸柜",rack:"画布收纳架",dryrack:"晾画架",easelcab:"画架 + 收纳柜一体",roll:"画架卷纸",kit:"写生全套（架 + 凳 + 包）",cn:"美术生画架 + 画板"};
+    if(v==="aframe"||v==="displaywood"){ s+=`<path d="M120 14 L84 136 M120 14 L156 136 M120 14 L120 132 L150 140" class="sv-wl"/><rect x="88" y="96" width="64" height="7" class="sv-wood"/>`+(v==="aframe"?cv(94,34,52,60):`<rect x="96" y="40" width="48" height="54" fill="none" stroke="#b8902a" stroke-width="5"/><rect x="101" y="45" width="38" height="44" class="sv-soft"/>`); }
+    else if(v==="hframe"||v==="crank"||v==="flat"||v==="easelcab"){ const by=v==="easelcab"?96:132; s+=`<path d="M92 12 V${by} M148 12 V${by} M120 6 V${by} M82 ${by} H158" class="sv-wl"/><rect x="88" y="${v==="easelcab"?80:86}" width="64" height="7" class="sv-wood"/>`+(v==="flat"?`<rect x="70" y="66" width="100" height="14" class="sv-paper" transform="rotate(-8 120 73)"/>`:cv(94,v==="easelcab"?22:28,52,56));
+      if(v==="crank") s+=`<circle cx="160" cy="100" r="8" class="sv-line"/><path d="M160 100 L168 92" class="sv-ml"/>`;
+      if(v==="easelcab") s+=drawers(78,96,84,36,3)+wheels([84,156],136); }
+    else if(v==="tripod"||v==="wc"||v==="pochade"){ s+=`<path d="M120 70 L86 140 M120 70 L154 140 M120 70 L122 140 M120 70 V${v==="tripod"?20:64}" class="sv-ml"/>`;
+      if(v==="tripod") s+=cv(96,24,48,40)+`<rect x="94" y="64" width="52" height="4" class="sv-ink"/>`;
+      else if(v==="wc") s+=`<path d="M78 54 L162 54 L170 64 L70 64 Z" class="sv-paper"/><rect x="88" y="56" width="20" height="6" fill="${HUES[5]}" opacity=".6"/>`;
+      else s+=`<rect x="90" y="52" width="60" height="14" class="sv-wood"/><rect x="90" y="18" width="60" height="34" class="sv-wood" transform="skewX(-8)"/>`+cv(98,22,40,26); }
+    else if(v==="french"){ const lg=spec.alu?"sv-ml":"sv-wl"; s+=`<path d="M100 74 L80 140 M140 74 L160 140 M120 74 L122 140" class="${lg}"/><rect x="90" y="62" width="60" height="16" class="${spec.alu?"sv-metal":"sv-wood"}"/><path d="M120 62 V10" class="${lg}"/>`+cv(96,14,48,44); }
+    else if(v==="kit"){ s+=`<path d="M70 60 L50 136 M70 60 L90 136 M70 60 V136" class="sv-ml"/>`+cv(52,20,36,38)+`<path d="M140 108 L176 108 M146 108 L170 136 M170 108 L146 136" class="sv-ml"/><rect x="186" y="70" width="34" height="56" rx="6" class="sv-soft"/>`; }
+    else if(v==="cn"){ s+=`<path d="M100 20 L80 136 M140 20 L160 136 M120 20 L120 136" class="sv-ml"/><rect x="82" y="34" width="76" height="58" class="sv-wood"/><rect x="88" y="40" width="64" height="46" class="sv-paper"/><path d="M96 78 Q110 50 130 66 T146 52" fill="none" stroke="var(--ink-2)" stroke-width="1.4"/>`; }
+    else if(v==="tablebox"){ s+=`<path d="M20 132 H220" class="sv-line"/>`+drawers(70,100,100,32,2)+`<path d="M90 100 L110 34 M150 100 L130 34" class="sv-wl"/>`+cv(96,30,48,44); }
+    else if(v==="tableh"){ s+=`<path d="M20 132 H220" class="sv-line"/><path d="M98 30 V128 M142 30 V128 M120 22 V128 M88 128 H152" class="sv-wl"/><rect x="92" y="96" width="56" height="6" class="sv-wood"/>`+cv(100,40,40,52); }
+    else if(v==="tablea"){ s+=`<path d="M20 132 H220" class="sv-line"/><path d="M120 40 L96 128 M120 40 L144 128 M120 40 L130 128" class="sv-wl"/><rect x="98" y="98" width="44" height="5" class="sv-wood"/>`+cv(102,52,36,44); }
+    else if(v==="tablemetal"){ s+=`<path d="M20 132 H220" class="sv-line"/><path d="M120 60 L100 128 M120 60 L140 128 M120 60 L124 128 M120 60 V36" class="sv-ml"/><rect x="94" y="30" width="52" height="40" class="sv-soft"/><path d="M98 100 H142" class="sv-ml"/>`; }
+    else if(v==="board"){ s+=`<path d="M20 132 H220" class="sv-line"/><path d="M60 124 L180 124 L170 64 L70 64 Z" class="sv-wood"/><rect x="82" y="72" width="76" height="44" class="sv-paper" transform="skewX(-4)"/><path d="M170 64 L180 124" class="sv-ml"/>`; }
+    else if(v==="kids"){ s+=`<path d="M120 22 L76 140 M120 22 L164 140" class="sv-wl"/><rect x="84" y="30" width="72" height="62" class="sv-paper"/><rect x="90" y="36" width="60" height="50" class="sv-ink" opacity=".85"/><path d="M98 76 Q112 52 128 64" fill="none" stroke="#fff" stroke-width="1.6"/><rect x="80" y="18" width="80" height="10" rx="5" class="sv-paper"/><rect x="82" y="94" width="76" height="8" class="sv-wood"/>`+[0,1,2].map(i=>`<rect x="${92+i*20}" y="86" width="10" height="8" fill="${HUES[i*2]}"/>`).join(""); }
+    else if(v==="kidstable"){ s+=`<path d="M20 132 H220" class="sv-line"/><path d="M120 40 L84 128 M120 40 L156 128" class="sv-wl"/><rect x="92" y="48" width="56" height="44" class="sv-paper"/><rect x="96" y="52" width="48" height="36" class="sv-ink" opacity=".85"/><rect x="88" y="36" width="64" height="8" rx="4" class="sv-paper"/>`; }
+    else if(v==="display"){ s+=`<path d="M120 50 L90 140 M120 50 L150 140 M120 50 L122 140 M120 50 V14" class="sv-ml"/><rect x="72" y="18" width="96" height="70" class="sv-paper"/>${lab(120,50,"WELCOME",11)}<path d="M84 60 H156" class="sv-line"/><path d="M70 88 H170" class="sv-ml"/>`; }
+    else if(v==="mini"){ for(let i=0;i<5;i++){ const x=36+i*40; s+=`<path d="M${x} 70 L${x-14} 128 M${x} 70 L${x+14} 128 M${x} 70 L${x+4} 128" class="sv-wl" style="stroke-width:3"/><rect x="${x-13}" y="80" width="26" height="22" fill="${HUES[i*2]}" opacity=".7"/><rect x="${x-15}" y="102" width="30" height="3" class="sv-wood"/>`; } }
+    else if(v==="roll"){ for(let i=0;i<3;i++){ const x=40+i*58; s+=`<rect x="${x}" y="40" width="48" height="80" class="sv-paper"/><ellipse cx="${x+24}" cy="40" rx="24" ry="8" class="sv-paper"/><ellipse cx="${x+24}" cy="40" rx="6" ry="2.5" class="sv-ink"/>`; } }
+    else if(v==="artbox"){ s+=drawers(60,30,120,96,4)+`<rect x="56" y="24" width="128" height="8" class="sv-wood"/><rect x="104" y="14" width="32" height="10" rx="4" class="sv-line"/>`; }
+    else if(v==="toolbox"){ s+=`<rect x="50" y="56" width="140" height="72" rx="6" class="sv-soft"/><path d="M60 56 L80 34 H160 L180 56" class="sv-line"/><rect x="74" y="40" width="92" height="12" class="sv-body"/>`+[0,1,2,3,4].map(i=>`<rect x="${82+i*16}" y="42" width="5" height="8" fill="${HUES[i*2]}"/>`).join("")+`<path d="M100 28 H140" class="sv-ml"/>`; }
+    else if(v==="taboret"){ s+=`<rect x="64" y="26" width="112" height="10" class="sv-wood"/>`+drawers(70,36,100,54,3)+`<path d="M70 92 H170 M70 112 H170 M70 36 V130 M170 36 V130" class="sv-wl" style="stroke-width:3"/>`+wheels([76,164],136)+[0,1].map(i=>`<circle cx="${84+i*16}" cy="22" r="6" class="sv-paper"/>`).join(""); }
+    else if(v==="flatfile"){ s+=`<rect x="30" y="50" width="180" height="76" class="sv-wood"/>`+[0,1,2,3,4].map(i=>`<rect x="36" y="${54+i*14}" width="168" height="11" class="sv-body"/><rect x="112" y="${58+i*14}" width="16" height="3" class="sv-ink"/>`).join("")+`<path d="M34 126 V134 M206 126 V134" class="sv-ml"/>`; }
+    else if(v==="rack"){ s+=`<rect x="40" y="96" width="160" height="12" class="sv-wood"/>`+[0,1,2,3,4,5,6,7].map(i=>`<path d="M${52+i*20} 96 V40" class="sv-wl" style="stroke-width:3"/>`).join("")+[0,1,2].map(i=>cv(58+i*46,46+i*6,10,50-i*6)).join("")+wheels([50,190],114); }
+    else if(v==="dryrack"){ s+=`<path d="M70 20 V130 M170 20 V130" class="sv-ml"/>`+[0,1,2,3,4,5,6,7].map(i=>`<path d="M70 ${28+i*12} H170" class="sv-line"/>`).join("")+`<rect x="80" y="36" width="46" height="4" fill="${HUES[1]}"/><rect x="110" y="72" width="50" height="4" fill="${HUES[5]}"/>`+wheels([70,170],136); }
+    s+=lab(W/2,148,spec.label||L[v]||"",8);
   }
   return `<svg viewBox="0 0 ${W} ${H}" class="fig" role="img" aria-label="结构示意图">${s}</svg>`;
 }
@@ -2127,6 +2164,7 @@ function renderChrome(){
   document.getElementById("cat-tabs").innerHTML=CATS.map(c=>{ const lbl = c.series && c.series!==prevSeries ? `<span class="tab-sep">${esc(c.series)}系列</span>` : ""; prevSeries=c.series||null; return lbl+`<button type="button" data-tab="${c.id}" aria-pressed="${c.id===st.tab}">${esc(c.name)}</button>`; }).join("");
   renderSeries(cat);
   document.getElementById("cat-tabs").hidden = CATS.length<2;
+  { const tb=document.getElementById("cat-tabs"), on=tb.querySelector('button[aria-pressed="true"]'); if(on && tb.scrollWidth>tb.clientWidth) tb.scrollLeft = on.offsetLeft - tb.clientWidth/2 + on.offsetWidth/2; }
 }
 
 /* ---------- 系列总览（同一 series 的品类横向对比） ---------- */

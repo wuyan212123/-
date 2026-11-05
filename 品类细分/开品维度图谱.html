@@ -62,6 +62,7 @@ section.block > h2{font-family:var(--font-display);font-weight:600;font-size:22p
 section.block > p{margin:0;color:var(--ink-2);max-width:84ch}
 /* 品类切换的系列分隔 */
 .tab-sep{display:inline-flex;align-items:center;padding:0 6px 0 12px;font:500 11.5px var(--font-body);color:var(--ink-3);border-left:1px solid var(--rule);margin-left:4px}
+@media (max-width:640px){#cat-tabs{display:flex;flex-wrap:nowrap;overflow-x:auto;max-width:100%;border-radius:12px;scrollbar-width:none}#cat-tabs::-webkit-scrollbar{display:none}#cat-tabs button,#cat-tabs .tab-sep{flex:0 0 auto;white-space:nowrap}#cat-tabs button{padding:6px 12px}}
 /* 系列总览 */
 .seriesbox{background:var(--sheet);border:1px solid var(--rule);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
 .seriesbox h3{margin:0;font-family:var(--font-display);font-weight:600;font-size:16px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
@@ -165,6 +166,7 @@ svg.fig{display:block;width:100%;max-width:300px;height:auto;margin:0 0 6px;colo
 .sv-line{fill:none;stroke:var(--ink-2);stroke-width:1.1}
 .sv-metal{fill:var(--rule);stroke:var(--ink-2)}
 .sv-acc{fill:var(--s3)}
+.sv-wood{fill:#cfa77a;stroke:var(--ink-2);stroke-width:1} .sv-wl{fill:none;stroke:#a9794a;stroke-width:4;stroke-linecap:round} .sv-ml{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round}
 .sv-glue{fill:none;stroke:var(--prussian);stroke-width:3;stroke-dasharray:6 3}
 .sv-lab{fill:var(--ink-3);font-family:var(--font-body)}
 ol.exl{margin:4px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
@@ -2588,10 +2590,1457 @@ src:{
 }
 });
 
+/* ======================================================================
+   品类数据：落地画架（画架系列）
+   结构说明见 _template.js。数据快照：2026-11
+   ====================================================================== */
+CATS.push({
+id:"easelFloor", name:"落地画架", en:"Floor / Studio Easel", updated:"2026-11",
+series:"画架", pos:"画室主力；A 字架便宜但伸高会晃，榉木 H 架稳但贵、重",
+
+scope:{
+  def:"放在地上、站着或坐着画的画架，承托画布、画板。包括 A 字三脚架、H 架、摇柄升降 H 架、可平放多功能架、带抽屉的画室架，以及国内美术生常用的铁画架 / 木画架。",
+  include:"上述画架单卖、多件装，以及“画架 + 画板 / 画布”的组合。",
+  exclude:"铝合金三脚写生架（见户外写生画架）、法式画箱（见画箱）、儿童画架（见儿童画架）、婚礼展示架（见展示画架）。",
+  adjacent:"画板、画布、画凳、画室边柜（见画柜）。",
+  kw:["floor easel","h-frame easel","a-frame easel","studio easel","画架","落地画架","H 型画架"]
+},
+
+rules:[
+  "按结构分：A 字架（三脚、前两腿 + 后一腿）、H 架（两根立柱 + H 形底座）、摇柄 H 架、可平放多功能架、带抽屉画室架、铁画架；同一品牌不同结构分开记。",
+  "“最大画布高度”和“整体高度范围”分开记，单位统一为英寸（国内页面按 cm 原样记，并注明）。",
+  "承重只记页面写明的数字（如 33 lbs / 15 kg）；没写记“未披露”，不要用画布尺寸推算。",
+  "角度调节分三档：固定、前后倾斜、可放平（0°）。只写“可倾斜”不算可平放。",
+  "调节方式按实物结构记：翼形螺母、棘轮 / 卡槽、摇柄、弹簧夹；“免工具”要看是否真的不需要拧螺丝。",
+  "整装发货 / 需组装分开记；需组装的记录零件数或是否有编号贴纸（VISWIN 有编号贴纸）。",
+  "套装里的画布、画板、画笔件数不计入画架数量。"
+],
+
+dims:[
+ {g:"产品本体", about:"画架本身：结构、材质、尺寸承重、调节方式。", cats:[
+  {t:"A 结构与材质", c:[
+   {t:"结构类型", tag:"L1", def:"决定稳定性、占地和价格，是最主要的分类维度。",
+    kw:["a-frame easel","h-frame easel","crank easel","tilting flat easel"],
+    c:[{t:"A 字架",n:"三点着地，轻、便宜"},{t:"H 架",n:"两根立柱 + H 形底座，稳"},{t:"摇柄 H 架",n:"摇柄升降，重型"},{t:"可平放多功能架",n:"可从竖直调到放平"},{t:"带抽屉画室架",n:"H 架 + 抽屉 / 层板"},{t:"铁画架",n:"国内美术生常用，可折叠"}]},
+   {t:"材质", tag:"L1", c:[{t:"松木",n:"便宜、轻"},{t:"榉木",n:"中高端主流"},{t:"橡木 / 硬木"},{t:"铁 / 钢"},{t:"铝合金"}]},
+   {t:"表面处理", tag:"L3", c:[{t:"原木打磨"},{t:"上油",n:"Creative Mark 上油榉木"},{t:"漆面（黑 / 白 / 胡桃色）"}]}]},
+  {t:"B 尺寸与承重", c:[
+   {t:"最大画布高度", tag:"L2", rule:"按页面原样记，统一换成英寸。",
+    c:[{t:"≤ 36\"",n:"Somime A 字架"},{t:"37–50\"",n:"VISWIN 49\"、KINGART 40\""},{t:"51–77\"",n:"MEEDEN 77\""},{t:"78\" 以上",n:"DJAR、Somime H 架 78\""}]},
+   {t:"整体高度范围", tag:"L3", c:[{t:"≤ 65\""},{t:"53–95\""},{t:"60–102\"",n:"Creative Mark Carolina"},{t:"更高（重型）"}]},
+   {t:"承重", tag:"L2", rule:"只记页面写明的数字。", c:[{t:"≤ 15 lbs"},{t:"15–33 lbs",n:"MEEDEN 33 lbs、松木 A 字架 33 lbs"},{t:"33 lbs 以上"},{t:"未披露"}]},
+   {t:"整架重量", tag:"L3", c:[{t:"≤ 5 lbs",n:"松木 A 字架"},{t:"10–25 lbs",n:"Creative Mark 24 lbs"},{t:"25 lbs 以上",n:"U.S. Art Supply 重型 35 lbs"}]}]},
+  {t:"C 调节与稳定", c:[
+   {t:"角度调节", tag:"L2", c:[{t:"固定"},{t:"前后倾斜"},{t:"可放平（0°）",n:"MEEDEN Versatile"}]},
+   {t:"调节方式", tag:"L2", def:"翼形螺母便宜但易滑丝；棘轮 / 卡槽、摇柄调节快。",
+    c:[{t:"翼形螺母"},{t:"棘轮 / 卡槽"},{t:"摇柄"},{t:"弹簧夹（顶夹）"}]},
+   {t:"稳定结构", tag:"L3", c:[{t:"三点着地 + 后支腿"},{t:"H 形底座"},{t:"带锁万向轮"},{t:"可加配重"}]},
+   {t:"同时放画数", tag:"L3", c:[{t:"1 幅"},{t:"2 幅（上下）",n:"MEEDEN 可放 2 幅"}]}]},
+  {t:"D 合规", c:[
+   {t:"安全与合规", tag:"L0", rule:"木材涂层注意 Prop 65；边角无毛刺；带轮款要能锁定。",
+    c:[{t:"Prop 65 警示"},{t:"FSC 木材"},{t:"边角打磨"},{t:"倾倒警示"}]}]}
+ ]},
+ {g:"销售形态", about:"怎么卖：单卖还是组合、组装状态、配件。", cats:[
+  {t:"E 组合与数量", c:[
+   {t:"销售组合", tag:"L2", c:[{t:"单个画架"},{t:"2 件装"},{t:"画架 + 画板",n:"国内美术生"},{t:"画架 + 画布 + 颜料套装"}]},
+   {t:"组装状态", tag:"L3", c:[{t:"整装发货",n:"Creative Mark Carolina"},{t:"需组装（有编号）",n:"VISWIN"},{t:"需组装（说明简单）"}]}]},
+  {t:"F 收纳与配件", c:[
+   {t:"收纳配件", tag:"L3", c:[{t:"托盘"},{t:"笔槽"},{t:"抽屉"},{t:"层板"},{t:"无"}]},
+   {t:"便携", tag:"L3", c:[{t:"可折叠收纳"},{t:"带轮可推"},{t:"不可折叠"}]}]}
+ ]},
+ {g:"市场定位", about:"卖给谁、用在哪。", cats:[
+  {t:"G 等级", c:[
+   {t:"产品等级", tag:"L1", c:[{t:"入门（松木、铁）",n:"$25–60"},{t:"中级（榉木 A 字 / H 架）",n:"$60–150"},{t:"专业（重型、摇柄）",n:"$150 以上"}]}]},
+  {t:"H 场景与人群", c:[
+   {t:"使用场景", tag:"L3", c:[{t:"画室油画 / 丙烯"},{t:"水彩 / 素描（需放平）"},{t:"艺考素描"},{t:"课堂"},{t:"小户型家用"},{t:"兼作展示"}]},
+   {t:"目标人群", tag:"L3", c:[{t:"成人初学者"},{t:"进阶爱好者"},{t:"专业画家"},{t:"美术生"},{t:"老师 / 画室"}]}]}
+ ]}
+],
+
+types:[
+ {g:"A 字架", about:"三点着地，入门主力", items:[
+  {t:"木质 A 字画架（松木 / 榉木）", vol:"主流", volWhy:"Somime、VISWIN、BAHOM、KINGART、Falling in Art 等大量在售。",
+   combo:["A 字架","松木 / 榉木","画布 36–49\"","翼形螺母","可折叠"],
+   rep:"Somime 榉木 A 字架（画布 ≤ 36\"）、VISWIN 可倾斜 A 字架（65–89\"，画布 ≤ 49\"）、BAHOM 榉木 A 字架、KINGART 65\" 松木、Falling in Art 65\"",
+   price:"US $25–80", who:"成人初学者、家用", comp:"hi", compT:"高：白牌多",
+   pain:"伸高后晃；翼形螺母拧不紧、滑丝；说明书差", ev:["cheapWobble","viswinA"], evl:"部分来源",
+   fig:{k:"stand",v:"aframe"},
+   ex:[["somimeA","榉木，画布 ≤ 36\"，后支腿防倒"],["viswinA","65–89\"，画布 ≤ 49\"，零件有编号贴纸"],["bahomA","榉木 A 字架，带笔槽"],["kingart65","松木，< 2 lbs，画布 ≤ 40\""]],
+   map:[["结构类型","A 字架"],["材质","松木 / 榉木"],["最大画布高度","≤ 36\" / 37–50\"","s"],["调节方式","翼形螺母"],["稳定结构","三点着地 + 后支腿"],["便携","可折叠收纳"],["产品等级","入门（松木、铁） / 中级（榉木 A 字 / H 架）"]],
+   pros:["便宜、轻","可折叠"], cons:["伸高后晃","螺母调节慢、易滑丝"],
+   up:["棘轮 / 卡槽免工具调节","加宽底座"], verdict:["可做","对应机会 B“免工具快调、稳固的 A 字架”。"],
+   must:["写明承重","零件编号 + 图示说明"], plus:["棘轮调节"], avoid:["只写“sturdy”不给数字"]}
+ ]},
+ {g:"H 架", about:"画室主力", items:[
+  {t:"榉木 H 架画室架", vol:"主流", volWhy:"MEEDEN、Creative Mark、Somime、DJAR 多款在售，画布可到 77–78\"。",
+   combo:["H 架","榉木","画布 51–78\"","前后倾斜","承重 33 lbs"],
+   rep:"MEEDEN 多功能 H 架（画布 ≤ 77\"，承重 33 lbs）、Creative Mark Carolina（60–102\"，24 lbs，整装）、Somime H 架（≤ 78\"）、DJAR 大号 H 架",
+   price:"US $90–250", who:"进阶爱好者、专业画家", comp:"hi", compT:"高：品牌 + 白牌",
+   pain:"重、占地；需组装；价格较高", ev:["meedenH","carolina"], evl:"有来源",
+   fig:{k:"stand",v:"hframe"},
+   ex:[["meedenMulti","画布 ≤ 77\"，承重 33 lbs，可放 2 幅"],["carolina","60–102\"，24 lbs，整装发货"],["somimeH","画布 ≤ 78\""],["djarH","榉木，画布 ≤ 78\""]],
+   map:[["结构类型","H 架"],["材质","榉木"],["最大画布高度","51–77\" / 78\" 以上","s"],["承重","15–33 lbs","s"],["整架重量","10–25 lbs","m"],["同时放画数","2 幅（上下）","s"],["产品等级","中级（榉木 A 字 / H 架）"]],
+   pros:["稳","画幅大"], cons:["重","价格高"], up:["平价段（$70–100）稳固款"], verdict:["谨慎","品牌和白牌都多；平价稳固款见 ③（C）。"],
+   must:["写明承重和整架重量"], plus:["带轮"], avoid:["—"]},
+  {t:"重型摇柄 H 架", vol:"小众", volWhy:"U.S. Art Supply 摇柄重型 H 架、重型加大 H 架（35 lbs）在售。",
+   combo:["摇柄 H 架","榉木","画布 78\" 以上","摇柄","带锁万向轮"],
+   rep:"U.S. Art Supply Double Rocker Crank 重型 H 架、U.S. Art Supply 重型加大 H 架（带锁轮，35 lbs）",
+   price:"US $200–500", who:"专业画家、大幅作画", comp:"lo", compT:"低：少数品牌",
+   pain:"贵、重", ev:["usasCrank"], evl:"有来源",
+   fig:{k:"stand",v:"crank"},
+   ex:[["usasCrank","摇柄升降，重型"],["usasHeavy","带锁万向轮，35 lbs"]],
+   map:[["结构类型","摇柄 H 架"],["调节方式","摇柄"],["稳定结构","带锁万向轮"],["整架重量","25 lbs 以上","m"],["产品等级","专业（重型、摇柄）"]],
+   pros:["大画幅调节省力"], cons:["贵"], up:["—"], verdict:["不建议","需求小、客单高、运输重。"], must:["—"], plus:["—"], avoid:["—"]},
+  {t:"可平放多功能画室架", vol:"细分", volWhy:"MEEDEN Versatile、多款 H 架写明“可放平”（tilting flat）。",
+   combo:["可平放多功能架","榉木","可放平（0°）","画布 ≤ 77\""],
+   rep:"MEEDEN Versatile H 架（59–95\"，可倾斜到放平）、可放 2 幅的 H 架（tilting flat）",
+   price:"US $120–250", who:"水彩、素描、多媒介画家", comp:"mid", compT:"中",
+   pain:"贵；放平后高度和稳定性受限", ev:["meedenV"], evl:"有来源",
+   fig:{k:"stand",v:"flat"},
+   ex:[["meedenV","59–95\"，可倾斜到放平"],["hTilt","可放 2 幅，可放平"]],
+   map:[["结构类型","可平放多功能架"],["角度调节","可放平（0°）","m"],["使用场景","水彩 / 素描（需放平）"]],
+   pros:["一架多用"], cons:["贵"], up:["—"], verdict:["谨慎","已有品牌覆盖（③ 中“可平放落地水彩架”已排除）。"], must:["—"], plus:["—"], avoid:["—"]},
+  {t:"带抽屉画室架", vol:"细分", volWhy:"ARTIFY H 架带抽屉和层板（75\"）、Stuelloaf 带抽屉款在售。",
+   combo:["带抽屉画室架","榉木 / 松木","抽屉 / 层板","画布 ≤ 36–48\""],
+   rep:"ARTIFY 榉木 H 架 + 抽屉 + 层板（≤ 75\"）、Stuelloaf 带抽屉款（画布 ≤ 36\"）",
+   price:"US $80–200", who:"家用画室、小空间", comp:"mid", compT:"中",
+   pain:"带抽屉的款式画布尺寸小（Stuelloaf ≤ 36\"）；收纳量有限", ev:["artifyLink"], evl:"有来源",
+   fig:{k:"stand",v:"easelcab"},
+   ex:[["artify","H 架 + 抽屉 + 层板，可调到 75\""],["easelDrawerSearch","搜索页：带抽屉画架"]],
+   map:[["结构类型","带抽屉画室架"],["收纳配件","抽屉 / 层板"],["最大画布高度","≤ 36\" / 37–50\""],["使用场景","小户型家用"]],
+   pros:["画架和收纳合一"], cons:["收纳量小","画幅受限"], up:["画架 + 完整收纳柜（见画柜）"], verdict:["谨慎","对应 ③ C“落地画架 + 收纳柜一体”。"], must:["—"], plus:["带轮"], avoid:["—"]}
+ ]},
+ {g:"国内美术生", about:"铁画架 / 木画架 + 画板", items:[
+  {t:"国内美术生画架（铁 / 木 + 画板）", vol:"主流", volWhy:"国内画室、艺考素描常用可折叠铁画架、松木画架，常和 4K / 8K 画板一起卖（京东多款在售）。",
+   combo:["铁画架 / A 字架","铁 / 松木","画架 + 画板","可折叠"],
+   rep:"可升降折叠铁画架、松木三脚画架 + 4K 画板套装（京东多店铺）",
+   price:"¥40–200", who:"美术生、画室", comp:"hi", compT:"高：价格低、店铺多",
+   pain:"铁画架晃、生锈；画板变形", ev:["jdEasel"], evl:"部分来源",
+   fig:{k:"stand",v:"cn"},
+   ex:[["jdEasel","京东：美术生画架"],["jdEaselBoard","京东：画架 + 画板套装"]],
+   map:[["结构类型","铁画架 / A 字架"],["材质","铁 / 钢 / 松木"],["销售组合","画架 + 画板"],["使用场景","艺考素描"],["目标人群","美术生"]],
+   pros:["国内需求大"], cons:["价格低"], up:["—"], verdict:["谨慎","价格战。"], must:["—"], plus:["—"], avoid:["—"]}
+ ]}
+],
+
+opps:[
+ {t:"免工具快调、稳固的 A 字架", gap:"痛点缺口", score:{d:3,c:3,x:4,s:4,p:3,e:2},
+  why:"A 字架是入门主力，常见抱怨是伸高后晃、翼形螺母拧不紧、说明书差。在售白牌多用翼形螺母，很少把“免工具快调 + 稳”当主卖点。",
+  spec:["A 字架","榉木","棘轮 / 卡槽调节","加宽后支腿","画布 ≤ 48\"","写明承重"],
+  diff:"视频演示一手调高度、拍画不晃", price:"US $45–65",
+  risk:"结构改动需开模；卖点要靠视频才能看懂", verify:"抓 A 字架 Top 20 差评里 wobbly / knob / stripped / instructions 的占比",
+  from:"木质 A 字画架（松木 / 榉木）", ev:["cheapWobble","viswinA"], evl:"部分来源"},
+ {t:"平价稳固 H 架（$70–100）", gap:"价格带缺口", score:{d:3,c:2,x:3,s:4,p:3,e:3},
+  why:"榉木 H 架稳，但多在 $90 以上；更便宜的 A 字架又晃。$70–100 的 H 架如果写清承重和稳定性，可能接住从 A 字架升级的人。",
+  spec:["H 架","榉木 / 硬木","画布 ≤ 60\"","承重 ≥ 25 lbs","前后倾斜"], diff:"承重、稳定性写成数字对比", price:"US $70–100",
+  risk:"MEEDEN 等已有覆盖；运费高", verify:"按 $70–100 价格段筛 h frame easel，看 Top 30 的数量和评分",
+  from:"榉木 H 架画室架、木质 A 字画架（松木 / 榉木）", ev:["meedenH","cheapWobble"], evl:"部分来源"},
+ {t:"落地画架 + 收纳柜一体（小空间画室）", gap:"场景缺口", score:{d:3,c:3,x:3,s:3,p:3,e:2},
+  why:"带抽屉的画室架收纳量小、画幅受限（Stuelloaf ≤ 36\"）；真正“画架 + 收纳柜”一体的只有个别描述简单的款。小户型家用画室需要画架和颜料收纳合在一起。",
+  spec:["H 架","下部 3 抽屉柜","带锁轮","画布 ≤ 48\""], diff:"一个占地解决画架和收纳", price:"US $150–220",
+  risk:"体积大、运费高；需要做好稳定性", verify:"拉 easel with storage 的搜索量；看 ARTIFY 等带抽屉款的评论数",
+  from:"带抽屉画室架", ev:["artifyLink","easelCabLink"], evl:"部分来源"},
+ {t:"小户型可壁挂 / 折叠画室架", state:"clue", gap:"场景缺口",
+  why:"小户型用户常抱怨画架占地，但没有找到直接证据说明壁挂 / 折叠画室架的需求量。",
+  spec:["壁挂或折叠","承重 ≥ 20 lbs"], verify:"拉 wall mounted easel、folding studio easel 的搜索量", from:"榉木 H 架画室架", ev:["meedenH"], evl:"经验判断"},
+ {t:"可平放的落地水彩画架", state:"out", gap:"场景缺口",
+  why:"最初判断落地画架多数只能竖着放，水彩、素描需要能放平的落地架。",
+  outWhy:"核实后 MEEDEN Versatile 等多款 H 架写明可倾斜到放平（tilting flat），已有人做。",
+  spec:["可平放多功能架"], from:"可平放多功能画室架", ev:["meedenV"], evl:"有来源"}
+],
+
+grids:[
+ {id:"canvas",name:"结构 × 最大画布高度",q:"每种结构在哪个画幅上还没人做？",rowT:"结构类型",colT:"最大画布高度",
+  cols:["≤ 36\"","37–50\"","51–77\"","78\" 以上"],
+  rk:["a frame easel","h frame easel","crank easel","tilting flat easel","easel with storage drawer"], ck:["36 inch canvas","48 inch canvas","72 inch canvas","78 inch canvas"],
+  rc:["A字 画架","H型 画架","升降 画架","可平放 画架","带抽屉 画架"], cc:["","","",""],
+  rows:[
+   ["A 字架",[["R3","Somime 等",{r:["somimeA","bahomA"],t:["木质 A 字画架（松木 / 榉木）"]}],["R3","VISWIN 49\"、KINGART 40\"",{r:["viswinA","kingart65"]}],["S1","—"],["X","—"]]],
+   ["H 架",[["S1","—"],["S2","—"],["R3","MEEDEN 77\"",{r:["meedenMulti","carolina"],t:["榉木 H 架画室架"]}],["S2","DJAR、Somime 78\"",{r:["djarH","somimeH"]}]]],
+   ["摇柄 H 架",[["X","—"],["X","—"],["S1","—"],["S1","U.S. Art Supply",{r:["usasCrank","usasHeavy"],t:["重型摇柄 H 架"]}]]],
+   ["可平放",[["S1","—"],["S1","—"],["S2","MEEDEN Versatile",{r:["meedenV","hTilt"],t:["可平放多功能画室架"],o:"可平放的落地水彩画架"}],["X","—"]]],
+   ["带抽屉",[["S2","Stuelloaf ≤ 36\"",{r:["easelDrawerSearch"]}],["L2","画幅更大的带收纳款少",{r:["artify"],o:"落地画架 + 收纳柜一体（小空间画室）",ev:"部分来源"}],["S1","ARTIFY 75\"",{r:["artify"],t:["带抽屉画室架"]}],["X","—"]]]]},
+
+ {id:"price",name:"结构 × 价格带",q:"每种结构在哪个价位还空着？",rowT:"结构类型",colT:"售价（美国站）",
+  cols:["< $40","$40–80","$80–150","$150+"], price:["0-4000","4000-8000","8000-15000","15000-100000"],
+  rk:["a frame easel","h frame easel","crank easel","easel with storage"],
+  rc:["A字 画架","H型 画架","升降 画架","带抽屉 画架"], cc:["","","",""],
+  rows:[
+   ["A 字架",[["R3","松木款",{r:["kingart65"]}],["R3","榉木款",{r:["somimeA","viswinA","bahomA"]}],["S1","—"],["X","—"]]],
+   ["H 架",[["X","—"],["L2","稳固的平价 H 架少",{o:"平价稳固 H 架（$70–100）",ev:"部分来源"}],["R3","MEEDEN、Somime、DJAR",{r:["meedenMulti","somimeH","djarH"]}],["S2","Creative Mark",{r:["carolina"]}]]],
+   ["摇柄 H 架",[["X","—"],["X","—"],["X","—"],["S2","U.S. Art Supply",{r:["usasCrank","usasHeavy"]}]]],
+   ["带收纳",[["X","—"],["S1","—",{r:["easelDrawerSearch"]}],["S2","ARTIFY",{r:["artify"]}],["L2","画架 + 收纳柜一体少",{o:"落地画架 + 收纳柜一体（小空间画室）",ev:"部分来源"}]]]]},
+
+ {id:"adjust",name:"结构 × 调节方式",q:"每种结构用什么方式调节，有没有更快的？",rowT:"结构类型",colT:"调节方式",
+  cols:["翼形螺母","棘轮 / 卡槽","摇柄"],
+  rk:["a frame easel","h frame easel","studio easel"], ck:["wing nut","ratchet","crank"],
+  rc:["A字 画架","H型 画架","画室 画架"], cc:["螺母","卡槽","摇柄"],
+  rows:[
+   ["A 字架",[["R3","多数白牌",{r:["somimeA","viswinA"]}],["L3","免工具快调的 A 字架少",{o:"免工具快调、稳固的 A 字架",ev:"部分来源"}],["X","—"]]],
+   ["H 架",[["S3","—",{r:["djarH"]}],["S2","MEEDEN 卡槽",{r:["meedenMulti"]}],["S1","U.S. Art Supply",{r:["usasCrank"]}]]],
+   ["铁画架",[["S3","国内多数",{r:["jdEasel"]}],["S1","—"],["X","—"]]]]},
+
+ {id:"scene",name:"使用场景 × 关键卖点",q:"每个场景最在意的卖点，有没有产品明确满足？",rowT:"使用场景",colT:"关键卖点",
+  cols:["稳不晃","大画幅","可放平","免工具调节","收纳","可折叠"],
+  rk:["studio easel","watercolor easel","art student easel","small space easel","beginner easel"], ck:["sturdy","large canvas","tilt flat","easy adjust","storage","foldable"],
+  rc:["画室 画架","水彩 画架","美术生 画架","小户型 画架","入门 画架"], cc:["稳","大画幅","放平","调节","收纳","折叠"],
+  rows:[
+   ["画室油画 / 丙烯",[["S3","H 架",{r:["meedenMulti","carolina"]}],["S3","—",{r:["somimeH"]}],["S1","—"],["L2","—",{o:"免工具快调、稳固的 A 字架"}],["S1","—"],["S1","—"]]],
+   ["水彩 / 素描",[["S2","—"],["S1","—"],["S2","MEEDEN Versatile",{r:["meedenV"]}],["S1","—"],["S1","—"],["S1","—"]]],
+   ["艺考素描",[["L2","铁画架晃",{r:["jdEasel"]}],["S1","—"],["X","—"],["S1","—"],["X","—"],["S3","—",{r:["jdEaselBoard"]}]]],
+   ["小户型家用",[["S2","—"],["X","—"],["S1","—"],["S1","—"],["L3","画架和收纳分开买",{r:["artify"],o:"落地画架 + 收纳柜一体（小空间画室）",ev:"部分来源"}],["L1","—",{o:"小户型可壁挂 / 折叠画室架",clue:true}]]],
+   ["入门家用",[["L3","A 字架伸高会晃",{r:["somimeA","viswinA"],o:"免工具快调、稳固的 A 字架",ev:"部分来源"}],["S1","—"],["S1","—"],["L2","—",{o:"免工具快调、稳固的 A 字架"}],["S1","—"],["S3","—",{r:["kingart65"]}]]]]}
+],
+
+refs:{
+ somimeA:["Somime 榉木 A 字架（≤ 36\"）","https://www.amazon.com/dp/B0FHK9F9D4"], viswinA:["VISWIN 可倾斜 A 字架（≤ 49\"）","https://www.amazon.com/dp/B0912WFYJS"], bahomA:["BAHOM 榉木 A 字架","https://www.amazon.com/clp/B08G46V6YC"], kingart65:["KINGART 65\" 松木 A 字架","https://www.amazon.com/dp/B07HYKWZBX"],
+ meedenMulti:["MEEDEN 多功能 H 架（≤ 77\"）","https://www.amazon.com/dp/B07YTGGY8S"], meedenV:["MEEDEN Versatile H 架（可放平）","https://www.amazon.com/dp/B07R5RHWVT"], hTilt:["可放 2 幅、可放平的 H 架","https://us.amazon.com/dp/B0GX8YQTQC"],
+ carolina:["Creative Mark Carolina H 架","https://www.amazon.com/dp/B0049V3COC"], somimeH:["Somime H 架（≤ 78\"）","https://www.amazon.com/clp/B0D52FT8WF"], djarH:["DJAR 大号榉木 H 架","https://www.amazon.com/clp/B0DRF7Y8XL"],
+ usasCrank:["U.S. Art Supply 摇柄重型 H 架","https://www.amazon.com/clp/B00OU1A7OO"], usasHeavy:["U.S. Art Supply 重型加大 H 架","https://www.amazon.com/dp/B00L5NYIKO"],
+ artify:["ARTIFY H 架 + 抽屉 + 层板","https://www.amazon.com/clp/B0BY1R1Y4D"], easelDrawerSearch:["Amazon 搜索：easel with drawer","https://www.amazon.com/easel-drawer/s?k=easel+with+drawer"],
+ jdEasel:["京东 · 美术生画架（搜索页）","https://search.jd.com/Search?keyword=%E7%BE%8E%E6%9C%AF%E7%94%9F%E7%94%BB%E6%9E%B6&enc=utf-8"], jdEaselBoard:["京东 · 画架画板套装（搜索页）","https://search.jd.com/Search?keyword=%E7%94%BB%E6%9E%B6%E7%94%BB%E6%9D%BF%E5%A5%97%E8%A3%85&enc=utf-8"]
+},
+
+src:{
+ cheapWobble:["Virtual Art Academy / 零售评论：廉价画架伸高后晃、螺母和说明书问题","https://www.virtualartacademy.com/winsor-newton-easel/"],
+ viswinA:["VISWIN A 字架（Amazon，零件编号贴纸）","https://www.amazon.com/dp/B0912WFYJS"],
+ meedenH:["MEEDEN 多功能 H 架（Amazon，承重 33 lbs）","https://www.amazon.com/dp/B07YTGGY8S"],
+ carolina:["Creative Mark Carolina（Amazon）","https://www.amazon.com/dp/B0049V3COC"],
+ usasCrank:["U.S. Art Supply 摇柄 H 架（Amazon）","https://www.amazon.com/clp/B00OU1A7OO"],
+ meedenV:["MEEDEN Versatile（Amazon，可放平）","https://www.amazon.com/dp/B07R5RHWVT"],
+ artifyLink:["ARTIFY 带抽屉 H 架（Amazon）","https://www.amazon.com/clp/B0BY1R1Y4D"],
+ easelCabLink:["Amazon：画架 + 收纳柜款（描述简单）","https://www.amazon.com/dp/B0DCG5FSK9"],
+ jdEasel:["京东 · 美术生画架（搜索页）","https://search.jd.com/Search?keyword=%E7%BE%8E%E6%9C%AF%E7%94%9F%E7%94%BB%E6%9E%B6&enc=utf-8"]
+}
+});
+
+/* ======================================================================
+   品类数据：桌面画架（画架系列）
+   结构说明见 _template.js。数据快照：2026-11
+   ====================================================================== */
+CATS.push({
+id:"easelTable", name:"桌面画架", en:"Tabletop Easel", updated:"2026-11",
+series:"画架", pos:"放在桌上画小画、兼作展示；榉木 H 架是主力，画幅多在 24\" 以内",
+
+scope:{
+  def:"放在桌面上使用的画架，承托 24\" 以内的画布、画板或画本。包括桌面 H 架、桌面 A 字 / 三角小架、金属桌面三脚架、桌面倾斜画板，以及“桌面架 + 画布 + 画笔”的组合。",
+  include:"上述画架单卖、多件装和组合套装。",
+  exclude:"带抽屉的桌面画箱（见画箱）、5–9\" 迷你展示架（见展示画架）、儿童桌面画架（见儿童画架）。",
+  adjacent:"平板 / 书本支架、桌面绘图台、画箱。",
+  kw:["tabletop easel","table top easel","desk easel","tabletop drawing board","桌面画架","台式画架"]
+},
+
+rules:[
+  "按结构分：桌面 H 架、桌面 A 字 / 三角架、金属桌面三脚架、桌面倾斜画板；带抽屉的画箱式桌面架归画箱。",
+  "最大画布高度按页面原样记（英寸）；整架高度另记。",
+  "角度调节记档位数和范围（如 7 档 41–78°、0–90°）；能到 0° 的记“可放平”。",
+  "是否能锁定角度单独记：只靠摩擦或卡槽、没有锁扣的记“不可锁定”。",
+  "是否需组装按页面写（MEEDEN 部分款免组装，AUREUO 需组装）。",
+  "多件装按支数记；组合套装里的画布、画笔件数不计入画架数量。"
+],
+
+dims:[
+ {g:"产品本体", about:"画架本身：结构、材质、尺寸、角度。", cats:[
+  {t:"A 结构与材质", c:[
+   {t:"结构类型", tag:"L1", c:[{t:"桌面 H 架",n:"MEEDEN、U.S. Art Supply、VISWIN"},{t:"桌面 A 字 / 三角架",n:"小型木架"},{t:"金属桌面三脚架",n:"U.S. Art Supply 13.5\""},{t:"桌面倾斜画板",n:"绘图板式"}]},
+   {t:"材质", tag:"L1", c:[{t:"榉木"},{t:"松木"},{t:"竹"},{t:"钢 / 铁"},{t:"铝合金"}]}]},
+  {t:"B 尺寸与角度", c:[
+   {t:"最大画布高度", tag:"L2", c:[{t:"≤ 12\"",n:"金属三脚 14×11\""},{t:"13–20\"",n:"VISWIN 15\"、MEEDEN 20\""},{t:"21–25\"",n:"U.S. Art Supply 22\"、MEEDEN 23\"、AUREUO 24\""},{t:"26\" 以上"}]},
+   {t:"整架高度", tag:"L3", c:[{t:"≤ 15\""},{t:"16–25\""},{t:"26–38\"",n:"U.S. Art Supply 38\""}]},
+   {t:"角度调节", tag:"L2", c:[{t:"固定"},{t:"多档倾斜",n:"MEEDEN 7 档 41–78°"},{t:"可放平（0°）",n:"VISWIN 0–90°、MEEDEN 0–80°"}]},
+   {t:"角度锁定", tag:"L3", def:"移动画板时会不会合上、倒下。", c:[{t:"卡槽 / 棘轮"},{t:"螺丝锁紧"},{t:"不可锁定",n:"部分金属折叠架"}]},
+   {t:"防滑与稳定", tag:"L3", c:[{t:"防滑脚垫"},{t:"宽底座"},{t:"无"}]}]},
+  {t:"C 合规", c:[
+   {t:"安全与合规", tag:"L0", c:[{t:"Prop 65 警示"},{t:"边角打磨"},{t:"FSC 木材"}]}]}
+ ]},
+ {g:"销售形态", about:"怎么卖。", cats:[
+  {t:"D 组合与数量", c:[
+   {t:"销售组合", tag:"L2", c:[{t:"单个"},{t:"多件装（2–4 支）",n:"MEEDEN 金属 4 支装"},{t:"桌面架 + 画布 + 画笔",n:"AUREUO"}]},
+   {t:"组装状态", tag:"L3", c:[{t:"免组装"},{t:"需组装"}]},
+   {t:"便携", tag:"L3", c:[{t:"可折叠"},{t:"不可折叠"}]}]}
+ ]},
+ {g:"市场定位", about:"卖给谁、用在哪。", cats:[
+  {t:"E 场景与人群", c:[
+   {t:"使用场景", tag:"L3", c:[{t:"桌面小幅丙烯 / 油画"},{t:"水彩（需放平）"},{t:"速写本 / 手账"},{t:"展示小画、照片"},{t:"课堂 / 画室批量"}]},
+   {t:"目标人群", tag:"L3", c:[{t:"成人初学者"},{t:"小空间画者"},{t:"老师"},{t:"礼品购买者"}]},
+   {t:"价格带", tag:"L2", c:[{t:"< $15"},{t:"$15–30"},{t:"$30–60"},{t:"$60 以上"}]}]}
+ ]}
+],
+
+types:[
+ {g:"木质桌面架", about:"H 架、A 字架", items:[
+  {t:"桌面 H 架", vol:"主流", volWhy:"MEEDEN、U.S. Art Supply、VISWIN、Falling in Art 多款在售。",
+   combo:["桌面 H 架","榉木","画布 15–24\"","多档倾斜 / 可放平"],
+   rep:"MEEDEN 重型桌面 H 架（≤ 20\"）、MEEDEN H 架（≤ 21\"）、U.S. Art Supply 38\" 桌面 H 架（≤ 22\"，可折叠）、VISWIN 25\"（≤ 15\"，0–90°）、Falling in Art 重型桌面 H 架",
+   price:"US $25–60", who:"成人初学者、小空间画者", comp:"hi", compT:"高：品牌 + 白牌",
+   pain:"画幅多在 24\" 以内；有的需组装", ev:["meedenTH","usasTH"], evl:"有来源",
+   fig:{k:"stand",v:"tableh"},
+   ex:[["meedenTH","重型，画布 ≤ 20\""],["usasTH","38\" 高，画布 ≤ 22\"，可折叠"],["viswinTH","25\"，画布 ≤ 15\"，0–90°"],["meedenTH21","画布 ≤ 21\""]],
+   map:[["结构类型","桌面 H 架"],["材质","榉木"],["最大画布高度","13–20\" / 21–25\"","s"],["角度调节","多档倾斜 / 可放平（0°）","s"],["价格带","$30–60"]],
+   pros:["稳","可调角度"], cons:["画幅有限"], up:["可锁定 + 更大画幅"], verdict:["谨慎","竞争高；升级方向见 ③ B。"], must:["写明画布上限"], plus:["免组装"], avoid:["—"]},
+  {t:"桌面 A 字 / 三角小架", vol:"主流", volWhy:"小型木质桌面架大量在售，价格低。",
+   combo:["桌面 A 字 / 三角架","松木 / 榉木","画布 ≤ 16\"","固定 / 少档"],
+   rep:"ArtRight 小木架、各类 12–16\" 木质桌面三角架",
+   price:"US $8–20", who:"初学者、展示小画", comp:"hi", compT:"高",
+   pain:"轻、易倒；角度少", ev:["tableASearch"], evl:"部分来源",
+   fig:{k:"stand",v:"tablea"},
+   ex:[["artright","ArtRight 木质小画架"],["tableASearch","搜索页：wooden tabletop easel"]],
+   map:[["结构类型","桌面 A 字 / 三角架"],["材质","松木 / 榉木"],["最大画布高度","13–20\""],["角度调节","固定"],["价格带","< $15 / $15–30"]],
+   pros:["便宜"], cons:["不稳"], up:["—"], verdict:["不建议","低价红海。"], must:["—"], plus:["—"], avoid:["—"]}
+ ]},
+ {g:"金属桌面架", about:"兼作展示", items:[
+  {t:"金属桌面三脚架", vol:"细分", volWhy:"U.S. Art Supply 13.5\"、MEEDEN 金属 4 支装、AROIC 14\" 多件装在售。",
+   combo:["金属桌面三脚架","钢 / 铁","画布 ≤ 14\"","可折叠","多件装"],
+   rep:"U.S. Art Supply 13.5\" 黑色金属桌面架（≤ 14×11\"，< 1 lb）、MEEDEN 金属桌面架 4 支装",
+   price:"US $8–25", who:"展示小画、照片、标牌", comp:"hi", compT:"高",
+   pain:"不能锁定角度，移动画板时会合上、倒下", ev:["tableFall"], evl:"部分来源",
+   fig:{k:"stand",v:"tablemetal"},
+   ex:[["usasMetal13","13.5\"，≤ 14×11\"，防滑脚"],["meedenMetal4","金属桌面架 4 支装"]],
+   map:[["结构类型","金属桌面三脚架"],["材质","钢 / 铁"],["最大画布高度","≤ 12\""],["角度锁定","不可锁定","t"],["销售组合","多件装（2–4 支）"],["使用场景","展示小画、照片"]],
+   pros:["轻、便宜"], cons:["易合上、倒"], up:["可锁定"], verdict:["谨慎","偏展示用途。"], must:["—"], plus:["—"], avoid:["—"]}
+ ]},
+ {g:"组合与画板", about:"套装、倾斜画板", items:[
+  {t:"桌面架 + 画布画笔套装", vol:"细分", volWhy:"AUREUO 桌面 H 架 + 8×10\" 画布 + 10 支画笔等组合在售。",
+   combo:["桌面 H 架","榉木","画布 ≤ 24\"","桌面架 + 画布 + 画笔"],
+   rep:"AUREUO 桌面 H 架（≤ 24\"）+ 8×10\" 画布 + 10 支画笔",
+   price:"US $25–45", who:"初学者、礼品", comp:"mid", compT:"中",
+   pain:"只有工具，没有教程", ev:["aureuo"], evl:"有来源",
+   fig:{k:"stand",v:"tableh",label:"桌面 H 架 + 画布 + 画笔"},
+   ex:[["aureuo","画布 ≤ 24\"，含 8×10\" 画布和 10 支画笔；需组装"],["tableKitSearch","搜索页：tabletop easel kit"]],
+   map:[["销售组合","桌面架 + 画布 + 画笔"],["组装状态","需组装","m"],["目标人群","成人初学者、礼品购买者"]],
+   pros:["开箱能画"], cons:["无教程"], up:["加入入门课程"], verdict:["谨慎","对应 ③ C。"], must:["—"], plus:["课程"], avoid:["—"]},
+  {t:"桌面倾斜画板", vol:"细分", volWhy:"桌面绘图板、可调角度画板在售，多用于素描、水彩、设计稿。",
+   combo:["桌面倾斜画板","木 / 板材","可放平（0°）","可夹画本"],
+   rep:"可调角度桌面绘图板（多档支腿）",
+   price:"US $20–60", who:"素描、水彩、速写本用户", comp:"mid", compT:"中",
+   pain:"不同画本、画纸固定方式不一", ev:["boardSearch"], evl:"部分来源",
+   fig:{k:"stand",v:"board"},
+   ex:[["boardSearch","搜索页：tabletop drawing board adjustable"],["jdBoard","京东：桌面画板支架"]],
+   map:[["结构类型","桌面倾斜画板"],["角度调节","可放平（0°）"],["使用场景","水彩（需放平）、速写本 / 手账"]],
+   pros:["适合水彩、素描"], cons:["不适合画布"], up:["夹画本结构（线索）"], verdict:["谨慎","需求待验证。"], must:["—"], plus:["—"], avoid:["—"]}
+ ]}
+],
+
+opps:[
+ {t:"可锁定角度的大画幅桌面架", gap:"痛点缺口", score:{d:3,c:3,x:3,s:4,p:3,e:3},
+  why:"桌面架画幅多在 24\" 以内（MEEDEN 20–23\"、U.S. Art Supply 22\"、AUREUO 24\"）；金属折叠架有“移动画板就合上、倒下，没有锁定”的评论。能放 28\" 以上画布、角度能锁定、底座防滑的桌面架少。",
+  spec:["桌面 H 架","榉木","画布 ≤ 30\"","卡槽 + 锁扣","防滑宽底座"], diff:"演示推、拍画板不倒", price:"US $45–65",
+  risk:"大画幅桌面架重心高；要实测", verify:"抓桌面架差评里 tip over / falls / collapses / too small 的占比",
+  from:"桌面 H 架、金属桌面三脚架", ev:["tableFall","meedenTH"], evl:"部分来源"},
+ {t:"桌面画架 + 入门课程套装", gap:"场景缺口", score:{d:3,c:2,x:3,s:4,p:3,e:2},
+  why:"已有“桌面架 + 画布 + 画笔”的组合（AUREUO），但没有课程。丙烯入门套装里加视频课的思路（见丙烯颜料）可以用到桌面画架上。",
+  spec:["桌面 H 架","画布 3–5 块","画笔","颜料 12 色","分步视频课"], diff:"“跟着课画完第一幅”", price:"US $35–50",
+  risk:"和丙烯套装重叠；课程成本", verify:"拉 tabletop easel kit 的搜索量和评论数",
+  from:"桌面架 + 画布画笔套装", ev:["aureuo"], evl:"部分来源"},
+ {t:"能夹速写本 / 手账的桌面架", state:"clue", gap:"场景缺口",
+  why:"桌面架多为夹画布设计，速写本、手账、画纸块不好固定。是否有足够需求，证据不足。",
+  spec:["桌面倾斜画板","画本夹 / 磁吸条"], verify:"拉 sketchbook stand、easel for sketchbook 的搜索量", from:"桌面倾斜画板", ev:["boardSearch"], evl:"经验判断"},
+ {t:"可放平的桌面水彩架", state:"out", gap:"场景缺口",
+  why:"最初判断桌面架只能竖着，水彩需要能放平。",
+  outWhy:"核实后 VISWIN 写明 0–90°，MEEDEN 有 0–80° 款，已有人做。",
+  spec:["桌面 H 架","可放平"], from:"桌面 H 架", ev:["viswinTH"], evl:"有来源"}
+],
+
+grids:[
+ {id:"canvas",name:"结构 × 最大画布高度",q:"每种结构在哪个画幅上还没人做？",rowT:"结构类型",colT:"最大画布高度",
+  cols:["≤ 12\"","13–20\"","21–25\"","26\" 以上"],
+  rk:["tabletop h frame easel","small wooden tabletop easel","metal tabletop easel","tabletop drawing board"], ck:["12 inch","20 inch","24 inch","30 inch canvas"],
+  rc:["桌面 H型 画架","桌面 小画架","金属 桌面 画架","桌面 画板"], cc:["","","",""],
+  rows:[
+   ["桌面 H 架",[["S1","—"],["R3","MEEDEN、VISWIN",{r:["meedenTH","viswinTH","meedenTH21"],t:["桌面 H 架"]}],["S3","U.S. Art Supply 22\"、AUREUO 24\"",{r:["usasTH","aureuo"]}],["L2","大画幅桌面架少",{o:"可锁定角度的大画幅桌面架",ev:"部分来源"}]]],
+   ["桌面 A 字架",[["S3","—",{r:["artright"]}],["R3","—",{r:["tableASearch"],t:["桌面 A 字 / 三角小架"]}],["S1","—"],["X","—"]]],
+   ["金属桌面架",[["R3","U.S. Art Supply 13.5\"",{r:["usasMetal13","meedenMetal4"],t:["金属桌面三脚架"]}],["S1","—"],["X","—"],["X","—"]]],
+   ["倾斜画板",[["S1","—"],["S2","—",{r:["boardSearch"],t:["桌面倾斜画板"]}],["S1","—"],["X","—"]]]]},
+
+ {id:"price",name:"结构 × 价格带",q:"每种结构在哪个价位还空着？",rowT:"结构类型",colT:"售价（美国站）",
+  cols:["< $15","$15–30","$30–60","$60+"], price:["0-1500","1500-3000","3000-6000","6000-100000"],
+  rk:["tabletop h frame easel","small wooden tabletop easel","metal tabletop easel","tabletop easel kit"],
+  rc:["桌面 H型 画架","桌面 小画架","金属 桌面 画架","桌面 画架 套装"], cc:["","","",""],
+  rows:[
+   ["桌面 H 架",[["X","—"],["S3","—",{r:["viswinTH"]}],["R3","MEEDEN、U.S. Art Supply",{r:["meedenTH","usasTH"]}],["S1","MEEDEN PRO 大号"]]],
+   ["桌面 A 字架",[["R3","—",{r:["artright","tableASearch"]}],["S2","—"],["X","—"],["X","—"]]],
+   ["金属桌面架",[["R3","—",{r:["usasMetal13"]}],["S2","多件装",{r:["meedenMetal4"]}],["X","—"],["X","—"]]],
+   ["组合套装",[["X","—"],["S2","AUREUO",{r:["aureuo"]}],["L2","带课程的少",{o:"桌面画架 + 入门课程套装",ev:"部分来源"}],["X","—"]]]]},
+
+ {id:"angle",name:"结构 × 角度",q:"每种结构能调到什么角度？",rowT:"结构类型",colT:"角度调节",
+  cols:["固定","多档倾斜","可放平"],
+  rk:["tabletop h frame easel","small wooden tabletop easel","metal tabletop easel","tabletop drawing board"], ck:["","adjustable angle","flat"],
+  rc:["桌面 H型 画架","桌面 小画架","金属 桌面 画架","桌面 画板"], cc:["","可调角度","可放平"],
+  rows:[
+   ["桌面 H 架",[["S1","—"],["R3","MEEDEN 7 档",{r:["meedenTH21","meedenTH"]}],["S2","VISWIN 0–90°",{r:["viswinTH"],o:"可放平的桌面水彩架"}]]],
+   ["桌面 A 字架",[["R3","—",{r:["artright"]}],["S2","—"],["X","—"]]],
+   ["金属桌面架",[["S2","—"],["S3","—",{r:["usasMetal13"]}],["X","—"]]],
+   ["倾斜画板",[["X","—"],["S2","—"],["S2","—",{r:["boardSearch"]}]]]]},
+
+ {id:"scene",name:"使用场景 × 关键卖点",q:"每个场景最在意的卖点，有没有产品明确满足？",rowT:"使用场景",colT:"关键卖点",
+  cols:["稳不倒","角度可锁定","可放平","能夹画本","大画幅","多件装"],
+  rk:["tabletop easel painting","watercolor tabletop easel","sketchbook stand","display tabletop easel","classroom tabletop easel"], ck:["sturdy","locking","flat","sketchbook holder","large canvas","pack"],
+  rc:["桌面 画架","水彩 桌面 画架","速写本 支架","桌面 展示架","教室 桌面 画架"], cc:["稳","锁定","放平","夹画本","大画幅","多支装"],
+  rows:[
+   ["桌面小幅丙烯",[["S3","H 架",{r:["meedenTH"]}],["L2","—",{o:"可锁定角度的大画幅桌面架"}],["S1","—"],["X","—"],["L3","24\" 以上的少",{r:["usasTH","aureuo"],o:"可锁定角度的大画幅桌面架",ev:"部分来源"}],["S1","—"]]],
+   ["水彩",[["S2","—"],["S1","—"],["S2","VISWIN、画板",{r:["viswinTH","boardSearch"]}],["L1","—"],["X","—"],["X","—"]]],
+   ["速写本 / 手账",[["S1","—"],["S1","—"],["S1","—"],["L0","专门夹画本的少",{r:["boardSearch"],o:"能夹速写本 / 手账的桌面架",clue:true}],["X","—"],["X","—"]]],
+   ["展示小画",[["L2","金属架易合上",{r:["usasMetal13"],o:"可锁定角度的大画幅桌面架",ev:"部分来源"}],["S1","—"],["X","—"],["X","—"],["S1","—"],["S3","—",{r:["meedenMetal4"]}]]],
+   ["课堂批量",[["S1","—"],["S1","—"],["S1","—"],["S1","—"],["X","—"],["S2","—",{r:["meedenMetal4"]}]]]]}
+],
+
+refs:{
+ meedenTH:["MEEDEN 重型桌面 H 架（≤ 20\"）","https://www.amazon.com/dp/B0CF1WXFH8"], meedenTH21:["MEEDEN 桌面 H 架（≤ 21\"）","https://www.amazon.com/clp/B09TPH9VQR"], usasTH:["U.S. Art Supply 38\" 桌面 H 架（≤ 22\"）","https://www.amazon.com/dp/B00L5P86SM"], viswinTH:["VISWIN 25\" 桌面 H 架（0–90°）","https://www.amazon.com/dp/B0CYSRSJ3J"],
+ aureuo:["AUREUO 桌面 H 架 + 画布 + 画笔","https://us.amazon.com/dp/B08XM5DHX9"], artright:["ArtRight 木质小画架","https://www.amazon.com/clp/B08W9QH3ST"],
+ usasMetal13:["U.S. Art Supply 13.5\" 金属桌面架","https://www.amazon.com/dp/B00RLZAXU4"], meedenMetal4:["MEEDEN 金属桌面架 4 支装","https://www.amazon.com/clp/B0CWNG1ZHH"],
+ tableASearch:["Amazon 搜索：wooden tabletop easel","https://www.amazon.com/s?k=small+wooden+tabletop+easel"], tableKitSearch:["Amazon 搜索：tabletop easel kit","https://www.amazon.com/s?k=tabletop+easel+painting+kit"],
+ boardSearch:["Amazon 搜索：tabletop drawing board adjustable","https://www.amazon.com/s?k=tabletop+drawing+board+adjustable"], jdBoard:["京东 · 桌面画板支架（搜索页）","https://search.jd.com/Search?keyword=%E6%A1%8C%E9%9D%A2%E7%94%BB%E6%9D%BF%E6%94%AF%E6%9E%B6&enc=utf-8"]
+},
+
+src:{
+ meedenTH:["MEEDEN 桌面 H 架（Amazon）","https://www.amazon.com/dp/B0CF1WXFH8"],
+ usasTH:["U.S. Art Supply 桌面 H 架（Amazon）","https://www.amazon.com/dp/B00L5P86SM"],
+ viswinTH:["VISWIN 25\" 桌面 H 架（Amazon，0–90°）","https://www.amazon.com/dp/B0CYSRSJ3J"],
+ aureuo:["AUREUO 桌面架套装（Amazon）","https://us.amazon.com/dp/B08XM5DHX9"],
+ tableFall:["Staples 评论：桌面架移动画板会合上、倒下","https://www.staples.com/ptd/review/1682317"],
+ tableASearch:["Amazon 搜索：wooden tabletop easel","https://www.amazon.com/s?k=small+wooden+tabletop+easel"],
+ boardSearch:["Amazon 搜索：tabletop drawing board","https://www.amazon.com/s?k=tabletop+drawing+board+adjustable"]
+}
+});
+
+/* ======================================================================
+   品类数据：户外写生画架（画架系列）
+   结构说明见 _template.js。数据快照：2026-11
+   ====================================================================== */
+CATS.push({
+id:"easelPlein", name:"户外写生画架", en:"Field / Plein Air Easel", updated:"2026-11",
+series:"画架", pos:"轻、能背出门；铝合金三脚架便宜但伸长会晃，水彩写生要能放平",
+
+scope:{
+  def:"带出门写生用的轻便画架：铝合金三脚写生架、平放水彩写生架、写生专用三脚架（配画箱）、写生全套（画架 + 凳 + 包），以及国内写生画架。",
+  include:"上述画架单卖、多件装和写生套装。",
+  exclude:"法式画箱、写生画箱 Pochade（见画箱）；纯展示用的金属指示牌架（见展示画架）。",
+  adjacent:"写生凳、画箱、湿画板携带箱、相机三脚架。",
+  kw:["field easel","plein air easel","tripod easel","watercolor easel portable","写生画架","户外画架","铝合金画架"]
+},
+
+rules:[
+  "按结构分：铝合金三脚写生架、平放水彩写生架、写生专用三脚架、写生全套、国内写生画架；带盒子的法式画箱、Pochade 归画箱。",
+  "重量统一记 kg（页面写 lbs 的换算后保留原值）；画架本体和整套分开记。",
+  "高度范围按页面原样记（如 17–66\"、25–72\"）；收纳长度单独记（如折叠后 18\"、21\"）。",
+  "承重只记页面写明的数字（如 25 lbs）。",
+  "“可放平”指画板能调到水平，用于水彩；只写“可倾斜”不算。",
+  "多件装（如 Ohuhu 2 支装）按支数记，价格按单支折算后另记。"
+],
+
+dims:[
+ {g:"产品本体", about:"画架本身：结构、材质、重量、高度、角度。", cats:[
+  {t:"A 结构与材质", c:[
+   {t:"结构类型", tag:"L1", c:[{t:"铝合金三脚写生架",n:"Ohuhu、KINGART、U.S. Art Supply"},{t:"平放水彩写生架",n:"PLEINLY、磁吸写生板、MEEDEN"},{t:"写生专用三脚架",n:"New Wave u.go、Mabef"},{t:"写生全套",n:"画架 + 凳 + 包"},{t:"国内写生画架",n:"铝合金 / 铁 + 画板"}]},
+   {t:"材质", tag:"L1", c:[{t:"铝合金"},{t:"钢 / 铁"},{t:"榉木"},{t:"碳纤维"}]}]},
+  {t:"B 尺寸与重量", c:[
+   {t:"重量", tag:"L2", c:[{t:"≤ 1 kg",n:"KINGART < 2 lbs"},{t:"1–2 kg",n:"MEEDEN 水彩三脚 2 kg、PLEINLY 三脚 945 g + 画板 450 g"},{t:"2 kg 以上"}]},
+   {t:"高度范围", tag:"L3", c:[{t:"17–66\""},{t:"18–66\""},{t:"25–72\"",n:"Ohuhu"}]},
+   {t:"收纳长度", tag:"L3", c:[{t:"≤ 18\"",n:"U.S. Art Supply"},{t:"19–25\"",n:"KINGART 21\""},{t:"25\" 以上"}]},
+   {t:"承重", tag:"L3", c:[{t:"≤ 10 lbs"},{t:"10–25 lbs",n:"25 lbs 款"},{t:"未披露"}]},
+   {t:"最大画布高度", tag:"L3", c:[{t:"≤ 36\"",n:"KINGART"},{t:"37–38\""},{t:"画本 / 画纸块 ≤ 16×12\"",n:"PLEINLY"}]}]},
+  {t:"C 调节与稳定", c:[
+   {t:"角度调节", tag:"L2", c:[{t:"竖直"},{t:"可倾斜"},{t:"可放平（0°）",n:"PLEINLY、磁吸写生板"}]},
+   {t:"稳定措施", tag:"L2", def:"户外有风，伸长后会晃。", c:[{t:"每条腿单独调（适应不平地面）",n:"Ohuhu"},{t:"中心挂钩可挂配重"},{t:"防滑脚 / 地钉"},{t:"无"}]},
+   {t:"安装方式", tag:"L3", c:[{t:"弹簧顶夹"},{t:"1/4\" 相机螺口",n:"配写生板 / 画箱"},{t:"快装板"}]}]},
+  {t:"D 合规", c:[
+   {t:"安全与合规", tag:"L0", c:[{t:"Prop 65 警示"},{t:"锋利边角"}]}]}
+ ]},
+ {g:"销售形态", about:"怎么卖。", cats:[
+  {t:"E 组合与数量", c:[
+   {t:"销售组合", tag:"L2", c:[{t:"单支"},{t:"2 支装",n:"Ohuhu"},{t:"画架 + 收纳包"},{t:"写生全套（架 + 凳 + 包 + 画板）",n:"PLEINLY"}]},
+   {t:"随附配件", tag:"L3", c:[{t:"收纳包"},{t:"托盘"},{t:"湿画携带夹"},{t:"夹子"},{t:"调色盘"}]}]}
+ ]},
+ {g:"市场定位", about:"卖给谁、用在哪。", cats:[
+  {t:"F 场景与人群", c:[
+   {t:"使用场景", tag:"L3", c:[{t:"油画 / 丙烯写生"},{t:"水彩写生"},{t:"速写"},{t:"旅行"},{t:"艺考写生"},{t:"兼作展示"}]},
+   {t:"目标人群", tag:"L3", c:[{t:"写生爱好者"},{t:"水彩画者"},{t:"美术生"},{t:"旅行者"}]},
+   {t:"价格带", tag:"L2", c:[{t:"< $25"},{t:"$25–50"},{t:"$50–100"},{t:"$100 以上"}]}]}
+ ]}
+],
+
+types:[
+ {g:"三脚写生架", about:"铝合金为主", items:[
+  {t:"铝合金三脚写生架", vol:"主流", volWhy:"Ohuhu 2 支装、KINGART、U.S. Art Supply、abitcha、AROIC 等大量在售，兼作展示。",
+   combo:["铝合金三脚写生架","铝合金","17–72\"","≤ 1–1.2 kg","弹簧顶夹","收纳包"],
+   rep:"Ohuhu 72\" 2 支装（每条腿单独调）、KINGART 18–66\"（< 2 lbs，画布 ≤ 36\"）、U.S. Art Supply 66\"（带托盘，折叠 18\"）、17–66\" 款（承重 25 lbs）",
+   price:"US $15–40", who:"写生爱好者、展示", comp:"hi", compT:"高：白牌多",
+   pain:"伸长后晃；有风会倒；零件松脱", ev:["cheapWobble","frenchWobble"], evl:"部分来源",
+   fig:{k:"stand",v:"tripod"},
+   ex:[["ohuhu2","72\" 2 支装，每条腿单独调"],["kingartT","18–66\"，< 2 lbs，画布 ≤ 36\""],["usasT66","66\"，带托盘，折叠 18\""],["triBag","17–66\"，承重 25 lbs，1.18 kg"]],
+   map:[["结构类型","铝合金三脚写生架"],["材质","铝合金"],["重量","≤ 1 kg / 1–2 kg","s"],["高度范围","17–66\" / 25–72\"","s"],["承重","10–25 lbs","s"],["稳定措施","每条腿单独调（Ohuhu）","s"],["使用场景","油画 / 丙烯写生、兼作展示"]],
+   pros:["轻、便宜","兼作展示"], cons:["伸长后晃","风大易倒"],
+   up:["加粗腿 + 配重挂钩 + 地钉"], verdict:["可做","对应 ③ B“防风稳固的铝合金写生架”。"], must:["写明承重和重量"], plus:["配重挂钩"], avoid:["只写 sturdy"]},
+  {t:"写生专用三脚架（配画箱）", vol:"小众", volWhy:"New Wave u.go 旅行三脚架、Mabef M/A30 木三脚架在售，配 Pochade 画箱使用。",
+   combo:["写生专用三脚架","铝合金 / 榉木","1/4\" 相机螺口","承重 8–12 kg"],
+   rep:"New Wave u.go LCS1（2.9 lbs，承重 26.5 lbs）、Mabef M/A30 木三脚架（约 1.3 kg，承重 8 kg）",
+   price:"US $60–150", who:"用 Pochade 画箱的写生画家", comp:"lo", compT:"低",
+   pain:"贵；普通相机三脚架承重不够", ev:["pochadeTripod"], evl:"有来源",
+   fig:{k:"stand",v:"pochade",label:"写生三脚架（配画箱）"},
+   ex:[["uGoTripod","2.9 lbs，承重 26.5 lbs，通用 1/4\" 螺口"],["mabef30","约 1.3 kg，承重 8 kg"]],
+   map:[["结构类型","写生专用三脚架"],["安装方式","1/4\" 相机螺口","m"],["承重","10–25 lbs","m"]],
+   pros:["稳、轻"], cons:["贵"], up:["—"], verdict:["谨慎","依附画箱市场。"], must:["—"], plus:["—"], avoid:["—"]}
+ ]},
+ {g:"水彩写生", about:"能放平", items:[
+  {t:"平放水彩写生架", vol:"细分", volWhy:"PLEINLY 水彩写生架、磁吸写生板（配相机三脚架）、MEEDEN 水彩三脚架在售。",
+   combo:["平放水彩写生架","铝合金 + 画板","可放平（0°）","1/4\" 相机螺口","≤ 16×12\" 画本"],
+   rep:"PLEINLY 水彩写生架（三脚 945 g + 画板 450 g，≤ 16×12\"）、磁吸写生板（11.8×15.7\"，1.7 lb，三脚架另购）、MEEDEN 水彩旅行三脚架（2 kg）",
+   price:"US $40–120", who:"水彩写生、速写", comp:"mid", compT:"中：品牌少",
+   pain:"部分款三脚架另购；全套价格不低", ev:["wcEaselLink"], evl:"有来源",
+   fig:{k:"stand",v:"wc"},
+   ex:[["pleinly","可横竖、可放平，≤ 16×12\""],["magSketch","磁吸写生板，可放平，三脚架另购"],["meedenWC","水彩旅行三脚架，2 kg"]],
+   map:[["结构类型","平放水彩写生架"],["角度调节","可放平（0°）","m"],["重量","1–2 kg","m"],["最大画布高度","画本 / 画纸块 ≤ 16×12\"","m"],["安装方式","1/4\" 相机螺口"]],
+   pros:["专为水彩"], cons:["价格高或需另购三脚架"], up:["平价轻量全套"], verdict:["可做","对应 ③ B“平价轻量的水彩写生架”。"], must:["写明全套重量"], plus:["湿画携带夹"], avoid:["三脚架另购不写清"]},
+  {t:"写生全套（架 + 凳 + 包）", vol:"细分", volWhy:"PLEINLY 水彩写生全套（三脚架、凳、包、全棉画本、画板、夹子、调色盘）在售。",
+   combo:["写生全套","铝合金","写生全套（架 + 凳 + 包 + 画板）"],
+   rep:"PLEINLY 水彩写生全套（含湿画携带夹、凳子、肩包、100% 棉画本、9 个夹子、2 个调色盘）",
+   price:"US $80–150", who:"水彩写生入门", comp:"lo", compT:"低",
+   pain:"贵", ev:["wcEaselLink"], evl:"有来源",
+   fig:{k:"stand",v:"kit"},
+   ex:[["pleinlySet","三脚架 + 凳 + 包 + 画本 + 画板"],["pleinly","画架单卖款"]],
+   map:[["销售组合","写生全套（架 + 凳 + 包 + 画板）"],["随附配件","收纳包、湿画携带夹、夹子、调色盘"]],
+   pros:["一次买齐"], cons:["贵"], up:["—"], verdict:["谨慎","已有品牌（③ 中已排除）。"], must:["—"], plus:["—"], avoid:["—"]}
+ ]},
+ {g:"国内写生", about:"美术生写生", items:[
+  {t:"国内写生画架（铝合金 / 铁 + 画板）", vol:"主流", volWhy:"国内美术生写生常用伸缩铝合金 / 铁画架，常和画板、画包一起卖（京东多款）。",
+   combo:["国内写生画架","铝合金 / 铁","画架 + 画板 + 包"],
+   rep:"伸缩铝合金写生画架、铁画架 + 4K 画板 + 画包（京东多店铺）",
+   price:"¥30–150", who:"美术生、写生课", comp:"hi", compT:"高",
+   pain:"晃；锁扣易坏", ev:["jdPlein"], evl:"部分来源",
+   fig:{k:"stand",v:"cn",label:"写生画架 + 画板"},
+   ex:[["jdPlein","京东：写生画架"],["jdPleinSet","京东：写生画架套装"]],
+   map:[["结构类型","国内写生画架"],["销售组合","画架 + 收纳包"],["使用场景","艺考写生"]],
+   pros:["需求大"], cons:["价格低"], up:["写生全套（线索）"], verdict:["谨慎","价格战。"], must:["—"], plus:["—"], avoid:["—"]}
+ ]}
+],
+
+opps:[
+ {t:"防风稳固的铝合金写生架", gap:"痛点缺口", score:{d:3,c:3,x:4,s:4,p:3,e:3},
+  why:"铝合金三脚架便宜、销量大，但评论反复提到伸长后晃、户外有风会倒。只有少数款写了“每条腿单独调”；中心配重挂钩、地钉、承重数字很少被当作主卖点。",
+  spec:["铝合金三脚","加粗腿管","中心配重挂钩","地钉 + 防滑脚","写明承重 ≥ 25 lbs","收纳包"], diff:"风扇 / 户外实拍对比不倒", price:"US $28–40",
+  risk:"重量会增加；同质化快", verify:"抓三脚写生架 Top 20 差评里 wobbly / wind / flimsy / broke 的占比",
+  from:"铝合金三脚写生架", ev:["cheapWobble","frenchWobble","signWind"], evl:"部分来源"},
+ {t:"平价轻量的水彩写生架", gap:"价格带缺口", score:{d:3,c:3,x:4,s:3,p:3,e:3},
+  why:"水彩写生需要画板能放平。现有选择：PLEINLY（全套价格高）、磁吸写生板（三脚架另购）、MEEDEN 水彩三脚架（2 kg）。“含三脚架、全套 1.5 kg 以内、$50 以下”的款还少。",
+  spec:["平放水彩写生架","铝合金三脚架（含）","画板夹画本 ≤ 12×16\"","全套 ≤ 1.5 kg"], diff:"“一个包装全部、能放平、背着走”", price:"US $40–55",
+  risk:"轻量和稳定冲突；画板精度要求高", verify:"拉 watercolor easel portable 搜索量；统计 Top 30 里含三脚架、$50 以下的数量",
+  from:"平放水彩写生架", ev:["wcEaselLink"], evl:"有来源"},
+ {t:"国内写生全套（画架 + 凳 + 包 + 画板）", state:"clue", gap:"场景缺口",
+  why:"国内美术生写生常分开买画架、画板、画包、写生凳。是否有足够需求做成一体套装，证据不足。",
+  spec:["写生画架","画板","画包","写生凳"], verify:"在京东 / 淘宝搜“写生套装 画架 凳”看销量", from:"国内写生画架（铝合金 / 铁 + 画板）", ev:["jdPlein"], evl:"经验判断"},
+ {t:"写生全套（架 + 凳 + 包，美国站）", state:"out", gap:"场景缺口",
+  why:"最初判断美国站缺少画架、凳、包一起卖的写生全套。",
+  outWhy:"核实后 PLEINLY 已有含三脚架、凳、肩包、画本、画板的水彩写生全套。",
+  spec:["写生全套"], from:"写生全套（架 + 凳 + 包）", ev:["wcEaselLink"], evl:"有来源"}
+],
+
+grids:[
+ {id:"weight",name:"结构 × 重量",q:"每种结构在哪个重量段还没人做？",rowT:"结构类型",colT:"重量",
+  cols:["≤ 1 kg","1–2 kg","2 kg 以上"],
+  rk:["aluminum tripod field easel","watercolor plein air easel","pochade tripod","plein air easel kit"], ck:["lightweight","1 kg","heavy duty"],
+  rc:["铝合金 写生 画架","水彩 写生 画架","写生 三脚架","写生 套装"], cc:["轻便","",""],
+  rows:[
+   ["铝合金三脚",[["R3","KINGART、多数白牌",{r:["kingartT","triBag"],t:["铝合金三脚写生架"]}],["S2","—",{r:["ohuhu2"]}],["L1","—"]]],
+   ["平放水彩架",[["L2","磁吸写生板（三脚架另购）",{r:["magSketch"]}],["L3","含三脚架的平价款少",{r:["pleinly","meedenWC"],t:["平放水彩写生架"],o:"平价轻量的水彩写生架",ev:"有来源"}],["S1","—"]]],
+   ["写生三脚架",[["X","—"],["S2","u.go、Mabef",{r:["uGoTripod","mabef30"],t:["写生专用三脚架（配画箱）"]}],["S1","—"]]],
+   ["写生全套",[["X","—"],["S1","—"],["S1","PLEINLY",{r:["pleinlySet"],t:["写生全套（架 + 凳 + 包）"],o:"写生全套（架 + 凳 + 包，美国站）"}]]]]},
+
+ {id:"price",name:"结构 × 价格带",q:"每种结构在哪个价位还空着？",rowT:"结构类型",colT:"售价（美国站）",
+  cols:["< $25","$25–50","$50–100","$100+"], price:["0-2500","2500-5000","5000-10000","10000-100000"],
+  rk:["aluminum tripod field easel","watercolor plein air easel","pochade tripod","plein air easel kit"],
+  rc:["铝合金 写生 画架","水彩 写生 画架","写生 三脚架","写生 套装"], cc:["","","",""],
+  rows:[
+   ["铝合金三脚",[["R3","—",{r:["kingartT","triBag"]}],["S3","2 支装",{r:["ohuhu2","usasT66"]}],["S1","—"],["X","—"]]],
+   ["平放水彩架",[["S1","写生板（不含三脚架）",{r:["magSketch"]}],["L2","含三脚架的少",{o:"平价轻量的水彩写生架",ev:"有来源"}],["S2","PLEINLY、MEEDEN",{r:["pleinly","meedenWC"]}],["S1","—"]]],
+   ["写生三脚架",[["X","—"],["S1","—"],["S2","u.go",{r:["uGoTripod"]}],["S1","Mabef",{r:["mabef30"]}]]],
+   ["写生全套",[["X","—"],["X","—"],["S1","—"],["S1","PLEINLY",{r:["pleinlySet"]}]]]]},
+
+ {id:"angle",name:"结构 × 稳定措施",q:"每种结构有没有做防风、防晃？",rowT:"结构类型",colT:"稳定措施",
+  cols:["每条腿单独调","配重挂钩","地钉 / 防滑脚"],
+  rk:["aluminum tripod field easel","watercolor plein air easel","plein air easel"], ck:["independent legs","weight hook","stakes"],
+  rc:["铝合金 写生 画架","水彩 写生 画架","写生 画架"], cc:["","挂钩","地钉"],
+  rows:[
+   ["铝合金三脚",[["S2","Ohuhu",{r:["ohuhu2"]}],["L3","少有配重挂钩",{r:["kingartT","usasT66"],o:"防风稳固的铝合金写生架",ev:"部分来源"}],["L2","—",{o:"防风稳固的铝合金写生架"}]]],
+   ["平放水彩架",[["S1","—",{r:["pleinly"]}],["L1","—"],["S1","—"]]],
+   ["国内写生架",[["S1","—",{r:["jdPlein"]}],["L1","—"],["S1","—"]]]]},
+
+ {id:"scene",name:"使用场景 × 关键卖点",q:"每个场景最在意的卖点，有没有产品明确满足？",rowT:"使用场景",colT:"关键卖点",
+  cols:["轻","稳 / 防风","可放平","收纳快","带凳和包","价格低"],
+  rk:["plein air oil painting easel","watercolor plein air easel","sketching easel","travel easel","art student plein air easel"], ck:["lightweight","stable wind","flat","quick setup","with stool bag","cheap"],
+  rc:["油画 写生 画架","水彩 写生 画架","速写 画架","旅行 画架","美术生 写生 画架"], cc:["轻便","稳","放平","收纳","凳 包","便宜"],
+  rows:[
+   ["油画 / 丙烯写生",[["S3","—",{r:["kingartT"]}],["L3","伸长后晃、风大会倒",{r:["ohuhu2","usasT66"],o:"防风稳固的铝合金写生架",ev:"部分来源"}],["X","—"],["S2","—"],["S1","—"],["R3","—",{r:["triBag"]}]]],
+   ["水彩写生",[["S2","—",{r:["magSketch"]}],["S1","—"],["L3","含三脚架的平价款少",{r:["pleinly","meedenWC"],o:"平价轻量的水彩写生架",ev:"有来源"}],["S1","—"],["S1","PLEINLY",{r:["pleinlySet"]}],["L2","—",{o:"平价轻量的水彩写生架"}]]],
+   ["速写",[["S2","—"],["S1","—"],["S2","—",{r:["magSketch"]}],["S2","—"],["X","—"],["S2","—"]]],
+   ["旅行",[["S2","u.go",{r:["uGoTripod"]}],["S1","—"],["S1","—"],["S2","—"],["S1","—"],["S1","—"]]],
+   ["艺考写生",[["S1","—"],["L2","—",{r:["jdPlein"]}],["X","—"],["S1","—"],["L0","国内一体套装少",{r:["jdPleinSet"],o:"国内写生全套（画架 + 凳 + 包 + 画板）",clue:true}],["R3","—",{r:["jdPlein"]}]]]]}
+],
+
+refs:{
+ ohuhu2:["Ohuhu 72\" 铝合金三脚架 2 支装","https://www.amazon.com/dp/B075D9C4WG"], kingartT:["KINGART 铝合金三脚架 18–66\"","https://www.amazon.com/dp/B09FFJJ9KY"], usasT66:["U.S. Art Supply 66\" 铝合金三脚架","https://www.amazon.com/dp/B00LFPKJ1Y"], triBag:["17–66\" 铝合金三脚架（承重 25 lbs）","https://www.amazon.com/clp/B07S9RSZ8N"],
+ uGoTripod:["New Wave u.go 写生三脚架","https://www.amazon.com/dp/B082FNKW75"], mabef30:["Mabef M/A30 木三脚架","https://www.amazon.com/dp/B0047XEVU6"],
+ pleinly:["PLEINLY 水彩写生架","https://www.amazon.com/dp/B0FF48DJ6Y"], pleinlySet:["PLEINLY 水彩写生全套（架 + 凳 + 包）","https://www.amazon.com/dp/B0DCWXJMGR"], magSketch:["磁吸写生板（配相机三脚架）","https://www.amazon.com/dp/B0D7HKQWGC"], meedenWC:["MEEDEN 水彩旅行三脚架","https://www.amazon.com/dp/B07WG7C4BF"],
+ jdPlein:["京东 · 写生画架（搜索页）","https://search.jd.com/Search?keyword=%E5%86%99%E7%94%9F%E7%94%BB%E6%9E%B6&enc=utf-8"], jdPleinSet:["京东 · 写生画架套装（搜索页）","https://search.jd.com/Search?keyword=%E5%86%99%E7%94%9F%E7%94%BB%E6%9E%B6%E5%A5%97%E8%A3%85&enc=utf-8"]
+},
+
+src:{
+ cheapWobble:["零售评论：廉价三脚画架越伸越晃","https://www.virtualartacademy.com/winsor-newton-easel/"],
+ frenchWobble:["WetCanvas：写生画架腿晃、重量讨论","https://www.wetcanvas.com/forums/topic/french-easel-or-guerrilla-painter"],
+ signWind:["展示架户外防风：后腿加沙袋","https://icustomlabel.com/blogs/wedding-decor-and-gifts/how-to-display-wedding-welcome-sign-easels"],
+ pochadeTripod:["New Wave u.go 三脚架（Amazon，承重 26.5 lbs）","https://www.amazon.com/dp/B082FNKW75"],
+ wcEaselLink:["PLEINLY 水彩写生全套（Amazon）","https://www.amazon.com/dp/B0DCWXJMGR"],
+ jdPlein:["京东 · 写生画架（搜索页）","https://search.jd.com/Search?keyword=%E5%86%99%E7%94%9F%E7%94%BB%E6%9E%B6&enc=utf-8"]
+}
+});
+
+/* ======================================================================
+   品类数据：儿童画架（画架系列）
+   结构说明见 _template.js。数据快照：2026-11
+   ====================================================================== */
+CATS.push({
+id:"easelKids", name:"儿童画架", en:"Kids' Art Easel", updated:"2026-11",
+series:"画架", pos:"玩具属性强、配件多；双面白板 + 黑板 + 卷纸是标配，卷纸是复购耗材",
+
+scope:{
+  def:"给 2–12 岁儿童用的画架：落地双面画架（白板 + 黑板 + 卷纸）、桌面儿童画架、带收纳的儿童画架、LED 灯光画板，以及配套的画架卷纸。",
+  include:"上述画架单卖、带配件套装，以及画架卷纸补充装。",
+  exclude:"成人画架（见落地 / 桌面画架）、普通白板和黑板。",
+  adjacent:"儿童颜料、磁性字母、白板笔、粉笔、儿童画桌。",
+  kw:["kids easel","toddler easel","art easel for kids","easel paper roll","儿童画架","宝宝画板"]
+},
+
+rules:[
+  "按结构分：落地双面画架、桌面儿童画架、带收纳儿童画架、LED 灯光画板；卷纸补充装单独一类。",
+  "适用年龄按页面原样记（如 3–8 岁、2–4 岁）；高度范围按页面记（如 36–50\"、95–110.5 cm）。",
+  "板面分开记：磁性白板、黑板、卷纸夹；“3 合 1”拆开登记。",
+  "卷纸记宽度和长度（如 15\"×20 m、18\"×75 ft），以及纸张类型（书写纸、牛皮纸）；页面宽度前后矛盾的（17\" / 18\"）记“页面矛盾”。",
+  "配件件数（字母磁贴、粉笔、马克笔、颜料杯）单独记，不计入画架数量。",
+  "面向 12 岁以下必须有 CPSIA / CPC；小零件按页面记窒息警示。"
+],
+
+dims:[
+ {g:"产品本体", about:"画架本身：结构、板面、尺寸年龄、稳定性。", cats:[
+  {t:"A 结构与材质", c:[
+   {t:"结构类型", tag:"L1", c:[{t:"落地双面画架",n:"Melissa & Doug、Hape、白牌"},{t:"桌面儿童画架",n:"Melissa & Doug 桌面款、Joycat"},{t:"带收纳儿童画架",n:"带收纳盒 / 托盘"},{t:"LED 灯光画板"}]},
+   {t:"材质", tag:"L1", c:[{t:"松木"},{t:"其他实木 / 多层板"},{t:"塑料"}]}]},
+  {t:"B 板面与功能", c:[
+   {t:"板面组合", tag:"L2", c:[{t:"白板 + 黑板"},{t:"白板 + 黑板 + 卷纸",n:"主流"},{t:"磁性白板"},{t:"只有卷纸"}]},
+   {t:"卷纸规格", tag:"L2", def:"影响补充装能不能通用。", c:[{t:"15\"（Hape）",n:"非标准宽度"},{t:"17–18\"",n:"Melissa & Doug、通用卷纸"},{t:"页面矛盾"},{t:"未披露"}]},
+   {t:"卷纸结构", tag:"L3", def:"卷纸会不会往下掉、能不能裁。", c:[{t:"带锁定卷纸架",n:"Melissa & Doug"},{t:"带裁纸刀"},{t:"卷纸和板之间有缝、易滑落",n:"Hape 评论"}]},
+   {t:"配件", tag:"L3", c:[{t:"颜料杯"},{t:"磁性字母数字"},{t:"粉笔 / 白板笔"},{t:"夹子"},{t:"收纳托盘"}]}]},
+  {t:"C 尺寸与稳定", c:[
+   {t:"适用年龄", tag:"L2", c:[{t:"2–3 岁",n:"桌面款"},{t:"3–8 岁",n:"主流"},{t:"3–12 岁"}]},
+   {t:"高度调节", tag:"L3", c:[{t:"不可调"},{t:"多档可调",n:"36–50\"、47–57\"、95–110.5 cm"}]},
+   {t:"稳定性", tag:"L3", def:"评论里“晃”的比例：Hape 7%、Delta 13%、Melissa & Doug 26%（评论汇总站数据）。", c:[{t:"宽底座"},{t:"折叠锁扣"},{t:"评论提到晃"}]},
+   {t:"可折叠", tag:"L3", c:[{t:"可折叠收纳"},{t:"不可折叠"}]}]},
+  {t:"D 合规", c:[
+   {t:"安全与合规", tag:"L0", rule:"CPSIA / CPC；ASTM F963；小零件窒息警示；FSC 木材按页面记。", c:[{t:"CPSIA / CPC"},{t:"ASTM F963"},{t:"窒息警示"},{t:"FSC 认证"},{t:"GREENGUARD Gold",n:"Delta Children"}]}]}
+ ]},
+ {g:"销售形态", about:"怎么卖：配件、耗材。", cats:[
+  {t:"E 组合与耗材", c:[
+   {t:"销售组合", tag:"L2", c:[{t:"画架单卖"},{t:"画架 + 配件",n:"字母、粉笔、马克笔"},{t:"画架 + 颜料画笔全套"},{t:"卷纸补充装"}]},
+   {t:"卷纸纸张", tag:"L3", c:[{t:"书写纸 / 道林纸",n:"Melissa & Doug"},{t:"牛皮纸",n:"Bryco"},{t:"加厚可湿画"},{t:"未披露"}]},
+   {t:"卷纸数量", tag:"L3", c:[{t:"1 卷"},{t:"2–4 卷"},{t:"长卷（175 ft）"}]}]}
+ ]},
+ {g:"市场定位", about:"卖给谁、用在哪。", cats:[
+  {t:"F 场景与人群", c:[
+   {t:"使用场景", tag:"L3", c:[{t:"家庭涂鸦"},{t:"幼儿园 / 课堂"},{t:"早教（字母数字）"},{t:"节日礼物"}]},
+   {t:"购买人", tag:"L3", c:[{t:"父母"},{t:"祖父母 / 亲友（礼物）"},{t:"老师"}]},
+   {t:"价格带", tag:"L2", c:[{t:"< $30"},{t:"$30–60"},{t:"$60–100"},{t:"$100 以上"}]}]}
+ ]}
+],
+
+types:[
+ {g:"落地画架", about:"双面 + 卷纸", items:[
+  {t:"品牌双面落地儿童画架", vol:"主流", volWhy:"Melissa & Doug Deluxe 约 9,759 条评论；Hape E1010 长期在售。",
+   combo:["落地双面画架","松木 / 实木","白板 + 黑板 + 卷纸","3–8 岁","可折叠"],
+   rep:"Melissa & Doug Deluxe 双面落地画架（47\" 高，带锁定卷纸架、裁纸刀、4 个夹子、2 个托盘）、Melissa & Doug 磁性款（39 个字母数字磁贴）、Hape E1010（95–110.5 cm，3 个颜料杯，15\" 卷纸）",
+   price:"US $50–90", who:"3–8 岁、父母、礼物", comp:"mid", compT:"中：两大品牌 + 白牌",
+   pain:"卷纸遇湿颜料易破；Hape 卷纸会往下滑、宽度非标；有人觉得晃（Melissa & Doug 约 26%）", ev:["kidsReview","mdEasel"], evl:"有来源",
+   fig:{k:"stand",v:"kids"},
+   ex:[["mdDeluxe","47\" 高，锁定卷纸架 + 裁纸刀，3–8 岁"],["mdMagnetic","磁性款，39 个字母数字磁贴"],["hapeE1010","95–110.5 cm，15\" 卷纸，3 个颜料杯"]],
+   map:[["结构类型","落地双面画架"],["板面组合","白板 + 黑板 + 卷纸","m"],["卷纸规格","15\"（Hape） / 17–18\"","m"],["卷纸结构","带锁定卷纸架 / 卷纸和板之间有缝、易滑落","t"],["适用年龄","3–8 岁","m"],["稳定性","评论提到晃","t"],["安全与合规","FSC 认证、窒息警示","m"]],
+   pros:["品牌信任","配件全"], cons:["卷纸问题","部分评论说晃"],
+   up:["加厚通用卷纸（见 ③ B）"], verdict:["谨慎","品牌占位；机会在卷纸耗材。"], must:["CPC"], plus:["—"], avoid:["—"]},
+  {t:"白牌多配件儿童画架", vol:"主流", volWhy:"JOYOOSS、Costzon、Vinlon 及大量 3 合 1 白牌在售。",
+   combo:["落地双面画架","松木","白板 + 黑板 + 卷纸","3–12 岁","多档可调","画架 + 配件"],
+   rep:"JOYOOSS（36–50\" 可调）、Costzon（47–57\"，字母磁贴、8 支粉笔、4 支马克笔、4 个颜料杯）、Vinlon（3 卷卷纸）、3 合 1 白牌",
+   price:"US $30–60", who:"父母、礼物", comp:"hi", compT:"高",
+   pain:"配件多但品质参差；组装评价不一", ev:["kidsReview"], evl:"部分来源",
+   fig:{k:"stand",v:"kids",label:"白牌儿童画架 + 配件"},
+   ex:[["joyooss","36–50\" 可调，磁性双面 + 卷纸"],["costzon","47–57\"，字母磁贴 + 粉笔 + 马克笔 + 颜料杯"],["vinlon","含 3 卷卷纸"],["kids3in1","3 合 1，含 3 卷卷纸"]],
+   map:[["结构类型","落地双面画架"],["材质","松木","s"],["高度调节","多档可调","s"],["配件","磁性字母数字、粉笔 / 白板笔、颜料杯","s"],["销售组合","画架 + 配件"]],
+   pros:["性价比"], cons:["同质化"], up:["防翻倒宽底座"], verdict:["谨慎","红海。"], must:["CPC"], plus:["—"], avoid:["配件数量虚高"]},
+  {t:"带收纳儿童画架", vol:"细分", volWhy:"Delta Children MySize 带收纳画架（GREENGUARD Gold）、Costzon 带收纳托盘款在售。",
+   combo:["带收纳儿童画架","实木 / 多层板","白板 + 黑板 + 卷纸","收纳盒 / 托盘"],
+   rep:"Delta Children MySize 双面带收纳画架、Costzon 带收纳托盘款",
+   price:"US $50–100", who:"父母、教室", comp:"mid", compT:"中",
+   pain:"占地；Delta 约 13% 评论说晃", ev:["kidsReview"], evl:"部分来源",
+   fig:{k:"stand",v:"kids",label:"儿童画架 + 收纳"},
+   ex:[["deltaSearch","Delta Children MySize 带收纳画架（搜索页）"],["costzonStorage","Costzon 带收纳托盘款"]],
+   map:[["结构类型","带收纳儿童画架"],["配件","收纳托盘"],["安全与合规","GREENGUARD Gold（Delta Children）","m"],["稳定性","评论提到晃","t"]],
+   pros:["收纳方便"], cons:["占地"], up:["—"], verdict:["谨慎","—"], must:["—"], plus:["—"], avoid:["—"]}
+ ]},
+ {g:"桌面与灯光", about:"小龄、桌面", items:[
+  {t:"儿童桌面画架", vol:"细分", volWhy:"Melissa & Doug 桌面款、Joycat（$28.34）、2–4 岁 4 合 1 款在售。",
+   combo:["桌面儿童画架","木","白板 + 黑板 + 卷纸","2–4 岁 / 3 岁以上","可折叠"],
+   rep:"Melissa & Doug 双面磁性桌面画架（50 ft 卷纸、36 个磁贴）、Joycat 免组装桌面画架（65 件配件）、2–4 岁 4 合 1 桌面画架",
+   price:"US $20–40", who:"2–4 岁、小空间", comp:"mid", compT:"中",
+   pain:"画面小", ev:["kidsTableLink"], evl:"有来源",
+   fig:{k:"stand",v:"kidstable"},
+   ex:[["mdTable","磁性双面，50 ft 卷纸，36 个磁贴"],["joycat","免组装，65 件配件，约 $28.34"],["toddler24","面向 2–4 岁"]],
+   map:[["结构类型","桌面儿童画架"],["适用年龄","2–3 岁 / 3–8 岁"],["可折叠","可折叠收纳","m"]],
+   pros:["小空间可用"], cons:["画面小"], up:["—"], verdict:["谨慎","—"], must:["—"], plus:["—"], avoid:["—"]},
+  {t:"LED 灯光画板", vol:"小众", volWhy:"双面 LED 发光桌面画板等少量在售。",
+   combo:["LED 灯光画板","塑料","发光板 + 白板"],
+   rep:"双面 LED 发光磁性桌面画板",
+   price:"US $20–40", who:"3 岁以上", comp:"lo", compT:"低",
+   pain:"要电池；偏玩具", ev:["ledLink"], evl:"有来源",
+   fig:{k:"stand",v:"kidstable",label:"LED 灯光画板"},
+   ex:[["ledBoard","双面 LED 发光磁性画板"],["ledSearch","搜索页：LED drawing board kids"]],
+   map:[["结构类型","LED 灯光画板"],["材质","塑料"]],
+   pros:["新奇"], cons:["偏玩具"], up:["—"], verdict:["不建议","属于玩具类目。"], must:["—"], plus:["—"], avoid:["—"]}
+ ]},
+ {g:"配套与耗材", about:"全套、卷纸", items:[
+  {t:"儿童画架 + 颜料画笔全套", vol:"细分", volWhy:"Melissa & Doug Deluxe 全套配件款、Blue Squid（100+ 配件）在售。",
+   combo:["落地双面画架","画架 + 颜料画笔全套"],
+   rep:"Melissa & Doug Deluxe 画架 + 颜料、画笔、粉笔全套、Blue Squid 100+ 配件",
+   price:"US $60–120", who:"礼物", comp:"mid", compT:"中",
+   pain:"配件多，品质不一", ev:["kidsReview"], evl:"部分来源",
+   fig:{k:"stand",v:"kids",label:"画架 + 颜料全套"},
+   ex:[["mdComplete","画架 + 颜料、画笔、粉笔全套"],["blueSquid","Blue Squid（搜索页）"]],
+   map:[["销售组合","画架 + 颜料画笔全套"],["购买人","祖父母 / 亲友（礼物）"]],
+   pros:["礼物属性"], cons:["—"], up:["分龄课程卡"], verdict:["谨慎","对应 ③ C。"], must:["—"], plus:["—"], avoid:["—"]},
+  {t:"画架卷纸补充装", vol:"主流", volWhy:"Melissa & Doug、Hape 原厂补充装，Little Artists、Bryco、The Paper Store、Belleur 等通用卷纸在售。",
+   combo:["卷纸补充装","15\" / 17–18\"","书写纸 / 牛皮纸","1–4 卷"],
+   rep:"Melissa & Doug 补充装 3 卷（页面写 17\" 和 18\"）、Hape 补充装（15\"×20 m）、Little Artists 18\" 3 卷、The Paper Store 18\"×175 ft、Bryco 牛皮纸",
+   price:"US $10–30", who:"已有画架的家庭、教室", comp:"mid", compT:"中：原厂 + 通用纸",
+   pain:"湿颜料易破；宽度不通用（Hape 15\"）；页面宽度 17\" / 18\" 矛盾", ev:["kidsReview","paperRollLink"], evl:"有来源",
+   fig:{k:"stand",v:"roll"},
+   ex:[["mdRefill","3 卷，页面写 17\" 和 18\"","u"],["hapeRefill","15\"×20 m，只适配 Hape"],["paperStore","18\"×175 ft"],["littleArtists","18\" 3 卷"]],
+   map:[["卷纸规格","15\"（Hape） / 17–18\" / 页面矛盾","m"],["卷纸纸张","书写纸 / 道林纸 / 牛皮纸","m"],["卷纸数量","1 卷 / 2–4 卷 / 长卷（175 ft）"],["销售组合","卷纸补充装"]],
+   pros:["复购耗材"], cons:["湿画易破","不通用"],
+   up:["加厚可湿画、多宽度通用"], verdict:["可做","对应 ③ B“加厚可湿画的通用画架卷纸”。"],
+   must:["写明宽度和适配型号"], plus:["多宽度"], avoid:["宽度写错"]}
+ ]}
+],
+
+opps:[
+ {t:"加厚可湿画的通用画架卷纸", gap:"痛点缺口", score:{d:3,c:3,x:3,s:4,p:4,e:3},
+  why:"卷纸是儿童画架的复购耗材。评论提到 Melissa & Doug 卷纸遇湿颜料易破；Hape 卷纸宽 15\"，非标准；Melissa & Doug 补充装页面同时写 17\" 和 18\"。通用卷纸多是书写纸或牛皮纸，很少写“可湿画、适配哪些型号”。",
+  spec:["卷纸补充装","加厚（可湿画）","15\" / 17\" / 18\" 三种宽度","适配型号表","2–3 卷"], diff:"主图：湿颜料不破对比 + 适配表", price:"US $15–25",
+  risk:"纸张成本；运费占比高", verify:"抓卷纸补充装差评里 tears / thin / doesn't fit / wrong size 的占比",
+  from:"画架卷纸补充装、品牌双面落地儿童画架", ev:["kidsReview","paperRollLink"], evl:"有来源"},
+ {t:"宽底座防翻倒的儿童画架", gap:"痛点缺口", score:{d:3,c:2,x:3,s:4,p:3,e:3},
+  why:"评论汇总里提到“晃”的比例：Hape 约 7%、Delta 约 13%、Melissa & Doug 约 26%。儿童画架很少把防翻倒、宽底座、翻倒测试当卖点。",
+  spec:["落地双面画架","加宽底座","折叠锁扣","卷纸锁定","CPC + ASTM F963"], diff:"推一下不倒的对比视频", price:"US $55–75",
+  risk:"白牌多，改进易被模仿", verify:"抓儿童画架差评里 wobbly / tips over / unstable 的占比",
+  from:"品牌双面落地儿童画架、白牌多配件儿童画架", ev:["kidsReview"], evl:"部分来源"},
+ {t:"儿童画架 + 分龄绘画课程卡", gap:"场景缺口", score:{d:2,c:3,x:3,s:4,p:3,e:2},
+  why:"儿童画架全套主要堆配件数量，很少附“画什么、怎么玩”的内容。分龄课程卡能提高礼物属性。",
+  spec:["落地双面画架","颜料画笔","分龄课程卡 30 张"], diff:"“每天一张卡，跟着画”", price:"US $60–80",
+  risk:"内容制作；差异不易在主图体现", verify:"看儿童画架评论里 ideas / what to draw 的提及",
+  from:"儿童画架 + 颜料画笔全套", ev:["kidsReview"], evl:"经验判断"},
+ {t:"小户型壁挂 / 门挂儿童画板", state:"clue", gap:"场景缺口",
+  why:"落地儿童画架占地，小户型家长可能需要壁挂或门挂画板，但没有找到直接需求证据。",
+  spec:["壁挂双面画板","卷纸架"], verify:"拉 wall mounted kids easel 搜索量", from:"带收纳儿童画架", ev:["kidsReview"], evl:"经验判断"},
+ {t:"可折叠收纳的儿童画架", state:"out", gap:"场景缺口",
+  why:"最初判断儿童画架不好收纳。",
+  outWhy:"核实后 Melissa & Doug Deluxe、Costzon 等多款写明可折叠收纳，已普遍满足。",
+  spec:["可折叠"], from:"品牌双面落地儿童画架", ev:["mdEasel"], evl:"有来源"}
+],
+
+grids:[
+ {id:"age",name:"结构 × 年龄",q:"每种结构在哪个年龄段还没人做？",rowT:"结构类型",colT:"适用年龄",
+  cols:["2–3 岁","3–8 岁","8 岁以上"],
+  rk:["kids easel","tabletop easel kids","kids easel with storage","led drawing board kids"], ck:["toddler","3-8 years","8-12 years"],
+  rc:["儿童 画架","儿童 桌面 画架","儿童 画架 收纳","LED 画板"], cc:["2岁","3岁","8岁"],
+  rows:[
+   ["落地双面",[["S1","—"],["R3","Melissa & Doug、Hape、白牌",{r:["mdDeluxe","hapeE1010","joyooss"],t:["品牌双面落地儿童画架","白牌多配件儿童画架"]}],["S2","3–12 岁白牌",{r:["costzon"]}]]],
+   ["桌面",[["S2","2–4 岁款",{r:["toddler24","joycat"],t:["儿童桌面画架"]}],["S2","Melissa & Doug",{r:["mdTable"]}],["S1","—"]]],
+   ["带收纳",[["X","—"],["S2","Delta、Costzon",{r:["deltaSearch","costzonStorage"],t:["带收纳儿童画架"]}],["S1","—"]]],
+   ["LED 画板",[["S1","—"],["S1","—",{r:["ledBoard"],t:["LED 灯光画板"]}],["X","—"]]]]},
+
+ {id:"price",name:"结构 × 价格带",q:"每种结构在哪个价位还空着？",rowT:"结构类型",colT:"售价（美国站）",
+  cols:["< $30","$30–60","$60–100","$100+"], price:["0-3000","3000-6000","6000-10000","10000-100000"],
+  rk:["kids easel","tabletop easel kids","kids easel with storage","kids easel set with paint","easel paper roll"],
+  rc:["儿童 画架","儿童 桌面 画架","儿童 画架 收纳","儿童 画架 套装","画架 卷纸"], cc:["","","",""],
+  rows:[
+   ["落地双面",[["S1","—"],["R3","白牌",{r:["joyooss","costzon","vinlon"]}],["S3","Melissa & Doug、Hape",{r:["mdDeluxe","hapeE1010"]}],["S1","—"]]],
+   ["桌面",[["S3","Joycat 约 $28",{r:["joycat","mdTable"]}],["S2","—"],["X","—"],["X","—"]]],
+   ["带收纳",[["X","—"],["S1","—",{r:["costzonStorage"]}],["S2","Delta",{r:["deltaSearch"]}],["X","—"]]],
+   ["画架全套",[["X","—"],["S1","—"],["S2","Melissa & Doug 全套",{r:["mdComplete"]}],["L2","带课程内容的少",{o:"儿童画架 + 分龄绘画课程卡",ev:"经验判断"}]]],
+   ["卷纸补充装",[["R3","原厂 + 通用",{r:["mdRefill","littleArtists","paperStore"],t:["画架卷纸补充装"]}],["S1","—"],["X","—"],["X","—"]]]]},
+
+ {id:"paper",name:"卷纸宽度 × 纸张",q:"哪种宽度、哪种纸还没人做？",rowT:"卷纸宽度",colT:"纸张类型",
+  cols:["书写纸 / 道林纸","牛皮纸","加厚可湿画"],
+  rk:["hape easel paper roll","easel paper roll 18 inch","easel paper roll 17 inch"], ck:["bond paper","kraft paper","heavyweight paint"],
+  rc:["画架 卷纸 15寸","画架 卷纸 18寸","画架 卷纸 17寸"], cc:["","牛皮纸","加厚"],
+  rows:[
+   ["15\"（Hape）",[["S2","Hape 原厂",{r:["hapeRefill"]}],["L1","—"],["L2","非标准宽度，加厚款少",{o:"加厚可湿画的通用画架卷纸",ev:"有来源"}]]],
+   ["18\"",[["R3","Little Artists、The Paper Store",{r:["littleArtists","paperStore"]}],["S2","Bryco",{k:["kraft paper roll 18 inch"]}],["L3","遇湿颜料易破",{r:["mdRefill"],o:"加厚可湿画的通用画架卷纸",ev:"有来源",d:"Melissa & Doug 卷纸被评论说遇湿颜料易破；通用卷纸很少写“可湿画”。"}]]],
+   ["17\"",[["S2","Melissa & Doug（页面 17\" / 18\" 矛盾）",{r:["mdRefill"]}],["S1","—"],["L2","—",{o:"加厚可湿画的通用画架卷纸"}]]]]},
+
+ {id:"scene",name:"使用场景 × 关键卖点",q:"每个场景最在意的卖点，有没有产品明确满足？",rowT:"使用场景",colT:"关键卖点",
+  cols:["稳不倒","卷纸好用","可调高","收纳","安全认证","玩法内容"],
+  rk:["kids easel home","preschool classroom easel","toddler easel","kids easel gift"], ck:["sturdy","paper roll","adjustable","storage","safety certified","activities"],
+  rc:["儿童 画架","幼儿园 画架","宝宝 画架","儿童 画架 礼物"], cc:["稳","卷纸","可调","收纳","安全","玩法"],
+  rows:[
+   ["家庭涂鸦",[["L3","部分评论说晃",{r:["mdDeluxe","hapeE1010"],o:"宽底座防翻倒的儿童画架",ev:"部分来源"}],["L3","卷纸易破、会往下滑",{r:["mdRefill","hapeRefill"],o:"加厚可湿画的通用画架卷纸",ev:"有来源"}],["R3","—",{r:["joyooss","costzon"]}],["S2","—"],["S2","—"],["L1","—"]]],
+   ["幼儿园 / 课堂",[["S2","—"],["L2","耗材用量大",{r:["paperStore"],o:"加厚可湿画的通用画架卷纸",ev:"有来源"}],["S1","—"],["S2","Delta",{r:["deltaSearch"]}],["S2","GREENGUARD"],["S1","—"]]],
+   ["小龄（2–3 岁）",[["S2","—"],["S1","—"],["S1","—"],["S1","—"],["S2","—",{r:["toddler24"]}],["S1","—"]]],
+   ["节日礼物",[["S2","—"],["S2","—"],["S2","—"],["S1","—"],["S2","—"],["L2","主要堆配件数量",{r:["mdComplete"],o:"儿童画架 + 分龄绘画课程卡",ev:"经验判断"}]]]]}
+],
+
+refs:{
+ mdDeluxe:["Melissa & Doug Deluxe 双面落地画架","https://www.amazon.com/dp/B002JCS5JA"], mdMagnetic:["Melissa & Doug 磁性落地画架","https://www.amazon.com/dp/B00MC7TC6M"], mdComplete:["Melissa & Doug 画架 + 颜料全套","https://www.amazon.com/dp/B0FXJ5Z63L"], mdTable:["Melissa & Doug 双面磁性桌面画架","https://www.amazon.com/dp/B01B1UUNCW"],
+ hapeE1010:["Hape E1010 儿童画架","https://www.amazon.com/dp/B00II021GK"], hapeRefill:["Hape 卷纸补充装 15\"×20 m","https://www.amazon.com/dp/B00II022O6"], mdRefill:["Melissa & Doug 卷纸补充装 3 卷","https://www.amazon.com/dp/B000PXVQI2"],
+ littleArtists:["Little Artists 18\" 卷纸 3 卷","https://www.amazon.com/clp/B01N984JHS"], paperStore:["The Paper Store 18\"×175 ft 卷纸","https://www.amazon.com/clp/B07P8NBMTD"],
+ joyooss:["JOYOOSS 儿童画架（36–50\"）","https://www.amazon.com/dp/B07NRX5QJ3"], costzon:["Costzon 儿童画架（47–57\"）","https://www.amazon.com/dp/B098QRXFXB"], costzonStorage:["Costzon 带收纳托盘儿童画架","https://www.amazon.com/dp/B0G8FZF73J"], vinlon:["Vinlon 儿童画架（3 卷卷纸）","https://www.amazon.com/dp/B0DHZH1WTH"], kids3in1:["3 合 1 儿童画架（3 卷卷纸）","https://www.amazon.com/dp/B0DJT4D7HY"],
+ joycat:["Joycat 儿童桌面画架","https://www.amazon.com/dp/B0DFNYMK13"], toddler24:["2–4 岁 4 合 1 桌面画架","https://us.amazon.com/dp/B0F4XZ886C"],
+ ledBoard:["双面 LED 发光桌面画板","https://www.amazon.com/dp/B0GYFBY8YR"], ledSearch:["Amazon 搜索：LED drawing board kids","https://www.amazon.com/s?k=led+light+up+drawing+board+kids+easel"],
+ deltaSearch:["Delta Children MySize 带收纳画架（搜索页）","https://www.amazon.com/s?k=delta+children+mysize+easel+storage"], blueSquid:["Blue Squid 儿童画架套装（搜索页）","https://www.amazon.com/s?k=blue+squid+kids+easel"]
+},
+
+src:{
+ kidsReview:["儿童画架评测汇总（晃的比例、卷纸问题）","https://momjunction.com/articles/best-kids-easels_00607164"],
+ mdEasel:["Melissa & Doug Deluxe 落地画架（Amazon）","https://www.amazon.com/dp/B002JCS5JA"],
+ kidsTableLink:["Melissa & Doug 桌面画架（Amazon）","https://www.amazon.com/dp/B01B1UUNCW"],
+ ledLink:["LED 发光画板（Amazon）","https://www.amazon.com/dp/B0GYFBY8YR"],
+ paperRollLink:["Amazon：18\" 画架卷纸（宽度、纸张差异）","https://www.amazon.com/18-inch-easel-paper-roll/s?k=18+inch+easel+paper+roll"]
+}
+});
+
+/* ======================================================================
+   品类数据：展示画架（画架系列）
+   结构说明见 _template.js。数据快照：2026-11
+   ====================================================================== */
+CATS.push({
+id:"easelDisplay", name:"展示画架", en:"Display Easel", updated:"2026-11",
+series:"画架", pos:"不是用来画画，是用来摆：婚礼迎宾牌、海报、展览和迷你画架；多件装、颜色和承重是关键",
+
+scope:{
+  def:"用来摆放展示的画架：黑色金属婚礼指示牌架、重型多层金属展示架、木质展示架、双折木质展示架、迷你画架多支装，以及迷你画布 + 画架派对套装。",
+  include:"上述展示架单卖、多件装和派对套装。",
+  exclude:"画画用的落地 / 桌面画架（见对应品类）、人行道 A 字广告牌、易拉宝、海报架。",
+  adjacent:"KT 板 / 泡沫板、迎宾牌、相框、餐盘架。",
+  kw:["display easel","easel stand for wedding sign","sign easel","mini easel","展示画架","婚礼迎宾牌架子","迷你画架"]
+},
+
+rules:[
+  "按结构分：金属婚礼指示牌架、重型多层金属展示架、木质展示架、双折木质展示架、迷你画架；派对套装单独一类。",
+  "高度按页面原样记（如 47\"、63\"、65\"、66\"）；迷你画架记 5\" / 6\" / 8\"。",
+  "承重只记页面写明的数字（从 5 lbs 到 50 lbs 差别很大），没写记“未披露”。",
+  "多件装按支数记，价格按单支折算后另记。",
+  "颜色按页面记（黑、金、玫瑰金、银、白、原木）。",
+  "派对套装记画布尺寸（4×4\"、4×6\"）、套数、颜料类型（页面有时写水彩、有时写丙烯，矛盾的记“页面矛盾”）。"
+],
+
+dims:[
+ {g:"产品本体", about:"展示架本身：结构、材质、高度、承重、颜色。", cats:[
+  {t:"A 结构与材质", c:[
+   {t:"结构类型", tag:"L1", c:[{t:"金属婚礼指示牌架",n:"单杆三脚，63\""},{t:"重型多层金属展示架",n:"47\" 4 层"},{t:"木质展示架",n:"A 字，65\""},{t:"双折木质展示架",n:"Displays2go"},{t:"迷你画架",n:"5–9\""}]},
+   {t:"材质", tag:"L1", c:[{t:"铁 / 钢"},{t:"铝合金"},{t:"实木"},{t:"松木"}]},
+   {t:"颜色", tag:"L2", c:[{t:"黑色",n:"主流"},{t:"金 / 玫瑰金"},{t:"银"},{t:"白"},{t:"原木"}]}]},
+  {t:"B 尺寸与承重", c:[
+   {t:"高度", tag:"L2", c:[{t:"≤ 12\"",n:"迷你画架"},{t:"13–47\""},{t:"48–66\"",n:"63\"、65\"、66\""},{t:"66\" 以上"}]},
+   {t:"承重", tag:"L2", def:"页面差别很大：5 lbs 到 50 lbs。", c:[{t:"≤ 5 lbs"},{t:"6–20 lbs",n:"Displays2go 20 lbs"},{t:"21–50 lbs",n:"30 lbs、50 lbs 款"},{t:"未披露"}]},
+   {t:"可托板宽", tag:"L3", c:[{t:"≤ 24\""},{t:"24–36\""},{t:"36\" 以上"}]},
+   {t:"整架重量", tag:"L3", c:[{t:"≤ 2.5 lbs",n:"单杆铁架 2.1 lbs、木架 < 2 lbs"},{t:"2.5 lbs 以上"}]}]},
+  {t:"C 稳定与安全", c:[
+   {t:"稳定措施", tag:"L2", c:[{t:"加粗管 / 多层托"},{t:"可锁定支腿"},{t:"配重挂钩 / 沙袋"},{t:"无"}]},
+   {t:"安全与合规", tag:"L0", c:[{t:"Prop 65 警示"},{t:"儿童窒息警示（迷你、派对套装）"},{t:"ASTM D-4236（派对套装颜料）"}]}]}
+ ]},
+ {g:"销售形态", about:"怎么卖：多件装、收纳包、套装。", cats:[
+  {t:"D 组合与数量", c:[
+   {t:"件数", tag:"L2", c:[{t:"单支"},{t:"2–3 支装"},{t:"12–24 支装"},{t:"40–100 支装",n:"迷你画架"}]},
+   {t:"随附配件", tag:"L3", c:[{t:"收纳包"},{t:"无"},{t:"迷你画布 + 颜料 + 画笔",n:"派对套装"}]}]}
+ ]},
+ {g:"市场定位", about:"卖给谁、用在哪。", cats:[
+  {t:"E 场景与人群", c:[
+   {t:"使用场景", tag:"L3", c:[{t:"婚礼迎宾牌"},{t:"活动 / 展会海报"},{t:"画廊 / 展览"},{t:"餐桌座位卡 / 照片"},{t:"派对 DIY 画画"}]},
+   {t:"购买人", tag:"L3", c:[{t:"新人 / 婚礼策划"},{t:"活动公司"},{t:"商家"},{t:"老师 / 家长"}]},
+   {t:"价格带（单支）", tag:"L2", c:[{t:"< $1（迷你）"},{t:"$10–30"},{t:"$30–60"},{t:"$60 以上"}]}]}
+ ]}
+],
+
+types:[
+ {g:"落地展示架", about:"婚礼、海报、展览", items:[
+  {t:"黑色金属婚礼指示牌架", vol:"主流", volWhy:"STARHOO、DANMO、DDEAT 63\" 等大量在售，2–3 支装常见（2 支装约 $25.49）。",
+   combo:["金属婚礼指示牌架","铁 / 钢","黑色","63\"","2–3 支装","收纳包"],
+   rep:"STARHOO 63\"、DANMO 63\"、DDEAT 63\"、63\" 3 支装带收纳包",
+   price:"US $10–30 / 支", who:"新人、婚礼策划、活动", comp:"hi", compT:"高：白牌多",
+   pain:"晃、易倒；有风会倒；承重写得不清（5 lbs 到 50 lbs 都有）", ev:["signReview","signWind"], evl:"有来源",
+   fig:{k:"stand",v:"display"},
+   ex:[["starhoo","63\"，可调"],["danmo","63\" 即开即用"],["ddeat","63\" 可调"],["sign3pack","63\" 3 支装带收纳包"]],
+   map:[["结构类型","金属婚礼指示牌架"],["材质","铁 / 钢"],["颜色","黑色"],["高度","48–66\""],["承重","≤ 5 lbs / 未披露","s"],["件数","2–3 支装"],["随附配件","收纳包"],["使用场景","婚礼迎宾牌、活动 / 展会海报"]],
+   pros:["便宜、轻","多件装"], cons:["晃、易倒","承重不清"],
+   up:["承重写明 + 可锁定 + 配重挂钩"], verdict:["可做","对应 ③ B“承重写明、防风的婚礼指示牌架”。"], must:["写明承重和托板宽"], plus:["配重挂钩"], avoid:["只写 heavy duty"]},
+  {t:"重型多层金属展示架", vol:"细分", volWhy:"47\" 4 层重型展示架、承重 30 / 50 lbs 款在售。",
+   combo:["重型多层金属展示架","铁 / 钢","47\"","承重 30–50 lbs"],
+   rep:"47\" 4 层重型金属展示架、承重 50 lbs（托 36\" 标牌）款",
+   price:"US $30–60", who:"商家、活动公司", comp:"mid", compT:"中",
+   pain:"重、贵", ev:["signReview"], evl:"部分来源",
+   fig:{k:"stand",v:"display",label:"重型金属展示架"},
+   ex:[["heavySignSearch","搜索页：heavy duty easel stand for sign"],["blackMetalSearch","搜索页：black metal easel stand for wedding sign"]],
+   map:[["结构类型","重型多层金属展示架"],["承重","21–50 lbs","s"],["稳定措施","加粗管 / 多层托"]],
+   pros:["稳"], cons:["重"], up:["—"], verdict:["谨慎","—"], must:["—"], plus:["—"], avoid:["—"]},
+  {t:"木质展示架（65\"，多色）", vol:"细分", volWhy:"CBT 65\" 5 色（美国制造）、KINGART 65\" 松木、Falling in Art 65\" 黑色、婚礼花艺木架在售。",
+   combo:["木质展示架","实木 / 松木","65\"","原木 / 金 / 玫瑰金 / 银 / 白 / 黑"],
+   rep:"CBT 65\" 婚礼展示架（5 色，美国制造，可落地 65\" / 桌面 35\"）、KINGART 65\" 松木（< 2 lbs，≤ 40\"）、Falling in Art 65\" 黑色、婚礼花艺木架",
+   price:"US $20–60", who:"婚礼、花艺、画廊", comp:"mid", compT:"中",
+   pain:"轻、承重低", ev:["woodDisplayLink"], evl:"有来源",
+   fig:{k:"stand",v:"displaywood"},
+   ex:[["cbt65","65\"，5 色，美国制造"],["kingart65d","65\" 松木，< 2 lbs，≤ 40\""],["fia65","65\" 黑色 A 字架"],["floral65","婚礼花艺木架 65\""]],
+   map:[["结构类型","木质展示架"],["材质","实木 / 松木"],["颜色","金 / 玫瑰金 / 银 / 白 / 原木","m"],["高度","48–66\""],["整架重量","≤ 2.5 lbs","s"]],
+   pros:["好看"], cons:["承重低"], up:["—"], verdict:["谨慎","多色已有（③ 中已排除）。"], must:["—"], plus:["—"], avoid:["—"]},
+  {t:"双折木质展示架", vol:"小众", volWhy:"Displays2go 65\" 双折木架（承重 20 lbs）在售。",
+   combo:["双折木质展示架","实木","65\"","承重 20 lbs"],
+   rep:"Displays2go 65\" 双折木质展示架（樱桃木色，2 个可调托钉）",
+   price:"US $40–80", who:"画廊、商家", comp:"lo", compT:"低",
+   pain:"需组装", ev:["d2go"], evl:"有来源",
+   fig:{k:"stand",v:"displaywood",label:"双折木质展示架"},
+   ex:[["d2go","65\"，承重 20 lbs，需组装"],["woodEaselSearch","搜索页：wood easel stand"]],
+   map:[["结构类型","双折木质展示架"],["承重","6–20 lbs","m"]],
+   pros:["稳、好看"], cons:["贵"], up:["—"], verdict:["不建议","需求小。"], must:["—"], plus:["—"], avoid:["—"]}
+ ]},
+ {g:"迷你与派对", about:"5–8\" 小画架", items:[
+  {t:"迷你画架多支装", vol:"主流", volWhy:"EBOOT 24 支、Thenshop 40 支、Mimorou 60 支、U.S. Art Supply 12 支等大量在售。",
+   combo:["迷你画架","松木","5–8\"","12–100 支装"],
+   rep:"EBOOT 5\" 24 支、Thenshop 6\" 40 支、Mimorou 5\" 60 支、U.S. Art Supply 5\" 12 支（黑 / 原木）、8\" 48 支",
+   price:"US $8–25 / 包", who:"婚礼座位卡、照片、手工", comp:"hi", compT:"高",
+   pain:"角度大时会滑", ev:["miniLink"], evl:"有来源",
+   fig:{k:"stand",v:"mini"},
+   ex:[["eboot24","5\" 24 支"],["thenshop40","6\" 40 支"],["mimorou60","5\" 60 支"],["usasMini12","5\" 12 支"]],
+   map:[["结构类型","迷你画架"],["材质","松木"],["高度","≤ 12\""],["件数","40–100 支装"],["使用场景","餐桌座位卡 / 照片"]],
+   pros:["便宜、复购"], cons:["红海"], up:["—"], verdict:["不建议","低价红海。"], must:["—"], plus:["—"], avoid:["—"]},
+  {t:"迷你画布 + 画架派对套装", vol:"主流", volWhy:"CRAFTY HAPPITOYS 12 套、Teling 24 套、CIYOJA 16 套（4×6\"）、NNHOM 96 件等大量在售。",
+   combo:["迷你画架","4×4\" / 4×6\" 画布","12–24 套","迷你画布 + 颜料 + 画笔"],
+   rep:"CRAFTY HAPPITOYS 12 套（10 色颜料条）、Teling 24 套、CIYOJA 16 套 4×6\"、NNHOM 96 件（含围裙、手提袋）、预印线稿款",
+   price:"US $15–35", who:"生日派对、课堂、家长", comp:"hi", compT:"高",
+   pain:"颜料类型页面写法不一（水彩 / 丙烯）", ev:["partyLink"], evl:"有来源",
+   fig:{k:"stand",v:"mini",label:"迷你画布 + 画架套装"},
+   ex:[["happitoys12","12 套，10 色颜料条"],["teling24","24 套 4×4\""],["ciyoja16","16 套 4×6\""],["nnhom96","96 件，含围裙、手提袋"]],
+   map:[["随附配件","迷你画布 + 颜料 + 画笔"],["件数","12–24 支装"],["使用场景","派对 DIY 画画"],["安全与合规","儿童窒息警示（迷你、派对套装）"]],
+   pros:["派对刚需"], cons:["红海"], up:["—"], verdict:["不建议","已饱和（③ 中已排除）。"], must:["—"], plus:["—"], avoid:["—"]}
+ ]}
+],
+
+opps:[
+ {t:"承重写明、防风的婚礼指示牌架", gap:"痛点缺口", score:{d:4,c:2,x:3,s:4,p:3,e:3},
+  why:"婚礼指示牌架销量大，但评论常说晃、被碰就倒、比想象的单薄；页面承重从 5 lbs 到 50 lbs 不等，很多不写。户外婚礼还要靠沙袋压后腿。把“承重数字 + 支腿锁定 + 配重挂钩”写清楚的款少。",
+  spec:["金属婚礼指示牌架","63\"","承重 ≥ 25 lbs（写明）","支腿锁定","配重挂钩 + 小沙袋","2 支装 + 收纳包"], diff:"主图：承重测试 + 户外风中不倒", price:"US $28–38 / 2 支",
+  risk:"价格敏感；加重会增加运费", verify:"抓婚礼牌架 Top 20 差评里 flimsy / fell / wobbly / wind 的占比",
+  from:"黑色金属婚礼指示牌架", ev:["signReview","signWind"], evl:"有来源"},
+ {t:"婚庆批量装木质展示架（多支 + 收纳包）", gap:"场景缺口", score:{d:3,c:3,x:2,s:3,p:3,e:2},
+  why:"婚礼策划、婚庆租赁公司需要成批、颜色统一的展示架；木质展示架多单支卖，金属架才有 2–3 支装和收纳包。",
+  spec:["木质展示架","65\"","4–6 支装","统一颜色","收纳包"], diff:"批量装 + 统一色号", price:"US $80–140 / 4 支",
+  risk:"B 端需求难在 Amazon 验证", verify:"拉 wedding easel bulk、wooden easel set of 4 搜索量",
+  from:"木质展示架（65\"，多色）", ev:["woodDisplayLink"], evl:"经验判断"},
+ {t:"户外商用防风展示架", state:"clue", gap:"场景缺口",
+  why:"商家门口、户外活动需要防风展示架；但这和人行道 A 字广告牌重叠，需求是否落在“画架”品类，证据不足。",
+  spec:["加重底座","防风"], verify:"拉 outdoor easel stand for sign 搜索量", from:"重型多层金属展示架", ev:["signWind"], evl:"经验判断"},
+ {t:"迷你画布 + 画架派对套装", state:"out", gap:"场景缺口",
+  why:"最初判断迷你画架可以和小画布、颜料做成派对套装。",
+  outWhy:"核实后已有大量 12–24 套的迷你画布 + 画架 + 颜料套装（CRAFTY HAPPITOYS、Teling、CIYOJA、NNHOM 等）。",
+  spec:["迷你画架","迷你画布"], from:"迷你画布 + 画架派对套装", ev:["partyLink"], evl:"有来源"},
+ {t:"多色木质婚礼展示架", state:"out", gap:"场景缺口",
+  why:"最初判断婚礼展示架颜色单一。",
+  outWhy:"核实后 CBT 65\" 已有原木、金、玫瑰金、银、白 5 色。",
+  spec:["木质展示架","多色"], from:"木质展示架（65\"，多色）", ev:["woodDisplayLink"], evl:"有来源"}
+],
+
+grids:[
+ {id:"height",name:"结构 × 高度",q:"每种结构在哪个高度段还没人做？",rowT:"结构类型",colT:"高度",
+  cols:["≤ 12\"","13–47\"","48–66\"","66\" 以上"],
+  rk:["metal easel stand for sign","heavy duty sign easel","wooden display easel","mini easel"], ck:["","47 inch","63 inch","72 inch"],
+  rc:["展示 画架 金属","重型 展示架","木质 展示 画架","迷你 画架"], cc:["","","",""],
+  rows:[
+   ["金属婚礼牌架",[["X","—"],["S1","—"],["R3","63\" 白牌",{r:["starhoo","danmo","ddeat"],t:["黑色金属婚礼指示牌架"]}],["S2","66\"",{k:["66 inch display easel"]}]]],
+   ["重型多层",[["X","—"],["S2","47\" 4 层",{r:["heavySignSearch"],t:["重型多层金属展示架"]}],["S1","—"],["X","—"]]],
+   ["木质展示架",[["X","—"],["S1","桌面 35\"（CBT 两用）",{r:["cbt65"]}],["S3","65\"",{r:["cbt65","kingart65d","fia65"],t:["木质展示架（65\"，多色）","双折木质展示架"]}],["S1","—"]]],
+   ["迷你画架",[["R3","5–8\"",{r:["eboot24","thenshop40","mimorou60"],t:["迷你画架多支装","迷你画布 + 画架派对套装"]}],["X","—"],["X","—"],["X","—"]]]]},
+
+ {id:"load",name:"结构 × 承重",q:"承重写清楚了吗？",rowT:"结构类型",colT:"页面写明的承重",
+  cols:["≤ 5 lbs","6–20 lbs","21–50 lbs","未披露"],
+  rk:["metal easel stand for sign","heavy duty sign easel","wooden display easel"], ck:["","20 lbs","50 lbs",""],
+  rc:["展示 画架 金属","重型 展示架","木质 展示 画架"], cc:["","","",""],
+  rows:[
+   ["金属婚礼牌架",[["S2","—"],["S1","—"],["L3","承重写明的稳固款少",{r:["starhoo"],o:"承重写明、防风的婚礼指示牌架",ev:"有来源"}],["R3","多数不写",{r:["danmo","ddeat"]}]]],
+   ["重型多层",[["X","—"],["S1","—"],["S2","30 / 50 lbs",{r:["heavySignSearch"]}],["S1","—"]]],
+   ["木质展示架",[["S1","—"],["S2","Displays2go 20 lbs",{r:["d2go"]}],["S1","25 lbs 推荐",{r:["kingart65d"]}],["S3","—",{r:["cbt65"]}]]]]},
+
+ {id:"pack",name:"结构 × 件数",q:"每种结构卖单支还是多件装？",rowT:"结构类型",colT:"件数",
+  cols:["单支","2–3 支装","4–6 支装","12 支以上"],
+  rk:["easel stand for wedding sign","wooden display easel","mini easel","mini canvas and easel set"], ck:["","2 pack","set of 4","bulk"],
+  rc:["婚礼 迎宾牌 架子","木质 展示 画架","迷你 画架","迷你 画布 画架 套装"], cc:["","2支","4支","批量"],
+  rows:[
+   ["金属婚礼牌架",[["R3","—",{r:["starhoo","danmo"]}],["S3","2–3 支 + 收纳包",{r:["sign3pack"]}],["S1","—"],["X","—"]]],
+   ["木质展示架",[["S3","—",{r:["cbt65","fia65"]}],["S1","—"],["L2","婚庆批量装少",{o:"婚庆批量装木质展示架（多支 + 收纳包）",ev:"经验判断"}],["X","—"]]],
+   ["迷你画架",[["X","—"],["S1","—"],["S1","—"],["R3","12–100 支",{r:["eboot24","thenshop40","usasMini12"]}]]],
+   ["派对套装",[["X","—"],["X","—"],["S1","—"],["R3","12–24 套",{r:["happitoys12","teling24","ciyoja16"],o:"迷你画布 + 画架派对套装"}]]]]},
+
+ {id:"scene",name:"使用场景 × 关键卖点",q:"每个场景最在意的卖点，有没有产品明确满足？",rowT:"使用场景",colT:"关键卖点",
+  cols:["稳 / 防风","承重写明","颜色好看","多件装","便携收纳"],
+  rk:["wedding sign easel","poster easel event","gallery display easel","place card mini easel","paint party kit"], ck:["sturdy wind","weight capacity","gold","pack","storage bag"],
+  rc:["婚礼 迎宾牌 架子","展会 海报 架","画廊 展示 画架","座位卡 小画架","派对 画画 套装"], cc:["稳","承重","金色","多支","收纳包"],
+  rows:[
+   ["婚礼迎宾牌",[["L3","评论说晃、会倒",{r:["starhoo","danmo"],o:"承重写明、防风的婚礼指示牌架",ev:"有来源"}],["L3","5–50 lbs 不等，多数不写",{r:["ddeat"],o:"承重写明、防风的婚礼指示牌架",ev:"有来源"}],["S3","CBT 5 色",{r:["cbt65"],o:"多色木质婚礼展示架"}],["S2","—",{r:["sign3pack"]}],["S2","—",{r:["sign3pack"]}]]],
+   ["活动 / 展会海报",[["S2","重型款",{r:["heavySignSearch"]}],["S2","—"],["S1","—"],["S2","—"],["S2","—"]]],
+   ["画廊 / 展览",[["S2","—",{r:["d2go"]}],["S2","—"],["S2","—"],["L1","—"],["S1","—"]]],
+   ["座位卡 / 照片",[["S1","角度大会滑"],["X","—"],["S2","黑 / 原木",{r:["usasMini12"]}],["R3","—",{r:["thenshop40"]}],["S1","—"]]],
+   ["派对 DIY",[["S1","—"],["X","—"],["S1","—"],["R3","—",{r:["happitoys12","teling24"]}],["S2","—"]]]]}
+],
+
+refs:{
+ starhoo:["STARHOO 63\" 婚礼指示牌架","https://www.amazon.com/dp/B096LSGHCH"], danmo:["DANMO 63\" 指示牌架","https://www.amazon.com/dp/B09RQVG6BC"], ddeat:["DDEAT 63\" 指示牌架","https://www.amazon.com/dp/B09NPMW78C"], sign3pack:["63\" 指示牌架 3 支装（带收纳包）","https://www.amazon.com/dp/B0H14LG2Q2"],
+ heavySignSearch:["Amazon 搜索：heavy duty easel stand for sign","https://www.amazon.com/s?k=heavy+duty+easel+stand+for+sign"], blackMetalSearch:["Amazon 搜索：black metal easel stand for wedding sign","https://www.amazon.com/black-metal-easel-stand-wedding-sign/s?k=black+metal+easel+stand+for+wedding+sign"],
+ cbt65:["CBT 65\" 婚礼展示架（5 色）","https://www.amazon.com/clp/B07RXNMDJ1"], kingart65d:["KINGART 65\" 松木展示架","https://www.amazon.com/dp/B07HYKWZBX"], fia65:["Falling in Art 65\" 黑色木架","https://www.amazon.com/dp/B0B8QZV61S"], floral65:["65\" 婚礼花艺木架","https://www.amazon.com/dp/B081KRXMSZ"],
+ d2go:["Displays2go 65\" 双折木质展示架","https://www.amazon.com/dp/B00B5ZX182"], woodEaselSearch:["Amazon 搜索：wood easel stand","https://www.amazon.com/wood-easel-stand/s?k=wood+easel+stand"],
+ eboot24:["EBOOT 5\" 迷你画架 24 支","https://www.amazon.com/dp/B06XRS28JW"], thenshop40:["Thenshop 6\" 迷你画架 40 支","https://www.amazon.com/dp/B0B51CN9Z9"], mimorou60:["Mimorou 5\" 迷你画架 60 支","https://www.amazon.com/dp/B09XR18GSK"], usasMini12:["U.S. Art Supply 5\" 迷你画架 12 支","https://www.amazon.com/clp/B00NLNRVFU"],
+ happitoys12:["CRAFTY HAPPITOYS 迷你画布画架 12 套","https://www.amazon.com/dp/B0B437J66Z"], teling24:["Teling 迷你画布画架 24 套","https://www.amazon.com/clp/B0BNQ97CW7"], ciyoja16:["CIYOJA 4×6\" 画布画架 16 套","https://www.amazon.com/dp/B0GXFKSNG9"], nnhom96:["迷你画布画架派对 96 件","https://www.amazon.com/clp/B0CSJZTGK1"]
+},
+
+src:{
+ signReview:["婚礼牌架评论：单薄、被碰会倒、承重差异","https://www.staples.com/ptd/review/1682317"],
+ signWind:["婚礼迎宾牌展示指南：户外后腿压沙袋","https://icustomlabel.com/blogs/wedding-decor-and-gifts/how-to-display-wedding-welcome-sign-easels"],
+ woodDisplayLink:["CBT 65\" 婚礼展示架（Amazon，5 色）","https://www.amazon.com/clp/B07RXNMDJ1"],
+ d2go:["Displays2go 双折展示架（Amazon，承重 20 lbs）","https://www.amazon.com/dp/B00B5ZX182"],
+ miniLink:["Amazon：迷你画架多支装","https://www.amazon.com/mini-easel-stand/s?k=mini+easel+stand"],
+ partyLink:["Amazon：迷你画布 + 画架派对套装","https://www.amazon.com/clp/B0B437J66Z"]
+}
+});
+
+/* ======================================================================
+   品类数据：画箱（画架系列）
+   结构说明见 _template.js。数据快照：2026-11
+   ====================================================================== */
+CATS.push({
+id:"artBox", name:"画箱", en:"Sketch Box · French Easel · Pochade · Art Supply Box", updated:"2026-11",
+series:"画架", pos:"能装画材的箱子：一类带画架功能（抽屉画箱、法式画箱、Pochade），一类只收纳（木质多抽屉箱、塑料分层箱）",
+
+scope:{
+  def:"装画材、可携带的箱子。分两类：① 带画架功能的画箱：桌面抽屉画箱架、法式画箱架、铝合金法式画箱、写生画箱 Pochade；② 只收纳的画材箱：木质多抽屉画材箱、塑料分层手提箱、国内美术生工具箱。",
+  include:"上述画箱单卖，以及画箱 + 三脚架、画箱 + 画材的组合。",
+  exclude:"落地画架、桌面画架（无箱体）、画室边柜 / 推车（见画柜）、通用工具箱、化妆箱。",
+  adjacent:"写生三脚架、调色盘、湿画携带箱、画包、笔帘。",
+  kw:["sketch box easel","french easel","pochade box","art supply storage box","art bin","画箱","油画箱","美术工具箱"]
+},
+
+rules:[
+  "先分“带画架功能 / 只收纳”，再按结构分：抽屉画箱架、法式画箱、铝合金法式画箱、Pochade、木质多抽屉箱、塑料分层箱、国内美术生工具箱。",
+  "法式画箱：箱体 + 可伸缩三条腿 + 画布夹；Pochade：小箱子，盖子当画板，装在相机三脚架上（1/4\" 螺口）。",
+  "重量统一记 kg（页面写 lbs 的换算后保留原值），如 U.S. Art Supply 11.9 lbs ≈ 5.4 kg、MEEDEN PRO 21 lbs ≈ 9.5 kg。",
+  "画布上限按页面原样记（如 11×14\"、12×16\"、25\"、34\"）。",
+  "抽屉数、托盘层数、隔格数分开记。",
+  "标题和描述矛盾的（如 PHOENIX 金属 Pochade 标题写含三脚架、描述写不含）记“页面矛盾”。"
+],
+
+dims:[
+ {g:"产品本体", about:"画箱本身：功能、结构、材质、重量、容量。", cats:[
+  {t:"A 功能与结构", c:[
+   {t:"功能类型", tag:"L1", def:"是否能当画架用。", c:[{t:"带画架功能"},{t:"只收纳"}]},
+   {t:"结构类型", tag:"L1", c:[{t:"桌面抽屉画箱架",n:"MEEDEN、VISWIN、U.S. Art Supply"},{t:"法式画箱",n:"U.S. Art Supply、ATWORTH、MEEDEN、PHOENIX"},{t:"铝合金法式画箱",n:"MEEDEN"},{t:"写生画箱 Pochade",n:"SoHo、MEEDEN"},{t:"木质多抽屉画材箱",n:"MEEDEN 6 抽、U.S. Art Supply"},{t:"塑料分层手提箱",n:"ArtBin"},{t:"国内美术生工具箱"}]},
+   {t:"材质", tag:"L1", c:[{t:"榉木",n:"主流"},{t:"其他木（桃花心木色、胡桃色）"},{t:"铝合金"},{t:"塑料"}]}]},
+  {t:"B 尺寸与重量", c:[
+   {t:"重量", tag:"L2", c:[{t:"≤ 2 kg",n:"Pochade、塑料箱"},{t:"2–5 kg",n:"抽屉画箱"},{t:"5 kg 以上",n:"法式画箱 5.4 kg、MEEDEN PRO 9.5 kg"}]},
+   {t:"画布上限", tag:"L2", c:[{t:"≤ 11×14\"",n:"MEEDEN 小画箱"},{t:"12×16\"",n:"ARTISTIK"},{t:"≤ 25\"",n:"VISWIN"},{t:"≤ 34\"",n:"法式画箱"},{t:"不适用（只收纳）"}]},
+   {t:"抽屉 / 托盘", tag:"L2", c:[{t:"1 抽"},{t:"2–3 抽",n:"桌面画箱"},{t:"6 抽",n:"MEEDEN、Falling in Art"},{t:"1–3 层托盘",n:"ArtBin"}]},
+   {t:"角度调节", tag:"L3", c:[{t:"4 档",n:"MEEDEN、ARTISTIK"},{t:"0–90°",n:"MEEDEN 铝合金 Pochade"},{t:"不适用"}]}]},
+  {t:"C 携带与防护", c:[
+   {t:"携带方式", tag:"L2", c:[{t:"提手"},{t:"肩带"},{t:"收纳包"},{t:"无"}]},
+   {t:"锁扣", tag:"L3", c:[{t:"金属锁扣"},{t:"塑料卡扣"},{t:"无"}]},
+   {t:"防漏 / 防倒", tag:"L3", c:[{t:"防倒托盘（tip guard）",n:"ArtBin"},{t:"可拆隔格"},{t:"无"}]},
+   {t:"安装方式", tag:"L3", c:[{t:"自带三条腿"},{t:"1/4\" 相机螺口"},{t:"放桌面"}]}]},
+  {t:"D 合规", c:[
+   {t:"安全与合规", tag:"L0", c:[{t:"Prop 65 警示"},{t:"FSC 木材"},{t:"美国制造（ArtBin 部分款）"}]}]}
+ ]},
+ {g:"销售形态", about:"怎么卖。", cats:[
+  {t:"E 组合与数量", c:[
+   {t:"销售组合", tag:"L2", c:[{t:"单个画箱"},{t:"画箱 + 三脚架",n:"SoHo + Apex"},{t:"画箱 + 画材全套",n:"Best Choice 32 件"},{t:"多件装",n:"ArtBin 3 只装"}]},
+   {t:"随附配件", tag:"L3", c:[{t:"调色盘"},{t:"画板 / 素描板"},{t:"金属侧托盘",n:"ATWORTH"},{t:"肩带"}]}]}
+ ]},
+ {g:"市场定位", about:"卖给谁、用在哪。", cats:[
+  {t:"F 场景与人群", c:[
+   {t:"使用场景", tag:"L3", c:[{t:"桌面作画"},{t:"油画写生"},{t:"水彩写生"},{t:"收纳画材"},{t:"艺考 / 画室"}]},
+   {t:"目标人群", tag:"L3", c:[{t:"写生画家"},{t:"成人初学者"},{t:"手工爱好者"},{t:"美术生"}]},
+   {t:"价格带", tag:"L2", c:[{t:"< $30"},{t:"$30–60"},{t:"$60–120"},{t:"$120 以上"}]}]}
+ ]}
+],
+
+types:[
+ {g:"带画架功能", about:"画箱架", items:[
+  {t:"桌面抽屉画箱架", vol:"主流", volWhy:"MEEDEN、VISWIN、ARTISTIK、U.S. Art Supply、DJAR 多款在售。",
+   combo:["桌面抽屉画箱架","榉木","2–3 抽","画布 11×14\" – 25\"","4 档角度"],
+   rep:"MEEDEN 大号画箱（3 抽）、VISWIN 3 抽（≤ 25\"，皮提手 + 金属锁扣）、ARTISTIK 3 抽（≤ 12×16\"，整装）、MEEDEN 小画箱（≤ 11×14\"，带调色盘）、U.S. Art Supply 2 抽 / 3 抽",
+   price:"US $30–90", who:"桌面作画、成人初学者", comp:"hi", compT:"高",
+   pain:"画布上限小；抽屉卡", ev:["boxEaselLink"], evl:"有来源",
+   fig:{k:"stand",v:"tablebox"},
+   ex:[["meedenBox","3 抽，榉木"],["viswinBox","3 抽，≤ 25\"，皮提手、金属锁扣"],["artistik","3 抽，≤ 12×16\"，整装发货"],["meedenSmallBox","≤ 11×14\"，带调色盘"]],
+   map:[["功能类型","带画架功能"],["结构类型","桌面抽屉画箱架"],["材质","榉木"],["抽屉 / 托盘","2–3 抽"],["画布上限","≤ 11×14\" / 12×16\" / ≤ 25\"","s"],["角度调节","4 档","s"],["携带方式","提手"]],
+   pros:["画架 + 收纳"], cons:["画幅小"], up:["—"], verdict:["谨慎","红海。"], must:["写明画布上限"], plus:["—"], avoid:["—"]},
+  {t:"法式画箱", vol:"主流", volWhy:"U.S. Art Supply、ATWORTH、MEEDEN（多款）、PHOENIX 在售。",
+   combo:["法式画箱","榉木","画布 ≤ 34\"","自带三条腿","5–9.5 kg","肩带"],
+   rep:"U.S. Art Supply 大号榉木法式画箱（11.9 lbs）、ATWORTH 豪华款（≤ 34\"，金属侧托盘）、MEEDEN 便携款（57–72\"）、MEEDEN PRO（21 lbs，铝腿）、PHOENIX 榉木款（皮提手 + 肩带）",
+   price:"US $70–200", who:"油画写生画家", comp:"hi", compT:"高",
+   pain:"重（不适合走远路）；腿晃，尤其伸到最高；腿收不住、零件易坏", ev:["frenchWobble","frenchReview"], evl:"有来源",
+   fig:{k:"stand",v:"french"},
+   ex:[["usasFrench","大号榉木，11.9 lbs"],["atworth","≤ 34\"，金属侧托盘"],["meedenPro","21 lbs，铝腿，重型"],["phoenixFrench","榉木，皮提手 + 肩带"]],
+   map:[["功能类型","带画架功能"],["结构类型","法式画箱"],["重量","5 kg 以上","m"],["画布上限","≤ 34\"","s"],["安装方式","自带三条腿"],["携带方式","肩带"],["使用场景","油画写生"]],
+   pros:["一体化：箱 + 架 + 画布夹"], cons:["重","腿晃"],
+   up:["轻量铝腿、防晃锁扣"], verdict:["可做","对应 ③ B“轻量稳固的法式画箱”。"], must:["写明重量"], plus:["—"], avoid:["腿晃"]},
+  {t:"铝合金法式画箱", vol:"细分", volWhy:"MEEDEN 便携铝合金法式画箱（带三脚架、收纳包）在售。",
+   combo:["铝合金法式画箱","铝合金","自带三脚架","收纳包"],
+   rep:"MEEDEN 便携铝合金法式画箱（户外三脚架 + 桌面两用 + 收纳包）",
+   price:"US $60–120", who:"写生画家", comp:"mid", compT:"中",
+   pain:"铝合金箱体小、收纳少", ev:["meedenAlu"], evl:"有来源",
+   fig:{k:"stand",v:"french",alu:true,label:"铝合金法式画箱"},
+   ex:[["meedenAlu","铝合金，三脚架 + 桌面两用"],["frenchSearch","搜索页：french box easel"]],
+   map:[["结构类型","铝合金法式画箱"],["材质","铝合金"],["重量","2–5 kg"],["携带方式","收纳包"]],
+   pros:["轻"], cons:["收纳少"], up:["—"], verdict:["谨慎","已有品牌在做。"], must:["—"], plus:["—"], avoid:["—"]},
+  {t:"写生画箱 Pochade", vol:"细分", volWhy:"SoHo Scout / Pochade、MEEDEN（木 / 铝合金）、PHOENIX 金属款，以及“画箱 + 三脚架”组合在售。",
+   combo:["写生画箱 Pochade","木 / 铝合金","1/4\" 相机螺口","盖子当画板","≤ 2 kg"],
+   rep:"SoHo Scout Pochade（桃花心木色）、SoHo Pochade + 铝合金三脚架、SoHo Scout + Creative Mark Apex 三脚架、MEEDEN 便携 Pochade（尼龙包）、MEEDEN 铝合金 Pochade（25×19×3 cm，0–90°）、PHOENIX 金属 Pochade",
+   price:"US $50–200", who:"写生画家、旅行", comp:"mid", compT:"中",
+   pain:"需另配三脚架；PHOENIX 页面标题和描述矛盾（含不含三脚架）", ev:["pochadeLink"], evl:"有来源",
+   fig:{k:"stand",v:"pochade"},
+   ex:[["sohoScout","SoHo Scout，带收纳"],["sohoTripod","SoHo Pochade + 铝合金三脚架"],["meedenAluPochade","铝合金，25×19×3 cm，0–90°"],["phoenixPochade","金属；标题写含三脚架、描述写不含","u"]],
+   map:[["结构类型","写生画箱 Pochade"],["安装方式","1/4\" 相机螺口","m"],["重量","≤ 2 kg"],["角度调节","0–90°（MEEDEN 铝合金）","m"],["销售组合","画箱 + 三脚架"],["使用场景","油画写生 / 水彩写生"]],
+   pros:["轻、稳（配好三脚架）"], cons:["要另买三脚架"], up:["水彩专用（见 ③ C）"], verdict:["谨慎","组合套装已有（③ 中已排除）。"], must:["写清是否含三脚架"], plus:["—"], avoid:["页面矛盾"]}
+ ]},
+ {g:"只收纳", about:"画材箱", items:[
+  {t:"木质多抽屉画材箱", vol:"主流", volWhy:"MEEDEN 6 抽、U.S. Art Supply 锁扣款、Falling in Art 6 抽在售。",
+   combo:["木质多抽屉画材箱","榉木","6 抽 / 多隔格","锁扣"],
+   rep:"MEEDEN 6 抽榉木箱（每抽 5 格，40×25×16 cm）、U.S. Art Supply 多功能画材箱（锁扣）、Falling in Art 6 抽粉彩箱",
+   price:"US $40–90", who:"彩铅、粉彩、画笔收纳", comp:"mid", compT:"中",
+   pain:"重；抽屉松", ev:["woodBoxLink"], evl:"有来源",
+   fig:{k:"stand",v:"artbox"},
+   ex:[["meeden6","6 抽，每抽 5 格，可整抽取出"],["usasBox","锁扣，便于运输"],["fia6","6 抽粉彩箱"]],
+   map:[["功能类型","只收纳"],["结构类型","木质多抽屉画材箱"],["抽屉 / 托盘","6 抽"],["锁扣","金属锁扣"],["使用场景","收纳画材"]],
+   pros:["好看、分格多"], cons:["重"], up:["—"], verdict:["谨慎","—"], must:["—"], plus:["—"], avoid:["—"]},
+  {t:"塑料分层手提箱", vol:"主流", volWhy:"ArtBin 1 / 2 / 3 层手提箱、12×12\" 收纳箱等长期在售。",
+   combo:["塑料分层手提箱","塑料","1–3 层托盘","防倒托盘","锁扣"],
+   rep:"ArtBin 3 层（14.5×8×7\"，防倒托盘）、2 层、1 层（页面尺寸前后不一）、12×12\" 手提收纳箱、Essentials 提箱（美国制造）",
+   price:"US $15–40", who:"手工、画材收纳", comp:"hi", compT:"高：ArtBin + 渔具箱、工具箱",
+   pain:"不同页面尺寸、防水描述矛盾", ev:["artbinLink"], evl:"有来源",
+   fig:{k:"stand",v:"toolbox"},
+   ex:[["artbin3","3 层，防倒托盘，可拆隔板"],["artbin2","2 层；一处写防水、另一处写不防水","u"],["artbin12","12×12\" 手提收纳箱"]],
+   map:[["功能类型","只收纳"],["结构类型","塑料分层手提箱"],["材质","塑料"],["抽屉 / 托盘","1–3 层托盘"],["防漏 / 防倒","防倒托盘（tip guard）","m"],["安全与合规","美国制造（ArtBin 部分款）","m"]],
+   pros:["轻、便宜"], cons:["和渔具箱、工具箱竞争"], up:["—"], verdict:["不建议","跨类目红海。"], must:["—"], plus:["—"], avoid:["—"]},
+  {t:"国内美术生工具箱", vol:"主流", volWhy:"国内美术生常用多层手提工具箱 / 画箱装颜料、画笔（京东多款）。",
+   combo:["国内美术生工具箱","塑料 / 木","多层手提"],
+   rep:"多层手提美术工具箱、木质油画箱（京东多店铺）",
+   price:"¥30–200", who:"美术生、画室", comp:"hi", compT:"高",
+   pain:"颜料漏、串色（经验判断）", ev:["jdBox"], evl:"部分来源",
+   fig:{k:"stand",v:"toolbox",label:"美术生工具箱"},
+   ex:[["jdBox","京东：美术工具箱"],["jdOilBox","京东：油画箱"]],
+   map:[["结构类型","国内美术生工具箱"],["使用场景","艺考 / 画室"],["目标人群","美术生"]],
+   pros:["需求大"], cons:["价格低"], up:["防漏分格（线索）"], verdict:["谨慎","—"], must:["—"], plus:["—"], avoid:["—"]}
+ ]}
+],
+
+opps:[
+ {t:"轻量稳固的法式画箱", gap:"痛点缺口", score:{d:3,c:3,x:3,s:3,p:3,e:4},
+  why:"法式画箱是写生经典款，但论坛和评论反复提到：太重（有人只能从车上搬下来用）、腿晃（尤其伸到最高）、腿收不住、零件易坏。MEEDEN 有铝合金款但箱体小；榉木款多在 5 kg 以上。",
+  spec:["法式画箱","榉木箱体 + 铝合金腿","≤ 3.5 kg","腿部锁扣防晃","画布 ≤ 30\"","肩带"], diff:"重量和稳定性数字对比", price:"US $90–130",
+  risk:"轻量和稳定冲突；结构要开模", verify:"抓法式画箱 Top 20 差评里 heavy / wobbly / legs / broke 的占比",
+  from:"法式画箱、铝合金法式画箱", ev:["frenchWobble","frenchReview","meedenAlu"], evl:"有来源"},
+ {t:"水彩专用写生画箱", gap:"场景缺口", score:{d:3,c:3,x:3,s:3,p:3,e:2},
+  why:"Pochade 多为油画设计（盖子当竖立画板）。水彩写生要能放平、有水杯位和调色盘位；MEEDEN 铝合金款可调 0–90°，但没有水彩专用的水杯、调色区设计。",
+  spec:["写生画箱 Pochade","可放平","挂水杯","大调色盘","1/4\" 螺口"], diff:"“打开即是水彩工作台”", price:"US $60–90",
+  risk:"水彩写生人群较小", verify:"拉 watercolor pochade box、watercolor plein air box 搜索量",
+  from:"写生画箱 Pochade", ev:["pochadeLink"], evl:"部分来源"},
+ {t:"防漏分格的美术生颜料工具箱", state:"clue", gap:"痛点缺口",
+  why:"国内美术生用工具箱装水粉、丙烯，可能有漏、串色问题；没有找到直接评论证据。",
+  spec:["多层手提","密封分格"], verify:"抓京东美术工具箱差评里“漏”“串色”的占比", from:"国内美术生工具箱", ev:["jdBox"], evl:"经验判断"},
+ {t:"写生画箱 + 三脚架套装", state:"out", gap:"场景缺口",
+  why:"最初判断 Pochade 要另买三脚架，套装是空缺。",
+  outWhy:"核实后 SoHo 已有 Pochade + 铝合金三脚架、Scout + Creative Mark Apex 三脚架两种套装。",
+  spec:["Pochade","三脚架"], from:"写生画箱 Pochade", ev:["pochadeLink"], evl:"有来源"},
+ {t:"画箱 + 画材入门全套", state:"out", gap:"场景缺口",
+  why:"最初判断画箱可以和颜料、画笔做成入门全套。",
+  outWhy:"核实后 Best Choice Products 已有法式画箱 + 32 件画材的入门套装（Walmart 在售）。",
+  spec:["法式画箱","画材"], from:"法式画箱", ev:["bestChoiceKit"], evl:"有来源"}
+],
+
+grids:[
+ {id:"material",name:"结构 × 材质",q:"每种结构用什么材质，哪里还空着？",rowT:"结构类型",colT:"材质",
+  cols:["榉木","其他木","铝合金","塑料"],
+  rk:["tabletop sketch box easel","french easel","pochade box","wooden art supply storage box","art supply box plastic"], ck:["beech","wood","aluminum","plastic"],
+  rc:["抽屉 画箱","法式 画箱","写生 画箱","木质 画材箱","塑料 工具箱"], cc:["榉木","木质","铝合金","塑料"],
+  rows:[
+   ["抽屉画箱架",[["R3","MEEDEN、VISWIN、ARTISTIK",{r:["meedenBox","viswinBox","artistik"],t:["桌面抽屉画箱架"]}],["S1","—"],["X","—"],["X","—"]]],
+   ["法式画箱",[["R3","U.S. Art Supply、ATWORTH、PHOENIX",{r:["usasFrench","atworth","phoenixFrench"],t:["法式画箱"]}],["S1","—"],["L2","铝腿轻量款少",{r:["meedenAlu","meedenPro"],t:["铝合金法式画箱"],o:"轻量稳固的法式画箱",ev:"有来源"}],["X","—"]]],
+   ["Pochade",[["S1","—"],["S2","SoHo",{r:["sohoScout","sohoTripod"],t:["写生画箱 Pochade"]}],["S2","MEEDEN、PHOENIX",{r:["meedenAluPochade","phoenixPochade"]}],["X","—"]]],
+   ["木质收纳箱",[["S3","MEEDEN 6 抽",{r:["meeden6","fia6"],t:["木质多抽屉画材箱"]}],["S1","—",{r:["usasBox"]}],["X","—"],["X","—"]]],
+   ["塑料手提箱",[["X","—"],["X","—"],["X","—"],["R3","ArtBin",{r:["artbin3","artbin2","artbin12"],t:["塑料分层手提箱","国内美术生工具箱"]}]]]]},
+
+ {id:"weight",name:"结构 × 重量",q:"每种结构在哪个重量段还没人做？",rowT:"结构类型",colT:"重量",
+  cols:["≤ 2 kg","2–5 kg","5 kg 以上"],
+  rk:["tabletop sketch box easel","french easel","pochade box"], ck:["lightweight","",""],
+  rc:["抽屉 画箱","法式 画箱","写生 画箱"], cc:["轻便","",""],
+  rows:[
+   ["抽屉画箱架",[["S1","—"],["R3","—",{r:["meedenBox","viswinBox"]}],["S1","—"]]],
+   ["法式画箱",[["X","—"],["L3","3.5 kg 左右的稳固款少",{r:["meedenAlu"],o:"轻量稳固的法式画箱",ev:"有来源",d:"榉木法式画箱多在 5 kg 以上（U.S. Art Supply 11.9 lbs、MEEDEN PRO 21 lbs），评论说太重。"}],["R3","榉木款",{r:["usasFrench","meedenPro"]}]]],
+   ["Pochade",[["S3","—",{r:["meedenAluPochade","sohoScout"]}],["S1","—"],["X","—"]]]]},
+
+ {id:"price",name:"结构 × 价格带",q:"每种结构在哪个价位还空着？",rowT:"结构类型",colT:"售价（美国站）",
+  cols:["< $30","$30–60","$60–120","$120+"], price:["0-3000","3000-6000","6000-12000","12000-100000"],
+  rk:["tabletop sketch box easel","french easel","pochade box","wooden art supply storage box","art supply box plastic"],
+  rc:["抽屉 画箱","法式 画箱","写生 画箱","木质 画材箱","塑料 工具箱"], cc:["","","",""],
+  rows:[
+   ["抽屉画箱架",[["S1","—"],["R3","—",{r:["meedenSmallBox","artistik"]}],["S2","—",{r:["viswinBox"]}],["X","—"]]],
+   ["法式画箱",[["X","—"],["S1","—"],["R3","—",{r:["usasFrench","atworth"]}],["S2","PRO 款",{r:["meedenPro"]}]]],
+   ["Pochade",[["X","—"],["S2","—",{r:["meedenPochade"]}],["S2","—",{r:["sohoScout"]}],["S2","+ 三脚架",{r:["sohoTripod"],o:"写生画箱 + 三脚架套装"}]]],
+   ["木质收纳箱",[["X","—"],["S2","—",{r:["meeden6"]}],["S2","—",{r:["usasBox"]}],["X","—"]]],
+   ["塑料手提箱",[["R3","ArtBin",{r:["artbin3","artbin2"]}],["S2","—"],["X","—"],["X","—"]]]]},
+
+ {id:"scene",name:"使用场景 × 关键卖点",q:"每个场景最在意的卖点，有没有产品明确满足？",rowT:"使用场景",colT:"关键卖点",
+  cols:["轻","稳","可放平","收纳量","好携带","防漏"],
+  rk:["tabletop sketch box","oil plein air easel box","watercolor plein air box","art supply storage","art student supply box"], ck:["lightweight","sturdy","flat","storage","carry strap","leak proof"],
+  rc:["桌面 画箱","油画 写生 画箱","水彩 写生 画箱","画材 收纳箱","美术生 工具箱"], cc:["轻","稳","放平","收纳","便携","防漏"],
+  rows:[
+   ["桌面作画",[["S1","—"],["S3","—",{r:["meedenBox"]}],["S1","—"],["S3","—",{r:["viswinBox"]}],["S2","—"],["X","—"]]],
+   ["油画写生",[["L3","法式画箱太重",{r:["usasFrench","meedenPro"],o:"轻量稳固的法式画箱",ev:"有来源"}],["L2","腿晃",{r:["atworth"],o:"轻量稳固的法式画箱",ev:"有来源"}],["X","—"],["S2","—"],["S2","—",{r:["phoenixFrench"]}],["X","—"]]],
+   ["水彩写生",[["S2","—",{r:["meedenAluPochade"]}],["S1","—"],["L2","Pochade 多为油画设计",{r:["meedenAluPochade"],o:"水彩专用写生画箱",ev:"部分来源"}],["S1","—"],["S2","—"],["L1","—"]]],
+   ["收纳画材",[["S2","—"],["X","—"],["X","—"],["R3","—",{r:["meeden6","artbin3"]}],["S3","—",{r:["usasBox"]}],["S2","防倒托盘",{r:["artbin3"]}]]],
+   ["艺考 / 画室",[["S1","—"],["X","—"],["X","—"],["S2","—",{r:["jdBox"]}],["S2","—"],["L0","漏、串色（未证实）",{r:["jdBox"],o:"防漏分格的美术生颜料工具箱",clue:true}]]]]}
+],
+
+refs:{
+ meedenBox:["MEEDEN 大号抽屉画箱","https://www.amazon.com/clp/B087ZGJMBP"], viswinBox:["VISWIN 3 抽画箱（≤ 25\"）","https://www.amazon.com/dp/B0911RVVL6"], artistik:["ARTISTIK 3 抽画箱（≤ 12×16\"）","https://www.amazon.com/clp/B07DNM1NHQ"], meedenSmallBox:["MEEDEN 小画箱（≤ 11×14\"）","https://www.amazon.com/dp/B07R5RTTVP"], usas3d:["U.S. Art Supply 3 抽画箱","https://www.amazon.com/clp/B016YXKBS2"],
+ usasFrench:["U.S. Art Supply 大号榉木法式画箱","https://www.amazon.com/dp/B00EUJK8PO"], atworth:["ATWORTH 豪华法式画箱（≤ 34\"）","https://www.amazon.com/dp/B0DSFRQL6Z"], meedenPro:["MEEDEN PRO 法式画箱（21 lbs）","https://www.amazon.com/clp/B0D9XMPFFJ"], phoenixFrench:["PHOENIX 榉木法式画箱","https://www.amazon.com/dp/B0GZVCC9XQ"], meedenAlu:["MEEDEN 便携铝合金法式画箱","https://www.amazon.com/dp/B09GPFL7BM"], frenchSearch:["Amazon 搜索：french box easel","https://www.amazon.com/french-box-easel/s?k=french+box+easel"],
+ sohoScout:["SoHo Scout Pochade","https://www.amazon.com/dp/B08V23KPKH"], sohoTripod:["SoHo Pochade + 铝合金三脚架","https://www.amazon.com/dp/B07GNP1XZJ"], meedenPochade:["MEEDEN 便携 Pochade","https://www.amazon.com/dp/B07RFVGY6N"], meedenAluPochade:["MEEDEN 铝合金 Pochade","https://www.amazon.com/dp/B0HM366WYD"], phoenixPochade:["PHOENIX 金属 Pochade","https://us.amazon.com/dp/B0HJQFFC2X"],
+ meeden6:["MEEDEN 6 抽画材箱","https://www.amazon.com/dp/B087ZG3CBF"], usasBox:["U.S. Art Supply 锁扣画材箱","https://www.amazon.com/dp/B00OTZW56Y"], fia6:["Falling in Art 6 抽粉彩箱","https://www.amazon.com/clp/B0DPWZQBTY"],
+ artbin3:["ArtBin 3 层手提箱","https://www.amazon.com/dp/B071SHCYR6"], artbin2:["ArtBin 2 层手提箱","https://www.amazon.com/dp/B071FJS71G"], artbin12:["ArtBin 12×12\" 手提收纳箱","https://www.amazon.com/dp/B00BRG5IHG"],
+ jdBox:["京东 · 美术工具箱（搜索页）","https://search.jd.com/Search?keyword=%E7%BE%8E%E6%9C%AF%E5%B7%A5%E5%85%B7%E7%AE%B1&enc=utf-8"], jdOilBox:["京东 · 油画箱（搜索页）","https://search.jd.com/Search?keyword=%E6%B2%B9%E7%94%BB%E7%AE%B1&enc=utf-8"]
+},
+
+src:{
+ boxEaselLink:["Amazon：带抽屉桌面画箱架","https://www.amazon.com/tabletop-easel-box/s?k=tabletop+easel+box"],
+ frenchWobble:["WetCanvas：法式画箱腿晃、太重","https://www.wetcanvas.com/forums/topic/french-easel-or-guerrilla-painter"],
+ frenchReview:["Permies 论坛：法式画箱使用体验","https://permies.com/t/275872/art/French-box-easel-work"],
+ meedenAlu:["MEEDEN 铝合金法式画箱（Amazon）","https://www.amazon.com/dp/B09GPFL7BM"],
+ pochadeLink:["SoHo Pochade + 三脚架（Amazon）","https://www.amazon.com/dp/B07GNP1XZJ"],
+ woodBoxLink:["MEEDEN 6 抽画材箱（Amazon）","https://www.amazon.com/dp/B087ZG3CBF"],
+ artbinLink:["ArtBin 3 层手提箱（Amazon）","https://www.amazon.com/dp/B071SHCYR6"],
+ bestChoiceKit:["Best Choice Products 法式画箱 + 32 件画材（Walmart）","https://www.walmart.com/ip/220186582"],
+ jdBox:["京东 · 美术工具箱（搜索页）","https://search.jd.com/Search?keyword=%E7%BE%8E%E6%9C%AF%E5%B7%A5%E5%85%B7%E7%AE%B1&enc=utf-8"]
+}
+});
+
+/* ======================================================================
+   品类数据：画柜（画架系列）
+   结构说明见 _template.js。数据快照：2026-11
+   ====================================================================== */
+CATS.push({
+id:"artCabinet", name:"画柜", en:"Studio Storage · Taboret · Flat File · Canvas Rack · Drying Rack", updated:"2026-11",
+series:"画架", pos:"画室家具：边柜推车放颜料工具，图纸柜放纸和作品，画布架、晾画架放画；大件、运费高",
+
+scope:{
+  def:"画室里收纳画材和作品的家具：画室边柜 / 推车（Taboret）、平面图纸柜（Flat File）、画布收纳架、晾画架，以及画架 + 收纳柜一体款。",
+  include:"上述家具单卖和组合。",
+  exclude:"手提画箱、画材箱（见画箱）；通用书柜、文件柜、厨房推车。",
+  adjacent:"画桌 / 绘图桌、画包、作品夹、通用三层推车。",
+  kw:["artist taboret","art cart","flat file cabinet","canvas storage rack","art drying rack","画柜","画材收纳柜","晾画架"]
+},
+
+rules:[
+  "按结构分：画室边柜 / 推车、平面图纸柜、画布收纳架、晾画架、画架 + 收纳柜一体、国内画室收纳柜。",
+  "尺寸按页面原样记（宽 × 深 × 高）；图纸柜额外记抽屉内尺寸和可放最大纸张（如 36×48\"）。",
+  "晾画架记层数和每层承重（如 25 层、每层 4 lbs；50 层、每层 2 lbs），不要只记总层数。",
+  "画布收纳架记可放画布尺寸范围（如 14–48\"、10–40\"）和总承重（如 130 lbs）。",
+  "推车记层数、抽屉数、是否带调色盘 / 洗笔杯 / 笔架、轮子是否可锁。",
+  "页面描述过于简单的（如 SDRFQQO 画架柜）记“描述不足”，不要推断结构。"
+],
+
+dims:[
+ {g:"产品本体", about:"家具本身：结构、材质、尺寸、承重、功能件。", cats:[
+  {t:"A 结构与材质", c:[
+   {t:"结构类型", tag:"L1", c:[{t:"画室边柜 / 推车",n:"GDLF、MEEDEN、Artograph"},{t:"平面图纸柜",n:"Diversified Spaces、AdirOffice"},{t:"画布收纳架",n:"UNZERO、lukar、Evellstor"},{t:"晾画架",n:"U.S. Art Supply、VsoxA"},{t:"画架 + 收纳柜一体",n:"SDRFQQO、ARTIFY"},{t:"国内画室收纳柜"}]},
+   {t:"材质", tag:"L1", c:[{t:"榉木",n:"推车、画布架"},{t:"硬木 / 板材",n:"图纸柜"},{t:"钢（粉末喷涂）",n:"Artograph、晾画架、钢制图纸柜"},{t:"铁 / 金属线"}]}]},
+  {t:"B 尺寸与承重", c:[
+   {t:"规格", tag:"L2", c:[{t:"桌面 / 小型"},{t:"中型（家用）"},{t:"大型（画室 / 教室）"}]},
+   {t:"图纸柜最大纸张", tag:"L2", c:[{t:"≤ A3"},{t:"≤ 24×36\""},{t:"≤ 36×48\"",n:"AdirOffice"}]},
+   {t:"画布尺寸范围", tag:"L2", c:[{t:"7.8–23\"",n:"桌面画布架"},{t:"10–40\"",n:"金属画布架"},{t:"14–48\"",n:"Evellstor"},{t:"≤ 60\" 以上"}]},
+   {t:"晾画架层数", tag:"L2", c:[{t:"15–20 层"},{t:"25 层"},{t:"40–50 层"}]},
+   {t:"每层承重", tag:"L3", def:"晾画架每层承重普遍低。", c:[{t:"≤ 2 lbs",n:"VsoxA 50 层"},{t:"3–4 lbs",n:"U.S. Art Supply 25 层"},{t:"5 lbs 以上"},{t:"未披露"}]},
+   {t:"总承重", tag:"L3", c:[{t:"≤ 50 lbs"},{t:"50–150 lbs",n:"Evellstor 130 lbs"},{t:"未披露"}]}]},
+  {t:"C 功能件", c:[
+   {t:"抽屉与层板", tag:"L2", c:[{t:"2 抽"},{t:"3 抽"},{t:"5–7 抽",n:"图纸柜"},{t:"3–5 层开放层板"}]},
+   {t:"作画功能件", tag:"L2", def:"推车上是否能直接调色、洗笔。", c:[{t:"钢化玻璃调色盘",n:"GDLF"},{t:"洗笔杯 + 笔架",n:"GDLF、MEEDEN"},{t:"可升降台面",n:"MEEDEN"},{t:"侧托盘",n:"MEEDEN"},{t:"无"}]},
+   {t:"移动", tag:"L3", c:[{t:"带锁万向轮"},{t:"普通轮"},{t:"固定 / 壁挂"}]},
+   {t:"纸张保护", tag:"L3", c:[{t:"压纸条（前后）",n:"AdirOffice"},{t:"抽屉底孔（方便取纸）"},{t:"防尘罩"},{t:"无"}]}]},
+  {t:"D 合规", c:[
+   {t:"安全与合规", tag:"L0", c:[{t:"防倾倒（高柜需固定墙面）"},{t:"Prop 65 警示"},{t:"低排放涂层",n:"Diversified Spaces UV 涂层"}]}]}
+ ]},
+ {g:"销售形态", about:"怎么卖：组装、运输。", cats:[
+  {t:"E 组装与组合", c:[
+   {t:"组装状态", tag:"L3", c:[{t:"整装"},{t:"需组装"},{t:"可叠放",n:"AdirOffice 图纸柜"}]},
+   {t:"销售组合", tag:"L3", c:[{t:"单件"},{t:"可组合扩展（两架拼接到 72\"）"},{t:"画架 + 柜一体"}]}]}
+ ]},
+ {g:"市场定位", about:"卖给谁、用在哪。", cats:[
+  {t:"F 场景与人群", c:[
+   {t:"使用场景", tag:"L3", c:[{t:"家用画室"},{t:"小户型"},{t:"学校课堂"},{t:"专业画室 / 工作室"},{t:"国内画室 / 艺考"}]},
+   {t:"目标人群", tag:"L3", c:[{t:"成人爱好者"},{t:"专业画家"},{t:"老师 / 学校采购"},{t:"画室经营者"}]},
+   {t:"价格带", tag:"L2", c:[{t:"< $50"},{t:"$50–150"},{t:"$150–400"},{t:"$400 以上"}]}]}
+ ]}
+],
+
+types:[
+ {g:"工具收纳", about:"边柜、推车", items:[
+  {t:"画室边柜 / 推车（Taboret）", vol:"细分", volWhy:"GDLF、MEEDEN（多款）、Artograph 钢制款、5 层榉木推车在售。",
+   combo:["画室边柜 / 推车","榉木 / 钢","2–3 抽 + 层板","带锁万向轮","调色盘 / 洗笔杯"],
+   rep:"GDLF 榉木推车（2 抽 + 钢化玻璃调色盘 + 2 个洗笔杯 + 笔架，39.4\" 宽）、MEEDEN 加大 5 层推车（3 抽 + 侧托盘）、MEEDEN 可升降台面推车、Artograph 钢制推车（3 层 18×18\" 可翻转层板）、5 层榉木推车（3 抽）",
+   price:"US $80–300", who:"家用画室、专业画家", comp:"mid", compT:"中：MEEDEN 等",
+   pain:"尺寸差异大，有的比想象小；需组装", ev:["taboretLink"], evl:"有来源",
+   fig:{k:"stand",v:"taboret"},
+   ex:[["gdlf","2 抽 + 玻璃调色盘 + 洗笔杯 + 笔架"],["meedenCart5","5 层，3 抽，侧托盘"],["meedenTaboret","可升降台面，带锁轮"],["artograph","钢制，3 层可翻转层板"]],
+   map:[["结构类型","画室边柜 / 推车"],["材质","榉木 / 钢（粉末喷涂）"],["抽屉与层板","2 抽 / 3 抽 / 3–5 层开放层板"],["作画功能件","钢化玻璃调色盘、洗笔杯 + 笔架、可升降台面","m"],["移动","带锁万向轮","m"],["价格带","$150–400"]],
+   pros:["画画时工具在手边"], cons:["占地、贵"], up:["小户型、平价工作台款"], verdict:["谨慎","对应 ③ C。"], must:["写明尺寸"], plus:["调色盘、洗笔杯"], avoid:["尺寸不清"]},
+  {t:"画架 + 收纳柜一体", vol:"小众", volWhy:"SDRFQQO 画架柜（4 层，描述简单）、ARTIFY H 架 + 抽屉在售。",
+   combo:["画架 + 收纳柜一体","木"],
+   rep:"SDRFQQO 画架 + 4 层收纳柜（描述不足）、ARTIFY H 架 + 抽屉 + 层板",
+   price:"US $100–250", who:"小空间画室", comp:"lo", compT:"低",
+   pain:"描述不足，难判断结构", ev:["easelCab"], evl:"部分来源",
+   fig:{k:"stand",v:"easelcab"},
+   ex:[["sdrfqqo","4 层收纳柜，描述不足","u"],["artifyC","H 架 + 抽屉 + 层板"]],
+   map:[["结构类型","画架 + 收纳柜一体"],["销售组合","画架 + 柜一体"]],
+   pros:["省地方"], cons:["选择少"], up:["见落地画架 ③ C"], verdict:["谨慎","机会已在落地画架里记录。"], must:["—"], plus:["—"], avoid:["—"]}
+ ]},
+ {g:"作品收纳", about:"纸、画布、湿画", items:[
+  {t:"平面图纸柜（Flat File）", vol:"细分", volWhy:"Diversified Spaces（木质，5 抽 / 7 抽 + 3 层）、AdirOffice 钢制 5 抽（≤ 36×48\"）在售。",
+   combo:["平面图纸柜","硬木 / 钢","5–7 抽","≤ 24×36\" – 36×48\""],
+   rep:"Diversified Spaces 大幅面 5 抽（40.5\" 宽，抽屉内 37×24.8×1.5\"）、Diversified Spaces 7 抽 + 3 层（48×30×84\"，可上锁）、AdirOffice 钢制 5 抽（41×53\"，≤ 36×48\"，可叠放）",
+   price:"US $300–2,000", who:"专业画家、学校、建筑设计", comp:"mid", compT:"中：办公家具品牌",
+   pain:"大、贵、重；家用尺寸少", ev:["flatFileLink"], evl:"有来源",
+   fig:{k:"stand",v:"flatfile"},
+   ex:[["dsFlat5","5 抽，40.5\" 宽，木质"],["dsFlat7","48×30×84\"，7 抽 + 3 层，可上锁"],["adirFlat","钢制 5 抽，≤ 36×48\"，压纸条，可叠放"]],
+   map:[["结构类型","平面图纸柜"],["材质","硬木 / 板材 / 钢（粉末喷涂）"],["图纸柜最大纸张","≤ 36×48\"","m"],["抽屉与层板","5–7 抽"],["纸张保护","压纸条（前后）、抽屉底孔（方便取纸）","m"],["价格带","$400 以上"]],
+   pros:["纸张平放不卷"], cons:["大、贵"], up:["家用小型（A3 / A2）"], verdict:["可做","对应 ③ B“家用小型平面图纸柜”。"], must:["写明抽屉内尺寸"], plus:["压纸条"], avoid:["—"]},
+  {t:"画布收纳架", vol:"细分", volWhy:"UNZERO、lukar、NinPeen、Evellstor、桌面画布架、Somime 木质画布架在售。",
+   combo:["画布收纳架","榉木 / 铁","画布 10–48\"","带锁轮"],
+   rep:"Evellstor 9 格榉木（14–48\"，130 lbs）、lukar 金属（10–40\"，9 格）、UNZERO（带提手和轮）、桌面画布架（7.8–23\"）、Somime 大号木质画布架（兼晾干）",
+   price:"US $50–200", who:"画室、画廊", comp:"mid", compT:"中",
+   pain:"大画布放不下；格距不合适", ev:["canvasRackLink"], evl:"有来源",
+   fig:{k:"stand",v:"rack"},
+   ex:[["evellstor","9 格，14–48\"，130 lbs"],["lukar","金属，10–40\"，9 格"],["unzero","带提手和轮"],["somimeRack","大号木质，兼晾干"]],
+   map:[["结构类型","画布收纳架"],["画布尺寸范围","10–40\" / 14–48\"","s"],["总承重","50–150 lbs","s"],["移动","带锁万向轮"],["销售组合","可组合扩展（两架拼接到 72\"）"]],
+   pros:["画布竖放省地"], cons:["—"], up:["—"], verdict:["谨慎","已有多款。"], must:["—"], plus:["—"], avoid:["—"]},
+  {t:"晾画架", vol:"细分", volWhy:"U.S. Art Supply 25 层、VsoxA 50 层、UWYTGF 40 层、桌面 20 层、壁挂款在售，主要卖给学校。",
+   combo:["晾画架","钢 / 金属线","15–50 层","带轮 / 桌面 / 壁挂"],
+   rep:"U.S. Art Supply 25 层（每层 4 lbs，可壁挂）、VsoxA 50 层（每层 2 lbs）、UWYTGF 40 层、桌面 20 层（A3）、壁挂 20 层",
+   price:"US $60–200", who:"学校、画室、家长", comp:"mid", compT:"中",
+   pain:"每层承重低（2–4 lbs），只能放纸、薄画板", ev:["dryRackLink"], evl:"有来源",
+   fig:{k:"stand",v:"dryrack"},
+   ex:[["usasDry25","25 层，每层 4 lbs，可壁挂"],["vsoxa50","50 层，每层 2 lbs"],["dryTable20","桌面 20 层，A3"],["dryWall","壁挂 20 层"]],
+   map:[["结构类型","晾画架"],["晾画架层数","25 层 / 40–50 层 / 15–20 层"],["每层承重","≤ 2 lbs / 3–4 lbs","m"],["移动","带锁万向轮 / 固定 / 壁挂"],["使用场景","学校课堂"]],
+   pros:["课堂刚需"], cons:["承重低"], up:["承重升级"], verdict:["谨慎","对应 ③ C“每层承重升级的晾画架”。"], must:["写明每层承重"], plus:["—"], avoid:["—"]}
+ ]},
+ {g:"国内", about:"画室收纳", items:[
+  {t:"国内画室收纳柜 / 推车", vol:"细分", volWhy:"京东有画材收纳柜、画室推车、画板收纳架等多款。",
+   combo:["国内画室收纳柜","板材 / 铁","多层"],
+   rep:"画材收纳柜、画室推车、画板收纳架（京东多店铺）",
+   price:"¥100–800", who:"画室经营者、家庭", comp:"mid", compT:"中",
+   pain:"—", ev:["jdCab"], evl:"部分来源",
+   fig:{k:"stand",v:"taboret",label:"画室收纳柜"},
+   ex:[["jdCab","京东：画材收纳柜"],["jdCart","京东：画室推车"]],
+   map:[["结构类型","国内画室收纳柜"],["使用场景","国内画室 / 艺考"]],
+   pros:["—"], cons:["—"], up:["—"], verdict:["谨慎","证据不足。"], must:["—"], plus:["—"], avoid:["—"]}
+ ]}
+],
+
+opps:[
+ {t:"家用小型平面图纸柜（A3 / A2）", gap:"价格带缺口", score:{d:3,c:4,x:3,s:3,p:3,e:2},
+  why:"水彩纸、版画、作品需要平放不卷。现有平面图纸柜面向学校和设计院：40–53\" 宽、可放 36×48\"，木质和钢制都偏大、偏贵。家用 A3 / A2、能放书桌下或叠放的小型图纸柜少。",
+  spec:["平面图纸柜","A2 抽屉内尺寸","5 抽","可叠放","压纸条"], diff:"“放在书桌下的作品柜”", price:"US $150–250",
+  risk:"大件运费；需求可能偏小", verify:"拉 small flat file cabinet、art paper storage drawers 的搜索量和价格分布",
+  from:"平面图纸柜（Flat File）", ev:["flatFileLink"], evl:"部分来源"},
+ {t:"小户型画室工作台推车", gap:"场景缺口", score:{d:3,c:3,x:3,s:3,p:3,e:2},
+  why:"GDLF 已有“抽屉 + 玻璃调色盘 + 洗笔杯”的推车，但宽 39.4\"，占地；小户型需要更窄、能推到桌边的工作台推车。",
+  spec:["画室边柜 / 推车","宽 ≤ 24\"","玻璃调色盘","洗笔杯","3 层 + 2 抽","带锁轮"], diff:"“推到哪里都能调色”", price:"US $90–130",
+  risk:"和通用三层推车竞争", verify:"拉 art cart with drawers、artist taboret 搜索量；看 GDLF 评论",
+  from:"画室边柜 / 推车（Taboret）", ev:["taboretLink"], evl:"部分来源"},
+ {t:"每层承重升级的晾画架", gap:"痛点缺口", score:{d:2,c:3,x:3,s:4,p:3,e:3},
+  why:"晾画架每层承重只有 2–4 lbs，只能放纸和薄画板；学生的画布板、厚纸板作品放不了。",
+  spec:["晾画架","每层 ≥ 6 lbs","20–25 层","可放 A3 画布板"], diff:"承重数字对比", price:"US $90–140",
+  risk:"学校采购价格敏感", verify:"抓晾画架差评里 bent / weak / sag 的占比",
+  from:"晾画架", ev:["dryRackLink"], evl:"有来源"},
+ {t:"国内画室一体收纳柜（颜料 + 画板 + 画架）", state:"clue", gap:"场景缺口",
+  why:"国内画室需要同时收纳颜料、画板、画架，但没有找到直接证据说明需求量和现有供给。",
+  spec:["多层收纳柜","画板竖格"], verify:"在京东 / 1688 搜“画室收纳柜”看销量", from:"国内画室收纳柜 / 推车", ev:["jdCab"], evl:"经验判断"},
+ {t:"家用小型晾画架", state:"out", gap:"场景缺口",
+  why:"最初判断晾画架只有教室用的大号款。",
+  outWhy:"核实后已有桌面 20 层（A3）和壁挂 20 层款。",
+  spec:["晾画架","桌面 / 壁挂"], from:"晾画架", ev:["dryRackLink"], evl:"有来源"}
+],
+
+grids:[
+ {id:"size",name:"结构 × 规格",q:"每种结构在哪个规格上还没人做？",rowT:"结构类型",colT:"规格",
+  cols:["桌面 / 小型","中型（家用）","大型（画室 / 教室）"],
+  rk:["art cart taboret","flat file cabinet","canvas storage rack","art drying rack"], ck:["small","home","large"],
+  rc:["画室 推车","图纸柜","画布 收纳架","晾画架"], cc:["小号","家用","大号"],
+  rows:[
+   ["边柜 / 推车",[["S1","—"],["S3","MEEDEN、GDLF",{r:["meedenTaboret","gdlf"],t:["画室边柜 / 推车（Taboret）"]}],["S2","MEEDEN 加大、Artograph",{r:["meedenCart5","artograph"]}]]],
+   ["平面图纸柜",[["L2","家用小型少",{o:"家用小型平面图纸柜（A3 / A2）",k:["small flat file cabinet"],ev:"部分来源"}],["L2","—",{r:["dsFlat5"],o:"家用小型平面图纸柜（A3 / A2）"}],["S3","Diversified Spaces、AdirOffice",{r:["dsFlat7","adirFlat"],t:["平面图纸柜（Flat File）"]}]]],
+   ["画布收纳架",[["S2","桌面款 7.8–23\"",{r:["canvasTable"]}],["R3","lukar、UNZERO",{r:["lukar","unzero"],t:["画布收纳架"]}],["S2","Evellstor、Somime",{r:["evellstor","somimeRack"]}]]],
+   ["晾画架",[["S2","桌面 20 层、壁挂",{r:["dryTable20","dryWall"],o:"家用小型晾画架"}],["S2","—"],["R3","25–50 层",{r:["usasDry25","vsoxa50"],t:["晾画架"]}]]]]},
+
+ {id:"price",name:"结构 × 价格带",q:"每种结构在哪个价位还空着？",rowT:"结构类型",colT:"售价（美国站）",
+  cols:["< $50","$50–150","$150–400","$400+"], price:["0-5000","5000-15000","15000-40000","40000-1000000"],
+  rk:["art cart taboret","flat file cabinet","canvas storage rack","art drying rack"],
+  rc:["画室 推车","图纸柜","画布 收纳架","晾画架"], cc:["","","",""],
+  rows:[
+   ["边柜 / 推车",[["S1","通用推车"],["L2","窄型工作台推车少",{o:"小户型画室工作台推车",ev:"部分来源"}],["S3","—",{r:["gdlf","meedenCart5"]}],["S1","—",{r:["artograph"]}]]],
+   ["平面图纸柜",[["X","—"],["X","—"],["L3","家用小型少",{o:"家用小型平面图纸柜（A3 / A2）",ev:"部分来源"}],["S3","—",{r:["dsFlat5","adirFlat"]}]]],
+   ["画布收纳架",[["S2","桌面款",{r:["canvasTable"]}],["R3","—",{r:["lukar","unzero","evellstor"]}],["S1","—"],["X","—"]]],
+   ["晾画架",[["S1","桌面",{r:["dryTable20"]}],["R3","—",{r:["usasDry25","vsoxa50"]}],["S1","—"],["X","—"]]]]},
+
+ {id:"load",name:"晾画架 · 层数 × 每层承重",q:"晾画架有没有承重够的？",rowT:"层数",colT:"每层承重",
+  cols:["≤ 2 lbs","3–4 lbs","5 lbs 以上"],
+  rk:["art drying rack 20 shelves","art drying rack 25 shelves","art drying rack 50 shelves"], ck:["","","heavy duty"],
+  rc:["晾画架 20层","晾画架 25层","晾画架 50层"], cc:["","","承重"],
+  rows:[
+   ["15–20 层",[["S1","—",{r:["dryTable20"]}],["S1","—",{r:["dryWall"]}],["L2","—",{o:"每层承重升级的晾画架"}]]],
+   ["25 层",[["S1","—"],["S3","U.S. Art Supply 4 lbs",{r:["usasDry25"]}],["L3","承重够放画布板的少",{r:["usasDry25"],o:"每层承重升级的晾画架",ev:"有来源"}]]],
+   ["40–50 层",[["S3","VsoxA 2 lbs",{r:["vsoxa50"]}],["S1","—"],["X","—"]]]]},
+
+ {id:"scene",name:"使用场景 × 关键卖点",q:"每个场景最在意的卖点，有没有产品明确满足？",rowT:"使用场景",colT:"关键卖点",
+  cols:["收纳量","可移动","占地小","承重","调色 / 洗笔","纸张平放"],
+  rk:["home art studio storage","small space art storage","classroom art storage","professional studio storage","art studio storage cabinet"], ck:["storage","rolling","compact","heavy duty","palette","flat"],
+  rc:["家用 画室 收纳","小户型 画材 收纳","教室 画材 收纳","画室 收纳柜","画室 收纳柜 一体"], cc:["收纳","带轮","小","承重","调色","平放"],
+  rows:[
+   ["家用画室",[["S3","—",{r:["meedenCart5"]}],["S3","—",{r:["meedenTaboret"]}],["S1","—"],["S1","—"],["S2","GDLF",{r:["gdlf"]}],["L3","家用图纸柜少",{r:["dsFlat5"],o:"家用小型平面图纸柜（A3 / A2）",ev:"部分来源"}]]],
+   ["小户型",[["S1","—"],["S2","—"],["L3","工作台推车偏宽",{r:["gdlf"],o:"小户型画室工作台推车",ev:"部分来源"}],["S1","—"],["L2","—",{o:"小户型画室工作台推车"}],["L2","—",{o:"家用小型平面图纸柜（A3 / A2）"}]]],
+   ["学校课堂",[["R3","晾画架",{r:["usasDry25","vsoxa50"]}],["S3","—"],["S2","—"],["L2","每层 2–4 lbs",{r:["usasDry25"],o:"每层承重升级的晾画架",ev:"有来源"}],["X","—"],["S2","—"]]],
+   ["专业画室",[["S3","—",{r:["evellstor"]}],["S3","—"],["S1","—"],["S2","Evellstor 130 lbs",{r:["evellstor"]}],["S1","—"],["S3","—",{r:["adirFlat"]}]]],
+   ["国内画室",[["S2","—",{r:["jdCab"]}],["S1","—",{r:["jdCart"]}],["S1","—"],["S1","—"],["S1","—"],["L0","一体收纳柜（未证实）",{r:["jdCab"],o:"国内画室一体收纳柜（颜料 + 画板 + 画架）",clue:true}]]]]}
+],
+
+refs:{
+ gdlf:["GDLF 榉木画室推车（玻璃调色盘 + 洗笔杯）","https://www.amazon.com/dp/B0H3K1VGMS"], meedenCart5:["MEEDEN 加大 5 层画材推车","https://www.amazon.com/dp/B0GWHBXV1N"], meedenTaboret:["MEEDEN 可升降台面推车","https://www.amazon.com/clp/B09YQ1LWSX"], artograph:["Artograph 钢制推车","https://www.amazon.com/dp/B000OAR60I"], beech5:["5 层榉木推车（3 抽）","https://us.amazon.com/clp/B0GSXYJ53Z"],
+ sdrfqqo:["SDRFQQO 画架 + 4 层收纳柜","https://www.amazon.com/dp/B0DCG5FSK9"], artifyC:["ARTIFY H 架 + 抽屉 + 层板","https://www.amazon.com/clp/B0BY1R1Y4D"],
+ dsFlat5:["Diversified Spaces 5 抽图纸柜","https://www.amazon.com/clp/B09SNJVFKB"], dsFlat7:["Diversified Spaces 7 抽 + 3 层图纸柜","https://www.amazon.com/dp/B09SBTW19D"], adirFlat:["AdirOffice 钢制 5 抽图纸柜","https://www.amazon.com/dp/B0GTRX7CV8"],
+ evellstor:["Evellstor 9 格画布收纳架（14–48\"）","https://www.amazon.com/dp/B0F536PMXD"], lukar:["lukar 金属画布收纳架","https://www.amazon.com/dp/B0CBC47HZ6"], unzero:["UNZERO 画布收纳架","https://www.amazon.com/dp/B0BXSXT58D"], canvasTable:["桌面画布收纳架（7.8–23\"）","https://www.amazon.com/dp/B0DJ6MXLRV"], somimeRack:["Somime 大号木质画布架（兼晾干）","https://www.amazon.com/dp/B0BVY5DZQV"],
+ usasDry25:["U.S. Art Supply 25 层晾画架","https://www.amazon.com/dp/B0CTB58JN5"], vsoxa50:["VsoxA 50 层晾画架","https://www.amazon.com/dp/B0CTTS4ZDN"], dryTable20:["桌面 20 层晾画架","https://www.amazon.com/clp/B0F6LMHRZ1"], dryWall:["壁挂 20 层晾画架","https://www.amazon.com/dp/B0BPSMS88J"],
+ jdCab:["京东 · 画材收纳柜（搜索页）","https://search.jd.com/Search?keyword=%E7%94%BB%E6%9D%90%E6%94%B6%E7%BA%B3%E6%9F%9C&enc=utf-8"], jdCart:["京东 · 画室推车（搜索页）","https://search.jd.com/Search?keyword=%E7%94%BB%E5%AE%A4%E6%8E%A8%E8%BD%A6&enc=utf-8"]
+},
+
+src:{
+ taboretLink:["GDLF / MEEDEN 画室推车（Amazon）","https://www.amazon.com/dp/B0H3K1VGMS"],
+ easelCab:["SDRFQQO 画架柜（Amazon，描述不足）","https://www.amazon.com/dp/B0DCG5FSK9"],
+ flatFileLink:["AdirOffice / Diversified Spaces 图纸柜（Amazon）","https://www.amazon.com/dp/B0GTRX7CV8"],
+ canvasRackLink:["Evellstor 画布收纳架（Amazon，130 lbs）","https://www.amazon.com/dp/B0F536PMXD"],
+ dryRackLink:["U.S. Art Supply 晾画架（Amazon，每层 4 lbs）","https://www.amazon.com/dp/B0CTB58JN5"],
+ jdCab:["京东 · 画材收纳柜（搜索页）","https://search.jd.com/Search?keyword=%E7%94%BB%E6%9D%90%E6%94%B6%E7%BA%B3%E6%9F%9C&enc=utf-8"]
+}
+});
+
 
 /* ---------- 结构示意图（通用，不是实拍图） ----------
    fig({k:"pens", n, ink:"black"|"rainbow"|"custom", cols:[颜色，写 "ink" 表示跟随主题的黑色], tips:[标签], pack:"blister"|"pouch"|"wallet"|"box"})
-   其他 k：refill / brush / dual / kit / spring / erase / pad / multi / book / block / cards / accordion / workbook / bookkit / pans / tubes / cups / bottles / droppers / easel
+   其他 k：refill / brush / dual / kit / spring / erase / pad / multi / book / block / cards / accordion / workbook / bookkit / pans / tubes / cups / bottles / droppers / easel / sticks
+   stand：画架、画箱、画柜，用 v 指定结构（aframe / hframe / crank / flat / tripod / wc / pochade / french / kit / cn / tablebox / tableh / tablea / tablemetal / board / kids / kidstable / display / displaywood / mini / artbox / toolbox / taboret / flatfile / rack / dryrack / easelcab / roll）
    新品类需要新图形时，在这里加一个 k 分支即可。 */
 const HUES = ["#d6453d","#e8892b","#e6c229","#5bab4a","#2a9d8f","#2f78c4","#5a4fcf","#a855b5","#d9579b","#8b5a2b","#6b7280","#1f8a70"];
 function fig(spec){
@@ -2716,6 +4165,40 @@ function fig(spec){
     for(let i=0;i<n;i++){ const cx=20+step*i+step/2, col=(spec.cols||HUES)[i%12];
       s+=`<rect x="${cx-bw/2}" y="26" width="${bw}" height="88" rx="${bw/2}" fill="${col}"/><rect x="${cx-bw/2}" y="62" width="${bw}" height="52" rx="2" class="sv-body"/>`; }
     s+=lab(W/2,140,spec.label||"颜料棒",8);
+
+  } else if(spec.k==="stand"){         /* 画架 / 画箱 / 画柜：v 指定结构 */
+    const v=spec.v, cv=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" class="sv-paper"/><path d="M${x+6} ${y+h-10} Q${x+w*0.4} ${y+h*0.3} ${x+w*0.6} ${y+h*0.6} T${x+w-6} ${y+12}" fill="none" stroke="${HUES[5]}" stroke-width="2"/>`;
+    const wheels=(xs,y)=>xs.map(x=>`<circle cx="${x}" cy="${y}" r="4" class="sv-ink"/>`).join("");
+    const drawers=(x,y,w,h,n)=>{ let r=`<rect x="${x}" y="${y}" width="${w}" height="${h}" class="sv-wood"/>`; const dh=h/n; for(let i=0;i<n;i++) r+=`<rect x="${x+3}" y="${y+i*dh+2}" width="${w-6}" height="${dh-4}" class="sv-body"/><rect x="${x+w/2-6}" y="${y+i*dh+dh/2-1.5}" width="12" height="3" class="sv-ink"/>`; return r; };
+    const L={aframe:"A 字架",hframe:"H 架",crank:"H 架 · 摇柄升降",flat:"可平放 H 架",tripod:"铝合金三脚架",wc:"平放水彩写生架",french:"法式画箱架",pochade:"写生画箱 + 三脚架",tablebox:"抽屉画箱（桌面画架）",tableh:"桌面 H 架",tablea:"桌面 A 字 / 三角架",tablemetal:"金属桌面三脚架",board:"桌面倾斜画板",kids:"双面儿童画架 + 卷纸",kidstable:"儿童桌面画架",display:"金属展示架 + 指示牌",displaywood:"木质展示架",mini:"迷你画架多支装",artbox:"多抽屉木画箱",toolbox:"手提分层工具箱",taboret:"画室边柜 / 推车",flatfile:"平面图纸柜",rack:"画布收纳架",dryrack:"晾画架",easelcab:"画架 + 收纳柜一体",roll:"画架卷纸",kit:"写生全套（架 + 凳 + 包）",cn:"美术生画架 + 画板"};
+    if(v==="aframe"||v==="displaywood"){ s+=`<path d="M120 14 L84 136 M120 14 L156 136 M120 14 L120 132 L150 140" class="sv-wl"/><rect x="88" y="96" width="64" height="7" class="sv-wood"/>`+(v==="aframe"?cv(94,34,52,60):`<rect x="96" y="40" width="48" height="54" fill="none" stroke="#b8902a" stroke-width="5"/><rect x="101" y="45" width="38" height="44" class="sv-soft"/>`); }
+    else if(v==="hframe"||v==="crank"||v==="flat"||v==="easelcab"){ const by=v==="easelcab"?96:132; s+=`<path d="M92 12 V${by} M148 12 V${by} M120 6 V${by} M82 ${by} H158" class="sv-wl"/><rect x="88" y="${v==="easelcab"?80:86}" width="64" height="7" class="sv-wood"/>`+(v==="flat"?`<rect x="70" y="66" width="100" height="14" class="sv-paper" transform="rotate(-8 120 73)"/>`:cv(94,v==="easelcab"?22:28,52,56));
+      if(v==="crank") s+=`<circle cx="160" cy="100" r="8" class="sv-line"/><path d="M160 100 L168 92" class="sv-ml"/>`;
+      if(v==="easelcab") s+=drawers(78,96,84,36,3)+wheels([84,156],136); }
+    else if(v==="tripod"||v==="wc"||v==="pochade"){ s+=`<path d="M120 70 L86 140 M120 70 L154 140 M120 70 L122 140 M120 70 V${v==="tripod"?20:64}" class="sv-ml"/>`;
+      if(v==="tripod") s+=cv(96,24,48,40)+`<rect x="94" y="64" width="52" height="4" class="sv-ink"/>`;
+      else if(v==="wc") s+=`<path d="M78 54 L162 54 L170 64 L70 64 Z" class="sv-paper"/><rect x="88" y="56" width="20" height="6" fill="${HUES[5]}" opacity=".6"/>`;
+      else s+=`<rect x="90" y="52" width="60" height="14" class="sv-wood"/><rect x="90" y="18" width="60" height="34" class="sv-wood" transform="skewX(-8)"/>`+cv(98,22,40,26); }
+    else if(v==="french"){ const lg=spec.alu?"sv-ml":"sv-wl"; s+=`<path d="M100 74 L80 140 M140 74 L160 140 M120 74 L122 140" class="${lg}"/><rect x="90" y="62" width="60" height="16" class="${spec.alu?"sv-metal":"sv-wood"}"/><path d="M120 62 V10" class="${lg}"/>`+cv(96,14,48,44); }
+    else if(v==="kit"){ s+=`<path d="M70 60 L50 136 M70 60 L90 136 M70 60 V136" class="sv-ml"/>`+cv(52,20,36,38)+`<path d="M140 108 L176 108 M146 108 L170 136 M170 108 L146 136" class="sv-ml"/><rect x="186" y="70" width="34" height="56" rx="6" class="sv-soft"/>`; }
+    else if(v==="cn"){ s+=`<path d="M100 20 L80 136 M140 20 L160 136 M120 20 L120 136" class="sv-ml"/><rect x="82" y="34" width="76" height="58" class="sv-wood"/><rect x="88" y="40" width="64" height="46" class="sv-paper"/><path d="M96 78 Q110 50 130 66 T146 52" fill="none" stroke="var(--ink-2)" stroke-width="1.4"/>`; }
+    else if(v==="tablebox"){ s+=`<path d="M20 132 H220" class="sv-line"/>`+drawers(70,100,100,32,2)+`<path d="M90 100 L110 34 M150 100 L130 34" class="sv-wl"/>`+cv(96,30,48,44); }
+    else if(v==="tableh"){ s+=`<path d="M20 132 H220" class="sv-line"/><path d="M98 30 V128 M142 30 V128 M120 22 V128 M88 128 H152" class="sv-wl"/><rect x="92" y="96" width="56" height="6" class="sv-wood"/>`+cv(100,40,40,52); }
+    else if(v==="tablea"){ s+=`<path d="M20 132 H220" class="sv-line"/><path d="M120 40 L96 128 M120 40 L144 128 M120 40 L130 128" class="sv-wl"/><rect x="98" y="98" width="44" height="5" class="sv-wood"/>`+cv(102,52,36,44); }
+    else if(v==="tablemetal"){ s+=`<path d="M20 132 H220" class="sv-line"/><path d="M120 60 L100 128 M120 60 L140 128 M120 60 L124 128 M120 60 V36" class="sv-ml"/><rect x="94" y="30" width="52" height="40" class="sv-soft"/><path d="M98 100 H142" class="sv-ml"/>`; }
+    else if(v==="board"){ s+=`<path d="M20 132 H220" class="sv-line"/><path d="M60 124 L180 124 L170 64 L70 64 Z" class="sv-wood"/><rect x="82" y="72" width="76" height="44" class="sv-paper" transform="skewX(-4)"/><path d="M170 64 L180 124" class="sv-ml"/>`; }
+    else if(v==="kids"){ s+=`<path d="M120 22 L76 140 M120 22 L164 140" class="sv-wl"/><rect x="84" y="30" width="72" height="62" class="sv-paper"/><rect x="90" y="36" width="60" height="50" class="sv-ink" opacity=".85"/><path d="M98 76 Q112 52 128 64" fill="none" stroke="#fff" stroke-width="1.6"/><rect x="80" y="18" width="80" height="10" rx="5" class="sv-paper"/><rect x="82" y="94" width="76" height="8" class="sv-wood"/>`+[0,1,2].map(i=>`<rect x="${92+i*20}" y="86" width="10" height="8" fill="${HUES[i*2]}"/>`).join(""); }
+    else if(v==="kidstable"){ s+=`<path d="M20 132 H220" class="sv-line"/><path d="M120 40 L84 128 M120 40 L156 128" class="sv-wl"/><rect x="92" y="48" width="56" height="44" class="sv-paper"/><rect x="96" y="52" width="48" height="36" class="sv-ink" opacity=".85"/><rect x="88" y="36" width="64" height="8" rx="4" class="sv-paper"/>`; }
+    else if(v==="display"){ s+=`<path d="M120 50 L90 140 M120 50 L150 140 M120 50 L122 140 M120 50 V14" class="sv-ml"/><rect x="72" y="18" width="96" height="70" class="sv-paper"/>${lab(120,50,"WELCOME",11)}<path d="M84 60 H156" class="sv-line"/><path d="M70 88 H170" class="sv-ml"/>`; }
+    else if(v==="mini"){ for(let i=0;i<5;i++){ const x=36+i*40; s+=`<path d="M${x} 70 L${x-14} 128 M${x} 70 L${x+14} 128 M${x} 70 L${x+4} 128" class="sv-wl" style="stroke-width:3"/><rect x="${x-13}" y="80" width="26" height="22" fill="${HUES[i*2]}" opacity=".7"/><rect x="${x-15}" y="102" width="30" height="3" class="sv-wood"/>`; } }
+    else if(v==="roll"){ for(let i=0;i<3;i++){ const x=40+i*58; s+=`<rect x="${x}" y="40" width="48" height="80" class="sv-paper"/><ellipse cx="${x+24}" cy="40" rx="24" ry="8" class="sv-paper"/><ellipse cx="${x+24}" cy="40" rx="6" ry="2.5" class="sv-ink"/>`; } }
+    else if(v==="artbox"){ s+=drawers(60,30,120,96,4)+`<rect x="56" y="24" width="128" height="8" class="sv-wood"/><rect x="104" y="14" width="32" height="10" rx="4" class="sv-line"/>`; }
+    else if(v==="toolbox"){ s+=`<rect x="50" y="56" width="140" height="72" rx="6" class="sv-soft"/><path d="M60 56 L80 34 H160 L180 56" class="sv-line"/><rect x="74" y="40" width="92" height="12" class="sv-body"/>`+[0,1,2,3,4].map(i=>`<rect x="${82+i*16}" y="42" width="5" height="8" fill="${HUES[i*2]}"/>`).join("")+`<path d="M100 28 H140" class="sv-ml"/>`; }
+    else if(v==="taboret"){ s+=`<rect x="64" y="26" width="112" height="10" class="sv-wood"/>`+drawers(70,36,100,54,3)+`<path d="M70 92 H170 M70 112 H170 M70 36 V130 M170 36 V130" class="sv-wl" style="stroke-width:3"/>`+wheels([76,164],136)+[0,1].map(i=>`<circle cx="${84+i*16}" cy="22" r="6" class="sv-paper"/>`).join(""); }
+    else if(v==="flatfile"){ s+=`<rect x="30" y="50" width="180" height="76" class="sv-wood"/>`+[0,1,2,3,4].map(i=>`<rect x="36" y="${54+i*14}" width="168" height="11" class="sv-body"/><rect x="112" y="${58+i*14}" width="16" height="3" class="sv-ink"/>`).join("")+`<path d="M34 126 V134 M206 126 V134" class="sv-ml"/>`; }
+    else if(v==="rack"){ s+=`<rect x="40" y="96" width="160" height="12" class="sv-wood"/>`+[0,1,2,3,4,5,6,7].map(i=>`<path d="M${52+i*20} 96 V40" class="sv-wl" style="stroke-width:3"/>`).join("")+[0,1,2].map(i=>cv(58+i*46,46+i*6,10,50-i*6)).join("")+wheels([50,190],114); }
+    else if(v==="dryrack"){ s+=`<path d="M70 20 V130 M170 20 V130" class="sv-ml"/>`+[0,1,2,3,4,5,6,7].map(i=>`<path d="M70 ${28+i*12} H170" class="sv-line"/>`).join("")+`<rect x="80" y="36" width="46" height="4" fill="${HUES[1]}"/><rect x="110" y="72" width="50" height="4" fill="${HUES[5]}"/>`+wheels([70,170],136); }
+    s+=lab(W/2,148,spec.label||L[v]||"",8);
   }
   return `<svg viewBox="0 0 ${W} ${H}" class="fig" role="img" aria-label="结构示意图">${s}</svg>`;
 }
@@ -3074,6 +4557,7 @@ function renderChrome(){
   document.getElementById("cat-tabs").innerHTML=CATS.map(c=>{ const lbl = c.series && c.series!==prevSeries ? `<span class="tab-sep">${esc(c.series)}系列</span>` : ""; prevSeries=c.series||null; return lbl+`<button type="button" data-tab="${c.id}" aria-pressed="${c.id===st.tab}">${esc(c.name)}</button>`; }).join("");
   renderSeries(cat);
   document.getElementById("cat-tabs").hidden = CATS.length<2;
+  { const tb=document.getElementById("cat-tabs"), on=tb.querySelector('button[aria-pressed="true"]'); if(on && tb.scrollWidth>tb.clientWidth) tb.scrollLeft = on.offsetLeft - tb.clientWidth/2 + on.offsetWidth/2; }
 }
 
 /* ---------- 系列总览（同一 series 的品类横向对比） ---------- */

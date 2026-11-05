@@ -1,0 +1,217 @@
+/* ======================================================================
+   品类数据：画箱（画架系列）
+   结构说明见 _template.js。数据快照：2026-11
+   ====================================================================== */
+CATS.push({
+id:"artBox", name:"画箱", en:"Sketch Box · French Easel · Pochade · Art Supply Box", updated:"2026-11",
+series:"画架", pos:"能装画材的箱子：一类带画架功能（抽屉画箱、法式画箱、Pochade），一类只收纳（木质多抽屉箱、塑料分层箱）",
+
+scope:{
+  def:"装画材、可携带的箱子。分两类：① 带画架功能的画箱：桌面抽屉画箱架、法式画箱架、铝合金法式画箱、写生画箱 Pochade；② 只收纳的画材箱：木质多抽屉画材箱、塑料分层手提箱、国内美术生工具箱。",
+  include:"上述画箱单卖，以及画箱 + 三脚架、画箱 + 画材的组合。",
+  exclude:"落地画架、桌面画架（无箱体）、画室边柜 / 推车（见画柜）、通用工具箱、化妆箱。",
+  adjacent:"写生三脚架、调色盘、湿画携带箱、画包、笔帘。",
+  kw:["sketch box easel","french easel","pochade box","art supply storage box","art bin","画箱","油画箱","美术工具箱"]
+},
+
+rules:[
+  "先分“带画架功能 / 只收纳”，再按结构分：抽屉画箱架、法式画箱、铝合金法式画箱、Pochade、木质多抽屉箱、塑料分层箱、国内美术生工具箱。",
+  "法式画箱：箱体 + 可伸缩三条腿 + 画布夹；Pochade：小箱子，盖子当画板，装在相机三脚架上（1/4\" 螺口）。",
+  "重量统一记 kg（页面写 lbs 的换算后保留原值），如 U.S. Art Supply 11.9 lbs ≈ 5.4 kg、MEEDEN PRO 21 lbs ≈ 9.5 kg。",
+  "画布上限按页面原样记（如 11×14\"、12×16\"、25\"、34\"）。",
+  "抽屉数、托盘层数、隔格数分开记。",
+  "标题和描述矛盾的（如 PHOENIX 金属 Pochade 标题写含三脚架、描述写不含）记“页面矛盾”。"
+],
+
+dims:[
+ {g:"产品本体", about:"画箱本身：功能、结构、材质、重量、容量。", cats:[
+  {t:"A 功能与结构", c:[
+   {t:"功能类型", tag:"L1", def:"是否能当画架用。", c:[{t:"带画架功能"},{t:"只收纳"}]},
+   {t:"结构类型", tag:"L1", c:[{t:"桌面抽屉画箱架",n:"MEEDEN、VISWIN、U.S. Art Supply"},{t:"法式画箱",n:"U.S. Art Supply、ATWORTH、MEEDEN、PHOENIX"},{t:"铝合金法式画箱",n:"MEEDEN"},{t:"写生画箱 Pochade",n:"SoHo、MEEDEN"},{t:"木质多抽屉画材箱",n:"MEEDEN 6 抽、U.S. Art Supply"},{t:"塑料分层手提箱",n:"ArtBin"},{t:"国内美术生工具箱"}]},
+   {t:"材质", tag:"L1", c:[{t:"榉木",n:"主流"},{t:"其他木（桃花心木色、胡桃色）"},{t:"铝合金"},{t:"塑料"}]}]},
+  {t:"B 尺寸与重量", c:[
+   {t:"重量", tag:"L2", c:[{t:"≤ 2 kg",n:"Pochade、塑料箱"},{t:"2–5 kg",n:"抽屉画箱"},{t:"5 kg 以上",n:"法式画箱 5.4 kg、MEEDEN PRO 9.5 kg"}]},
+   {t:"画布上限", tag:"L2", c:[{t:"≤ 11×14\"",n:"MEEDEN 小画箱"},{t:"12×16\"",n:"ARTISTIK"},{t:"≤ 25\"",n:"VISWIN"},{t:"≤ 34\"",n:"法式画箱"},{t:"不适用（只收纳）"}]},
+   {t:"抽屉 / 托盘", tag:"L2", c:[{t:"1 抽"},{t:"2–3 抽",n:"桌面画箱"},{t:"6 抽",n:"MEEDEN、Falling in Art"},{t:"1–3 层托盘",n:"ArtBin"}]},
+   {t:"角度调节", tag:"L3", c:[{t:"4 档",n:"MEEDEN、ARTISTIK"},{t:"0–90°",n:"MEEDEN 铝合金 Pochade"},{t:"不适用"}]}]},
+  {t:"C 携带与防护", c:[
+   {t:"携带方式", tag:"L2", c:[{t:"提手"},{t:"肩带"},{t:"收纳包"},{t:"无"}]},
+   {t:"锁扣", tag:"L3", c:[{t:"金属锁扣"},{t:"塑料卡扣"},{t:"无"}]},
+   {t:"防漏 / 防倒", tag:"L3", c:[{t:"防倒托盘（tip guard）",n:"ArtBin"},{t:"可拆隔格"},{t:"无"}]},
+   {t:"安装方式", tag:"L3", c:[{t:"自带三条腿"},{t:"1/4\" 相机螺口"},{t:"放桌面"}]}]},
+  {t:"D 合规", c:[
+   {t:"安全与合规", tag:"L0", c:[{t:"Prop 65 警示"},{t:"FSC 木材"},{t:"美国制造（ArtBin 部分款）"}]}]}
+ ]},
+ {g:"销售形态", about:"怎么卖。", cats:[
+  {t:"E 组合与数量", c:[
+   {t:"销售组合", tag:"L2", c:[{t:"单个画箱"},{t:"画箱 + 三脚架",n:"SoHo + Apex"},{t:"画箱 + 画材全套",n:"Best Choice 32 件"},{t:"多件装",n:"ArtBin 3 只装"}]},
+   {t:"随附配件", tag:"L3", c:[{t:"调色盘"},{t:"画板 / 素描板"},{t:"金属侧托盘",n:"ATWORTH"},{t:"肩带"}]}]}
+ ]},
+ {g:"市场定位", about:"卖给谁、用在哪。", cats:[
+  {t:"F 场景与人群", c:[
+   {t:"使用场景", tag:"L3", c:[{t:"桌面作画"},{t:"油画写生"},{t:"水彩写生"},{t:"收纳画材"},{t:"艺考 / 画室"}]},
+   {t:"目标人群", tag:"L3", c:[{t:"写生画家"},{t:"成人初学者"},{t:"手工爱好者"},{t:"美术生"}]},
+   {t:"价格带", tag:"L2", c:[{t:"< $30"},{t:"$30–60"},{t:"$60–120"},{t:"$120 以上"}]}]}
+ ]}
+],
+
+types:[
+ {g:"带画架功能", about:"画箱架", items:[
+  {t:"桌面抽屉画箱架", vol:"主流", volWhy:"MEEDEN、VISWIN、ARTISTIK、U.S. Art Supply、DJAR 多款在售。",
+   combo:["桌面抽屉画箱架","榉木","2–3 抽","画布 11×14\" – 25\"","4 档角度"],
+   rep:"MEEDEN 大号画箱（3 抽）、VISWIN 3 抽（≤ 25\"，皮提手 + 金属锁扣）、ARTISTIK 3 抽（≤ 12×16\"，整装）、MEEDEN 小画箱（≤ 11×14\"，带调色盘）、U.S. Art Supply 2 抽 / 3 抽",
+   price:"US $30–90", who:"桌面作画、成人初学者", comp:"hi", compT:"高",
+   pain:"画布上限小；抽屉卡", ev:["boxEaselLink"], evl:"有来源",
+   fig:{k:"stand",v:"tablebox"},
+   ex:[["meedenBox","3 抽，榉木"],["viswinBox","3 抽，≤ 25\"，皮提手、金属锁扣"],["artistik","3 抽，≤ 12×16\"，整装发货"],["meedenSmallBox","≤ 11×14\"，带调色盘"]],
+   map:[["功能类型","带画架功能"],["结构类型","桌面抽屉画箱架"],["材质","榉木"],["抽屉 / 托盘","2–3 抽"],["画布上限","≤ 11×14\" / 12×16\" / ≤ 25\"","s"],["角度调节","4 档","s"],["携带方式","提手"]],
+   pros:["画架 + 收纳"], cons:["画幅小"], up:["—"], verdict:["谨慎","红海。"], must:["写明画布上限"], plus:["—"], avoid:["—"]},
+  {t:"法式画箱", vol:"主流", volWhy:"U.S. Art Supply、ATWORTH、MEEDEN（多款）、PHOENIX 在售。",
+   combo:["法式画箱","榉木","画布 ≤ 34\"","自带三条腿","5–9.5 kg","肩带"],
+   rep:"U.S. Art Supply 大号榉木法式画箱（11.9 lbs）、ATWORTH 豪华款（≤ 34\"，金属侧托盘）、MEEDEN 便携款（57–72\"）、MEEDEN PRO（21 lbs，铝腿）、PHOENIX 榉木款（皮提手 + 肩带）",
+   price:"US $70–200", who:"油画写生画家", comp:"hi", compT:"高",
+   pain:"重（不适合走远路）；腿晃，尤其伸到最高；腿收不住、零件易坏", ev:["frenchWobble","frenchReview"], evl:"有来源",
+   fig:{k:"stand",v:"french"},
+   ex:[["usasFrench","大号榉木，11.9 lbs"],["atworth","≤ 34\"，金属侧托盘"],["meedenPro","21 lbs，铝腿，重型"],["phoenixFrench","榉木，皮提手 + 肩带"]],
+   map:[["功能类型","带画架功能"],["结构类型","法式画箱"],["重量","5 kg 以上","m"],["画布上限","≤ 34\"","s"],["安装方式","自带三条腿"],["携带方式","肩带"],["使用场景","油画写生"]],
+   pros:["一体化：箱 + 架 + 画布夹"], cons:["重","腿晃"],
+   up:["轻量铝腿、防晃锁扣"], verdict:["可做","对应 ③ B“轻量稳固的法式画箱”。"], must:["写明重量"], plus:["—"], avoid:["腿晃"]},
+  {t:"铝合金法式画箱", vol:"细分", volWhy:"MEEDEN 便携铝合金法式画箱（带三脚架、收纳包）在售。",
+   combo:["铝合金法式画箱","铝合金","自带三脚架","收纳包"],
+   rep:"MEEDEN 便携铝合金法式画箱（户外三脚架 + 桌面两用 + 收纳包）",
+   price:"US $60–120", who:"写生画家", comp:"mid", compT:"中",
+   pain:"铝合金箱体小、收纳少", ev:["meedenAlu"], evl:"有来源",
+   fig:{k:"stand",v:"french",alu:true,label:"铝合金法式画箱"},
+   ex:[["meedenAlu","铝合金，三脚架 + 桌面两用"],["frenchSearch","搜索页：french box easel"]],
+   map:[["结构类型","铝合金法式画箱"],["材质","铝合金"],["重量","2–5 kg"],["携带方式","收纳包"]],
+   pros:["轻"], cons:["收纳少"], up:["—"], verdict:["谨慎","已有品牌在做。"], must:["—"], plus:["—"], avoid:["—"]},
+  {t:"写生画箱 Pochade", vol:"细分", volWhy:"SoHo Scout / Pochade、MEEDEN（木 / 铝合金）、PHOENIX 金属款，以及“画箱 + 三脚架”组合在售。",
+   combo:["写生画箱 Pochade","木 / 铝合金","1/4\" 相机螺口","盖子当画板","≤ 2 kg"],
+   rep:"SoHo Scout Pochade（桃花心木色）、SoHo Pochade + 铝合金三脚架、SoHo Scout + Creative Mark Apex 三脚架、MEEDEN 便携 Pochade（尼龙包）、MEEDEN 铝合金 Pochade（25×19×3 cm，0–90°）、PHOENIX 金属 Pochade",
+   price:"US $50–200", who:"写生画家、旅行", comp:"mid", compT:"中",
+   pain:"需另配三脚架；PHOENIX 页面标题和描述矛盾（含不含三脚架）", ev:["pochadeLink"], evl:"有来源",
+   fig:{k:"stand",v:"pochade"},
+   ex:[["sohoScout","SoHo Scout，带收纳"],["sohoTripod","SoHo Pochade + 铝合金三脚架"],["meedenAluPochade","铝合金，25×19×3 cm，0–90°"],["phoenixPochade","金属；标题写含三脚架、描述写不含","u"]],
+   map:[["结构类型","写生画箱 Pochade"],["安装方式","1/4\" 相机螺口","m"],["重量","≤ 2 kg"],["角度调节","0–90°（MEEDEN 铝合金）","m"],["销售组合","画箱 + 三脚架"],["使用场景","油画写生 / 水彩写生"]],
+   pros:["轻、稳（配好三脚架）"], cons:["要另买三脚架"], up:["水彩专用（见 ③ C）"], verdict:["谨慎","组合套装已有（③ 中已排除）。"], must:["写清是否含三脚架"], plus:["—"], avoid:["页面矛盾"]}
+ ]},
+ {g:"只收纳", about:"画材箱", items:[
+  {t:"木质多抽屉画材箱", vol:"主流", volWhy:"MEEDEN 6 抽、U.S. Art Supply 锁扣款、Falling in Art 6 抽在售。",
+   combo:["木质多抽屉画材箱","榉木","6 抽 / 多隔格","锁扣"],
+   rep:"MEEDEN 6 抽榉木箱（每抽 5 格，40×25×16 cm）、U.S. Art Supply 多功能画材箱（锁扣）、Falling in Art 6 抽粉彩箱",
+   price:"US $40–90", who:"彩铅、粉彩、画笔收纳", comp:"mid", compT:"中",
+   pain:"重；抽屉松", ev:["woodBoxLink"], evl:"有来源",
+   fig:{k:"stand",v:"artbox"},
+   ex:[["meeden6","6 抽，每抽 5 格，可整抽取出"],["usasBox","锁扣，便于运输"],["fia6","6 抽粉彩箱"]],
+   map:[["功能类型","只收纳"],["结构类型","木质多抽屉画材箱"],["抽屉 / 托盘","6 抽"],["锁扣","金属锁扣"],["使用场景","收纳画材"]],
+   pros:["好看、分格多"], cons:["重"], up:["—"], verdict:["谨慎","—"], must:["—"], plus:["—"], avoid:["—"]},
+  {t:"塑料分层手提箱", vol:"主流", volWhy:"ArtBin 1 / 2 / 3 层手提箱、12×12\" 收纳箱等长期在售。",
+   combo:["塑料分层手提箱","塑料","1–3 层托盘","防倒托盘","锁扣"],
+   rep:"ArtBin 3 层（14.5×8×7\"，防倒托盘）、2 层、1 层（页面尺寸前后不一）、12×12\" 手提收纳箱、Essentials 提箱（美国制造）",
+   price:"US $15–40", who:"手工、画材收纳", comp:"hi", compT:"高：ArtBin + 渔具箱、工具箱",
+   pain:"不同页面尺寸、防水描述矛盾", ev:["artbinLink"], evl:"有来源",
+   fig:{k:"stand",v:"toolbox"},
+   ex:[["artbin3","3 层，防倒托盘，可拆隔板"],["artbin2","2 层；一处写防水、另一处写不防水","u"],["artbin12","12×12\" 手提收纳箱"]],
+   map:[["功能类型","只收纳"],["结构类型","塑料分层手提箱"],["材质","塑料"],["抽屉 / 托盘","1–3 层托盘"],["防漏 / 防倒","防倒托盘（tip guard）","m"],["安全与合规","美国制造（ArtBin 部分款）","m"]],
+   pros:["轻、便宜"], cons:["和渔具箱、工具箱竞争"], up:["—"], verdict:["不建议","跨类目红海。"], must:["—"], plus:["—"], avoid:["—"]},
+  {t:"国内美术生工具箱", vol:"主流", volWhy:"国内美术生常用多层手提工具箱 / 画箱装颜料、画笔（京东多款）。",
+   combo:["国内美术生工具箱","塑料 / 木","多层手提"],
+   rep:"多层手提美术工具箱、木质油画箱（京东多店铺）",
+   price:"¥30–200", who:"美术生、画室", comp:"hi", compT:"高",
+   pain:"颜料漏、串色（经验判断）", ev:["jdBox"], evl:"部分来源",
+   fig:{k:"stand",v:"toolbox",label:"美术生工具箱"},
+   ex:[["jdBox","京东：美术工具箱"],["jdOilBox","京东：油画箱"]],
+   map:[["结构类型","国内美术生工具箱"],["使用场景","艺考 / 画室"],["目标人群","美术生"]],
+   pros:["需求大"], cons:["价格低"], up:["防漏分格（线索）"], verdict:["谨慎","—"], must:["—"], plus:["—"], avoid:["—"]}
+ ]}
+],
+
+opps:[
+ {t:"轻量稳固的法式画箱", gap:"痛点缺口", score:{d:3,c:3,x:3,s:3,p:3,e:4},
+  why:"法式画箱是写生经典款，但论坛和评论反复提到：太重（有人只能从车上搬下来用）、腿晃（尤其伸到最高）、腿收不住、零件易坏。MEEDEN 有铝合金款但箱体小；榉木款多在 5 kg 以上。",
+  spec:["法式画箱","榉木箱体 + 铝合金腿","≤ 3.5 kg","腿部锁扣防晃","画布 ≤ 30\"","肩带"], diff:"重量和稳定性数字对比", price:"US $90–130",
+  risk:"轻量和稳定冲突；结构要开模", verify:"抓法式画箱 Top 20 差评里 heavy / wobbly / legs / broke 的占比",
+  from:"法式画箱、铝合金法式画箱", ev:["frenchWobble","frenchReview","meedenAlu"], evl:"有来源"},
+ {t:"水彩专用写生画箱", gap:"场景缺口", score:{d:3,c:3,x:3,s:3,p:3,e:2},
+  why:"Pochade 多为油画设计（盖子当竖立画板）。水彩写生要能放平、有水杯位和调色盘位；MEEDEN 铝合金款可调 0–90°，但没有水彩专用的水杯、调色区设计。",
+  spec:["写生画箱 Pochade","可放平","挂水杯","大调色盘","1/4\" 螺口"], diff:"“打开即是水彩工作台”", price:"US $60–90",
+  risk:"水彩写生人群较小", verify:"拉 watercolor pochade box、watercolor plein air box 搜索量",
+  from:"写生画箱 Pochade", ev:["pochadeLink"], evl:"部分来源"},
+ {t:"防漏分格的美术生颜料工具箱", state:"clue", gap:"痛点缺口",
+  why:"国内美术生用工具箱装水粉、丙烯，可能有漏、串色问题；没有找到直接评论证据。",
+  spec:["多层手提","密封分格"], verify:"抓京东美术工具箱差评里“漏”“串色”的占比", from:"国内美术生工具箱", ev:["jdBox"], evl:"经验判断"},
+ {t:"写生画箱 + 三脚架套装", state:"out", gap:"场景缺口",
+  why:"最初判断 Pochade 要另买三脚架，套装是空缺。",
+  outWhy:"核实后 SoHo 已有 Pochade + 铝合金三脚架、Scout + Creative Mark Apex 三脚架两种套装。",
+  spec:["Pochade","三脚架"], from:"写生画箱 Pochade", ev:["pochadeLink"], evl:"有来源"},
+ {t:"画箱 + 画材入门全套", state:"out", gap:"场景缺口",
+  why:"最初判断画箱可以和颜料、画笔做成入门全套。",
+  outWhy:"核实后 Best Choice Products 已有法式画箱 + 32 件画材的入门套装（Walmart 在售）。",
+  spec:["法式画箱","画材"], from:"法式画箱", ev:["bestChoiceKit"], evl:"有来源"}
+],
+
+grids:[
+ {id:"material",name:"结构 × 材质",q:"每种结构用什么材质，哪里还空着？",rowT:"结构类型",colT:"材质",
+  cols:["榉木","其他木","铝合金","塑料"],
+  rk:["tabletop sketch box easel","french easel","pochade box","wooden art supply storage box","art supply box plastic"], ck:["beech","wood","aluminum","plastic"],
+  rc:["抽屉 画箱","法式 画箱","写生 画箱","木质 画材箱","塑料 工具箱"], cc:["榉木","木质","铝合金","塑料"],
+  rows:[
+   ["抽屉画箱架",[["R3","MEEDEN、VISWIN、ARTISTIK",{r:["meedenBox","viswinBox","artistik"],t:["桌面抽屉画箱架"]}],["S1","—"],["X","—"],["X","—"]]],
+   ["法式画箱",[["R3","U.S. Art Supply、ATWORTH、PHOENIX",{r:["usasFrench","atworth","phoenixFrench"],t:["法式画箱"]}],["S1","—"],["L2","铝腿轻量款少",{r:["meedenAlu","meedenPro"],t:["铝合金法式画箱"],o:"轻量稳固的法式画箱",ev:"有来源"}],["X","—"]]],
+   ["Pochade",[["S1","—"],["S2","SoHo",{r:["sohoScout","sohoTripod"],t:["写生画箱 Pochade"]}],["S2","MEEDEN、PHOENIX",{r:["meedenAluPochade","phoenixPochade"]}],["X","—"]]],
+   ["木质收纳箱",[["S3","MEEDEN 6 抽",{r:["meeden6","fia6"],t:["木质多抽屉画材箱"]}],["S1","—",{r:["usasBox"]}],["X","—"],["X","—"]]],
+   ["塑料手提箱",[["X","—"],["X","—"],["X","—"],["R3","ArtBin",{r:["artbin3","artbin2","artbin12"],t:["塑料分层手提箱","国内美术生工具箱"]}]]]]},
+
+ {id:"weight",name:"结构 × 重量",q:"每种结构在哪个重量段还没人做？",rowT:"结构类型",colT:"重量",
+  cols:["≤ 2 kg","2–5 kg","5 kg 以上"],
+  rk:["tabletop sketch box easel","french easel","pochade box"], ck:["lightweight","",""],
+  rc:["抽屉 画箱","法式 画箱","写生 画箱"], cc:["轻便","",""],
+  rows:[
+   ["抽屉画箱架",[["S1","—"],["R3","—",{r:["meedenBox","viswinBox"]}],["S1","—"]]],
+   ["法式画箱",[["X","—"],["L3","3.5 kg 左右的稳固款少",{r:["meedenAlu"],o:"轻量稳固的法式画箱",ev:"有来源",d:"榉木法式画箱多在 5 kg 以上（U.S. Art Supply 11.9 lbs、MEEDEN PRO 21 lbs），评论说太重。"}],["R3","榉木款",{r:["usasFrench","meedenPro"]}]]],
+   ["Pochade",[["S3","—",{r:["meedenAluPochade","sohoScout"]}],["S1","—"],["X","—"]]]]},
+
+ {id:"price",name:"结构 × 价格带",q:"每种结构在哪个价位还空着？",rowT:"结构类型",colT:"售价（美国站）",
+  cols:["< $30","$30–60","$60–120","$120+"], price:["0-3000","3000-6000","6000-12000","12000-100000"],
+  rk:["tabletop sketch box easel","french easel","pochade box","wooden art supply storage box","art supply box plastic"],
+  rc:["抽屉 画箱","法式 画箱","写生 画箱","木质 画材箱","塑料 工具箱"], cc:["","","",""],
+  rows:[
+   ["抽屉画箱架",[["S1","—"],["R3","—",{r:["meedenSmallBox","artistik"]}],["S2","—",{r:["viswinBox"]}],["X","—"]]],
+   ["法式画箱",[["X","—"],["S1","—"],["R3","—",{r:["usasFrench","atworth"]}],["S2","PRO 款",{r:["meedenPro"]}]]],
+   ["Pochade",[["X","—"],["S2","—",{r:["meedenPochade"]}],["S2","—",{r:["sohoScout"]}],["S2","+ 三脚架",{r:["sohoTripod"],o:"写生画箱 + 三脚架套装"}]]],
+   ["木质收纳箱",[["X","—"],["S2","—",{r:["meeden6"]}],["S2","—",{r:["usasBox"]}],["X","—"]]],
+   ["塑料手提箱",[["R3","ArtBin",{r:["artbin3","artbin2"]}],["S2","—"],["X","—"],["X","—"]]]]},
+
+ {id:"scene",name:"使用场景 × 关键卖点",q:"每个场景最在意的卖点，有没有产品明确满足？",rowT:"使用场景",colT:"关键卖点",
+  cols:["轻","稳","可放平","收纳量","好携带","防漏"],
+  rk:["tabletop sketch box","oil plein air easel box","watercolor plein air box","art supply storage","art student supply box"], ck:["lightweight","sturdy","flat","storage","carry strap","leak proof"],
+  rc:["桌面 画箱","油画 写生 画箱","水彩 写生 画箱","画材 收纳箱","美术生 工具箱"], cc:["轻","稳","放平","收纳","便携","防漏"],
+  rows:[
+   ["桌面作画",[["S1","—"],["S3","—",{r:["meedenBox"]}],["S1","—"],["S3","—",{r:["viswinBox"]}],["S2","—"],["X","—"]]],
+   ["油画写生",[["L3","法式画箱太重",{r:["usasFrench","meedenPro"],o:"轻量稳固的法式画箱",ev:"有来源"}],["L2","腿晃",{r:["atworth"],o:"轻量稳固的法式画箱",ev:"有来源"}],["X","—"],["S2","—"],["S2","—",{r:["phoenixFrench"]}],["X","—"]]],
+   ["水彩写生",[["S2","—",{r:["meedenAluPochade"]}],["S1","—"],["L2","Pochade 多为油画设计",{r:["meedenAluPochade"],o:"水彩专用写生画箱",ev:"部分来源"}],["S1","—"],["S2","—"],["L1","—"]]],
+   ["收纳画材",[["S2","—"],["X","—"],["X","—"],["R3","—",{r:["meeden6","artbin3"]}],["S3","—",{r:["usasBox"]}],["S2","防倒托盘",{r:["artbin3"]}]]],
+   ["艺考 / 画室",[["S1","—"],["X","—"],["X","—"],["S2","—",{r:["jdBox"]}],["S2","—"],["L0","漏、串色（未证实）",{r:["jdBox"],o:"防漏分格的美术生颜料工具箱",clue:true}]]]]}
+],
+
+refs:{
+ meedenBox:["MEEDEN 大号抽屉画箱","https://www.amazon.com/clp/B087ZGJMBP"], viswinBox:["VISWIN 3 抽画箱（≤ 25\"）","https://www.amazon.com/dp/B0911RVVL6"], artistik:["ARTISTIK 3 抽画箱（≤ 12×16\"）","https://www.amazon.com/clp/B07DNM1NHQ"], meedenSmallBox:["MEEDEN 小画箱（≤ 11×14\"）","https://www.amazon.com/dp/B07R5RTTVP"], usas3d:["U.S. Art Supply 3 抽画箱","https://www.amazon.com/clp/B016YXKBS2"],
+ usasFrench:["U.S. Art Supply 大号榉木法式画箱","https://www.amazon.com/dp/B00EUJK8PO"], atworth:["ATWORTH 豪华法式画箱（≤ 34\"）","https://www.amazon.com/dp/B0DSFRQL6Z"], meedenPro:["MEEDEN PRO 法式画箱（21 lbs）","https://www.amazon.com/clp/B0D9XMPFFJ"], phoenixFrench:["PHOENIX 榉木法式画箱","https://www.amazon.com/dp/B0GZVCC9XQ"], meedenAlu:["MEEDEN 便携铝合金法式画箱","https://www.amazon.com/dp/B09GPFL7BM"], frenchSearch:["Amazon 搜索：french box easel","https://www.amazon.com/french-box-easel/s?k=french+box+easel"],
+ sohoScout:["SoHo Scout Pochade","https://www.amazon.com/dp/B08V23KPKH"], sohoTripod:["SoHo Pochade + 铝合金三脚架","https://www.amazon.com/dp/B07GNP1XZJ"], meedenPochade:["MEEDEN 便携 Pochade","https://www.amazon.com/dp/B07RFVGY6N"], meedenAluPochade:["MEEDEN 铝合金 Pochade","https://www.amazon.com/dp/B0HM366WYD"], phoenixPochade:["PHOENIX 金属 Pochade","https://us.amazon.com/dp/B0HJQFFC2X"],
+ meeden6:["MEEDEN 6 抽画材箱","https://www.amazon.com/dp/B087ZG3CBF"], usasBox:["U.S. Art Supply 锁扣画材箱","https://www.amazon.com/dp/B00OTZW56Y"], fia6:["Falling in Art 6 抽粉彩箱","https://www.amazon.com/clp/B0DPWZQBTY"],
+ artbin3:["ArtBin 3 层手提箱","https://www.amazon.com/dp/B071SHCYR6"], artbin2:["ArtBin 2 层手提箱","https://www.amazon.com/dp/B071FJS71G"], artbin12:["ArtBin 12×12\" 手提收纳箱","https://www.amazon.com/dp/B00BRG5IHG"],
+ jdBox:["京东 · 美术工具箱（搜索页）","https://search.jd.com/Search?keyword=%E7%BE%8E%E6%9C%AF%E5%B7%A5%E5%85%B7%E7%AE%B1&enc=utf-8"], jdOilBox:["京东 · 油画箱（搜索页）","https://search.jd.com/Search?keyword=%E6%B2%B9%E7%94%BB%E7%AE%B1&enc=utf-8"]
+},
+
+src:{
+ boxEaselLink:["Amazon：带抽屉桌面画箱架","https://www.amazon.com/tabletop-easel-box/s?k=tabletop+easel+box"],
+ frenchWobble:["WetCanvas：法式画箱腿晃、太重","https://www.wetcanvas.com/forums/topic/french-easel-or-guerrilla-painter"],
+ frenchReview:["Permies 论坛：法式画箱使用体验","https://permies.com/t/275872/art/French-box-easel-work"],
+ meedenAlu:["MEEDEN 铝合金法式画箱（Amazon）","https://www.amazon.com/dp/B09GPFL7BM"],
+ pochadeLink:["SoHo Pochade + 三脚架（Amazon）","https://www.amazon.com/dp/B07GNP1XZJ"],
+ woodBoxLink:["MEEDEN 6 抽画材箱（Amazon）","https://www.amazon.com/dp/B087ZG3CBF"],
+ artbinLink:["ArtBin 3 层手提箱（Amazon）","https://www.amazon.com/dp/B071SHCYR6"],
+ bestChoiceKit:["Best Choice Products 法式画箱 + 32 件画材（Walmart）","https://www.walmart.com/ip/220186582"],
+ jdBox:["京东 · 美术工具箱（搜索页）","https://search.jd.com/Search?keyword=%E7%BE%8E%E6%9C%AF%E5%B7%A5%E5%85%B7%E7%AE%B1&enc=utf-8"]
+}
+});

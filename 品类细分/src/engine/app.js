@@ -352,6 +352,7 @@ function renderChrome(){
   document.getElementById("cat-tabs").innerHTML=CATS.map(c=>{ const lbl = c.series && c.series!==prevSeries ? `<span class="tab-sep">${esc(c.series)}系列</span>` : ""; prevSeries=c.series||null; return lbl+`<button type="button" data-tab="${c.id}" aria-pressed="${c.id===st.tab}">${esc(c.name)}</button>`; }).join("");
   renderSeries(cat);
   document.getElementById("cat-tabs").hidden = CATS.length<2;
+  { const tb=document.getElementById("cat-tabs"), on=tb.querySelector('button[aria-pressed="true"]'); if(on && tb.scrollWidth>tb.clientWidth) tb.scrollLeft = on.offsetLeft - tb.clientWidth/2 + on.offsetWidth/2; }
 }
 
 /* ---------- 系列总览（同一 series 的品类横向对比） ---------- */

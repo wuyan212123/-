@@ -13,7 +13,7 @@ import sys
 
 SRC = pathlib.Path(__file__).resolve().parent
 OUT = SRC.parent / "开品维度图谱.html"
-ORDER = ["pen", "book", "wc", "gouache", "acrylic", "oil"]  # 品类标签的显示顺序
+ORDER = ["pen", "book", "wc", "gouache", "acrylic", "oil", "easelFloor", "easelTable", "easelPlein", "easelKids", "easelDisplay", "artBox", "artCabinet"]  # 品类标签的显示顺序
 
 
 def main() -> None:

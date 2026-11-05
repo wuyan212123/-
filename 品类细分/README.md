@@ -12,8 +12,9 @@
 
 - 针管笔、水彩本
 - 颜料系列（4 个体系，各自独立成品类）：水彩颜料 `wc`、水粉颜料（含果冻杯）`gouache`、丙烯颜料 `acrylic`、油画颜料 `oil`
+- 画架系列（7 个品类）：落地画架 `easelFloor`、桌面画架 `easelTable`、户外写生画架 `easelPlein`、儿童画架 `easelKids`、展示画架 `easelDisplay`、画箱 `artBox`、画柜 `artCabinet`
 
-同一系列的品类写了 `series:"颜料"`：标签栏里归在“颜料系列”下面，导图上方显示系列总览卡片（每个体系的定位、规模和 A / B 机会，点卡片切换）。
+同一系列的品类写了 `series:"颜料"` 或 `series:"画架"`：标签栏里归在对应系列（如“颜料系列”）下面，导图上方显示系列总览卡片（每个体系的定位、规模和 A / B 机会，点卡片切换）。
 
 ## 文件结构
 
@@ -32,7 +33,8 @@
     │   ├── wc.js            水彩颜料（颜料系列）
     │   ├── gouache.js       水粉颜料（颜料系列）
     │   ├── acrylic.js       丙烯颜料（颜料系列）
-    │   └── oil.js           油画颜料（颜料系列）
+    │   ├── oil.js           油画颜料（颜料系列）
+    │   ├── easelFloor.js … artCabinet.js  画架系列 7 个品类
     ├── build.py             拼接生成 开品维度图谱.html
     └── check.js             校验交叉引用
 ```
@@ -48,7 +50,7 @@ python3 品类细分/src/build.py
 node 品类细分/src/check.js
 ```
 
-单独导出：`python3 品类细分/src/build.py book` 只打包水彩本；`python3 品类细分/src/build.py 颜料` 打包整个颜料系列（生成 `颜料系列_开品维度图谱.html`）。
+单独导出：`python3 品类细分/src/build.py book` 只打包水彩本；`python3 品类细分/src/build.py 颜料` 打包整个颜料系列（生成 `颜料系列_开品维度图谱.html`），`build.py 画架` 同理。
 
 `check.js` 会检查维度名、类型名、机会名、参考商品和来源的引用是否写对，以及评分是否完整、白地图行列数是否一致。全部通过后再发布。
 
