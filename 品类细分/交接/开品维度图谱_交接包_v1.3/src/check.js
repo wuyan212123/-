@@ -49,6 +49,17 @@ const { chromium } = require("playwright");
           });
         });
       });
+      // 《开品维度图谱规范》最低要求（样板：水彩本）
+      const groups = cat.dims.map(g => g.g).join(" / ");
+      if (groups !== "产品本体 / 销售形态 / 市场定位") errs.push(`维度分组应为 产品本体 / 销售形态 / 市场定位，实际为 ${groups}`);
+      if ((cat.rules || []).length < 6) errs.push(`登记规则 ${(cat.rules || []).length} 条，少于 6 条`);
+      if (dimNames.size < 14) errs.push(`维度 ${dimNames.size} 个，少于 14 个`);
+      if (typeNames.size < 5) errs.push(`在售类型 ${typeNames.size} 个，少于 5 个`);
+      const st = k => cat.opps.filter(o => (o.state || "scored") === k).length;
+      if (st("scored") < 2 || st("clue") < 1 || st("out") < 1) errs.push(`机会应至少 2 个打分 + 1 个线索 + 1 个已排除，实际 ${st("scored")} / ${st("clue")} / ${st("out")}`);
+      if (cat.grids.length !== 4) errs.push(`白地图 ${cat.grids.length} 张，应为 4 张`);
+      if (!cat.grids.some(v => v.price)) errs.push("缺少“× 价格带”白地图（带 price 区间）");
+      if (cat.series && !cat.pos) warn.push("有系列但没有一句话定位 pos");
       const nType = [...typeNames].length, nDim = dimNames.size, nRef = Object.keys(cat.refs).length;
       out.push({ cat: cat.name, stats: `${nType} 类型 · ${nDim} 维度 · ${cat.opps.length} 机会 · ${cat.grids.length} 张白地图 · ${nRef} 个参考商品`, errs, warn });
     }

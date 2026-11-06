@@ -4,7 +4,9 @@
      python3 品类细分/src/build.py     生成页面
      node    品类细分/src/check.js     校验交叉引用（维度名、类型名、机会名、链接 key、来源 key）
    填写顺序建议：scope → dims → refs / src → types → opps → grids → rules
-   参考完整示例：categories/pen.js、categories/book.js
+   规范：品类细分/开品维度图谱规范.md（样板：水彩本 categories/book.js）。最低要求：维度三组且 ≥ 14 个、类型 ≥ 5 个、
+   机会 ≥ 2 打分 + 1 线索 + 1 已排除、白地图 4 张（两张结构 × 结构、一张 × 价格带、一张 使用场景 × 关键卖点）、登记规则 ≥ 6 条。
+   参考完整示例：categories/book.js（样板）、categories/pen.js
    ====================================================================== */
 CATS.push({
 id:"xxx",                 // 英文 id，同时作为文件名
