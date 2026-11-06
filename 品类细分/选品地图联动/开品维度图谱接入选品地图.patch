@@ -1,12 +1,12 @@
 From 8619fea57f1e0c86781b6af0150f7026a3ec0130 Mon Sep 17 00:00:00 2001
 From: Claude <noreply@anthropic.com>
 Date: Fri, 6 Nov 2026 02:12:55 +0000
-Subject: [PATCH] =?UTF-8?q?=E5=BC=80=E5=93=81=E7=BB=B4=E5=BA=A6=E5=9B=BE?=
- =?UTF-8?q?=E8=B0=B1=E6=8E=A5=E5=85=A5=E6=80=9D=E7=BB=B4=E5=AF=BC=E5=9B=BE?=
- =?UTF-8?q?=EF=BC=9A=E5=88=86=E7=B1=BB=E8=8A=82=E7=82=B9=E4=B8=8B=E7=9B=B4?=
- =?UTF-8?q?=E6=8E=A5=E5=B1=95=E5=BC=80=E5=9C=A8=E5=94=AE=E7=B1=BB=E5=9E=8B?=
- =?UTF-8?q?=E3=80=81=E5=88=86=E7=B1=BB=E7=BB=B4=E5=BA=A6=E3=80=81=E6=9C=BA?=
- =?UTF-8?q?=E4=BC=9A=E5=92=8C=E7=99=BD=E5=9C=B0=E5=9B=BE?=
+Subject: [PATCH 1/2] =?UTF-8?q?=E5=BC=80=E5=93=81=E7=BB=B4=E5=BA=A6?=
+ =?UTF-8?q?=E5=9B=BE=E8=B0=B1=E6=8E=A5=E5=85=A5=E6=80=9D=E7=BB=B4=E5=AF=BC?=
+ =?UTF-8?q?=E5=9B=BE=EF=BC=9A=E5=88=86=E7=B1=BB=E8=8A=82=E7=82=B9=E4=B8=8B?=
+ =?UTF-8?q?=E7=9B=B4=E6=8E=A5=E5=B1=95=E5=BC=80=E5=9C=A8=E5=94=AE=E7=B1=BB?=
+ =?UTF-8?q?=E5=9E=8B=E3=80=81=E5=88=86=E7=B1=BB=E7=BB=B4=E5=BA=A6=E3=80=81?=
+ =?UTF-8?q?=E6=9C=BA=E4=BC=9A=E5=92=8C=E7=99=BD=E5=9C=B0=E5=9B=BE?=
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -32846,6 +32846,58 @@ index 4c7fba3..3c45938 100644
    <script defer src="/app.js"></script>
  </head>
  <body>
+-- 
+2.43.0
+
+
+From 4dea715a74d3613f6fb3e3ce1e9fd0d130a1ebae Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Fri, 6 Nov 2026 02:16:51 +0000
+Subject: [PATCH 2/2] =?UTF-8?q?=E7=A6=BB=E7=BA=BF=E5=BF=AB=E7=85=A7?=
+ =?UTF-8?q?=E5=90=8C=E6=A0=B7=E5=86=85=E8=81=94=E5=BC=80=E5=93=81=E7=BB=B4?=
+ =?UTF-8?q?=E5=BA=A6=E5=9B=BE=E8=B0=B1?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01J8i6V9DLoSTuZhANA9KKSv
+---
+ ...0\261\346\216\245\345\205\245\350\257\264\346\230\216.md" | 1 +
+ selection_map/build.py                                       | 5 ++++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+diff --git "a/docs/\345\274\200\345\223\201\347\273\264\345\272\246\345\233\276\350\260\261\346\216\245\345\205\245\350\257\264\346\230\216.md" "b/docs/\345\274\200\345\223\201\347\273\264\345\272\246\345\233\276\350\260\261\346\216\245\345\205\245\350\257\264\346\230\216.md"
+index 2bd14c2..2271e80 100644
+--- "a/docs/\345\274\200\345\223\201\347\273\264\345\272\246\345\233\276\350\260\261\346\216\245\345\205\245\350\257\264\346\230\216.md"
++++ "b/docs/\345\274\200\345\223\201\347\273\264\345\272\246\345\233\276\350\260\261\346\216\245\345\205\245\350\257\264\346\230\216.md"
+@@ -29,6 +29,7 @@
+ - `web/dimension.css`、`web/dimension-figs.src.js`（结构示意图）。
+ - `web/app.js`：`treeData()` 末尾挂接；`renderMap()` 识别维度节点；`activateDim / focusDim / writeDimDetail`；`select()` 清除维度选中。
+ - `web/index.html`：引入以上文件。
++- `build.py`：离线 HTML 快照同样内联维度图谱的样式、数据和脚本，导出的快照里也能展开。
+ 
+ ## 已检查
+ 
+diff --git a/selection_map/build.py b/selection_map/build.py
+index d5f1485..d7c86af 100644
+--- a/selection_map/build.py
++++ b/selection_map/build.py
+@@ -101,10 +101,13 @@ def build_html(output, source_raw=None):
+     web=ROOT/'selection_map/web'
+     html=(web/'index.html').read_text()
+     html=html.replace('<link rel="stylesheet" href="/style.css">','<style>\n'+(web/'style.css').read_text()+'\n</style>')
++    # 开品维度图谱接入：样式、数据和脚本一并内联，离线快照里同样可以展开
++    html=html.replace('<link rel="stylesheet" href="/dimension.css">','<style>\n'+(web/'dimension.css').read_text()+'\n</style>')
++    html=html.replace('<script defer src="/dimension-data.js"></script>','').replace('<script defer src="/dimension.js"></script>','')
+     html=html.replace('<script defer src="/vendor/d3.min.js"></script>','').replace('<script defer src="/app.js"></script>','').replace('<script defer src="/framework.js"></script>','').replace('<script defer src="/catalog.js"></script>','').replace('<script defer src="/interaction.js"></script>','')
+     payload=json.dumps(data,ensure_ascii=False,separators=(',',':')).replace('&','\\u0026').replace('<','\\u003c').replace('\u2028','\\u2028').replace('\u2029','\\u2029')
+     license_text='/*! D3 7.8.5 license\n'+(web/'vendor/D3-LICENSE').read_text().replace('*/','* /')+'\n*/\n'
+-    scripts='<script>window.__MAP_SNAPSHOT__='+payload+';</script>\n<script>'+license_text+(web/'vendor/d3.min.js').read_text().replace('</script','<\\/script')+'</script>\n<script>'+(web/'interaction.js').read_text()+'\n'+(web/'catalog.js').read_text()+'\n'+(web/'framework.js').read_text()+'\n'+(web/'app.js').read_text().replace('</script','<\\/script')+'</script>\n'
++    scripts='<script>window.__MAP_SNAPSHOT__='+payload+';</script>\n<script>'+license_text+(web/'vendor/d3.min.js').read_text().replace('</script','<\\/script')+'</script>\n<script>'+(web/'interaction.js').read_text()+'\n'+(web/'catalog.js').read_text()+'\n'+(web/'framework.js').read_text()+'\n'+(web/'dimension-data.js').read_text().replace('</script','<\\/script')+'\n'+(web/'dimension.js').read_text()+'\n'+(web/'app.js').read_text().replace('</script','<\\/script')+'</script>\n'
+     html=html.replace('</body>',scripts+'</body>')
+     html=html.replace('id="open-monitor" href="/monitor"', 'id="open-monitor" href="./MEEDEN针管笔监测快照.html"')
+     html=html.replace('id="open-classification" href="/classification.html"', 'id="open-classification" href="./MEEDEN全商品分类标准.html"')
 -- 
 2.43.0
 
