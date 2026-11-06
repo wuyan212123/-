@@ -1,7 +1,7 @@
 From 8619fea57f1e0c86781b6af0150f7026a3ec0130 Mon Sep 17 00:00:00 2001
 From: Claude <noreply@anthropic.com>
 Date: Fri, 6 Nov 2026 02:12:55 +0000
-Subject: [PATCH 1/2] =?UTF-8?q?=E5=BC=80=E5=93=81=E7=BB=B4=E5=BA=A6?=
+Subject: [PATCH 1/3] =?UTF-8?q?=E5=BC=80=E5=93=81=E7=BB=B4=E5=BA=A6?=
  =?UTF-8?q?=E5=9B=BE=E8=B0=B1=E6=8E=A5=E5=85=A5=E6=80=9D=E7=BB=B4=E5=AF=BC?=
  =?UTF-8?q?=E5=9B=BE=EF=BC=9A=E5=88=86=E7=B1=BB=E8=8A=82=E7=82=B9=E4=B8=8B?=
  =?UTF-8?q?=E7=9B=B4=E6=8E=A5=E5=B1=95=E5=BC=80=E5=9C=A8=E5=94=AE=E7=B1=BB?=
@@ -32853,7 +32853,7 @@ index 4c7fba3..3c45938 100644
 From 4dea715a74d3613f6fb3e3ce1e9fd0d130a1ebae Mon Sep 17 00:00:00 2001
 From: Claude <noreply@anthropic.com>
 Date: Fri, 6 Nov 2026 02:16:51 +0000
-Subject: [PATCH 2/2] =?UTF-8?q?=E7=A6=BB=E7=BA=BF=E5=BF=AB=E7=85=A7?=
+Subject: [PATCH 2/3] =?UTF-8?q?=E7=A6=BB=E7=BA=BF=E5=BF=AB=E7=85=A7?=
  =?UTF-8?q?=E5=90=8C=E6=A0=B7=E5=86=85=E8=81=94=E5=BC=80=E5=93=81=E7=BB=B4?=
  =?UTF-8?q?=E5=BA=A6=E5=9B=BE=E8=B0=B1?=
 MIME-Version: 1.0
@@ -32898,6 +32898,406 @@ index d5f1485..d7c86af 100644
      html=html.replace('</body>',scripts+'</body>')
      html=html.replace('id="open-monitor" href="/monitor"', 'id="open-monitor" href="./MEEDEN针管笔监测快照.html"')
      html=html.replace('id="open-classification" href="/classification.html"', 'id="open-classification" href="./MEEDEN全商品分类标准.html"')
+-- 
+2.43.0
+
+
+From 270a878fb0a5dc0bf133a4e4e6004e7243c66ea4 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Fri, 6 Nov 2026 02:28:38 +0000
+Subject: [PATCH 3/3] =?UTF-8?q?=E5=AF=BC=E5=9B=BE=E4=B8=8B=E6=96=B9?=
+ =?UTF-8?q?=E6=96=B0=E5=A2=9E=E5=93=81=E7=B1=BB=E5=B7=A5=E4=BD=9C=E5=8F=B0?=
+ =?UTF-8?q?=EF=BC=9A=E5=9C=A8=E5=94=AE=E7=B1=BB=E5=9E=8B=E5=8D=A1=E7=89=87?=
+ =?UTF-8?q?=E3=80=81=E7=99=BD=E5=9C=B0=E5=9B=BE=E3=80=81=E6=9C=BA=E4=BC=9A?=
+ =?UTF-8?q?=E3=80=81=E7=BB=B4=E5=BA=A6=E3=80=81=E7=B1=BB=E5=9E=8B=E5=AF=B9?=
+ =?UTF-8?q?=E7=85=A7=EF=BC=8C=E4=B8=8E=E5=AF=BC=E5=9B=BE=E5=8F=8C=E5=90=91?=
+ =?UTF-8?q?=E8=81=94=E5=8A=A8?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01J8i6V9DLoSTuZhANA9KKSv
+---
+ ...45\345\205\245\350\257\264\346\230\216.md" |  14 +-
+ selection_map/web/app.js                      |  33 +++-
+ selection_map/web/dimension.css               |  58 +++++++
+ selection_map/web/dimension.js                | 147 +++++++++++++++---
+ selection_map/web/index.html                  |   1 +
+ 5 files changed, 227 insertions(+), 26 deletions(-)
+
+diff --git "a/docs/\345\274\200\345\223\201\347\273\264\345\272\246\345\233\276\350\260\261\346\216\245\345\205\245\350\257\264\346\230\216.md" "b/docs/\345\274\200\345\223\201\347\273\264\345\272\246\345\233\276\350\260\261\346\216\245\345\205\245\350\257\264\346\230\216.md"
+index 2271e80..22b8b07 100644
+--- "a/docs/\345\274\200\345\223\201\347\273\264\345\272\246\345\233\276\350\260\261\346\216\245\345\205\245\350\257\264\346\230\216.md"
++++ "b/docs/\345\274\200\345\223\201\347\273\264\345\272\246\345\233\276\350\260\261\346\216\245\345\205\245\350\257\264\346\230\216.md"
+@@ -13,7 +13,19 @@
+ | ③ 缺口与开品机会 | A / B / C / 线索 / 已排除 | 机会详情列出对标的在售类型和地图里的相关形态 |
+ | ④ 白地图 | 各张白地图 | 打开整张表；格子里的类型、机会可跳回导图 |
+ 
+-详情都显示在原有的右侧详情面板里。地图里还没有对应形态的在售类型标“地图无形态”；还没对应到在售类型的地图形态归在“地图形态 · 未对应在售类型”。
++详情都显示在原有的右侧详情面板里。
++
++导图下方另有全宽的**品类工作台**（选中维度图谱节点或其下的地图形态时出现），用于横向比较和阅读：
++
++| 标签页 | 内容 |
++|---|---|
++| 在售类型 | 类型卡片墙：示意图、体量 / 竞争 / 判断、维度组合、地图形态（可点）、优缺点、差评、新品要求、相关机会 |
++| 白地图 | 整张白地图 + 机会格汇总 + 格子详情；可全屏查看 |
++| 开品机会 | 按 A / B / C / 线索 / 已排除排列的机会卡片，含六项评分柱、价格、风险、验证方法、对标类型和地图形态 |
++| 分类维度 | 产品本体 / 销售形态 / 市场定位三栏，每个取值显示有几个在售类型登记了它 |
++| 类型对照 | 全部在售类型的对照表 |
++
++联动：点导图里的类型 / 机会 / 维度 / 白地图，工作台切到对应标签并高亮；点工作台里的标题，导图定位并在详情面板打开；点形态编号打开原形态详情。同一视图里有多个挂接点（如颜料下的水彩 / 水粉 / 丙烯 / 油画）时，工作台顶部显示切换卡片。地图里还没有对应形态的在售类型标“地图无形态”；还没对应到在售类型的地图形态归在“地图形态 · 未对应在售类型”。
+ 
+ 已接入 13 个品类：针管笔、水彩本，颜料系列（水彩 / 水粉 / 丙烯 / 油画），画架系列（立式 / 桌面 / 写生 / 展示 / 儿童画架、画箱、画柜）。挂接位置见 `selection_map/dimension_links.json` 的 `attach`。
+ 
+diff --git a/selection_map/web/app.js b/selection_map/web/app.js
+index 47d5e41..b0f650d 100644
+--- a/selection_map/web/app.js
++++ b/selection_map/web/app.js
+@@ -16,7 +16,7 @@ const displayProductType = r => Object.hasOwn(r,'product_type') ? (r.product_typ
+ const recordPath = r => [...new Set([r.group,subcategory(r),displayProductType(r)].filter(Boolean))];
+ const badge = status => `<span class="badge">${colors[status] ? `<i class="dot" style="background:${colors[status]}"></i>` : ''}${esc(status || '待查')}</span>`;
+ const STORAGE = 'meeden-atlas-view-v2';
+-const defaults = {category:'all',layer:'framework',frameworkFocus:'',fwSelected:'',frameworkCollapsed:[],view:'map',group:'',sub:'',family:'',q:'',coverage:'',verification:'',planning:'',screening:'',outcome:'',task:'',workflow:'',classificationTag:'',selected:'',comparisonGroup:'',comparisonExpanded:[],sort:'id',page:0,advanced:false,collapsed:[],dimSelected:'',dimSeen:[]};
++const defaults = {category:'all',layer:'framework',frameworkFocus:'',fwSelected:'',frameworkCollapsed:[],view:'map',group:'',sub:'',family:'',q:'',coverage:'',verification:'',planning:'',screening:'',outcome:'',task:'',workflow:'',classificationTag:'',selected:'',comparisonGroup:'',comparisonExpanded:[],sort:'id',page:0,advanced:false,collapsed:[],dimSelected:'',dimSeen:[],dimBoard:'',dimTab:'types',dimGrid:'',dimCell:''};
+ let saved = {}; try { saved = JSON.parse(localStorage.getItem(STORAGE) || '{}'); } catch {}
+ let state = {...defaults,...saved};
+ if(!Array.isArray(state.comparisonExpanded))state.comparisonExpanded=[];
+@@ -146,7 +146,7 @@ function render() {
+   $('open-user-needs').setAttribute('aria-pressed',String(!frameworkMode()&&state.task==='needs'));
+   if(!frameworkMode())$('q').placeholder='中文、英文、编号、ASIN 或痛点';
+   renderGlobal();
+-  if(frameworkMode()){renderFramework();restoreFocus(focus);return;}
++  if(frameworkMode()){renderFramework();renderBoard();restoreFocus(focus);return;}
+   $('empty').querySelector('b').textContent='没有匹配的形态';
+   filtered=db.records.filter(matches);
+   if(state.sort==='form')filtered.sort((a,b)=>a.form.localeCompare(b.form,'zh-CN'));
+@@ -163,7 +163,7 @@ function render() {
+   if(state.view==='list')renderList();
+   if(state.view==='tasks')renderTasks();
+   if(state.view==='sources')renderSources();
+-  renderDetail();renderCatalogNavigation();persist();restoreFocus(focus);
++  renderDetail();renderBoard();renderCatalogNavigation();persist();restoreFocus(focus);
+ }
+ function reset(doRender=true) { delete state.returnScope; Object.assign(state,{...defaults,category:state.category,layer:state.layer,view:state.view,selected:state.selected});expandMatches=true;if(doRender){syncControls();render();} }
+ function initializeMap() {
+@@ -503,7 +503,10 @@ function activateDim(d){
+   const n=d.data;
+   // 第一次点：选中并展开；已选中时再点：收起 / 展开
+   if(n.children){if(state.dimSelected!==n.key)collapsed.delete(n.key);else collapsed.has(n.key)?collapsed.delete(n.key):collapsed.add(n.key);dataChanged=true;state.collapsed=[...collapsed];}
+-  state.dimSelected=n.key;state.comparisonGroup='';persist();renderMap({key:n.key,x:d.x,y:d.y});renderDetail();
++  state.dimSelected=n.key;state.comparisonGroup='';
++  const tab=DIM.tabFor(n.dim.role);if(tab)state.dimTab=tab;if(n.dim.role==='grid'){state.dimGrid=n.dim.grid;state.dimCell='';}
++  persist();renderMap({key:n.key,x:d.x,y:d.y});renderDetail();renderBoard();
++  if(n.dim.role==='grid'||n.dim.role==='grids')$('dim-board').scrollIntoView({behavior:'smooth',block:'start'});
+   if(innerWidth<1024)$('detail').scrollIntoView({behavior:'auto',block:'start'});
+ }
+ function focusDim(key){
+@@ -511,6 +514,26 @@ function focusDim(key){
+   DIM.ancestors(key).forEach(k=>collapsed.delete(k));state.collapsed=[...collapsed];dataChanged=true;state.dimSelected=key;state.view='map';
+   render();centerMapOn(key);
+ }
++// 品类工作台：导图下方全宽显示在售类型卡片、白地图、机会、维度、类型对照，与导图双向联动
++function renderBoard(){
++  const box=$('dim-board');if(!box)return;
++  if(typeof DIM==='undefined'||frameworkMode()||state.view!=='map'||!filtered.length){box.hidden=true;return;}
++  const key=DIM.boardCat(state.dimSelected,state.selected,state.dimBoard);
++  if(!key){box.hidden=true;return;}
++  if(key!==state.dimBoard){state.dimBoard=key;state.dimCell='';}
++  const keep=box.querySelector('.dm-grid-wrap')?.scrollLeft||0;
++  box.hidden=false;box.innerHTML=DIM.boardHTML(key,{tab:state.dimTab,grid:state.dimGrid,cell:state.dimCell,selected:state.dimSelected},db.records);
++  const toMap=()=>document.querySelector('.content-grid').scrollIntoView({behavior:'smooth',block:'start'});
++  box.querySelectorAll('[data-dimtab]').forEach(b=>b.onclick=()=>{state.dimTab=b.dataset.dimtab;persist();renderBoard();});
++  box.querySelectorAll('[data-dimboard]').forEach(b=>b.onclick=()=>{state.dimBoard=b.dataset.dimboard;focusDim(b.dataset.dimboard);});
++  box.querySelectorAll('[data-dimgo]').forEach(b=>b.onclick=()=>{focusDim(b.dataset.dimgo);toMap();});
++  box.querySelectorAll('[data-select]').forEach(b=>b.onclick=()=>{select(b.dataset.select);toMap();});
++  box.querySelectorAll('[data-grid]').forEach(b=>b.onclick=()=>{state.dimGrid=b.dataset.grid;state.dimCell='';persist();renderBoard();});
++  box.querySelectorAll('[data-cell]').forEach(b=>b.onclick=()=>{state.dimCell=b.dataset.cell;persist();renderBoard();});
++  box.querySelectorAll('[data-dimfull]').forEach(b=>b.onclick=()=>DIM.openGrid(b.dataset.dimfull,k=>{focusDim(k);toMap();}));
++  const wrap=box.querySelector('.dm-grid-wrap');if(wrap)wrap.scrollLeft=keep;
++  box.querySelectorAll('img').forEach(img=>img.onerror=()=>img.remove());
++}
+ function centerMapOn(key){
+   const target=lastRoot?.descendants().find(d=>d.data.key===key);if(!target||!svg)return;
+   const t=d3.zoomTransform(svg.node()),w=$('map').clientWidth,h=$('map').clientHeight;
+@@ -521,7 +544,7 @@ function writeDimDetail(){
+   $('dm-close').onclick=()=>{state.dimSelected='';render();};
+   bindSelect(box);
+   box.querySelectorAll('[data-dimgo]').forEach(b=>b.onclick=()=>focusDim(b.dataset.dimgo));
+-  box.querySelectorAll('[data-dimgrid]').forEach(b=>b.onclick=()=>DIM.openGrid(b.dataset.dimgrid,focusDim));
++  box.querySelectorAll('[data-dimgrid]').forEach(b=>b.onclick=()=>{const n=DIM.node(b.dataset.dimgrid);state.dimTab='grid';state.dimGrid=n.dim.grid;state.dimCell='';renderBoard();$('dim-board').scrollIntoView({behavior:'smooth',block:'start'});});
+   box.querySelectorAll('img').forEach(img=>img.onerror=()=>{const s=document.createElement('span');s.className='muted small';s.textContent='图片暂缺';img.replaceWith(s);});
+ }
+ function writeRecordDetail() {
+diff --git a/selection_map/web/dimension.css b/selection_map/web/dimension.css
+index d871126..8b95618 100644
+--- a/selection_map/web/dimension.css
++++ b/selection_map/web/dimension.css
+@@ -52,3 +52,61 @@
+ .fig .sv-metal{fill:#e1e0da;stroke:#77756d}.fig .sv-acc{fill:#f0c66e}.fig .sv-glue{fill:none;stroke:var(--accent);stroke-width:3;stroke-dasharray:6 3}
+ .fig .sv-lab{fill:#66655f;font-family:var(--body)}
+ .fig .sv-wood{fill:#cfa77a;stroke:#77756d;stroke-width:1}.fig .sv-wl{fill:none;stroke:#a9794a;stroke-width:4;stroke-linecap:round}.fig .sv-ml{fill:none;stroke:#20201e;stroke-width:2.2;stroke-linecap:round}
++
++/* ---- 品类工作台（导图下方，全宽） ---- */
++.dim-board{border-top:1px solid var(--line);padding:22px 22px 26px;background:var(--panel)}
++.db-head{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;flex-wrap:wrap}
++.db-head h2{margin:2px 0 4px;font:600 24px/1.35 var(--body)}.db-head h2 span{color:var(--muted);font-weight:400;font-size:18px}
++.db-def{margin:0;color:var(--muted);max-width:640px;font-size:13px}
++.db-stats{display:grid;grid-template-columns:repeat(4,minmax(86px,1fr));gap:8px}
++.db-stats div{border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:#fafaf8}.db-stats b{display:block;font:600 20px/1.3 var(--body)}.db-stats span{font-size:10px;color:var(--muted)}
++.db-peers{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin:16px 0 4px}
++.db-peer{display:flex;flex-direction:column;gap:3px;text-align:left;border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:#fafaf8;font-size:12px}
++.db-peer:hover{border-color:var(--accent)}.db-peer.on{border:2px solid var(--accent);background:var(--panel);padding:9px 11px}.db-peer b{font-size:14px}
++.db-pos{color:var(--ink);font-size:11px;line-height:1.5}.db-top{display:flex;gap:5px;align-items:baseline;font-size:11px}.db-top i{font-style:normal}
++.db-tabs{display:flex;gap:24px;border-bottom:1px solid var(--line);margin:18px 0 16px;overflow-x:auto}
++.db-tabs button{padding:9px 0;font-size:14px;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
++.db-tabs button span{font:11px var(--mono);margin-left:5px;color:var(--muted)}.db-tabs button[aria-selected=true]{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
++.db-group{margin:0 0 22px}.db-group h4{margin:0 0 10px;font-size:14px}.db-group h4 span{font-weight:400;color:var(--muted);font-size:11px;margin-left:8px}
++.db-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
++.db-card{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel);display:flex;flex-direction:column;transition:box-shadow .15s}
++.db-card:hover{box-shadow:0 2px 12px rgba(32,32,30,.08)}.db-card.on{border:2px solid var(--accent)}
++.db-fig{background:#fafaf8;border-bottom:1px solid var(--line);padding:6px 10px;text-align:center}.db-fig svg{width:100%;max-width:240px;height:118px}
++.db-body{padding:11px 13px 13px;display:flex;flex-direction:column;gap:7px;font-size:12px}
++.db-title{font:600 15px/1.4 var(--body);text-align:left;padding:0;color:var(--ink)}.db-title:hover{color:var(--accent)}
++.db-badges{display:flex;flex-wrap:wrap;gap:4px}.db-badges span{font-size:10px;border:1px solid var(--line);border-radius:4px;padding:1px 6px;color:var(--muted)}
++.db-badges .v{color:var(--v);border-color:var(--v);font-weight:600}.db-badges .p{color:var(--ink)}
++.db-forms{display:flex;flex-wrap:wrap;gap:5px}.db-forms.wide{gap:7px}
++.db-rec{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:999px;padding:2px 9px 2px 7px;font:600 10.5px/1.6 var(--mono);background:#fff;max-width:100%}
++.db-rec span{font:400 11px var(--body);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:170px}.db-rec:hover{border-color:var(--accent)}
++.db-gap{font-size:10.5px;color:var(--part);border:1px dashed var(--part);border-radius:999px;padding:1px 9px}
++.db-pc{display:grid;grid-template-columns:1fr 1fr;gap:8px}.db-pc b,.db-line b{display:block;font-size:10px;color:var(--muted);font-weight:600}
++.db-pc .dm-list{margin:2px 0;padding-left:15px;font-size:11px;line-height:1.6}
++.db-line{margin:0;font-size:11.5px;line-height:1.6}.db-verdict{margin:2px 0 0;padding-top:7px;border-top:1px dashed var(--line);font-size:11px;color:var(--muted)}
++.db-gridbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.db-gridbar .dm-tabs{margin:0}
++.db-q{font:600 15px/1.5 var(--body);margin:12px 0 10px}
++.db-gridsum{border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
++.db-gridsum .ok{color:var(--ok);font-weight:600}.db-gridsum .clue{color:var(--part);font-weight:600}.db-gridsum>div{flex-basis:100%;display:flex;flex-wrap:wrap;gap:6px}
++.db-cellchip{border:1.5px solid var(--ok);border-radius:6px;padding:3px 9px;font-size:11px;background:#fff}.db-cellchip.clue{border-style:dashed;border-color:var(--part)}.db-cellchip b{color:var(--gap)}
++.db-gridlayout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:12px;align-items:start}.db-gridlayout .dm-cell-detail{margin:0;position:sticky;top:12px}
++@media(max-width:1200px){.db-gridlayout{grid-template-columns:1fr}}
++.db-opps{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
++.db-opp{border:1px solid var(--line);border-left:4px solid #5d6b8a;border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:7px;font-size:12px;background:var(--panel)}
++.db-opp.pri-A{border-left-color:var(--gap)}.db-opp.pri-B{border-left-color:var(--part)}.db-opp.pri-Q{border-left-style:dashed;border-left-color:var(--part)}.db-opp.pri-X{border-left-color:var(--line);background:#fafaf8}.db-opp.on{outline:2px solid var(--accent)}
++.db-opp-head{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.db-why{margin:0;line-height:1.65}.db-why b{display:block;font-size:10px;color:var(--muted)}
++.db-score{display:flex;align-items:flex-end;gap:6px;height:54px;padding:4px 0}.db-score span{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;width:26px;height:100%}
++.db-score i{display:block;width:14px;background:var(--accent);border-radius:2px 2px 0 0;opacity:.8}.db-score em{font-style:normal;font-size:9px;color:var(--muted);margin-top:2px}.db-score b{font:600 18px var(--mono);margin-left:8px}
++.db-dl{display:grid;grid-template-columns:60px 1fr;gap:3px 8px;margin:0;font-size:11.5px}.db-dl dt{color:var(--muted)}.db-dl dd{margin:0}
++.db-dims{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}@media(max-width:1100px){.db-dims{grid-template-columns:1fr}}
++.db-dims h4{margin:0 0 8px;font-size:14px}.db-dims h4 span{display:block;font-weight:400;font-size:11px;color:var(--muted)}
++.db-dcat{border:1px solid var(--line);border-radius:8px;padding:8px 11px;margin-bottom:10px}.db-dcat h5{margin:0 0 6px;font-size:12px;color:#3a2f73}
++.db-dim{padding:6px 0;border-top:1px dashed var(--line)}.db-dim:first-of-type{border-top:0}.db-dim.on{background:var(--soft);margin:0 -6px;padding:6px}
++.db-dim-head{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.db-dim-head .dm-go{font-weight:600;color:var(--ink)}
++.db-tag{font:600 9px/1.6 var(--mono);border-radius:3px;padding:0 5px;color:#fff;background:#5d6b8a}.db-tag.t-L1{background:#2b5cc8}.db-tag.t-L2{background:var(--ok)}.db-tag.t-L3{background:var(--part)}.db-tag.t-L0{background:var(--gap)}
++.db-vals{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}.db-vals span{font-size:10.5px;border-radius:4px;padding:1px 6px;background:#f2f1ec;color:var(--muted)}
++.db-vals span.used{background:var(--soft);color:#2a3f73}.db-vals b{font:600 9px var(--mono);margin-left:4px;color:var(--accent)}
++.db-tablewrap{overflow:auto;border:1px solid var(--line);border-radius:8px}
++.db-table{border-collapse:collapse;width:100%;min-width:1000px;font-size:11.5px}.db-table th,.db-table td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
++.db-table th{background:#fafaf8;font-weight:600;white-space:nowrap}.db-table tr.grp td{background:#f4f3ee;font-weight:600;font-size:11px}
++.db-v{color:var(--v);font-weight:600}
++@media(max-width:767px){.dim-board{padding:16px 14px}.db-stats{grid-template-columns:repeat(2,1fr)}.db-cards,.db-opps{grid-template-columns:1fr}}
+diff --git a/selection_map/web/dimension.js b/selection_map/web/dimension.js
+index 5df9921..6da4762 100644
+--- a/selection_map/web/dimension.js
++++ b/selection_map/web/dimension.js
+@@ -45,7 +45,7 @@ const DIM = (() => {
+   const crossOf = r => A.links.cross?.[r.id] || null;
+ 
+   // 本次渲染的节点索引（key → 节点），供详情和定位使用
+-  let index = new Map();
++  let index = new Map(), recCat = new Map();
+   const DEFAULT_CLOSED = new Set(['cat', 'dcat', 'grids', 'dims']);
+ 
+   function sectionNodes(N, c, recs, recordNodes) {
+@@ -100,7 +100,9 @@ const DIM = (() => {
+       (n.children || []).forEach(ch => visit(ch, id || parentCat));
+     };
+     visit(root, null);
++    recCat = new Map();
+     const walk = (n, parent) => {
++      if (n.record && parent) recCat.set(n.record.id, catNode(parent)?.key);
+       if (n.dim) {
+         n.dim.parent = parent;
+         index.set(n.key, n);
+@@ -305,42 +307,147 @@ const DIM = (() => {
+     const cq = [(v.rc || [])[ri], (v.cc || [])[ci]].filter(Boolean).join(' ');
+     return {items, jd: cq ? {n:cq, u:'https://search.jd.com/Search?keyword=' + encodeURIComponent(cq) + '&enc=utf-8'} : null};
+   }
++  const dots = d => d == null ? '<span class="muted">需求 ?</span>' : `需求 ${'●'.repeat(d)}${'○'.repeat(3 - d)}`;
++  function gridTable(c, v, cell) {
++    return `<table class="dm-grid"><thead><tr><th>${e(v.rowT)} ＼ ${e(v.colT)}</th>${v.cols.map(x => `<th>${e(x)}</th>`).join('')}</tr></thead><tbody>${v.rows.map(([rn, cells], ri) => `<tr><th>${e(rn)}</th>${cells.map((cl, ci) => {
++      const i = cellInfo(cl);
++      if (i.sup === 'X') return `<td class="dm-cell sup-X"><span>不成立</span></td>`;
++      const op = i.o.o ? c.opps.find(x => x.t === i.o.o) : null;
++      return `<td class="dm-cell sup-${i.sup}${i.opp ? ' is-opp' : ''}${i.clue ? ' is-clue' : ''}${cell === ri + ',' + ci ? ' on' : ''}"><button type="button" data-cell="${ri},${ci}"><b>${SUP[i.sup]}</b><small>${dots(i.dem)}</small>${i.note && i.note !== '—' ? `<span>${e(i.note)}</span>` : ''}${op ? `<em class="dm-pri dm-pri-${op._pri}">${PRI_TAG[op._pri]} ${e(op.t)}</em>` : (i.clue ? '<em>新线索，待验证</em>' : '')}</button></td>`;
++    }).join('')}</tr>`).join('')}</tbody></table>`;
++  }
++  function cellDetail(c, v, cn, ri, ci) {
++    const i = cellInfo(v.rows[ri][1][ci]), L = refLinks(c, v, ri, ci, i), op = i.o.o ? c.opps.find(x => x.t === i.o.o) : null;
++    return `<h3>${e(v.rows[ri][0])} × ${e(v.cols[ci])}</h3>
++      <div class="badges"><span class="badge">${SUP[i.sup]}</span><span class="badge">${dots(i.dem)}</span>${i.o.ev ? `<span class="badge">依据：${e(i.o.ev)}</span>` : ''}${i.opp ? '<span class="badge dm-ok">机会格</span>' : ''}${i.clue ? '<span class="badge dm-clue">待验证</span>' : ''}</div>
++      <p>${e(i.o.d || (i.note && i.note !== '—' ? i.note : '这一格目前只有供给判断，没有补充说明。'))}</p>
++      <h4>参考链接</h4><ol class="dm-list">${L.items.map(x => `<li>${a(x.u, x.n)} <span class="muted small">${x.kind}</span></li>`).join('')}</ol>${L.jd ? `<p class="small">京东参考：${a(L.jd.u, L.jd.n)}</p>` : ''}
++      ${list(i.o.t).length ? `<h4>相关在售类型</h4><p>${list(i.o.t).map(t => go(findKey(cn.key, '§t§' + t), t)).join('、')}</p>` : ''}
++      ${op ? `<h4>关联机会</h4><p>${go(findKey(cn.key, '§o§' + op.t), op.t)} <span class="dm-pri dm-pri-${op._pri}">${PRI_TAG[op._pri]}</span></p>` : ''}`;
++  }
++  const GRID_NOTE = '供给分红海 / 有供给 / 稀少 / 空白 / 不成立；只有供给稀少或空白、且需求中等以上才算机会格（绿框）；供给少但需求没证据的标“待验证”（虚线框）。';
++  function gridCounts(v) {
++    const cnt = {opp:[], clue:[], R:0, S:0, L:0, E:0, X:0};
++    v.rows.forEach(([rn, cells], ri) => cells.forEach((cl, ci) => { const i = cellInfo(cl); cnt[i.sup]++; if (i.opp) cnt.opp.push([ri, ci]); else if (i.clue) cnt.clue.push([ri, ci]); }));
++    return cnt;
++  }
++  /** 白地图全屏查看（弹出层）。 */
+   function openGrid(key, onGo) {
+     const n = index.get(key); if (!n) return;
+     const c = CATS.get(n.dim.cat), v = c.grids.find(x => x.id === n.dim.grid), cn = catNode(n);
+     let dlg = document.getElementById('dm-grid-dialog');
+     if (!dlg) { dlg = document.createElement('dialog'); dlg.id = 'dm-grid-dialog'; dlg.className = 'dm-dialog'; document.body.appendChild(dlg); }
+-    const dots = d => d == null ? '<span class="muted">需求 ?</span>' : `需求 ${'●'.repeat(d)}${'○'.repeat(3 - d)}`;
+-    const table = `<table class="dm-grid"><thead><tr><th>${e(v.rowT)} ＼ ${e(v.colT)}</th>${v.cols.map(x => `<th>${e(x)}</th>`).join('')}</tr></thead><tbody>${v.rows.map(([rn, cells], ri) => `<tr><th>${e(rn)}</th>${cells.map((cell, ci) => {
+-      const i = cellInfo(cell);
+-      if (i.sup === 'X') return `<td class="dm-cell sup-X"><span>不成立</span></td>`;
+-      const op = i.o.o ? c.opps.find(x => x.t === i.o.o) : null;
+-      return `<td class="dm-cell sup-${i.sup}${i.opp ? ' is-opp' : ''}${i.clue ? ' is-clue' : ''}"><button type="button" data-cell="${ri},${ci}"><b>${SUP[i.sup]}</b><small>${dots(i.dem)}</small>${i.note && i.note !== '—' ? `<span>${e(i.note)}</span>` : ''}${op ? `<em class="dm-pri dm-pri-${op._pri}">${PRI_TAG[op._pri]} ${e(op.t)}</em>` : (i.clue ? '<em>新线索，待验证</em>' : '')}</button></td>`;
+-    }).join('')}</tr>`).join('')}</tbody></table>`;
+     dlg.innerHTML = `<div class="dm-dialog-head"><div><p class="overline">${e(cn.name)} · 开品维度图谱 · 白地图</p><h2>${e(v.name)}</h2><p class="muted">这张图回答：${e(v.q)}</p></div><button type="button" class="quiet-button" data-close>关闭</button></div>
+       <div class="dm-tabs">${c.grids.map(x => `<button type="button" aria-pressed="${x.id === v.id}" data-gridtab="${e(findKey(cn.key, '§g§' + x.id))}">${e(x.name)}</button>`).join('')}</div>
+-      <div class="dm-grid-wrap">${table}</div><div class="dm-cell-detail" id="dm-cell-detail"><p class="muted">点任意一格查看：判断依据、1–3 个参考链接、关联的类型和机会。</p></div>
+-      <p class="muted small">供给分红海 / 有供给 / 稀少 / 空白 / 不成立；只有供给稀少或空白、且需求中等以上才算机会格（绿框）；供给少但需求没证据的标“待验证”（虚线框）。</p>`;
++      <div class="dm-grid-wrap">${gridTable(c, v, '')}</div><div class="dm-cell-detail" id="dm-cell-detail"><p class="muted">点任意一格查看：判断依据、1–3 个参考链接、关联的类型和机会。</p></div><p class="muted small">${GRID_NOTE}</p>`;
+     dlg.querySelector('[data-close]').onclick = () => dlg.close();
+     dlg.querySelectorAll('[data-gridtab]').forEach(b => b.onclick = () => openGrid(b.dataset.gridtab, onGo));
+     dlg.querySelectorAll('[data-cell]').forEach(b => b.onclick = () => {
+       dlg.querySelectorAll('.dm-cell.on').forEach(x => x.classList.remove('on')); b.parentElement.classList.add('on');
+-      const [ri, ci] = b.dataset.cell.split(',').map(Number), cell = v.rows[ri][1][ci], i = cellInfo(cell), L = refLinks(c, v, ri, ci, i);
+-      const op = i.o.o ? c.opps.find(x => x.t === i.o.o) : null;
+-      document.getElementById('dm-cell-detail').innerHTML = `<h3>${e(v.rows[ri][0])} × ${e(v.cols[ci])}</h3>
+-        <div class="badges"><span class="badge">${SUP[i.sup]}</span><span class="badge">${dots(i.dem)}</span>${i.o.ev ? `<span class="badge">依据：${e(i.o.ev)}</span>` : ''}${i.opp ? '<span class="badge dm-ok">机会格</span>' : ''}${i.clue ? '<span class="badge dm-clue">待验证</span>' : ''}</div>
+-        <p>${e(i.o.d || (i.note && i.note !== '—' ? i.note : '这一格目前只有供给判断，没有补充说明。'))}</p>
+-        <h4>参考链接</h4><ol class="dm-list">${L.items.map(x => `<li>${a(x.u, x.n)} <span class="muted small">${x.kind}</span></li>`).join('')}</ol>${L.jd ? `<p class="small">京东参考：${a(L.jd.u, L.jd.n)}</p>` : ''}
+-        ${list(i.o.t).length ? `<h4>相关在售类型</h4><p>${list(i.o.t).map(t => `<button type="button" class="dm-go" data-dimgo="${e(findKey(cn.key, '§t§' + t))}">${e(t)}</button>`).join('、')}</p>` : ''}
+-        ${op ? `<h4>关联机会</h4><p><button type="button" class="dm-go" data-dimgo="${e(findKey(cn.key, '§o§' + op.t))}">${e(op.t)}</button> <span class="dm-pri dm-pri-${op._pri}">${PRI_TAG[op._pri]}</span></p>` : ''}`;
+-      document.getElementById('dm-cell-detail').querySelectorAll('[data-dimgo]').forEach(x => x.onclick = () => { dlg.close(); onGo(x.dataset.dimgo); });
++      const [ri, ci] = b.dataset.cell.split(',').map(Number), box = document.getElementById('dm-cell-detail');
++      box.innerHTML = cellDetail(c, v, cn, ri, ci);
++      box.querySelectorAll('[data-dimgo]').forEach(x => x.onclick = () => { dlg.close(); onGo(x.dataset.dimgo); });
+     });
+     if (!dlg.open) dlg.showModal();
+   }
+ 
++  // ---- 品类工作台（导图下方，全宽） ----
++  const TABS = [['types', '在售类型'], ['grid', '白地图'], ['opps', '开品机会'], ['dims', '分类维度'], ['compare', '类型对照']];
++  const catNodes = () => [...index.values()].filter(n => n.dim.role === 'cat');
++  const catKeyOf = key => { const n = index.get(key); return n ? catNode(n)?.key : null; };
++  /** 工作台显示哪个品类：当前选中的维度节点 → 选中的地图形态 → 上次的品类 → 导图里第一个挂接点。 */
++  function boardCat(dimSelected, recordId, prev) {
++    return (dimSelected && catKeyOf(dimSelected)) || (recordId && recCat.get(recordId)) || (prev && index.has(prev) ? prev : null) || catNodes()[0]?.key || null;
++  }
++  const tabFor = role => ({type:'types', tgroup:'types', unmapped:'types', opp:'opps', pgroup:'opps', grid:'grid', grids:'grid', dim:'dims', val:'dims', dcat:'dims', dgroup:'dims'})[role] || null;
++  const recChip = r => `<button type="button" class="db-rec" data-select="${e(r.id)}" title="${e(r.form)} · ${e(r.us_coverage || '未核对')}"><i class="dot" style="background:${colors[r.us_coverage] || 'var(--unknown)'}"></i>${e(r.id)} <span>${e(r.form)}</span></button>`;
++  const short = (arr, n) => list(arr).slice(0, n);
++
++  function typeCard(c, cn, t, recs, sel) {
++    const key = findKey(cn.key, '§t§' + t.t), primary = recs.filter(r => typesOf(r)[0] === t.t), related = recs.filter(r => typesOf(r).slice(1).includes(t.t));
++    const opps = c.opps.filter(o => o._from.includes(t.t) && !['X'].includes(o._pri));
++    return `<article class="db-card${sel === key ? ' on' : ''}" data-key="${e(key)}">
++      <div class="db-fig">${window.DimFig ? window.DimFig(t.fig || {}) : ''}</div>
++      <div class="db-body">
++        <button type="button" class="db-title" data-dimgo="${e(key)}">${e(t.t)}</button>
++        <div class="db-badges"><span>${e(t.vol)}</span><span>${e(COMP[t.comp])}</span><span class="v" style="--v:${VERDICT_COLOR[t.verdict?.[0]] || 'var(--unknown)'}">${e(t.verdict?.[0] || '')}</span><span class="p">${e(t.price || '')}</span></div>
++        ${chips(short(t.combo, 6))}
++        <div class="db-forms">${primary.length || related.length ? primary.map(recChip).join('') + related.map(recChip).join('') : '<span class="db-gap">地图无形态 · 可作规划空位</span>'}</div>
++        <div class="db-pc"><div><b>优势</b>${ul(short(t.pros, 2))}</div><div><b>缺点</b>${ul(short(t.cons, 2))}</div></div>
++        <p class="db-line"><b>常见差评</b>${e(t.pain || '—')}</p>
++        <p class="db-line"><b>新品必须</b>${e(list(t.must).join('；') || '—')}${list(t.avoid).length && t.avoid[0] !== '—' ? `<br><b>必须避免</b>${e(list(t.avoid).join('；'))}` : ''}</p>
++        ${opps.length ? `<p class="db-line"><b>相关机会</b>${opps.map(o => `${go(findKey(cn.key, '§o§' + o.t), o.t)} <span class="dm-pri dm-pri-${o._pri}">${PRI_TAG[o._pri]}</span>`).join('　')}</p>` : ''}
++        <p class="db-verdict">${e(t.verdict?.[1] || '')}</p>
++      </div></article>`;
++  }
++  function typesTab(c, cn, recs, sel) {
++    const unmapped = recs.filter(r => !typesOf(r).some(t => c._types.has(t)));
++    return c.types.map(g => `<section class="db-group"><h4>${e(g.g)}<span>${e(g.about || '')} · ${g.items.length} 类型</span></h4><div class="db-cards">${g.items.map(t => typeCard(c, cn, t, recs, sel)).join('')}</div></section>`).join('')
++      + (unmapped.length ? `<section class="db-group"><h4>地图形态 · 未对应在售类型<span>可能是维度图谱没覆盖的细分，或需要新增类型</span></h4><div class="db-forms wide">${unmapped.map(recChip).join('')}</div></section>` : '');
++  }
++  function gridTab(c, cn, st) {
++    const v = c.grids.find(x => x.id === st.grid) || c.grids[0], cnt = gridCounts(v), gkey = findKey(cn.key, '§g§' + v.id);
++    const chip = ([ri, ci], kind) => { const i = cellInfo(v.rows[ri][1][ci]), op = i.o.o ? c.opps.find(x => x.t === i.o.o) : null; return `<button type="button" class="db-cellchip ${kind}" data-cell="${ri},${ci}">${e(v.rows[ri][0])} × ${e(v.cols[ci])}${op && op._pri !== 'X' ? ` <b>→ ${op._pri === 'Q' ? '线索' : op._pri}</b>` : ''}</button>`; };
++    const [ri, ci] = (st.cell || '').split(',').map(Number);
++    const hasCell = Number.isInteger(ri) && v.rows[ri]?.[1][ci] && cellInfo(v.rows[ri][1][ci]).sup !== 'X';
++    return `<div class="db-gridbar"><div class="dm-tabs">${c.grids.map(x => `<button type="button" aria-pressed="${x.id === v.id}" data-grid="${e(x.id)}">${e(x.name)}</button>`).join('')}</div><button type="button" class="quiet-button" data-dimfull="${e(gkey)}">全屏查看</button></div>
++      <p class="db-q">这张图回答：${e(v.q)}</p>
++      <div class="db-gridsum"><span class="ok">${cnt.opp.length} 个机会格</span><span class="clue">${cnt.clue.length} 个待验证</span><span>${cnt.R} 红海 · ${cnt.S} 有供给 · ${cnt.L} 稀少 · ${cnt.E} 空白 · ${cnt.X} 不成立</span><div>${cnt.opp.map(x => chip(x, 'opp')).join('')}${cnt.clue.map(x => chip(x, 'clue')).join('')}</div></div>
++      <div class="db-gridlayout"><div class="dm-grid-wrap">${gridTable(c, v, st.cell)}</div><aside class="dm-cell-detail">${hasCell ? cellDetail(c, v, cn, ri, ci) : '<p class="muted">点任意一格查看：判断依据、1–3 个参考链接、关联的类型和机会。</p>'}</aside></div>
++      <p class="muted small">${GRID_NOTE}</p>`;
++  }
++  function oppCard(c, cn, o, recs, sel) {
++    const key = findKey(cn.key, '§o§' + o.t), linked = recs.filter(r => o._from.includes(typesOf(r)[0]));
++    const bars = o.score ? `<div class="db-score">${SCORE_DEF.map(d => `<span title="${d.n} ${o.score[d.k]}"><i style="height:${(o.score[d.k] || 0) * 20}%"></i><em>${d.n.slice(0, 2)}</em></span>`).join('')}<b>${o._total.toFixed(2)}</b></div>` : '';
++    return `<article class="db-opp pri-${o._pri}${sel === key ? ' on' : ''}" data-key="${e(key)}">
++      <div class="db-opp-head"><span class="dm-pri dm-pri-${o._pri}">${e(PRI[o._pri].split('（')[0])}</span><span class="badge">${e(o.gap || '')}</span><span class="muted small">依据：${e(o.evl || '')}</span></div>
++      <button type="button" class="db-title" data-dimgo="${e(key)}">${e(o.t)}</button>
++      ${o._pri === 'X' ? `<p class="db-why"><b>排除原因</b>${e(o.outWhy)}</p>` : `<p class="db-why">${e(o.why)}</p>`}
++      ${bars}${chips(o.spec)}
++      ${o._pri === 'X' || o._pri === 'Q' ? '' : `<dl class="db-dl"><dt>建议价格</dt><dd>${e(o.price || '—')}</dd><dt>差异化</dt><dd>${e(o.diff || '—')}</dd><dt>风险</dt><dd>${e(o.risk || '—')}</dd></dl>`}
++      <p class="db-line"><b>验证方法</b>${e(o.verify || '—')}</p>
++      <p class="db-line"><b>对标类型</b>${o._from.map(t => c._types.has(t) ? go(findKey(cn.key, '§t§' + t), t) : e(t)).join('、') || '—'}</p>
++      <div class="db-forms">${linked.map(recChip).join('') || '<span class="muted small">地图暂无相关形态</span>'}</div></article>`;
++  }
++  function oppsTab(c, cn, recs, sel) {
++    return ['A', 'B', 'C', 'Q', 'X'].map(p => { const os = c.opps.filter(o => o._pri === p).sort((x, y) => (y._total || 0) - (x._total || 0)); return os.length ? `<section class="db-group"><h4>${e(PRI[p])}<span>${os.length} 项</span></h4><div class="db-opps">${os.map(o => oppCard(c, cn, o, recs, sel)).join('')}</div></section>` : ''; }).join('');
++  }
++  function dimsTab(c, cn, sel) {
++    const types = c.types.flatMap(g => g.items);
++    return `<div class="db-dims">${c.dims.map(g => `<section><h4>${e(g.g)}<span>${e(g.about || '')}</span></h4>${g.cats.map(k => `<div class="db-dcat"><h5>${e(k.t)}</h5>${k.c.map(d => {
++      const key = findKey(cn.key, '§d§' + d.t), used = types.filter(t => list(t.map).some(m => m[0] === d.t));
++      return `<div class="db-dim${sel === key ? ' on' : ''}" data-key="${e(key)}"><div class="db-dim-head">${go(key, d.t)}<span class="db-tag t-${e(d.tag)}">${e(d.tag === 'L0' ? '门槛' : d.tag)}</span><span class="muted small">${used.length}/${types.length} 类型已登记</span></div><div class="db-vals">${list(d.c).map(v => { const n = types.filter(t => list(t.map).some(m => m[0] === d.t && String(m[1]).includes(v.t))).length; return `<span class="${n ? 'used' : ''}" title="${e(v.n || '')}">${e(v.t)}${n ? `<b>${n}</b>` : ''}</span>`; }).join('')}</div></div>`;
++    }).join('')}</div>`).join('')}</section>`).join('')}</div><p class="muted small">取值后的数字 = 在售类型里登记了这个取值的类型数。点维度名在导图中定位并查看定义、登记规则。</p>`;
++  }
++  function compareTab(c, cn, recs) {
++    return `<div class="db-tablewrap"><table class="db-table"><thead><tr><th>在售类型</th><th>体量</th><th>维度组合</th><th>代表品牌 / 商品</th><th>价格带</th><th>竞争</th><th>判断</th><th>地图形态</th><th>常见差评</th></tr></thead><tbody>${c.types.map(g => `<tr class="grp"><td colspan="9">${e(g.g)}</td></tr>` + g.items.map(t => { const rs = recs.filter(r => typesOf(r)[0] === t.t); return `<tr><td>${go(findKey(cn.key, '§t§' + t.t), t.t)}</td><td>${e(t.vol)}</td><td>${e(list(t.combo).join(' · '))}</td><td>${e(t.rep)}</td><td>${e(t.price)}</td><td>${e(COMP[t.comp])}</td><td><span class="db-v" style="--v:${VERDICT_COLOR[t.verdict?.[0]] || 'var(--unknown)'}">${e(t.verdict?.[0] || '')}</span></td><td>${rs.map(r => `<button type="button" class="dm-go" data-select="${e(r.id)}">${e(r.id)}</button>`).join(' ') || '<span class="db-gap">无</span>'}</td><td>${e(t.pain)}</td></tr>`; }).join('')).join('')}</tbody></table></div>`;
++  }
++  function boardHTML(catKey, st, allRecords) {
++    const n = index.get(catKey); if (!n) return '';
++    const c = CATS.get(n.dim.cat), recs = n.records, nT = c.types.reduce((s, g) => s + g.items.length, 0);
++    const mapped = recs.filter(r => typesOf(r).some(t => c._types.has(t))).length;
++    const empty = c.types.flatMap(g => g.items).filter(t => !recs.some(r => typesOf(r)[0] === t.t)).length;
++    const peers = catNodes();
++    const tab = TABS.some(([k]) => k === st.tab) ? st.tab : 'types';
++    const counts = {types: nT, grid: c.grids.length, opps: c.opps.length, dims: c._dims.size, compare: nT};
++    const peerCard = p => { const pc = CATS.get(p.dim.cat), top = pc.opps.filter(o => ['A', 'B'].includes(o._pri)).sort((x, y) => y._total - x._total).slice(0, 2);
++      return `<button type="button" class="db-peer${p.key === catKey ? ' on' : ''}" data-dimboard="${e(p.key)}"><b>${e(p.name)}</b><span class="muted small">${e(pc.name)} · ${pc.types.reduce((s, g) => s + g.items.length, 0)} 类型 · ${pc.opps.length} 机会</span>${pc.pos ? `<span class="db-pos">${e(pc.pos)}</span>` : ''}${top.map(o => `<span class="db-top"><i class="dm-pri dm-pri-${o._pri}">${o._pri}</i>${e(o.t)}</span>`).join('')}</button>`; };
++    let body = '';
++    if (tab === 'types') body = typesTab(c, n, recs, st.selected);
++    if (tab === 'grid') body = gridTab(c, n, st);
++    if (tab === 'opps') body = oppsTab(c, n, recs, st.selected);
++    if (tab === 'dims') body = dimsTab(c, n, st.selected);
++    if (tab === 'compare') body = compareTab(c, n, recs);
++    return `<div class="db-head"><div><p class="overline">开品维度图谱${c.series ? ' · ' + e(c.series) + '系列' : ''} · 数据快照 ${e(c.updated)}</p><h2>${e(n.name)} <span>· ${e(c.name)}</span></h2><p class="db-def">${e(c.pos || c.scope.def)}</p></div>
++        <div class="db-stats"><div><b>${nT}</b><span>在售类型</span></div><div><b>${c.opps.filter(o => ['A', 'B'].includes(o._pri)).length}</b><span>A / B 机会</span></div><div><b>${mapped}/${recs.length}</b><span>地图形态已对应</span></div><div><b>${empty}</b><span>类型地图无形态</span></div></div></div>
++      ${peers.length > 1 ? `<div class="db-peers">${peers.map(peerCard).join('')}</div>` : ''}
++      <div class="db-tabs" role="tablist">${TABS.map(([k, l]) => `<button type="button" role="tab" aria-selected="${k === tab}" data-dimtab="${k}">${l}<span>${counts[k]}</span></button>`).join('')}</div>
++      <div class="db-body-wrap">${body}</div>`;
++  }
++
+   /** 定位到某个维度图谱节点：展开它的所有祖先。 */
+   function ancestors(key) { const out = []; let n = index.get(key)?.dim.parent; while (n) { out.push(n.key); n = n.dim.parent; } return out; }
+ 
+-  return {attachTree, reveal, has, node, circle, count, ariaLabel, detailHTML, openGrid, ancestors, catOf, typesOf,
++  return {attachTree, reveal, has, node, circle, count, ariaLabel, detailHTML, openGrid, ancestors, catOf, typesOf, boardCat, boardHTML, tabFor,
+     isDim: n => Boolean(n && n.dim), available: A.categories.length > 0};
+ })();
+diff --git a/selection_map/web/index.html b/selection_map/web/index.html
+index 3c45938..6211bd8 100644
+--- a/selection_map/web/index.html
++++ b/selection_map/web/index.html
+@@ -74,6 +74,7 @@
+           </section>
+           <aside id="detail" class="detail" aria-label="形态详情"></aside>
+         </div>
++        <section id="dim-board" class="dim-board" aria-label="品类工作台（开品维度图谱）" hidden></section>
+       </section>
+       <footer>仅在本机保存 · 形态数量为本轮记录范围，不代表穷尽市场 · <span id="footer-date"></span></footer>
+     </main>
 -- 
 2.43.0
 
