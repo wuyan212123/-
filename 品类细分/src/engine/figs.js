@@ -3,6 +3,8 @@
    fig({k:"pens", n, ink:"black"|"rainbow"|"custom", cols:[颜色，写 "ink" 表示跟随主题的黑色], tips:[标签], pack:"blister"|"pouch"|"wallet"|"box"})
    其他 k：refill / brush / dual / kit / spring / erase / pad / multi / book / block / cards / accordion / workbook / bookkit / pans / tubes / cups / bottles / droppers / easel / sticks
    stand：画架、画箱、画柜，用 v 指定结构（aframe / hframe / crank / flat / tripod / wc / pochade / french / kit / cn / tablebox / tableh / tablea / tablemetal / board / kids / kidstable / display / displaywood / mini / artbox / toolbox / taboret / flatfile / rack / dryrack / easelcab / roll）
+   pants：裤装，v 指定版型（skinny / straight / wide / flare / jogger / bootcut），waist（elastic 宽松紧 / draw 抽绳 / button 扣 + 拉链 / panel 孕妇托腹），
+         fly（zip 真门襟 / faux 假门襟 / none），pk（real 真口袋 / faux 假口袋 / none），wash（dark / mid / light / black / print），rib 罗纹裤脚，kid 童装比例，fleece 加绒
    新品类需要新图形时，在这里加一个 k 分支即可。 */
 const HUES = ["#d6453d","#e8892b","#e6c229","#5bab4a","#2a9d8f","#2f78c4","#5a4fcf","#a855b5","#d9579b","#8b5a2b","#6b7280","#1f8a70"];
 function fig(spec){
@@ -128,6 +130,28 @@ function fig(spec){
       s+=`<rect x="${cx-bw/2}" y="26" width="${bw}" height="88" rx="${bw/2}" fill="${col}"/><rect x="${cx-bw/2}" y="62" width="${bw}" height="52" rx="2" class="sv-body"/>`; }
     s+=lab(W/2,140,spec.label||"颜料棒",8);
 
+  } else if(spec.k==="pants"){         /* 裤装：v 版型，waist 腰头，fly 门襟，pk 口袋，wash 洗色 */
+    const WASH={dark:"#2b3f63",mid:"#4f6f9c",light:"#8fb0d4",black:"#2e2e33",print:"#5d7fae"};
+    const col=WASH[spec.wash||"mid"], v=spec.v||"skinny", kid=!!spec.kid;
+    const cx=120, top=kid?30:16, wb=spec.waist==="panel"?0:(spec.waist==="elastic"||spec.waist==="draw"?13:8), hipW=kid?64:76, crotch=top+wb+(kid?34:40), bot=kid?124:136;
+    const k=kid?0.8:1, hemW=k*({skinny:15,straight:22,wide:32,flare:35,jogger:16,bootcut:27}[v]||22), kneeW=k*({skinny:19,straight:23,wide:29,flare:20,jogger:23,bootcut:21}[v]||23);
+    const L0=cx-hipW/2, R0=cx+hipW/2, gap=2, kneeY=crotch+(bot-crotch)*0.45;
+    const leg=(side)=>{ const outer=side<0?L0:R0, X=d=>cx+side*(gap+d), thigh=hipW/2-gap-4;
+      return `M${outer} ${top+wb} L${X(thigh)} ${crotch} Q${X(kneeW+1)} ${kneeY-8} ${X(kneeW)} ${kneeY} L${X(hemW)} ${bot} L${X(1)} ${bot} L${X(1)} ${crotch+4} Q${X(0)} ${crotch} ${cx} ${crotch} L${cx} ${top+wb}Z`; };
+    s+=`<path d="${leg(-1)}" fill="${col}"/><path d="${leg(1)}" fill="${col}"/>`;
+    if(spec.wash==="print") s+=`<path d="${leg(-1)}" fill="none" stroke="#fff" stroke-width=".6" stroke-dasharray="1 3" opacity=".7"/><path d="${leg(1)}" fill="none" stroke="#fff" stroke-width=".6" stroke-dasharray="1 3" opacity=".7"/>`;
+    if(spec.wash==="light"||spec.wash==="mid") s+=`<ellipse cx="${cx-hipW/4}" cy="${kneeY-6}" rx="7" ry="14" fill="#fff" opacity=".22"/><ellipse cx="${cx+hipW/4}" cy="${kneeY-6}" rx="7" ry="14" fill="#fff" opacity=".22"/>`;
+    if(spec.waist==="panel"){ s+=`<path d="M${L0+4} ${top+16} Q${cx} ${top-18} ${R0-4} ${top+16} L${R0} ${top+22} L${L0} ${top+22}Z" class="sv-soft"/>`+lab(cx,top+8,"托腹",7); }
+    else { s+=`<rect x="${L0}" y="${top}" width="${hipW}" height="${wb}" rx="2" fill="${spec.waist==="button"?col:"#3d4a5e"}" stroke="rgba(255,255,255,.35)"/>`;
+      if(spec.waist==="elastic"||spec.waist==="draw") for(let i=1;i<8;i++) s+=`<path d="M${L0+i*hipW/8} ${top+2} V${top+wb-2}" stroke="#fff" stroke-width=".6" opacity=".5"/>`;
+      if(spec.waist==="draw") s+=`<path d="M${cx-3} ${top+wb} q-4 14 -8 18 M${cx+3} ${top+wb} q4 14 8 18" stroke="#fff" stroke-width="1.4" fill="none"/>`;
+      if(spec.waist==="button") s+=`<circle cx="${cx}" cy="${top+wb/2}" r="2.4" fill="#d9b44a"/>`+[L0+10,cx-14,cx+14,R0-10].map(x=>`<rect x="${x-1.5}" y="${top-1}" width="3" height="${wb+3}" fill="${col}" stroke="rgba(255,255,255,.4)" stroke-width=".5"/>`).join(""); }
+    const fy=top+wb;
+    if(spec.fly==="zip"||spec.fly==="faux") s+=`<path d="M${cx} ${fy} V${fy+22} Q${cx-2} ${fy+28} ${cx-9} ${fy+26}" stroke="#e2c36b" stroke-width="1" fill="none" stroke-dasharray="${spec.fly==="faux"?"2 2":"none"}"/>`;
+    if(spec.pk==="real"||spec.pk==="faux"){ const d=spec.pk==="faux"?' stroke-dasharray="2 2"':""; s+=`<path d="M${L0+3} ${fy+2} Q${L0+14} ${fy+14} ${L0+20} ${fy+2}" stroke="#e2c36b" stroke-width="1" fill="none"${d}/><path d="M${R0-3} ${fy+2} Q${R0-14} ${fy+14} ${R0-20} ${fy+2}" stroke="#e2c36b" stroke-width="1" fill="none"${d}/>`; }
+    if(spec.rib||v==="jogger") s+=[-1,1].map(sd=>{ const a=cx+sd*(gap+1), b=cx+sd*(gap+hemW), x0=Math.min(a,b); return `<rect x="${x0}" y="${bot-8}" width="${Math.abs(b-a)}" height="8" fill="#3d4a5e"/>`; }).join("");
+    if(spec.fleece) s+=`<path d="M${L0+8} ${bot-30} h12 M${R0-20} ${bot-30} h12" stroke="#f3eadb" stroke-width="3" stroke-linecap="round"/>`+lab(R0+18,bot-26,"加绒",7,"start");
+    s+=lab(W/2,148,spec.label||"",8);
   } else if(spec.k==="stand"){         /* 画架 / 画箱 / 画柜：v 指定结构 */
     const v=spec.v, cv=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" class="sv-paper"/><path d="M${x+6} ${y+h-10} Q${x+w*0.4} ${y+h*0.3} ${x+w*0.6} ${y+h*0.6} T${x+w-6} ${y+12}" fill="none" stroke="${HUES[5]}" stroke-width="2"/>`;
     const wheels=(xs,y)=>xs.map(x=>`<circle cx="${x}" cy="${y}" r="4" class="sv-ink"/>`).join("");

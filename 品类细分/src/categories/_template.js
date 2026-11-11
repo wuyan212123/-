@@ -101,6 +101,16 @@ grids:[
   rows:[ ["行 1",[["R3","谁在卖",{r:["refKey1"]}],["L2","稀少",{o:"机会名",k:["验证关键词"]}]]] ]}
 ],
 
+/* 6b. 可选：竞品品牌（有就填，没有可整段省略；页面会多出「④ 竞品品牌」分支和品牌 × 类型矩阵）
+   按定位分组；types 必须是 ① 中的类型名，ev 必须是 src 里的 key；check.js 会校验
+brands:[
+ {g:"分组名（如 大众品牌 / 白牌）", about:"这一组的共同点", items:[
+  {name:"品牌", tier:"定位", origin:"国家 / 集团", prod:"代表产品", price:"价格带", ch:"渠道", who:"人群", sell:"主打卖点",
+   types:["类型名"], pros:["优势"], cons:["短板"], url:"品牌或商品页", urlLabel:"链接文字", ev:["来源 key"], evl:"有来源", note:"可选备注"}
+ ]}
+],
+*/
+
 /* 7. 参考商品：[名称, 链接]。白地图格子和示例商品共用 */
 refs:{
  refKey1:["商品名","https://www.amazon.com/dp/XXXXXXXXXX"],

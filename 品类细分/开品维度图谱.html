@@ -9,7 +9,7 @@
 :root{
   --paper:#f6f7f4; --sheet:#ffffff; --ink:#1b1f2a; --ink-2:#4a5162; --ink-3:#7c8394; --rule:#d9dcd3;
   --prussian:#1f4f7a; --prussian-soft:#e3ecf4; --hit:#fff1a8;
-  --s1:#1f4f7a; --s2:#3f6b4f; --s3:#a8332f;
+  --s1:#1f4f7a; --s2:#3f6b4f; --s3:#a8332f; --s4:#6b4f8a;
   --w1:#2f6f9f; --w2:#b2582f; --w3:#3f7d5a; --w4:#8a5aa8; --w5:#a07a1e; --w6:#b23a5a; --w7:#4b6b8a; --w8:#5c6b2f; --w9:#7a5230; --w10:#2f7f86;
   --l1:#1f4f7a; --l2:#3f7d5a; --l3:#a0601e; --l0:#b23a3a;
   --hi:#b23a3a; --mid:#a0701e; --lo:#3f7d5a;
@@ -21,14 +21,14 @@
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
   --paper:#14171d; --sheet:#1c2028; --ink:#e8eaee; --ink-2:#b9bfcb; --ink-3:#8790a0; --rule:#323845;
   --prussian:#7fb0dc; --prussian-soft:#1f2b3a; --hit:#5a4d12;
-  --s1:#7fb0dc; --s2:#86bd98; --s3:#e47c78;
+  --s1:#7fb0dc; --s2:#86bd98; --s3:#e47c78; --s4:#b9a2db;
   --w1:#6fa8d6; --w2:#e08a62; --w3:#74b48e; --w4:#b98fd6; --w5:#d3ad52; --w6:#e07592; --w7:#8eaccb; --w8:#a3b366; --w9:#c99a6e; --w10:#6cc3c9;
   --l1:#3f78b0; --l2:#3f8a5e; --l3:#b0702e; --l0:#c04848;
   --hi:#e47c78; --mid:#d9a05c; --lo:#74b48e; color-scheme:dark }}
 :root[data-theme="dark"]{
   --paper:#14171d; --sheet:#1c2028; --ink:#e8eaee; --ink-2:#b9bfcb; --ink-3:#8790a0; --rule:#323845;
   --prussian:#7fb0dc; --prussian-soft:#1f2b3a; --hit:#5a4d12;
-  --s1:#7fb0dc; --s2:#86bd98; --s3:#e47c78;
+  --s1:#7fb0dc; --s2:#86bd98; --s3:#e47c78; --s4:#b9a2db;
   --w1:#6fa8d6; --w2:#e08a62; --w3:#74b48e; --w4:#b98fd6; --w5:#d3ad52; --w6:#e07592; --w7:#8eaccb; --w8:#a3b366; --w9:#c99a6e; --w10:#6cc3c9;
   --l1:#3f78b0; --l2:#3f8a5e; --l3:#b0702e; --l0:#c04848;
   --hi:#e47c78; --mid:#d9a05c; --lo:#74b48e; color-scheme:dark }
@@ -132,6 +132,8 @@ svg.links{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
 .node.val::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--hue);margin-right:7px;vertical-align:1px}
 .node.type,.node.opp{width:360px;padding:8px 12px;border-left:3px solid var(--hue)}
 .node.opp.st-X{opacity:.72;border-left-style:dashed}
+.node.brand{width:340px;padding:8px 12px;border-left:3px solid var(--hue)}
+.btier{font:500 11px var(--font-body);border:1px solid var(--rule);border-radius:4px;padding:1px 6px;color:var(--ink-2);white-space:nowrap}
 .node .tt{display:flex;align-items:center;gap:5px;font-weight:700;font-size:13.5px;flex-wrap:wrap}
 .node .tt b{font-weight:700;margin-right:auto}
 .node .combo{font:12px/1.5 var(--font-body);color:var(--prussian);margin-top:3px}
@@ -280,6 +282,21 @@ ol.reflinks li{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
 .pf-req{margin:0;color:var(--ink-2);font-size:12.5px}
 .pf-v{margin:6px 0 0;padding-top:8px;border-top:1px dashed var(--rule);color:var(--ink-2);font-size:12.5px}
 .prof ul{margin:2px 0 0;padding-left:16px;color:var(--ink-2)}
+/* 竞品品牌 */
+.bmatrix td.dotc,.bmatrix th.tc{text-align:center;white-space:nowrap}
+.bmatrix th.tc{font-size:11px;font-weight:600;max-width:90px;white-space:normal;line-height:1.35;vertical-align:bottom}
+.bmatrix .on{color:var(--s4);font-size:15px}
+.bmatrix td.bn{white-space:nowrap}
+.brands{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.bcard{background:var(--sheet);border:1px solid var(--rule);border-left:3px solid var(--s4);border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:5px;font-size:13px;min-width:0}
+.bcard h4{margin:0;font-family:var(--font-display);font-weight:600;font-size:16px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.bcard .bk{display:grid;grid-template-columns:62px 1fr;gap:2px 8px;color:var(--ink-2);font-size:12.5px}
+.bcard .bk dt{color:var(--ink-3)} .bcard .bk dd{margin:0}
+.bcard .bt{display:flex;flex-wrap:wrap;gap:4px}
+.bcard ul{margin:0;padding-left:16px;color:var(--ink-2);font-size:12.5px}
+.bcard .pc{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.bcard .pc b{font-size:11px;color:var(--ink-3)}
+.go-type,.go-brand{cursor:pointer;font:inherit}
 /* 方法与规则 */
 .method{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
 .mcard{background:var(--sheet);border:1px solid var(--rule);border-radius:12px;padding:16px 18px;min-width:0}
@@ -310,7 +327,7 @@ ol.reflinks li{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
   <nav class="snav" id="snav" aria-label="品类与章节">
     <div class="tabs" id="cat-tabs" role="group" aria-label="选择品类"></div>
     <div class="toc">
-      <a href="#s-map">思维导图</a><a href="#s-grid">白地图</a><a href="#s-prof">类型档案</a><a href="#s-types">类型对照</a><a href="#s-opps">机会评估</a><a href="#s-method">方法与规则</a>
+      <a href="#s-map">思维导图</a><a href="#s-grid">白地图</a><a href="#s-prof">类型档案</a><a href="#s-brands" id="toc-brands">竞品品牌</a><a href="#s-types">类型对照</a><a href="#s-opps">机会评估</a><a href="#s-method">方法与规则</a>
     </div>
   </nav>
 
@@ -365,6 +382,13 @@ ol.reflinks li{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
     <h2 id="h-prof">类型档案</h2>
     <p>每个在售类型一张卡，按结构分组：结构示意、示例商品、优缺点、新品必须具备和必须避免的点。点类型名会在思维导图里展开它。示意图是结构示意，不是实拍。</p>
     <div id="profiles"></div>
+  </section>
+
+  <section class="block" id="s-brands">
+    <h2 id="h-brands">竞品品牌</h2>
+    <p>这个品类里主要的竞品品牌：定位、代表产品、价格带、渠道、主打卖点，以及各自覆盖哪些在售类型。矩阵里的圆点 = 该品牌有这一类型的在售产品（按本轮调研样本，不代表品牌全部产品线）。点品牌名或类型名会在思维导图里定位。</p>
+    <div class="tbl"><table id="t-brands" class="bmatrix"></table></div>
+    <div id="brands" style="margin-top:16px"></div>
   </section>
 
   <section class="block" id="s-types">
@@ -4038,11 +4062,543 @@ src:{
 }
 });
 
+/* ======================================================================
+   针织牛仔裤（Knit Denim Jeans / Pull-on Jeans）
+   规范：品类细分/开品维度图谱规范.md；样板：categories/book.js
+   数据快照：2026-11（Amazon 美国站、品牌官网、百货 / 零售商页面、评测；国内为搜索页 + 经验判断）
+   ====================================================================== */
+CATS.push({
+id:"knitDenim",
+name:"针织牛仔裤",
+en:"Knit Denim Jeans",
+updated:"2026-11",
+series:"服装",
+pos:"看起来像牛仔、穿起来像打底 / 卫裤的针织裤：核心维度是面料组织（针织 vs 机织）、腰头结构和人群，和传统机织牛仔裤分开研究。",
+
+scope:{
+  def:"外观做成牛仔裤（靛蓝色、五袋或仿五袋、车线、洗水）、面料为针织（纬编、毛圈、双面针织或印花仿牛仔针织）的长裤；主流为套穿（pull-on）松紧腰，氨纶常见 1–13%。",
+  include:"女士针织 Jegging / 牛仔打底裤；针织直筒、阔腿 Pull-on 牛仔裤；针织牛仔慢跑裤（JoggJeans）；印花仿牛仔卫裤 / 打底；大码、孕妇、男士、老年易穿、儿童的针织牛仔裤；国内「针织牛仔裤」「仿牛仔卫裤」。",
+  exclude:"机织弹力牛仔裤（如 Uniqlo Ultra Stretch、Levi's Signature 65/33/2 拉链款），即使弹力高也不算；纯色 Ponte 针织裤（不做牛仔外观）；牛仔短裤、裙、背带裤。",
+  adjacent:"机织高弹牛仔（Weave Type = Woven）、Ponte / 罗马布打底裤、运动慢跑裤、孕妇机织牛仔（Motherhood 主力款为机织）。这些单独记录，只在白地图里作对照。",
+  kw:["knit denim jeans","knit jeggings","pull on jeans","denim joggers","jogg jeans","sweatpant jeans","jean leggings","针织牛仔裤","仿牛仔卫裤","针织牛仔打底裤"]
+},
+
+rules:[
+  "面料组织以商品页「Weave Type」或成分说明为准：写 Knit / knit denim / jersey / terry 的记针织；写 Woven 的记机织并移到邻近品类；只写「Denim」不写组织的记「未披露」，不按图片推断。",
+  "成分按页面原文登记（如 52% 棉 / 39% 涤 / 9% 氨纶）；同一 ASIN 不同颜色或尺码成分不一致时记「页面矛盾」，并分别列出。",
+  "弹力等级按氨纶（Spandex / Elastane）含量：≤ 2% 低弹、3–7% 中弹、≥ 8% 高弹；「四面弹」「360° stretch」只记厂家宣称，不当作测试结果。",
+  "腰头分开记：宽松紧腰（无扣无拉链）、抽绳腰、罗纹腰、塑形内衬腰、托腹腰、扣 + 拉链。有扣子和拉链的不算 pull-on，即使标题写 pull-on。",
+  "口袋分真 / 假逐个记（前袋、后袋），门襟分真门襟（拉链）、假门襟（车线）、无门襟；页面没写清楚的记「未披露」，评论里提到「假口袋」的标「评测」。",
+  "裤长按内长（inseam）登记，Regular / Petite / Tall 分开写英寸；大码按 W 码（12W–40W）或数字码登记，不和字母码混写。",
+  "体量依据只用公开信号：Amazon's Choice / Best Seller 徽章、「过去一周 / 一个月购买」标签、搜索结果款数、品牌页款数；BSR、评论数、工具流量分不当作销量（AGENTS.md 第 5 条）。",
+  "价格记单条价；多条装换算成单条价后再归价格带。促销价、划线价、会员价分开写，价格带按常规售价归档。",
+  "儿童款（12 岁及以下）必须有 CPSIA 儿童产品证书（CPC）、铅和邻苯检测、追踪标签；所有成衣需有纤维成分、原产地、护理标签（FTC），并核对加州 Prop 65。"
+],
+
+dims:[
+ {g:"产品本体", about:"面料怎么织、裤子怎么裁、穿起来怎么样、有什么硬门槛。", cats:[
+  {t:"A 面料与组织", c:[
+   {t:"面料组织", tag:"L1", def:"决定是否属于本品类：针织是线圈结构，弹、软、不易皱，但比机织更易起球、膝盖鼓包。", rule:"看 Weave Type 或成分说明，写 Woven 的移到邻近品类；只写 Denim 的记未披露。", kw:["knit denim","jersey denim","terry denim","weave type knit"],
+    c:[{t:"纬编针织牛仔",n:"靛蓝色纱针织，看起来最像牛仔；Amazon Essentials、Nine West、IUGA"},{t:"毛圈针织牛仔",n:"内侧毛圈，像卫裤；Diesel JoggJeans、rag & bone 类"},{t:"双面针织 / 罗马布",n:"厚实挺括，常用于塑形款"},{t:"印花仿牛仔针织",n:"在针织布上印出牛仔纹路和洗水；Walmart 平价款、rag & bone Miramar"},{t:"机织弹力牛仔（邻近）",n:"不纳入，仅作对照：Uniqlo Ultra Stretch、Motherhood、GL SUIT"},{t:"未披露"}]},
+   {t:"纤维成分", tag:"L2", def:"棉含量决定手感和透气，涤纶决定挺度和成本，氨纶决定弹力和回弹。", rule:"按页面原文写百分比；多色成分不一致记页面矛盾。",
+    c:[{t:"棉 / 涤 / 氨纶",n:"最常见：52/39/9（Amazon Essentials）、56/33/11（IUGA）"},{t:"棉 / 粘胶 / 涤 / 氨纶",n:"56/24/19/1（Nine West）"},{t:"高棉 + 氨纶",n:"≥ 90% 棉：97/3（Level 7）、92/6/2（Revtown）、88/10/2（Carter's）"},{t:"涤为主",n:"平价印花款、部分慢跑裤（Gumipy 标涤纶）"},{t:"未披露"}]},
+   {t:"弹力等级", tag:"L3", def:"氨纶含量划分的弹力档；越高越贴身，但膝盖鼓包风险越大。", rule:"≤ 2% 低弹、3–7% 中弹、≥ 8% 高弹；「四面弹」只记宣称。",
+    c:[{t:"低弹（≤ 2%）",n:"Revtown、Carter's、Woman Within"},{t:"中弹（3–7%）",n:"Spanx Jean-ish 5%、Level 7 3%"},{t:"高弹（≥ 8%）",n:"Amazon Essentials 9%、IUGA 11–13%"},{t:"四面弹（宣称）",n:"Siyaram Den-Knit 360° 弹力"}]},
+   {t:"克重与厚度", tag:"L3", def:"影响是否透、是否挺、能否四季穿。成衣页面很少写克重。", rule:"写了 gsm / oz 的记数字；只写 thick / thin 的记卖家宣称；没写的记未披露。",
+    c:[{t:"薄款",n:"春夏；透光差评集中"},{t:"常规"},{t:"厚款 / 双面"},{t:"加绒",n:"HUE 有 fleece-lined 款；童装冬款"},{t:"未披露",n:"绝大多数 Amazon 页面"}]},
+   {t:"牛仔外观实现方式", tag:"L1", def:"牛仔感从哪里来：色纱织出、匹染洗水，还是印上去。决定近看像不像牛仔、会不会褪色沾色。", rule:"页面写 print / printed 的记印花；写 indigo yarn / knit denim 的记色纱；其他记未披露。",
+    c:[{t:"靛蓝色纱针织",n:"近看有牛仔纹理"},{t:"匹染 + 洗水",n:"颜色均匀，纹理弱"},{t:"印花仿牛仔",n:"远看像、近看是印花；rag & bone Miramar、Walmart 平价打底"},{t:"未披露"}]},
+   {t:"洗水与做旧", tag:"L3", def:"颜色和做旧是 SKU 的主要变量。", c:[{t:"深蓝 / 原色"},{t:"中蓝"},{t:"浅蓝"},{t:"黑 / 灰"},{t:"猫须 / 磨白"},{t:"破洞"}]}
+  ]},
+  {t:"B 版型与结构", c:[
+   {t:"裤型", tag:"L1", def:"决定对标人群和穿搭。", c:[{t:"紧身 Jegging"},{t:"直筒"},{t:"阔腿 / Baggy"},{t:"喇叭 / 微喇"},{t:"束脚慢跑裤",n:"JoggJeans、denim joggers"}]},
+   {t:"腰头结构", tag:"L1", def:"Pull-on 的核心：怎么穿上、穿上后腰会不会卷、会不会往下掉。", rule:"有扣子 + 拉链的不算 pull-on；抽绳是否可用要看页面。", kw:["pull on","elastic waist","drawstring","tummy control"],
+    c:[{t:"宽松紧腰",n:"无扣无拉链；Amazon Essentials、Woman Within"},{t:"抽绳松紧腰",n:"Sidefeel、Carter's、Maurices"},{t:"罗纹腰",n:"Level 7 慢跑裤"},{t:"塑形内衬腰",n:"Spanx 内置塑形片、IUGA 5\" 腰头"},{t:"托腹腰",n:"孕妇款 Secret Fit Belly"},{t:"扣 + 拉链",n:"不算 pull-on：Revtown、Diesel"}]},
+   {t:"腰高", tag:"L2", c:[{t:"低腰"},{t:"中腰",n:"Amazon Essentials Mid Rise"},{t:"高腰"},{t:"超高腰（≥ 5\" 腰头）",n:"IUGA"}]},
+   {t:"门襟", tag:"L3", def:"假门襟让 pull-on 看起来像普通牛仔裤。", c:[{t:"真门襟（拉链）"},{t:"假门襟（车线）"},{t:"无门襟"}]},
+   {t:"口袋", tag:"L3", def:"真口袋是 Jegging 和打底裤的主要区别，也是差评集中点（太浅、假袋）。", rule:"前袋、后袋分开记真假；没写的记未披露。",
+    c:[{t:"五袋真口袋"},{t:"前假后真"},{t:"仅后袋（真）"},{t:"无后袋",n:"Woman Within Fineline"},{t:"未披露"}]},
+   {t:"裤长与内长", tag:"L2", def:"大码和高 / 矮个人群最在意。", rule:"按英寸写 inseam；Regular / Petite / Tall 分开写。",
+    c:[{t:"脚踝 / 九分（26–28\"）",n:"Spanx、Motherhood 28\""},{t:"常规（29–31\"）",n:"Knitology 31\"、Woman Within 30\""},{t:"多内长（Petite / Regular / Tall）",n:"Woman Within 28\" / 30\" / 34\"、Spanx"}]}
+  ]},
+  {t:"C 穿着性能", c:[
+   {t:"回弹与抗膝包", tag:"L3", def:"针织和高氨纶的通病：膝盖、臀部穿几小时后鼓包，洗后变松。", rule:"只记厂家宣称或评测，不推断。", kw:["no knee bagging","holds shape","recovery"],
+    c:[{t:"宣称抗膝包 / 高回弹"},{t:"评测提到鼓包或变松",n:"rag & bone 针织款评测：膝盖会失去回弹"},{t:"未披露"}]},
+   {t:"抗起球", tag:"L3", def:"针织 + 涤纶混纺在大腿内侧易起球；起球是牛仔差评的主要原因之一。", c:[{t:"宣称抗起球"},{t:"评测提到起球"},{t:"未披露"}]},
+   {t:"不透光", tag:"L3", def:"薄款 Jegging、浅色款蹲下透光是常见差评。", c:[{t:"宣称不透 / squat proof"},{t:"评测提到透"},{t:"未披露"}]},
+   {t:"塑形收腹", tag:"L3", c:[{t:"内置塑形片",n:"Spanx Jean-ish"},{t:"高腰宽腰头收腹",n:"IUGA、HUE"},{t:"无"}]}
+  ]},
+  {t:"D 合规与标签", c:[
+   {t:"标签与合规", tag:"L0", def:"进入美国站的硬门槛。", rule:"成衣：FTC 纤维成分、原产地、护理标签；儿童款：CPSIA（铅、邻苯）+ CPC + 追踪标签；加州 Prop 65 核对。",
+    c:[{t:"纤维成分 / 原产地标签（FTC）"},{t:"护理标签（Care Labeling Rule）"},{t:"儿童产品 CPSIA + CPC"},{t:"加州 Prop 65"}]}
+  ]}
+ ]},
+ {g:"销售形态", about:"怎么卖：单条还是多条、多少颜色、什么尺码体系。", cats:[
+  {t:"E 包装与尺码", c:[
+   {t:"件数", tag:"L2", def:"每单几条。", c:[{t:"单条"},{t:"2 条装"},{t:"3 条装"}]},
+   {t:"颜色数", tag:"L3", c:[{t:"单色 1–3 个 SKU"},{t:"多色（≥ 6 色）",n:"Amazon Essentials、IUGA"}]},
+   {t:"尺码体系", tag:"L2", def:"决定能覆盖哪些人群。", rule:"字母码、数字码、W 码、童装码、孕妇码分开写。",
+    c:[{t:"字母码 XS–3XL",n:"IUGA XS（0–2）至 3XL（24–26）"},{t:"数字码 0–24"},{t:"女士大码 12W–40W",n:"Woman Within"},{t:"童装 2T–16"},{t:"孕妇码"},{t:"男士腰围 × 内长",n:"Diesel 32W 32L"}]}
+  ]}
+ ]},
+ {g:"市场定位", about:"卖给谁、在什么场景穿、什么价、在哪里卖。", cats:[
+  {t:"F 人群与场景", c:[
+   {t:"目标人群", tag:"L1", c:[{t:"女士"},{t:"大码女士"},{t:"孕妇"},{t:"男士"},{t:"老年 / 易穿",n:"行动不便、关节问题、照护"},{t:"儿童"}]},
+   {t:"使用场景", tag:"L3", c:[{t:"日常通勤"},{t:"居家 / 长途旅行"},{t:"孕期"},{t:"运动休闲 / 街头"},{t:"学校 / 幼儿园",n:"如厕训练、自己穿脱"},{t:"照护 / 易穿"}]}
+  ]},
+  {t:"G 品牌、价格与渠道", c:[
+   {t:"品牌层级", tag:"L2", c:[{t:"设计师 / 奢侈",n:"Diesel、rag & bone"},{t:"DTC 舒适牛仔",n:"Revtown、Mugsy"},{t:"塑形品牌",n:"Spanx、HUE"},{t:"大众 / 百货品牌",n:"Gloria Vanderbilt、Nine West、Woman Within"},{t:"童装品牌",n:"Carter's、Gap、Old Navy"},{t:"Amazon 自有",n:"Amazon Essentials"},{t:"白牌",n:"IUGA、Sidefeel、Level 7 等"}]},
+   {t:"价格带", tag:"L2", rule:"按单条常规售价。", c:[{t:"< $25"},{t:"$25–50"},{t:"$50–110"},{t:"$110+"}]},
+   {t:"销售渠道", tag:"L3", c:[{t:"Amazon"},{t:"百货（Kohl's、Macy's、Bloomingdale's）"},{t:"品牌官网 DTC"},{t:"Walmart / Target"},{t:"国内淘宝 / 京东 / 抖音"}]}
+  ]}
+ ]}
+],
+
+types:[
+ {g:"女士紧身 Jegging", about:"紧身裤型 + 套穿松紧腰，是 Amazon 上针织牛仔裤体量最大的一组。", items:[
+  {t:"平价针织 Jegging", vol:"主流", volWhy:"Amazon Essentials 针织 Jegging 带 Amazon's Choice，页面显示「过去一周 200+ 购买」；Nine West Pull on Jegging 页面显示「过去一周 500+ 购买」（2026-11 搜索快照）。",
+   combo:["纬编针织牛仔","棉 / 涤 / 氨纶","紧身 Jegging","宽松紧腰","中腰","$15–30"],
+   rep:"Amazon Essentials 女士中腰针织 Jegging（52% 棉 / 39% 涤 / 9% 氨纶，多色）、Nine West Pull on Jegging（56% 棉 / 24% 粘胶 / 19% 涤 / 1% 氨纶）、白牌水洗 Jegging",
+   price:"US $15–30", who:"女士 18–55 岁，日常通勤和居家", comp:"hi", compT:"高：Amazon 自有品牌 + 百货品牌授权 + 大量白牌，价格透明",
+   pain:"大腿内侧起球；膝盖鼓包、洗后变松；浅色款透；口袋浅或是假口袋", ev:["aeListing","nwListing","pilling","seeThrough"], evl:"有来源",
+   fig:{k:"pants",v:"skinny",waist:"elastic",fly:"faux",pk:"faux",wash:"dark",label:"平价针织 Jegging"},
+   ex:[["aeJeg","Amazon's Choice；过去一周 200+ 购买；52/39/9"],["nineWest","过去一周 500+ 购买；56/24/19/1"],["genericJeg","白牌水洗 Pull-on Jegging"]],
+   map:[["面料组织","纬编针织牛仔","m"],["纤维成分","棉 / 涤 / 氨纶","m"],["弹力等级","高弹（≥ 8%）","m"],["裤型","紧身 Jegging"],["腰头结构","宽松紧腰","m"],["腰高","中腰","m"],["门襟","假门襟（车线）","s"],["口袋","前假后真","u"],["克重与厚度","未披露","u"],["颜色数","多色（≥ 6 色）"],["价格带","< $25"],["品牌层级","Amazon 自有"]],
+   pros:["价格低、颜色全","Amazon 自有品牌带流量和信任"], cons:["起球、膝包","口袋和厚度不透明"],
+   up:["抗起球纱线 + 高回弹氨纶包覆纱","前后都是真口袋","标明克重和不透测试"], verdict:["谨慎","需求大但价格被 Amazon Essentials 压在 $20 左右，只有解决起球 / 膝包才有空间（见 ③）。"],
+   must:["真后袋","标明成分和 Weave Type = Knit","XS–3XL 全码"], plus:["抗起球","不透光实拍","Petite / Tall"], avoid:["标 knit 实为机织","尺码表与实物不符"]},
+  {t:"高腰收腹针织 Jegging", vol:"主流", volWhy:"IUGA 多个 ASIN 在售，其中一款标 Overall Pick，页面显示几百到 1K+ 近期购买（搜索快照，口径不一）。",
+   combo:["纬编针织牛仔","高弹（≥ 8%）","紧身 Jegging","超高腰（≥ 5\" 腰头）","塑形内衬腰","$25–40"],
+   rep:"IUGA 高腰 Pull-on Jegging（5\" 腰头收腹、假门襟、两个前袋 + 两个后袋，成分 56/33/11、54/35/11、40/47/13 各页不同）、IUGA 大码款 $39.99",
+   price:"US $25–40", who:"25–55 岁女士，在意收腹和不往下掉", comp:"hi", compT:"高：IUGA 领先，大量白牌跟卖同款腰头",
+   pain:"腰头卷边；成分各页不一致；氨纶高导致膝包", ev:["iugaListing","knee"], evl:"有来源",
+   fig:{k:"pants",v:"skinny",waist:"elastic",fly:"faux",pk:"real",wash:"mid",label:"高腰收腹 Jegging"},
+   ex:[["iuga1","IUGA 高腰 Pull-on Jegging"],["iuga2","IUGA 同系列不同色 / 版型"],["iuga3","IUGA 收腹款"],["iugaPlus","IUGA 大码款，快照 $39.99"]],
+   map:[["面料组织","纬编针织牛仔","s"],["纤维成分","棉 / 涤 / 氨纶","s"],["弹力等级","高弹（≥ 8%）","s"],["腰头结构","塑形内衬腰","s"],["腰高","超高腰（≥ 5\" 腰头）","s"],["门襟","假门襟（车线）","s"],["口袋","五袋真口袋","s"],["塑形收腹","高腰宽腰头收腹","s"],["尺码体系","字母码 XS–3XL","s"],["品牌层级","白牌"]],
+   pros:["收腹 + 真口袋","大码覆盖"], cons:["成分页面矛盾","膝包、卷腰"],
+   up:["防卷腰头（硅胶条 / 内衬加宽）","高回弹面料"], verdict:["谨慎","IUGA 已占位，同款跟卖无差异；要做必须在回弹和腰头上有可展示的差异。"],
+   must:["5\" 以上腰头","真口袋","全码"], plus:["防卷边","不透测试"], avoid:["成分与标签不一致"]},
+  {t:"品牌塑形牛仔打底", vol:"细分", volWhy:"Spanx Jean-ish 官网常规 $98、促销 $49，Regular / Petite / Tall 三个内长；HUE 在 Walmart 有多款 $17–40，含加绒款。",
+   combo:["双面针织 / 罗马布","中弹（3–7%）","紧身 Jegging","塑形内衬腰","内置塑形片","$40–100"],
+   rep:"Spanx Jean-ish 脚踝打底（69% 棉 / 26% 涤 / 5% 氨纶，内置塑形片，Reg / Petite / Tall）、HUE 牛仔打底（含加绒款）",
+   price:"US $20–100（HUE $17–40，Spanx $49–98）", who:"30–60 岁女士，要塑形、要像牛仔", comp:"mid", compT:"中：品牌心智强，白牌难打",
+   pain:"价格高；促销后才买；白色款透", ev:["spanxPage","hueWalmart"], evl:"有来源",
+   fig:{k:"pants",v:"skinny",waist:"elastic",fly:"faux",pk:"faux",wash:"dark",label:"塑形牛仔打底"},
+   ex:[["spanx","官网 $98，Twilight Rinse 促销 $49；69/26/5"],["spanxWalmart","Walmart 第三方在售"],["hue","HUE 品牌页，$17–40，含 fleece-lined"]],
+   map:[["面料组织","双面针织 / 罗马布","m"],["纤维成分","棉 / 涤 / 氨纶","m"],["弹力等级","中弹（3–7%）","m"],["塑形收腹","内置塑形片","m"],["裤长与内长","多内长（Petite / Regular / Tall）","m"],["克重与厚度","加绒","m"],["品牌层级","塑形品牌"],["价格带","$50–110"]],
+   pros:["塑形效果和品牌信任","多内长"], cons:["贵","白牌没有品牌背书很难卖到这个价"],
+   up:["平价塑形版（$35–45）"], verdict:["谨慎","品牌主导，白牌只能做平价替代，差异要靠塑形可见。"],
+   must:["塑形片","多内长"], plus:["加绒冬款"], avoid:["宣称医疗级塑形"]}
+ ]},
+ {g:"女士宽松 Pull-on", about:"直筒、阔腿、慢跑裤：走「看起来是牛仔裤，穿起来是运动裤」的路线。", items:[
+  {t:"针织直筒 / 阔腿 Pull-on", vol:"细分", volWhy:"Gloria Vanderbilt Knitology Amanda 在 Kohl's 有常规和 Petite 两个系列；Maurices 有深色针织阔腿 Pull-on；Amazon 上标 Knit 的直筒 / 阔腿款少（2026-11 搜索）。",
+   combo:["纬编针织牛仔","直筒","阔腿 / Baggy","宽松紧腰","五袋真口袋","$35–60"],
+   rep:"Gloria Vanderbilt Knitology Amanda Pull-on（仿针织牛仔、14\" 裤口、31\" / 29\" 内长、经典五袋）、Maurices 深色针织拼缝阔腿 Pull-on（高腰、抽绳）",
+   price:"US $35–60", who:"35–65 岁女士", comp:"lo", compT:"低：主要是百货品牌，Amazon 上真针织直筒少",
+   pain:"直筒针织会垂、显得不挺；裤口起毛", ev:["gvKohls","mauricesPage","ragReview"], evl:"有来源",
+   fig:{k:"pants",v:"straight",waist:"elastic",fly:"faux",pk:"real",wash:"dark",label:"针织直筒 Pull-on"},
+   ex:[["gvKnit","Kohl's：仿针织牛仔，31\" / 29\" 内长，五袋"],["maurices","Maurices：深色针织拼缝阔腿 Pull-on"]],
+   map:[["面料组织","纬编针织牛仔","m"],["裤型","直筒"],["腰头结构","宽松紧腰","m"],["口袋","五袋真口袋","m"],["裤长与内长","常规（29–31\"）","m"],["品牌层级","大众 / 百货品牌"],["销售渠道","百货（Kohl's、Macy's、Bloomingdale's）"]],
+   pros:["好穿、不勒","像普通牛仔裤"], cons:["针织直筒会塌","Amazon 上可选少"],
+   up:["双面针织做挺度","多内长","大码"], verdict:["可做","Amazon 上供给少、百货已验证需求；见 ③ 大码多内长机会。"],
+   must:["真口袋","挺度够（双面或高克重）"], plus:["多内长","抽绳"], avoid:["薄面料直筒（会贴腿显形）"]},
+  {t:"女士牛仔慢跑裤", vol:"主流", volWhy:"Amazon「women's denim joggers」搜索结果数千条以上，Sidefeel、Gumipy、Uillui、LONGYIDA 等白牌大量在售；多数为机织或未披露组织。",
+   combo:["机织弹力牛仔（邻近）","束脚慢跑裤","抽绳松紧腰","< $30"],
+   rep:"Sidefeel 中腰破洞慢跑裤（70% 棉 / 28.5% 涤 / 1.5% 氨纶、抽绳、五袋）、Gumipy 九分宽松款（涤纶）、Uillui 大码束脚",
+   price:"US $20–35", who:"20–45 岁女士，休闲", comp:"hi", compT:"高：白牌饱和，同款多",
+   pain:"多数不是针织（标 Denim 或 Woven）；尺码偏差；颜色和图片不符", ev:["womenJogSearch"], evl:"部分来源",
+   fig:{k:"pants",v:"jogger",waist:"draw",pk:"real",wash:"light",label:"女士牛仔慢跑裤"},
+   ex:[["sidefeel","Sidefeel：70/28.5/1.5，抽绳，五袋"],["gumipy","Gumipy：涤纶，宽松九分"],["womenJog3","白牌束脚牛仔慢跑裤"]],
+   map:[["面料组织","未披露","u"],["裤型","束脚慢跑裤"],["腰头结构","抽绳松紧腰","s"],["弹力等级","低弹（≤ 2%）","s"],["品牌层级","白牌"],["价格带","< $25"]],
+   pros:["好穿、休闲"], cons:["白牌饱和","真针织的少，品类边界模糊"],
+   up:["—"], verdict:["不建议","白牌红海，且多数不是针织；已列入 ③ 已排除。"],
+   must:["—"], plus:["—"], avoid:["标针织但实为机织"]},
+  {t:"印花仿牛仔卫裤 / 打底", vol:"细分", volWhy:"高端有 rag & bone Miramar 印花毛圈「牛仔」慢跑裤（Bloomingdale's 约 $155–230）；平价有 Walmart 印花仿牛仔打底裤；Amazon 搜索「fake jeans leggings」有大量白牌。",
+   combo:["印花仿牛仔针织","毛圈针织牛仔","束脚慢跑裤","紧身 Jegging","抽绳松紧腰"],
+   rep:"rag & bone Miramar 印花毛圈牛仔慢跑裤（男女款）、Walmart 平价印花仿牛仔打底裤",
+   price:"平价 US $10–20；设计师 US $155–230", who:"居家、旅行；高端为时尚人群", comp:"mid", compT:"两极：设计师款少，平价白牌多",
+   pain:"近看是印花；针织面料塌、易起球、膝盖回弹差（评测）", ev:["ragReview","ragPage"], evl:"有来源",
+   fig:{k:"pants",v:"jogger",waist:"draw",pk:"faux",wash:"print",label:"印花仿牛仔卫裤"},
+   ex:[["ragbone","Bloomingdale's：rag & bone Miramar 印花棉质慢跑裤"],["walmartPrint","Walmart：印花仿牛仔打底裤"]],
+   map:[["面料组织","印花仿牛仔针织","m"],["牛仔外观实现方式","印花仿牛仔","m"],["裤型","束脚慢跑裤"],["回弹与抗膝包","评测提到鼓包或变松","t"],["抗起球","评测提到起球","t"],["品牌层级","设计师 / 奢侈"]],
+   pros:["最舒服（卫裤手感）","设计师款有话题"], cons:["近看不像牛仔","平价款质量差"],
+   up:["色纱织出纹理代替印花"], verdict:["谨慎","高端靠品牌、平价靠低价，中间价位缺少「近看也像牛仔」的产品。"],
+   must:["印花清晰、不褪色"], plus:["毛圈内里"], avoid:["透、起球"]}
+ ]},
+ {g:"女士特定人群", about:"大码、孕妇：尺码和腰头是刚需，愿意为合身付钱。", items:[
+  {t:"大码 Pull-on 牛仔", vol:"细分", volWhy:"Woman Within Smooth Waist Pull-on 直筒款 12W–40W、Regular / Petite / Tall 三个内长；Amazon 大码 pull-on 牛仔搜索结果 7,000+ 条。",
+   combo:["低弹（≤ 2%）","直筒","宽松紧腰","女士大码 12W–40W","多内长（Petite / Regular / Tall）","$30–50"],
+   rep:"Woman Within Smooth Waist Pull-on Flex Fit 直筒（64% 棉 / 35% 涤 / 1% 氨纶，30\" / 28\" / 34\" 内长）、Woman Within Fineline 高腰 Pull-on（无后袋）、Gloria Vanderbilt Shape Effect 大码",
+   price:"US $30–50", who:"大码女士 40–70 岁", comp:"mid", compT:"中：Woman Within、Lane Bryant 等专门店为主，Amazon 白牌少有多内长",
+   pain:"偏大要拍小一码；无后袋；面料组织多未写针织", ev:["wwListing","plusSearch"], evl:"有来源",
+   fig:{k:"pants",v:"straight",waist:"elastic",fly:"faux",pk:"real",wash:"mid",label:"大码 Pull-on"},
+   ex:[["wwStraight","12W–40W，Reg 30\" / Petite 28\" / Tall 34\"；64/35/1"],["wwFineline","高腰，无后袋，65/34/1"]],
+   map:[["尺码体系","女士大码 12W–40W","m"],["裤长与内长","多内长（Petite / Regular / Tall）","m"],["腰头结构","宽松紧腰","m"],["弹力等级","低弹（≤ 2%）","m"],["面料组织","未披露","u"],["口袋","无后袋","m"],["目标人群","大码女士"]],
+   pros:["全码 + 多内长","腰头不勒"], cons:["偏大","款式老"],
+   up:["针织 + 多内长 + 真口袋","更年轻的直筒 / 阔腿版型"], verdict:["可做","见 ③ 大码多内长针织直筒。"],
+   must:["W 码","至少两个内长","真口袋"], plus:["抗膝包"], avoid:["只放大字母码不改版"]},
+  {t:"孕妇牛仔 Jegging", vol:"细分", volWhy:"Motherhood Maternity 多个 Secret Fit Belly 牛仔 Jegging ASIN 在售（含大码），但商品页 Weave Type 写 Woven；Amazon Essentials 有孕妇针织 Jegging。",
+   combo:["机织弹力牛仔（邻近）","紧身 Jegging","托腹腰","孕妇码","脚踝 / 九分（26–28\"）"],
+   rep:"Motherhood Maternity Secret Fit Belly 脚踝牛仔 Jegging（28\" 内长、真后袋、无缝托腹，Weave Type = Woven）、Amazon Essentials 孕妇针织 Jegging",
+   price:"US $25–45", who:"孕期女士", comp:"mid", compT:"中：Motherhood 主导但是机织；真针织款少",
+   pain:"托腹片下滑；成分各页不一致（页面矛盾）；机织款孕后期不够弹", ev:["mhmListing"], evl:"有来源",
+   fig:{k:"pants",v:"skinny",waist:"panel",wash:"mid",label:"孕妇托腹 Jegging"},
+   ex:[["mhm1","Secret Fit Belly，真后袋，Weave Type = Woven"],["mhm2","灰洗色款"],["mhm3","大码，28\" 内长，2% 氨纶"],["aeMatSearch","Amazon Essentials 孕妇针织 Jegging（搜索页）"]],
+   map:[["腰头结构","托腹腰","m"],["面料组织","机织弹力牛仔（邻近）","m"],["纤维成分","未披露","u"],["裤长与内长","脚踝 / 九分（26–28\"）","m"],["尺码体系","孕妇码"],["目标人群","孕妇"],["使用场景","孕期"]],
+   pros:["品牌信任","托腹设计成熟"], cons:["主力款是机织","成分页面矛盾"],
+   up:["真针织 + 托腹，孕早 / 中 / 后期都能穿"], verdict:["可做","机织占主导，针织孕妇款是规格缺口（见 ③）。"],
+   must:["托腹片","真后袋","孕妇码"], plus:["产后可穿","加绒"], avoid:["托腹片下滑"]}
+ ]},
+ {g:"男士", about:"男款更看重像不像真牛仔、有没有拉链和真口袋。", items:[
+  {t:"男士舒适针织牛仔（五袋款）", vol:"细分", volWhy:"Revtown 官网 Sharp 常规 $109、促销价更低（92% 棉 / 6% 涤 / 2% 氨纶）；评测站多篇把 Revtown、Mugsy 列为「最舒服的牛仔裤」；ETHANOL 弹力针织牛仔在 Amazon 在售。",
+   combo:["纬编针织牛仔","高棉 + 氨纶","直筒","扣 + 拉链","五袋真口袋","$75–110"],
+   rep:"Revtown Sharp / Lightweight（92/6/2，扣 + 拉链，五袋）、Mugsy（约 $112，68% 棉，主打舒适；组织未确认）、ETHANOL Stretch Jersey Jeans",
+   price:"US $75–112", who:"25–50 岁男士，要舒服又像正经牛仔", comp:"mid", compT:"中：DTC 品牌少数几家，Amazon 上少",
+   pain:"近看不完全像牛仔（评测）；Mugsy 棉含量低、耐久性存疑", ev:["revtownTE","revReview","mugsyReview"], evl:"有来源",
+   fig:{k:"pants",v:"straight",waist:"button",fly:"zip",pk:"real",wash:"dark",label:"男士针织牛仔（五袋）"},
+   ex:[["revSharp","Revtown Sharp Faded Indigo，常规 $109"],["revLight","Revtown Sharp Lightweight"],["mugsy","Mugsy 评测：最舒服的弹力牛仔"],["ethanol","ETHANOL 弹力针织牛仔（搜索页）"]],
+   map:[["面料组织","纬编针织牛仔","m"],["纤维成分","高棉 + 氨纶","m"],["弹力等级","低弹（≤ 2%）","m"],["腰头结构","扣 + 拉链","m"],["门襟","真门襟（拉链）","m"],["口袋","五袋真口袋","m"],["品牌层级","DTC 舒适牛仔"],["价格带","$50–110"]],
+   pros:["像正经牛仔裤","舒适口碑"], cons:["贵","Amazon 渠道少"],
+   up:["$40–60 平价版"], verdict:["谨慎","需求被 DTC 验证，但不是 pull-on，白牌做五袋拉链款需要版型能力。"],
+   must:["真门襟、真口袋","高棉"], plus:["抗膝包"], avoid:["假门襟（男款不接受）"]},
+  {t:"男士针织牛仔慢跑裤", vol:"细分", volWhy:"Diesel Krooley JoggJeans（90% 棉 / 8% 涤 / 2% 氨纶）在 Amazon 在售，印度官网标价超过 ₹20,000；Level 7 真针织慢跑裤（Weave Type = Knit，97/3，罗纹腰和裤脚）；其他多为机织。",
+   combo:["毛圈针织牛仔","束脚慢跑裤","罗纹腰","抽绳松紧腰","$40–60 空档"],
+   rep:"Diesel Krooley JoggJeans、Level 7 Premium Knit Denim Jogger（97/3，罗纹腰、罗纹脚口、微落裆，S–2XL）；GL SUIT、Tommy Jeans 慢跑裤为机织（对照）",
+   price:"白牌 US $30–45；Diesel US $150+", who:"20–40 岁男士，街头、通勤休闲", comp:"mid", compT:"中：高端 Diesel 和白牌之间缺中价位真针织款",
+   pain:"多数「牛仔慢跑裤」不是针织；尺码少（S–2XL）", ev:["mensJogSearch","dieselIndia"], evl:"有来源",
+   fig:{k:"pants",v:"jogger",waist:"draw",pk:"real",wash:"dark",rib:true,label:"男士针织牛仔慢跑裤"},
+   ex:[["diesel","Diesel Krooley JoggJeans，90/8/2"],["dieselIn","Diesel 印度官网，₹20,000+"],["level7","Level 7：Weave Type = Knit，97/3，罗纹腰脚"],["glsuit","GL SUIT 慢跑裤（机织，对照）"],["tommy","Tommy Jeans 慢跑裤（78/22，对照）"]],
+   map:[["面料组织","毛圈针织牛仔","m"],["纤维成分","高棉 + 氨纶","m"],["裤型","束脚慢跑裤"],["腰头结构","罗纹腰","m"],["品牌层级","设计师 / 奢侈"],["价格带","$110+"],["尺码体系","男士腰围 × 内长","m"]],
+   pros:["卫裤舒适 + 牛仔外观","Diesel 做出了品类认知"], cons:["中价位空","白牌多数不是针织"],
+   up:["$40–60 真针织款，S–3XL"], verdict:["可做","中价位真针织是空档（见 ③ 男士平价针织牛仔慢跑裤）。"],
+   must:["Weave Type = Knit","真口袋","罗纹或抽绳腰"], plus:["拉链后袋","大码"], avoid:["机织冒充针织"]},
+  {t:"男士易穿松紧牛仔", vol:"小众", volWhy:"voeeron 全松紧无扣款（主打老年）、白牌 98/2 针织组织松紧直筒（Weave Type = Knit）在 Amazon 在售；Pembrook 松紧款有扣子；Silverts 易穿裤为斜纹布。",
+   combo:["纬编针织牛仔","直筒","宽松紧腰","无门襟","老年 / 易穿"],
+   rep:"voeeron 全松紧无扣牛仔、白牌 98% 棉 / 2% 涤针织松紧直筒、Pembrook 松紧腰牛仔（有扣）、Silverts 易穿裤（斜纹，对照）",
+   price:"US $25–45", who:"老年男士、照护者代买", comp:"lo", compT:"低：卖家少，款式少",
+   pain:"款式老；尺码不准；松紧腰太紧或太松", ev:["seniorSearch"], evl:"部分来源",
+   fig:{k:"pants",v:"straight",waist:"elastic",pk:"real",wash:"mid",label:"男士易穿松紧牛仔"},
+   ex:[["voeeron","voeeron：全松紧，无扣，主打老年"],["knitWeave","白牌：98/2，Weave Type = Knit"],["pembrook","Pembrook：松紧腰但有扣（对照）"]],
+   map:[["腰头结构","宽松紧腰","m"],["门襟","无门襟","m"],["面料组织","纬编针织牛仔","m"],["目标人群","老年 / 易穿"],["使用场景","照护 / 易穿"]],
+   pros:["好穿脱"], cons:["款式老","搜索量小"],
+   up:["侧开口 / 魔术贴","两侧真口袋"], verdict:["谨慎","需求真实但规模小（见 ③ C 级）。"],
+   must:["全松紧无扣"], plus:["侧开口"], avoid:["宣称医疗功效"]}
+ ]},
+ {g:"儿童", about:"童装品牌把针织牛仔做成 Pull-on 常规款：如厕训练、自己穿脱、好动。", items:[
+  {t:"儿童针织牛仔 Pull-on", vol:"主流", volWhy:"Carter's 有 Kid Pull-On Knit Denim Pants（88% 棉 / 10% 涤 / 2% 氨纶）；Gap Kids 有针织 Baggy Pull-on；Old Navy Pull-on Jeans 页面 62 款；Children's Place、Levi's、Cat & Jack 都有 Pull-on 牛仔（后两者为机织）。",
+   combo:["纬编针织牛仔","低弹（≤ 2%）","抽绳松紧腰","假门襟（车线）","童装 2T–16","$14–30"],
+   rep:"Carter's Kid Pull-On Knit Denim（88/10/2，包覆松紧 + 抽绳）、Gap Kids 针织 Baggy Pull-on（松紧腰、假门襟）、Old Navy Pull-on Jeans（62 款）、The Children's Place 针织牛仔 Jegging（约 $19.88）、Levi's 女童 Pull-on Jegging（促销 $22.80）、Cat & Jack（机织，$14）",
+   price:"US $14–30", who:"2–12 岁儿童的父母", comp:"hi", compT:"高：童装大品牌全覆盖，价格低",
+   pain:"膝盖磨破；加绒款少；尺码按年龄不准", ev:["cartersPage","kidsSearch","cpsc"], evl:"有来源",
+   fig:{k:"pants",v:"straight",waist:"draw",fly:"faux",pk:"real",wash:"mid",kid:true,label:"儿童针织牛仔 Pull-on"},
+   ex:[["carters","Carter's：88/10/2，包覆松紧 + 抽绳"],["gapKids","Gap Kids：针织 Baggy Pull-on，假门襟"],["oldNavy","Old Navy：Pull-on Jeans 62 款"],["tcp","The Children's Place 幼童 Pull-on 直筒（Walmart）"],["levisKids","Levi's 女童 Pull-on Jegging，促销 $22.80"],["catJack","Cat & Jack Pull-on（机织，$14，对照）"]],
+   map:[["面料组织","纬编针织牛仔","m"],["纤维成分","高棉 + 氨纶","m"],["腰头结构","抽绳松紧腰","m"],["门襟","假门襟（车线）","m"],["尺码体系","童装 2T–16"],["目标人群","儿童"],["使用场景","学校 / 幼儿园"],["标签与合规","儿童产品 CPSIA + CPC"],["品牌层级","童装品牌"]],
+   pros:["好穿脱","家长认可针织"], cons:["品牌价格低、竞争强","CPSIA 门槛"],
+   up:["加绒冬款","膝盖加固"], verdict:["谨慎","大品牌覆盖充分，白牌只能做差异款（加绒、加固膝盖）。"],
+   must:["CPSIA + CPC","追踪标签"], plus:["加绒","膝盖加固"], avoid:["童裤抽绳过长或可拉出"]}
+ ]},
+ {g:"国内参考", about:"国内电商的针织牛仔裤、仿牛仔卫裤：供应链和款式参考。", items:[
+  {t:"国内针织牛仔 / 仿牛仔卫裤", vol:"主流", volWhy:"京东、淘宝搜索「针织牛仔裤」「仿牛仔卫裤」有大量在售；童装品牌巴拉巴拉（森马集团）、MINI PEACE（太平鸟）有牛仔类目（未逐款核实针织）。依据为搜索页和经验判断。",
+   combo:["纬编针织牛仔","印花仿牛仔针织","束脚慢跑裤","抽绳松紧腰","加绒"],
+   rep:"京东 / 淘宝「针织牛仔裤」「仿牛仔卫裤」「加绒针织牛仔裤」白牌；巴拉巴拉、MINI PEACE 童装牛仔",
+   price:"¥40–150", who:"国内大众；童装家长", comp:"hi", compT:"高：白牌多，价格低",
+   pain:"未逐款核实（部分来源）", ev:["cnpp"], evl:"部分来源",
+   fig:{k:"pants",v:"jogger",waist:"draw",pk:"real",wash:"mid",fleece:true,label:"国内仿牛仔卫裤（加绒）"},
+   ex:[["jdKnit","京东：针织牛仔裤（搜索页）"],["jdWeiku","京东：仿牛仔卫裤（搜索页）"],["jdKids","京东：儿童针织牛仔裤（搜索页）"]],
+   map:[["面料组织","纬编针织牛仔","j"],["克重与厚度","加绒","j"],["销售渠道","国内淘宝 / 京东 / 抖音"]],
+   pros:["供应链成熟","加绒款多"], cons:["未逐款核实"],
+   up:["加绒款出海（见 ③ 线索）"], verdict:["谨慎","作供应链参考，款式和面料需拿样核实。"],
+   must:["拿样核实组织和成分"], plus:["—"], avoid:["直接照搬国内尺码"]}
+ ]}
+],
+
+opps:[
+ {t:"抗起球高回弹针织 Jegging", gap:"痛点缺口", score:{d:4,c:2,x:3,s:3,p:3,e:4},
+  why:"平价针织 Jegging 需求最大（Amazon Essentials 过去一周 200+、Nine West 500+），差评集中在起球、膝包、透和假口袋；目前头部商品页没有一个写明抗起球或回弹测试。",
+  spec:["纬编针织牛仔","抗起球纱线（紧密纺 / 棉包氨纶）","高弹（≥ 8%）+ 高回弹","不透光","五袋真口袋","XS–3XL + Petite / Tall"],
+  diff:"主图和 A+ 展示：起球测试（Martindale 次数）、蹲起不透、洗 10 次后膝盖对比；前后都是真口袋。", price:"US $28–35（比 Amazon Essentials 高 $8–12）",
+  risk:"Amazon Essentials 价格压制；起球改善靠纱线成本，难以在照片上证明", verify:"关键词 knit jeggings / pull on jeggings；看 Top 20 差评中起球、膝包、透光占比；拿 3 个头部样品做起球和回弹对比",
+  from:"平价针织 Jegging、高腰收腹针织 Jegging", ev:["aeListing","nwListing","pilling","knee","seeThrough"], evl:"有来源"},
+ {t:"孕妇真针织牛仔 Jegging", gap:"规格缺口", score:{d:3,c:4,x:3,s:4,p:3,e:3},
+  why:"孕妇牛仔 Jegging 的主力 Motherhood Maternity 商品页 Weave Type 为 Woven，成分各页不一致；真针织孕妇款只有 Amazon Essentials 等少数。针织更适合孕后期腹部变化。",
+  spec:["纬编针织牛仔","托腹腰（无缝高弹）","真后袋 + 假门襟","孕妇码 XS–2X","脚踝 / 九分（26–28\"）"],
+  diff:"孕早、中、晚三阶段穿着对比图；托腹片防下滑；产后也能穿。", price:"US $30–40",
+  risk:"孕妇人群窄、退货率高；需要孕妇模特", verify:"关键词 maternity jeggings、over the belly jeans；统计前 30 名中 Weave Type 为 Knit 的数量和评分",
+  from:"孕妇牛仔 Jegging", ev:["mhmListing"], evl:"有来源"},
+ {t:"男士平价针织牛仔慢跑裤", gap:"价格带缺口", score:{d:3,c:3,x:4,s:4,p:4,e:3},
+  why:"男士针织牛仔慢跑裤两头有货：Diesel JoggJeans 在 $150 以上，白牌 $30–45 多数是机织；$40–60 的真针织（Weave Type = Knit）款很少，Level 7 是少数之一且只有 S–2XL。",
+  spec:["毛圈或纬编针织牛仔（靛蓝色纱）","高棉 + 3–5% 氨纶","束脚慢跑裤","罗纹或抽绳松紧腰","五袋真口袋 + 拉链后袋","S–3XL"],
+  diff:"近看有牛仔纹理（不是印花）；Weave Type = Knit 写在标题和五点；内侧毛圈手感图。", price:"US $45–55",
+  risk:"男性服装退货（尺码）；靛蓝针织掉色沾色", verify:"关键词 denim joggers men、knit jogger jeans；按 $40–60 价格筛选，统计 Weave Type = Knit 的商品数和「过去一个月购买」标签",
+  from:"男士针织牛仔慢跑裤", ev:["mensJogSearch","dieselIndia"], evl:"有来源"},
+ {t:"大码多内长针织直筒 Pull-on", gap:"规格缺口", score:{d:4,c:3,x:3,s:4,p:3,e:2},
+  why:"大码 pull-on 搜索结果 7,000+；Woman Within 用 W 码 + 三个内长做出了口碑，但面料未写针织、款式偏老；Gloria Vanderbilt Knitology 证明针织直筒有百货需求，但只有常规和短两个内长、主要在 Kohl's。",
+  spec:["纬编或双面针织牛仔（挺度够）","直筒 / 微阔腿","宽松紧腰 + 防卷边","五袋真口袋","14W–32W","Petite 28\" / Regular 30\" / Tall 32\""],
+  diff:"同一款三个内长；针织但挺；年轻化直筒和微阔腿版型。", price:"US $38–48",
+  risk:"大码版型开发成本高、SKU 多（码 × 内长 × 色）；依据中体量信号偏弱", verify:"关键词 plus size pull on jeans、women's plus pull on straight leg jeans；统计前 30 名中同时有 W 码和多内长的商品数",
+  from:"大码 Pull-on 牛仔、针织直筒 / 阔腿 Pull-on", ev:["wwListing","plusSearch","gvKohls"], evl:"部分来源"},
+ {t:"老年易穿针织牛仔", gap:"场景缺口", score:{d:2,c:3,x:3,s:4,p:3,e:2},
+  why:"男士易穿松紧牛仔卖家少、款式老；针织 + 全松紧 + 侧开口能覆盖关节不便和照护场景。",
+  spec:["纬编针织牛仔","全松紧无扣","可选侧开口","两侧真口袋","男女两版"],
+  diff:"穿脱演示；照护者视角卖点。", price:"US $30–40",
+  risk:"搜索量小；Amazon 「adaptive clothing」细分规则", verify:"关键词 elastic waist jeans for seniors、adaptive jeans；看搜索结果数和头部商品的购买标签",
+  from:"男士易穿松紧牛仔", ev:["seniorSearch"], evl:"部分来源"},
+ {t:"儿童冬季加绒针织牛仔 Pull-on", state:"clue", gap:"场景缺口",
+  why:"美国童装大品牌的针织 Pull-on 多为常规厚度；国内加绒针织牛仔 / 仿牛仔卫裤供给成熟。北方冬季和上学场景可能有需求，但未查到美国站加绒款的体量信号。",
+  spec:["纬编针织牛仔","加绒","抽绳松紧腰（抽绳固定）","童装 2T–12"], verify:"关键词 fleece lined jeans kids、kids fleece lined pull on jeans；看结果数、季节性和头部购买标签；核对 CPSIA",
+  from:"儿童针织牛仔 Pull-on、国内针织牛仔 / 仿牛仔卫裤", ev:["cpsc"], evl:"经验判断"},
+ {t:"国内仿牛仔卫裤出海（女士）", state:"clue", gap:"价格带缺口",
+  why:"国内仿牛仔卫裤（色纱针织、非印花）款式多、价格低；美国站高端是 rag & bone 印花款，平价是印花打底，「近看也像牛仔」的中价位少。",
+  spec:["靛蓝色纱针织（非印花）","毛圈内里","束脚或直筒","$30–45"], verify:"拿国内 3 款样品看近距离纹理；美国站关键词 sweatpant jeans、jean sweatpants women 看价格分布",
+  from:"国内针织牛仔 / 仿牛仔卫裤、印花仿牛仔卫裤 / 打底", ev:["cnpp","ragReview"], evl:"经验判断"},
+ {t:"女士针织牛仔慢跑裤（白牌同款）", state:"out", gap:"价格带缺口",
+  why:"最初判断：女士牛仔慢跑裤搜索量大，可以用针织做差异。",
+  outWhy:"搜索结果数千到数万条，Sidefeel、Gumipy、Uillui、LONGYIDA 等白牌同款饱和，价格在 $20–35；多数页面不写组织，消费者分不清针织和机织，「针织」难以成为可见差异。",
+  spec:["束脚慢跑裤","抽绳松紧腰","< $30"], from:"女士牛仔慢跑裤", ev:["womenJogSearch"], evl:"有来源"},
+ {t:"平价印花仿牛仔打底裤", state:"out", gap:"痛点缺口",
+  why:"最初判断：印花仿牛仔打底裤成本低，可以低价跑量。",
+  outWhy:"平价印花款近看不像牛仔，透光和起球差评集中；价格已到 $10–20，利润空间小；高端（rag & bone）靠品牌，白牌无法进入。",
+  spec:["印花仿牛仔针织","紧身 Jegging","< $20"], from:"印花仿牛仔卫裤 / 打底", ev:["seeThrough","ragReview"], evl:"有来源"}
+],
+
+grids:[
+ {id:"crowdFit", name:"人群 × 裤型", q:"每类人群在哪种裤型上还缺针织牛仔？", rowT:"目标人群", colT:"裤型",
+  cols:["紧身 Jegging","直筒","阔腿 / Baggy","束脚慢跑裤"],
+  rk:["women knit jeggings","plus size pull on jeans","maternity jeggings","men knit jeans","elastic waist jeans seniors","kids pull on knit jeans"],
+  ck:["skinny","straight leg","wide leg","jogger"],
+  rc:["女士 针织牛仔","大码 松紧 牛仔裤","孕妇 牛仔 托腹","男士 针织牛仔裤","老人 松紧 牛仔裤","儿童 针织牛仔裤"], cc:["紧身","直筒","阔腿","束脚"],
+  rows:[
+   ["女士",[["R3","Amazon Essentials、Nine West、IUGA",{r:["aeJeg","nineWest","iuga1"],t:["平价针织 Jegging","高腰收腹针织 Jegging"],o:"抗起球高回弹针织 Jegging"}],["S2","Gloria Vanderbilt Knitology（百货）",{r:["gvKnit"],t:["针织直筒 / 阔腿 Pull-on"]}],["L2","Maurices 针织阔腿；Amazon 少",{r:["maurices"],t:["针织直筒 / 阔腿 Pull-on"],k:["knit wide leg pull on jeans"]}],["R2","白牌饱和（多为机织）",{r:["sidefeel","gumipy"],t:["女士牛仔慢跑裤"],o:"女士针织牛仔慢跑裤（白牌同款）"}]]],
+   ["大码女士",[["S2","IUGA、Amazon Essentials 有大码",{r:["iugaPlus"],t:["高腰收腹针织 Jegging"]}],["L3","Woman Within 多内长，但组织未写针织",{r:["wwStraight","wwFineline"],t:["大码 Pull-on 牛仔"],o:"大码多内长针织直筒 Pull-on",ev:"部分来源"}],["L2","少",{k:["plus size wide leg pull on jeans knit"],t:["大码 Pull-on 牛仔"]}],["S1","Uillui 等白牌"]]],
+   ["孕妇",[["L2","Motherhood 为机织；真针织少",{r:["mhm1","mhm3","aeMatSearch"],t:["孕妇牛仔 Jegging"],o:"孕妇真针织牛仔 Jegging"}],["L1","—"],["E1","—"],["E0","待验证"]]],
+   ["男士",[["X","男款不做 Jegging"],["S2","Revtown、ETHANOL（拉链款）",{r:["revSharp","ethanol"],t:["男士舒适针织牛仔（五袋款）"]}],["L1","—"],["L3","Diesel $150+；白牌多为机织；$40–60 真针织少",{r:["diesel","level7","glsuit"],t:["男士针织牛仔慢跑裤"],o:"男士平价针织牛仔慢跑裤"}]]],
+   ["老年 / 易穿",[["X","—"],["L2","voeeron、白牌针织直筒",{r:["voeeron","knitWeave"],t:["男士易穿松紧牛仔"],o:"老年易穿针织牛仔"}],["E1","—"],["E1","—"]]],
+   ["儿童",[["S2","Children's Place、Levi's 女童 Jegging",{r:["levisKids"],t:["儿童针织牛仔 Pull-on"]}],["R3","Carter's、Old Navy、Cat & Jack",{r:["carters","oldNavy","catJack"],t:["儿童针织牛仔 Pull-on"]}],["S2","Gap Kids 针织 Baggy",{r:["gapKids"],t:["儿童针织牛仔 Pull-on"]}],["S1","—"]]]
+  ]},
+ {id:"fabricWaist", name:"面料组织 × 腰头结构", q:"哪种面料配哪种腰头还没人做？", rowT:"面料组织", colT:"腰头结构",
+  cols:["宽松紧腰","抽绳松紧腰","罗纹腰","塑形 / 托腹腰","扣 + 拉链"],
+  rk:["knit denim pull on","terry denim jogger","double knit jeggings","printed denim leggings","stretch denim pull on"],
+  ck:["elastic waist","drawstring","rib waist","tummy control","button zip"],
+  rc:["针织牛仔","毛圈 牛仔 卫裤","双面针织 牛仔","印花 仿牛仔","弹力 牛仔"], cc:["松紧腰","抽绳","罗纹腰","收腹","拉链"],
+  rows:[
+   ["纬编针织牛仔",[["R3","Amazon Essentials、Nine West、Woman Within",{r:["aeJeg","nineWest","wwStraight"]}],["S2","Carter's、Maurices",{r:["carters","maurices"]}],["L1","—"],["L3","IUGA 宽腰头；孕妇针织托腹少",{r:["iuga1","aeMatSearch"],o:"孕妇真针织牛仔 Jegging"}],["S2","Revtown、ETHANOL",{r:["revSharp","ethanol"]}]]],
+   ["毛圈针织牛仔",[["L1","—"],["L2","中价位少",{r:["level7"],o:"男士平价针织牛仔慢跑裤"}],["L3","Level 7 罗纹腰脚；Diesel 高价",{r:["level7","diesel"],o:"男士平价针织牛仔慢跑裤"}],["E0","待验证"],["S1","Diesel JoggJeans 部分款",{r:["diesel"]}]]],
+   ["双面针织 / 罗马布",[["S1","—"],["E1","—"],["E0","—"],["S2","Spanx Jean-ish 塑形片",{r:["spanx"]}],["E0","—"]]],
+   ["印花仿牛仔针织",[["R2","平价印花打底",{r:["walmartPrint"],o:"平价印花仿牛仔打底裤"}],["S2","rag & bone Miramar",{r:["ragbone"]}],["L1","—"],["E0","—"],["X","—"]]],
+   ["机织弹力牛仔（邻近）",[["R3","Motherhood、Levi's Signature 等",{r:["mhm1"],d:"不纳入本品类，仅作对照。"}],["R3","白牌慢跑裤",{r:["sidefeel","glsuit"]}],["S1","—"],["S3","Motherhood 托腹",{r:["mhm2"]}],["R3","传统牛仔裤"]]]
+  ]},
+ {id:"price", name:"类型 × 价格带", q:"每种针织牛仔在哪个价位还空着？", rowT:"在售类型", colT:"单条售价（美国站）",
+  cols:["< $25","$25–50","$50–110","$110+"], price:["0-2500","2500-5000","5000-11000","11000-100000"],
+  rk:["women knit jeggings","women pull on straight jeans knit","women denim joggers","sweatpant jeans","plus size pull on jeans","maternity jeggings","men knit jeans","men denim joggers","kids pull on jeans"],
+  rc:["女士 针织 牛仔 打底","女士 针织 直筒 牛仔","女士 牛仔 束脚裤","仿牛仔 卫裤","大码 松紧 牛仔裤","孕妇 牛仔 托腹","男士 针织牛仔裤","男士 牛仔 束脚 卫裤","儿童 针织牛仔裤"], cc:["","","",""],
+  rows:[
+   ["女士 Jegging",[["R3","Amazon Essentials、Nine West",{r:["aeJeg","nineWest","genericJeg"],t:["平价针织 Jegging"]}],["S3","IUGA；抗起球高回弹款缺",{r:["iuga1","iuga2"],t:["高腰收腹针织 Jegging"],o:"抗起球高回弹针织 Jegging"}],["S2","Spanx 促销价",{r:["spanx"],t:["品牌塑形牛仔打底"]}],["L1","Spanx 常规价",{r:["spanx"]}]]],
+   ["女士直筒 / 阔腿",[["L1","—"],["L2","Knitology 在百货；Amazon 少",{r:["gvKnit","maurices"],t:["针织直筒 / 阔腿 Pull-on"]}],["S1","—"],["E0","—"]]],
+   ["女士牛仔慢跑裤",[["R3","白牌饱和",{r:["sidefeel","gumipy","womenJog3"],t:["女士牛仔慢跑裤"],o:"女士针织牛仔慢跑裤（白牌同款）"}],["S2","—"],["L1","—"],["L1","—"]]],
+   ["印花仿牛仔",[["R2","Walmart 平价",{r:["walmartPrint"],o:"平价印花仿牛仔打底裤"}],["L2","色纱针织（非印花）中价位缺",{k:["sweatpant jeans women"],ev:"经验判断"}],["S1","—"],["S2","rag & bone $155–230",{r:["ragbone"]}]]],
+   ["大码",[["S2","IUGA 等",{r:["iugaPlus"]}],["L3","多内长 + 针织少",{r:["wwStraight"],o:"大码多内长针织直筒 Pull-on"}],["S1","Spanx 大码",{r:["spanx"]}],["E0","—"]]],
+   ["孕妇",[["S2","—"],["L3","真针织托腹少",{r:["mhm1","aeMatSearch"],o:"孕妇真针织牛仔 Jegging"}],["S1","—"],["E0","—"]]],
+   ["男士五袋",[["S1","白牌"],["L2","ETHANOL",{r:["ethanol"]}],["S3","Revtown、Mugsy",{r:["revSharp","mugsy"],t:["男士舒适针织牛仔（五袋款）"]}],["S1","—"]]],
+   ["男士慢跑",[["R2","白牌（多为机织）",{r:["glsuit"]}],["L3","真针织少",{r:["level7"],o:"男士平价针织牛仔慢跑裤"}],["L2","Tommy Jeans（机织）",{r:["tommy"]}],["S2","Diesel JoggJeans",{r:["diesel","dieselIn"]}]]],
+   ["儿童",[["R3","Carter's、Old Navy、Cat & Jack、Children's Place",{r:["carters","oldNavy","catJack","tcp"],t:["儿童针织牛仔 Pull-on"]}],["S2","Gap Kids、Levi's",{r:["gapKids","levisKids"]}],["X","—"],["X","—"]]]
+  ]},
+ {id:"sceneSell", name:"使用场景 × 关键卖点", q:"在每个场景里，哪个卖点还没人讲清楚？", rowT:"使用场景", colT:"关键卖点",
+  cols:["五袋真口袋","抗起球 / 抗膝包","不透光","加绒保暖","多内长"],
+  rk:["work pull on jeans women","travel jeans comfortable","maternity jeans","jogger jeans streetwear","kids school jeans","adaptive jeans"],
+  ck:["real pockets","no pilling","not see through","fleece lined","petite tall"],
+  rc:["通勤 松紧 牛仔裤","旅行 舒适 牛仔裤","孕妇 牛仔裤","街头 牛仔 束脚裤","儿童 上学 牛仔裤","老人 易穿 裤子"], cc:["真口袋","不起球","不透","加绒","长短款"],
+  rows:[
+   ["日常通勤",[["S3","IUGA、Gloria Vanderbilt",{r:["iuga1","gvKnit"]}],["L3","没有头部商品写明",{o:"抗起球高回弹针织 Jegging",k:["no pilling jeggings"]}],["L2","少数宣称",{k:["squat proof jeggings"]}],["S1","HUE",{r:["hue"]}],["S2","Spanx、Woman Within",{r:["spanx","wwStraight"]}]]],
+   ["居家 / 长途旅行",[["S2","—"],["L2","—"],["S1","—"],["S2","HUE 加绒",{r:["hue"]}],["L1","—"]]],
+   ["孕期",[["S2","Motherhood 真后袋",{r:["mhm1"]}],["L2","—",{o:"孕妇真针织牛仔 Jegging"}],["L2","—"],["L2","孕妇加绒少",{k:["fleece lined maternity jeans"]}],["E1","—"]]],
+   ["运动休闲 / 街头",[["L3","慢跑裤多为假口袋或斜插袋",{o:"男士平价针织牛仔慢跑裤",r:["level7"]}],["L2","—"],["S1","—"],["S1","—"],["E0","—"]]],
+   ["学校 / 幼儿园",[["S2","Carter's、Gap",{r:["carters","gapKids"]}],["L2","膝盖加固少",{k:["reinforced knee kids jeans"]}],["X","—"],["L2","加绒款少（线索）",{clue:true,k:["fleece lined jeans kids"]}],["X","—"]]],
+   ["照护 / 易穿",[["L2","—",{o:"老年易穿针织牛仔"}],["E1","—"],["X","—"],["E1","—"],["E1","—"]]]
+  ]}
+],
+
+brands:[
+ {g:"设计师 / 奢侈", about:"把针织牛仔做成时尚单品，定价 $150 以上，定义了品类认知。", items:[
+  {name:"Diesel", tier:"设计师", origin:"意大利", prod:"Krooley JoggJeans（针织牛仔慢跑裤，90% 棉 / 8% 涤 / 2% 氨纶）", price:"US $150+（印度官网 ₹20,000+）", ch:"品牌官网、Amazon、百货", who:"20–40 岁男士、潮流人群",
+   sell:"JoggJeans：牛仔外观 + 卫裤舒适，最早的针织牛仔专利品类之一", types:["男士针织牛仔慢跑裤"], pros:["品类开创者，认知度高","牛仔外观逼真"], cons:["价格高","Amazon 价格和尺码不全"],
+   url:"https://www.amazon.com/clp/B084DTH7M1", urlLabel:"Amazon：Krooley JoggJeans", ev:["dieselIndia"], evl:"有来源"},
+  {name:"rag & bone", tier:"设计师", origin:"美国", prod:"Miramar 印花毛圈「牛仔」慢跑裤 / 长裤", price:"US $155–230", ch:"品牌官网、Bloomingdale's 等百货", who:"25–45 岁时尚人群",
+   sell:"在毛圈卫裤上印出逼真的牛仔纹理和洗水", types:["印花仿牛仔卫裤 / 打底"], pros:["话题度高","最舒服"], cons:["近看是印花","评测：面料塌、易起球、膝盖回弹差"],
+   url:"https://bloomingdales.com/shop/product/rag-bone-cotton-miramar-denim-joggers?ID=4745260", urlLabel:"Bloomingdale's：Miramar", ev:["ragReview","ragPage"], evl:"有来源"}
+ ]},
+ {g:"DTC 舒适牛仔", about:"主打「最舒服的牛仔裤」，男款为主，拉链五袋。", items:[
+  {name:"Revtown", tier:"DTC", origin:"美国", prod:"Sharp / Lightweight 弹力牛仔（92% 棉 / 6% 涤 / 2% 氨纶）", price:"US $75–109（常规 $109，常有促销）", ch:"品牌官网", who:"25–50 岁男士",
+   sell:"像正经牛仔、穿起来像运动裤；耐穿", types:["男士舒适针织牛仔（五袋款）"], pros:["外观最像传统牛仔","评测认为比 Mugsy 耐穿"], cons:["不是 pull-on","Amazon 渠道少"],
+   url:"https://www.revtownusa.com/collections/rev99-sale/products/sharp-jean-faded-indigo", urlLabel:"官网：Sharp", ev:["revtownTE","revReview"], evl:"有来源"},
+  {name:"Mugsy", tier:"DTC", origin:"美国", prod:"男士弹力牛仔（约 68% 棉）", price:"约 US $112", ch:"品牌官网", who:"25–50 岁男士",
+   sell:"「最舒服的弹力牛仔」", types:["男士舒适针织牛仔（五袋款）"], pros:["舒适口碑最好"], cons:["棉含量低，耐久性存疑","面料组织未确认是否针织"],
+   url:"https://reviewed.com/style/content/mugsy-jeans-review-most-comfortable-stretch-denim-ever", urlLabel:"Reviewed 评测", ev:["mugsyReview"], evl:"部分来源", note:"Mugsy 官网未确认 Weave Type，可能是机织高弹，暂按对标品牌列入。"}
+ ]},
+ {g:"塑形品牌", about:"把牛仔打底做成塑形内衣的延伸。", items:[
+  {name:"Spanx", tier:"高端塑形", origin:"美国", prod:"Jean-ish 脚踝打底（69% 棉 / 26% 涤 / 5% 氨纶 + 内置塑形片）", price:"US $98（促销 $49）", ch:"品牌官网、百货、Walmart 第三方", who:"30–60 岁女士",
+   sell:"像牛仔裤、穿起来像打底，内置塑形片，Regular / Petite / Tall", types:["品牌塑形牛仔打底"], pros:["塑形品牌心智","多内长"], cons:["贵，靠促销拉动","白色款透"],
+   url:"https://spanx.com/products/spanx-jean-ish-ankle-leggings", urlLabel:"官网：Jean-ish", ev:["spanxPage"], evl:"有来源"},
+  {name:"HUE", tier:"大众塑形", origin:"美国", prod:"牛仔打底裤（含加绒款）", price:"US $17–40", ch:"Walmart、百货、Amazon", who:"30–60 岁女士",
+   sell:"平价牛仔打底、收腹、加绒", types:["品牌塑形牛仔打底"], pros:["平价、款多","有加绒"], cons:["面料组织页面不一"],
+   url:"https://www.walmart.com/browse/clothing/premium-womens-pants-leggings/hue/5438_7151172_3504438_9203135/YnJhbmQ6SFVF", urlLabel:"Walmart：HUE", ev:["hueWalmart"], evl:"部分来源"}
+ ]},
+ {g:"大众 / 百货品牌", about:"Pull-on 牛仔的主力供给，覆盖大码、孕妇等细分。", items:[
+  {name:"Gloria Vanderbilt", tier:"大众", origin:"美国", prod:"Knitology Amanda Pull-on（仿针织牛仔，31\" / 29\" 内长，五袋）", price:"US $35–55", ch:"Kohl's、Amazon、Walmart", who:"35–65 岁女士",
+   sell:"经典 Amanda 版型做成针织 pull-on", types:["针织直筒 / 阔腿 Pull-on","大码 Pull-on 牛仔"], pros:["老牌 Amanda 版型有忠实用户","有 Petite"], cons:["只有直筒，没有阔腿针织"],
+   url:"https://www.kohls.com/product/prd-7185337/womens-gloria-vanderbilt-knitology-amanda-pullon-jeans.jsp", urlLabel:"Kohl's：Knitology Amanda", ev:["gvKohls"], evl:"有来源"},
+  {name:"Nine West", tier:"大众（授权）", origin:"美国", prod:"Pull on Jegging（56% 棉 / 24% 粘胶 / 19% 涤 / 1% 氨纶）", price:"US $20–35", ch:"Amazon", who:"25–55 岁女士",
+   sell:"品牌名 + 平价 Jegging", types:["平价针织 Jegging"], pros:["过去一周 500+ 购买（快照）"], cons:["弹力低（1%）"],
+   url:"https://www.amazon.com/clp/B0CK8QFDQN", urlLabel:"Amazon：Pull on Jegging", ev:["nwListing"], evl:"有来源"},
+  {name:"Maurices", tier:"大众", origin:"美国", prod:"深色针织拼缝阔腿 Pull-on", price:"US $40–60", ch:"品牌门店 + 官网", who:"25–45 岁女士（中西部小城市）",
+   sell:"针织牛仔阔腿，抽绳高腰", types:["针织直筒 / 阔腿 Pull-on"], pros:["少数做针织阔腿的品牌"], cons:["渠道局限在自有门店"],
+   url:"https://www.maurices.com/product/dark-knit-seamed-pull-on-wide-leg-jean/237715", urlLabel:"官网：针织阔腿 Pull-on", ev:["mauricesPage"], evl:"有来源"},
+  {name:"Woman Within", tier:"大码专门品牌", origin:"美国（FullBeauty 集团）", prod:"Smooth Waist Pull-on 直筒、Fineline 高腰 Pull-on", price:"US $30–50", ch:"品牌官网、Amazon", who:"大码女士 40–70 岁",
+   sell:"12W–40W，Regular / Petite / Tall 三个内长，无勒痕腰头", types:["大码 Pull-on 牛仔"], pros:["尺码和内长最全"], cons:["偏大","款式老、面料未写针织"],
+   url:"https://www.amazon.com/dp/B07VHWT2DS", urlLabel:"Amazon：Smooth Waist 直筒", ev:["wwListing"], evl:"有来源"},
+  {name:"Motherhood Maternity", tier:"孕妇专门品牌", origin:"美国", prod:"Secret Fit Belly 牛仔 Jegging（28\" 内长，无缝托腹）", price:"US $25–45", ch:"Amazon、品牌官网", who:"孕期女士",
+   sell:"无缝托腹片，孕期全程", types:["孕妇牛仔 Jegging"], pros:["孕妇品类主导","有大码"], cons:["主力款 Weave Type = Woven","成分页面矛盾"],
+   url:"https://www.amazon.com/dp/B07LBNHF2P", urlLabel:"Amazon：Secret Fit Belly Jegging", ev:["mhmListing"], evl:"有来源"},
+  {name:"Levi's（对照）", tier:"大众", origin:"美国", prod:"Signature Pull-on（65/33/2，机织）；女童 Pull-on Jegging", price:"US $22–40", ch:"Walmart、Macy's、官网", who:"大众",
+   sell:"品牌 + Pull-on", types:["儿童针织牛仔 Pull-on"], pros:["品牌力"], cons:["成人款为机织，不纳入本品类"],
+   url:"https://www.levi.com/US/en_US/levis-select-styles/c/levi_clothing_select_styles_us/facets/feature-fit/pull-ons", urlLabel:"官网：Pull-ons", ev:["kidsSearch"], evl:"部分来源", note:"成人款为机织弹力，只作邻近对照；女童 Jegging 列入儿童类型。"}
+ ]},
+ {g:"童装品牌", about:"把针织牛仔 Pull-on 做成常规款，价格低、覆盖全。", items:[
+  {name:"Carter's", tier:"童装大众", origin:"美国", prod:"Kid Pull-On Knit Denim Pants（88% 棉 / 10% 涤 / 2% 氨纶，包覆松紧 + 抽绳）", price:"US $15–25", ch:"官网、Kohl's、Amazon", who:"2–8 岁",
+   sell:"针织牛仔、好穿脱", types:["儿童针织牛仔 Pull-on"], pros:["明确写 knit denim","渠道广"], cons:["季末清仓价低"],
+   url:"https://www.carters.com/p/kid-pull-on-knit-denim-pants/V_3N596510", urlLabel:"官网：Kid Pull-On Knit Denim", ev:["cartersPage"], evl:"有来源"},
+  {name:"Gap Kids / Old Navy", tier:"童装大众", origin:"美国（Gap 集团）", prod:"Gap 针织 Baggy Pull-on；Old Navy Pull-on Jeans（62 款）", price:"US $15–40", ch:"官网、门店", who:"2–14 岁",
+   sell:"Pull-on 全版型（紧身、直筒、Baggy、工装）", types:["儿童针织牛仔 Pull-on"], pros:["款式最全"], cons:["多数未写组织"],
+   url:"https://oldnavy.gap.com/shop/pull-on-jeans", urlLabel:"Old Navy：Pull-on Jeans", ev:["kidsSearch"], evl:"有来源"},
+  {name:"The Children's Place", tier:"童装平价", origin:"美国", prod:"女童针织牛仔 Jegging；幼童 Pull-on 直筒", price:"约 US $15–20", ch:"官网、Walmart、Shein", who:"6 个月–14 岁",
+   sell:"平价、如厕训练好穿", types:["儿童针织牛仔 Pull-on"], pros:["价格低"], cons:["渠道价格混乱"],
+   url:"https://walmart.com/ip/15829611718", urlLabel:"Walmart：幼童 Pull-on 直筒", ev:["kidsSearch"], evl:"部分来源"},
+  {name:"Cat & Jack（Target）", tier:"零售自有", origin:"美国", prod:"女童 Pull-on Jegging（轻量机织）", price:"约 US $14", ch:"Target", who:"儿童",
+   sell:"低价 + Target 渠道", types:["儿童针织牛仔 Pull-on"], pros:["价格最低"], cons:["机织，对照用"],
+   url:"https://www.target.com/p/-/A-88020274", urlLabel:"Target：Pull-on Jegging", ev:["kidsSearch"], evl:"部分来源", note:"机织，作价格对照。"}
+ ]},
+ {g:"Amazon 自有 / 白牌", about:"Amazon 上的主要竞争者：价格低、颜色全、上新快。", items:[
+  {name:"Amazon Essentials", tier:"Amazon 自有", origin:"美国（Amazon）", prod:"女士中腰针织 Jegging（52% 棉 / 39% 涤 / 9% 氨纶）；孕妇针织 Jegging", price:"US $15–25", ch:"Amazon", who:"女士、孕妇",
+   sell:"低价、多色、全码", types:["平价针织 Jegging","孕妇牛仔 Jegging"], pros:["Amazon's Choice，过去一周 200+ 购买","价格锚"], cons:["起球、膝包差评"],
+   url:"https://www.amazon.com/clp/B07CJP4Y69", urlLabel:"Amazon：针织 Jegging", ev:["aeListing"], evl:"有来源"},
+  {name:"IUGA", tier:"白牌头部", origin:"中国卖家", prod:"高腰 Pull-on Jegging（5\" 腰头，56/33/11 等）", price:"US $25–40", ch:"Amazon", who:"女士，含大码",
+   sell:"高腰收腹、真口袋、全码", types:["高腰收腹针织 Jegging"], pros:["Overall Pick 标签","大码覆盖"], cons:["成分页面矛盾"],
+   url:"https://www.amazon.com/dp/B0DP2CG6SY", urlLabel:"Amazon：IUGA Jegging", ev:["iugaListing"], evl:"有来源"},
+  {name:"Sidefeel", tier:"白牌", origin:"中国卖家", prod:"女士牛仔慢跑裤（70/28.5/1.5，抽绳）、阔腿 Pull-on", price:"US $25–35", ch:"Amazon", who:"女士",
+   sell:"破洞、抽绳、宽松", types:["女士牛仔慢跑裤"], pros:["款多"], cons:["多为机织或未披露"],
+   url:"https://www.amazon.com/dp/B07C2W5TGW", urlLabel:"Amazon：牛仔慢跑裤", ev:["womenJogSearch"], evl:"有来源"},
+  {name:"Level 7", tier:"白牌", origin:"未披露", prod:"Premium Knit Denim Jogger（97% 棉 / 3% 氨纶，罗纹腰脚）", price:"未取到价格", ch:"Amazon", who:"男士",
+   sell:"真针织（Weave Type = Knit）、膝盖手工打磨", types:["男士针织牛仔慢跑裤"], pros:["少数真针织男款"], cons:["只有 S–2XL"],
+   url:"https://www.amazon.com/dp/B09KWLHC4X", urlLabel:"Amazon：Knit Denim Jogger", ev:["mensJogSearch"], evl:"有来源"},
+  {name:"ETHANOL", tier:"白牌", origin:"未披露", prod:"男士 Stretch Jersey Jeans（弹力针织牛仔，直筒五袋）", price:"未取到价格", ch:"Amazon", who:"男士",
+   sell:"针织牛仔 + 经典五袋", types:["男士舒适针织牛仔（五袋款）"], pros:["Amazon 上少有的男士针织五袋"], cons:["信息少"],
+   url:"https://www.amazon.com/s?k=ETHANOL+stretch+jersey+jeans", urlLabel:"Amazon 搜索页", ev:["mensJogSearch"], evl:"部分来源"},
+  {name:"voeeron", tier:"白牌", origin:"未披露", prod:"男士全松紧无扣牛仔", price:"US $25–40", ch:"Amazon", who:"老年男士",
+   sell:"无扣子、直接套穿", types:["男士易穿松紧牛仔"], pros:["场景明确"], cons:["款式老"],
+   url:"https://www.amazon.com/dp/B0DZ2QXYVX", urlLabel:"Amazon：全松紧牛仔", ev:["seniorSearch"], evl:"部分来源"}
+ ]},
+ {g:"国内品牌", about:"供应链和款式参考，未逐款核实是否针织。", items:[
+  {name:"巴拉巴拉", tier:"童装大众", origin:"中国（森马集团）", prod:"儿童牛仔裤（含松紧腰款）", price:"¥100–250", ch:"天猫、京东、门店", who:"0–14 岁",
+   sell:"大众童装第一梯队", types:["国内针织牛仔 / 仿牛仔卫裤"], pros:["国内童装认知高"], cons:["针织款未逐款核实"],
+   url:"https://search.jd.com/Search?keyword=%E5%B7%B4%E6%8B%89%E5%B7%B4%E6%8B%89%20%E9%92%88%E7%BB%87%E7%89%9B%E4%BB%94%E8%A3%A4", urlLabel:"京东搜索页", ev:["cnpp"], evl:"部分来源"},
+  {name:"MINI PEACE", tier:"童装中高端", origin:"中国（太平鸟）", prod:"儿童牛仔裤", price:"¥200–400", ch:"天猫、京东、门店", who:"3–10 岁",
+   sell:"时尚潮流童装", types:["国内针织牛仔 / 仿牛仔卫裤"], pros:["设计感"], cons:["针织款未核实"],
+   url:"https://search.jd.com/Search?keyword=MINI%20PEACE%20%E7%89%9B%E4%BB%94%E8%A3%A4", urlLabel:"京东搜索页", ev:["cnpp"], evl:"部分来源"},
+  {name:"淘宝 / 抖音白牌", tier:"白牌", origin:"中国", prod:"针织牛仔裤、仿牛仔卫裤、加绒针织牛仔裤", price:"¥40–120", ch:"淘宝、抖音、拼多多、1688", who:"国内大众",
+   sell:"低价、加绒、显瘦", types:["国内针织牛仔 / 仿牛仔卫裤"], pros:["供应链成熟、款式多"], cons:["质量参差"],
+   url:"https://search.jd.com/Search?keyword=%E4%BB%BF%E7%89%9B%E4%BB%94%E5%8D%AB%E8%A3%A4", urlLabel:"京东搜索页：仿牛仔卫裤", ev:[], evl:"经验判断"}
+ ]}
+],
+
+refs:{
+ aeJeg:["Amazon Essentials 女士中腰针织 Jegging","https://www.amazon.com/clp/B07CJP4Y69"],
+ nineWest:["Nine West 女士 Pull on Jegging","https://www.amazon.com/clp/B0CK8QFDQN"],
+ genericJeg:["白牌女士水洗 Pull-on 牛仔打底","https://www.amazon.com/clp/B07R66MYJR"],
+ iuga1:["IUGA 高腰 Pull-on Jegging","https://www.amazon.com/dp/B0DP2CG6SY"],
+ iuga2:["IUGA Pull-on Jegging（同系列）","https://www.amazon.com/dp/B0D83M8FW8"],
+ iuga3:["IUGA 收腹 Jegging","https://www.amazon.com/dp/B0CJBFTN73"],
+ iugaPlus:["IUGA 大码 Pull-on Jegging","https://www.amazon.com/dp/B0D83XJ2MX"],
+ spanx:["Spanx Jean-ish 脚踝打底（官网）","https://spanx.com/products/spanx-jean-ish-ankle-leggings"],
+ spanxWalmart:["Spanx Jean-ish（Walmart）","https://www.walmart.com/ip/363782739"],
+ hue:["HUE 牛仔打底（Walmart 品牌页）","https://www.walmart.com/browse/clothing/premium-womens-pants-leggings/hue/5438_7151172_3504438_9203135/YnJhbmQ6SFVF"],
+ gvKnit:["Gloria Vanderbilt Knitology Amanda Pull-on（Kohl's）","https://www.kohls.com/product/prd-7185337/womens-gloria-vanderbilt-knitology-amanda-pullon-jeans.jsp"],
+ maurices:["Maurices 深色针织阔腿 Pull-on","https://www.maurices.com/product/dark-knit-seamed-pull-on-wide-leg-jean/237715"],
+ sidefeel:["Sidefeel 女士牛仔慢跑裤","https://www.amazon.com/dp/B07C2W5TGW"],
+ gumipy:["Gumipy 女士宽松牛仔慢跑裤","https://www.amazon.com/dp/B0CQCL1Z3F"],
+ womenJog3:["白牌女士束脚牛仔慢跑裤","https://www.amazon.com/dp/B0C1MTDR2B"],
+ ragbone:["rag & bone Miramar 印花牛仔慢跑裤（Bloomingdale's）","https://bloomingdales.com/shop/product/rag-bone-cotton-miramar-denim-joggers?ID=4745260"],
+ walmartPrint:["Walmart 印花仿牛仔打底裤","https://www.walmart.com/ip/5758914678"],
+ wwStraight:["Woman Within Smooth Waist Pull-on 直筒","https://www.amazon.com/dp/B07VHWT2DS"],
+ wwFineline:["Woman Within Fineline 高腰 Pull-on","https://www.amazon.com/dp/B07BKXQ648"],
+ mhm1:["Motherhood Maternity Secret Fit Belly 牛仔 Jegging","https://www.amazon.com/dp/B07LBNHF2P"],
+ mhm2:["Motherhood Maternity 灰洗色 Jegging","https://www.amazon.com/Motherhood-Maternity-Stretch-Fashion-Jegging/dp/B0BJ3F32V3"],
+ mhm3:["Motherhood Maternity 大码 Jegging","https://www.amazon.com/dp/B096N4B42R"],
+ aeMatSearch:["Amazon Essentials 孕妇针织 Jegging（搜索页）","https://www.amazon.com/s?k=amazon+essentials+maternity+knit+jegging"],
+ revSharp:["Revtown Sharp Faded Indigo","https://www.revtownusa.com/collections/rev99-sale/products/sharp-jean-faded-indigo"],
+ revLight:["Revtown Sharp Lightweight","https://www.revtownusa.com/products/lightweight-jean-late-night-indigo"],
+ mugsy:["Mugsy 牛仔裤评测（Reviewed）","https://reviewed.com/style/content/mugsy-jeans-review-most-comfortable-stretch-denim-ever"],
+ ethanol:["ETHANOL Stretch Jersey Jeans（搜索页）","https://www.amazon.com/s?k=ETHANOL+stretch+jersey+jeans"],
+ diesel:["Diesel Krooley JoggJeans（Amazon）","https://www.amazon.com/clp/B084DTH7M1"],
+ dieselIn:["Diesel Krooley JoggJeans（印度官网）","https://www.dieselindia.com/product/krooley-e-ne-joggjeans-410279568040"],
+ level7:["Level 7 Premium Knit Denim Jogger","https://www.amazon.com/dp/B09KWLHC4X"],
+ glsuit:["GL SUIT 男士牛仔慢跑裤（机织）","https://www.amazon.com/dp/B0DW4B8QVN"],
+ tommy:["Tommy Jeans 男士牛仔慢跑裤","https://www.amazon.com/clp/B08YMGRHZV"],
+ voeeron:["voeeron 男士全松紧牛仔","https://www.amazon.com/dp/B0DZ2QXYVX"],
+ knitWeave:["白牌男士针织组织松紧牛仔（98/2）","https://www.amazon.com/dp/B0H49KFDDT"],
+ pembrook:["Pembrook 男士松紧腰牛仔","https://www.amazon.com/clp/B00M0AZSUU"],
+ carters:["Carter's Kid Pull-On Knit Denim Pants","https://www.carters.com/p/kid-pull-on-knit-denim-pants/V_3N596510"],
+ gapKids:["Gap Kids 针织 Baggy Pull-on","https://www.gap.com/browse/product.do?pid=819496002"],
+ oldNavy:["Old Navy Pull-on Jeans","https://oldnavy.gap.com/shop/pull-on-jeans"],
+ tcp:["The Children's Place 幼童 Pull-on 直筒（Walmart）","https://walmart.com/ip/15829611718"],
+ levisKids:["Levi's Pull-ons（官网）","https://www.levi.com/US/en_US/levis-select-styles/c/levi_clothing_select_styles_us/facets/feature-fit/pull-ons"],
+ catJack:["Cat & Jack 女童 Pull-on Jegging（Target）","https://www.target.com/p/-/A-88020274"],
+ jdKnit:["京东：针织牛仔裤","https://search.jd.com/Search?keyword=%E9%92%88%E7%BB%87%E7%89%9B%E4%BB%94%E8%A3%A4"],
+ jdWeiku:["京东：仿牛仔卫裤","https://search.jd.com/Search?keyword=%E4%BB%BF%E7%89%9B%E4%BB%94%E5%8D%AB%E8%A3%A4"],
+ jdKids:["京东：儿童针织牛仔裤","https://search.jd.com/Search?keyword=%E5%84%BF%E7%AB%A5%E9%92%88%E7%BB%87%E7%89%9B%E4%BB%94%E8%A3%A4"]
+},
+
+src:{
+ knitVsWoven:["Textile Learner：机织与针织牛仔的制造与局限","https://textilelearner.net/?p=697"],
+ knitVsWoven2:["Textile Trainer：针织与机织牛仔的 10 个区别","https://textiletrainer.com/?p=5131"],
+ pilling:["Fibre2Fashion：起球、刺痒、耐久问题使差评概率翻倍","https://fibre2fashion.com/industry-article/7096/driving-demand-for-denim-jeans"],
+ knee:["NDTV Shopping：氨纶过高导致膝盖鼓包","https://www.ndtvshopping.com/fashion/how-to-pick-mens-jeans-that-dont-stretch-out-at-the-knees-10450238"],
+ ragReview:["The Daily Beast：rag & bone 牛仔卫裤评测（面料塌、膝盖回弹差、起球）","https://zephr.thedailybeast.com/rag-bone-sweatpant-jeans-review"],
+ ragPage:["Bloomingdale's：rag & bone Miramar","https://bloomingdales.com/shop/product/rag-bone-cotton-miramar-denim-joggers?ID=4745260"],
+ seeThrough:["Reviews.io：打底裤透光差评","https://www.reviews.io/product-reviews/store/americantall-com/AW-LG-10011-1311-XST"],
+ seeThrough2:["Hip2Save：平价畅销打底裤面料薄","https://hip2save.com/product-reviews/why-i-hate-these-amazon-best-selling-leggings/"],
+ terry:["Global Sources：毛圈针织牛仔面料","https://www.globalsources.com/knowledge/knitted-denim-fabric-in-terry-weave/"],
+ siyaram:["Siyaram Den-Knit：靛蓝针织牛仔面料","https://www.siyaram.com/brands/siyarams/den-knit"],
+ uniqlo:["Uniqlo Ultra Stretch（机织，邻近对照）","https://www.uniqlo.com/us/en/products/E457577-000/00"],
+ aeListing:["Amazon：Amazon Essentials 针织 Jegging 商品页（52/39/9，Amazon's Choice）","https://www.amazon.com/clp/B07CJP4Y69"],
+ nwListing:["Amazon：Nine West Pull on Jegging 商品页","https://www.amazon.com/clp/B0CK8QFDQN"],
+ iugaListing:["Amazon：IUGA Pull-on Jegging 商品页","https://www.amazon.com/dp/B0DP2CG6SY"],
+ spanxPage:["Spanx 官网：Jean-ish","https://spanx.com/products/spanx-jean-ish-ankle-leggings"],
+ hueWalmart:["Walmart：HUE 品牌页","https://www.walmart.com/browse/clothing/premium-womens-pants-leggings/hue/5438_7151172_3504438_9203135/YnJhbmQ6SFVF"],
+ gvKohls:["Kohl's：Gloria Vanderbilt Knitology Amanda","https://www.kohls.com/product/prd-7185337/womens-gloria-vanderbilt-knitology-amanda-pullon-jeans.jsp"],
+ mauricesPage:["Maurices：针织阔腿 Pull-on","https://www.maurices.com/product/dark-knit-seamed-pull-on-wide-leg-jean/237715"],
+ womenJogSearch:["Amazon 搜索：women's denim joggers","https://www.amazon.com/s?k=women%27s+denim+joggers+pull+on"],
+ wwListing:["Amazon：Woman Within Smooth Waist Pull-on","https://www.amazon.com/dp/B07VHWT2DS"],
+ plusSearch:["Amazon 搜索：plus size pull on jeans","https://www.amazon.com/s?k=plus+size+pull+on+jeans+women"],
+ mhmListing:["Amazon：Motherhood Maternity Secret Fit Belly Jegging（Weave Type = Woven）","https://www.amazon.com/dp/B07LBNHF2P"],
+ revtownTE:["Textile Excellence：Revtown 定价与面料","https://textileexcellence.com/single-news/4324/how-us-label-revtown-offers-luxury-denim-at-affordable-prices"],
+ revReview:["WeTried：Revtown Jeans 与 Tech Jean 对比","https://wetried.it/compare/revtown-jeans-vs-revtown-tech-jean/"],
+ mugsyReview:["Reviewed：Mugsy 评测","https://reviewed.com/style/content/mugsy-jeans-review-most-comfortable-stretch-denim-ever"],
+ mensJogSearch:["Amazon 搜索：men's knit jogger jeans","https://www.amazon.com/s?k=men%27s+knit+denim+jogger+jeans"],
+ dieselIndia:["Diesel 印度官网：Krooley JoggJeans","https://www.dieselindia.com/product/krooley-e-ne-joggjeans-410279568040"],
+ seniorSearch:["Amazon 搜索：men's elastic waist pull on jeans seniors","https://www.amazon.com/s?k=men%27s+elastic+waist+pull+on+jeans+seniors"],
+ cartersPage:["Carter's 官网：Kid Pull-On Knit Denim Pants（88/10/2）","https://www.carters.com/p/kid-pull-on-knit-denim-pants/V_3N596510"],
+ kidsSearch:["Old Navy：Pull-on Jeans（62 款）","https://oldnavy.gap.com/shop/pull-on-jeans"],
+ cpsc:["CPSC：儿童产品要求（CPSIA、CPC）","https://www.cpsc.gov/Business--Manufacturing/Business-Education/childrens-products"],
+ cnpp:["CNPP：童装品牌（巴拉巴拉、MINI PEACE）","https://www.cnpp.cn/focus/362.html"]
+}
+});
+
 
 /* ---------- 结构示意图（通用，不是实拍图） ----------
    fig({k:"pens", n, ink:"black"|"rainbow"|"custom", cols:[颜色，写 "ink" 表示跟随主题的黑色], tips:[标签], pack:"blister"|"pouch"|"wallet"|"box"})
    其他 k：refill / brush / dual / kit / spring / erase / pad / multi / book / block / cards / accordion / workbook / bookkit / pans / tubes / cups / bottles / droppers / easel / sticks
    stand：画架、画箱、画柜，用 v 指定结构（aframe / hframe / crank / flat / tripod / wc / pochade / french / kit / cn / tablebox / tableh / tablea / tablemetal / board / kids / kidstable / display / displaywood / mini / artbox / toolbox / taboret / flatfile / rack / dryrack / easelcab / roll）
+   pants：裤装，v 指定版型（skinny / straight / wide / flare / jogger / bootcut），waist（elastic 宽松紧 / draw 抽绳 / button 扣 + 拉链 / panel 孕妇托腹），
+         fly（zip 真门襟 / faux 假门襟 / none），pk（real 真口袋 / faux 假口袋 / none），wash（dark / mid / light / black / print），rib 罗纹裤脚，kid 童装比例，fleece 加绒
    新品类需要新图形时，在这里加一个 k 分支即可。 */
 const HUES = ["#d6453d","#e8892b","#e6c229","#5bab4a","#2a9d8f","#2f78c4","#5a4fcf","#a855b5","#d9579b","#8b5a2b","#6b7280","#1f8a70"];
 function fig(spec){
@@ -4168,6 +4724,28 @@ function fig(spec){
       s+=`<rect x="${cx-bw/2}" y="26" width="${bw}" height="88" rx="${bw/2}" fill="${col}"/><rect x="${cx-bw/2}" y="62" width="${bw}" height="52" rx="2" class="sv-body"/>`; }
     s+=lab(W/2,140,spec.label||"颜料棒",8);
 
+  } else if(spec.k==="pants"){         /* 裤装：v 版型，waist 腰头，fly 门襟，pk 口袋，wash 洗色 */
+    const WASH={dark:"#2b3f63",mid:"#4f6f9c",light:"#8fb0d4",black:"#2e2e33",print:"#5d7fae"};
+    const col=WASH[spec.wash||"mid"], v=spec.v||"skinny", kid=!!spec.kid;
+    const cx=120, top=kid?30:16, wb=spec.waist==="panel"?0:(spec.waist==="elastic"||spec.waist==="draw"?13:8), hipW=kid?64:76, crotch=top+wb+(kid?34:40), bot=kid?124:136;
+    const k=kid?0.8:1, hemW=k*({skinny:15,straight:22,wide:32,flare:35,jogger:16,bootcut:27}[v]||22), kneeW=k*({skinny:19,straight:23,wide:29,flare:20,jogger:23,bootcut:21}[v]||23);
+    const L0=cx-hipW/2, R0=cx+hipW/2, gap=2, kneeY=crotch+(bot-crotch)*0.45;
+    const leg=(side)=>{ const outer=side<0?L0:R0, X=d=>cx+side*(gap+d), thigh=hipW/2-gap-4;
+      return `M${outer} ${top+wb} L${X(thigh)} ${crotch} Q${X(kneeW+1)} ${kneeY-8} ${X(kneeW)} ${kneeY} L${X(hemW)} ${bot} L${X(1)} ${bot} L${X(1)} ${crotch+4} Q${X(0)} ${crotch} ${cx} ${crotch} L${cx} ${top+wb}Z`; };
+    s+=`<path d="${leg(-1)}" fill="${col}"/><path d="${leg(1)}" fill="${col}"/>`;
+    if(spec.wash==="print") s+=`<path d="${leg(-1)}" fill="none" stroke="#fff" stroke-width=".6" stroke-dasharray="1 3" opacity=".7"/><path d="${leg(1)}" fill="none" stroke="#fff" stroke-width=".6" stroke-dasharray="1 3" opacity=".7"/>`;
+    if(spec.wash==="light"||spec.wash==="mid") s+=`<ellipse cx="${cx-hipW/4}" cy="${kneeY-6}" rx="7" ry="14" fill="#fff" opacity=".22"/><ellipse cx="${cx+hipW/4}" cy="${kneeY-6}" rx="7" ry="14" fill="#fff" opacity=".22"/>`;
+    if(spec.waist==="panel"){ s+=`<path d="M${L0+4} ${top+16} Q${cx} ${top-18} ${R0-4} ${top+16} L${R0} ${top+22} L${L0} ${top+22}Z" class="sv-soft"/>`+lab(cx,top+8,"托腹",7); }
+    else { s+=`<rect x="${L0}" y="${top}" width="${hipW}" height="${wb}" rx="2" fill="${spec.waist==="button"?col:"#3d4a5e"}" stroke="rgba(255,255,255,.35)"/>`;
+      if(spec.waist==="elastic"||spec.waist==="draw") for(let i=1;i<8;i++) s+=`<path d="M${L0+i*hipW/8} ${top+2} V${top+wb-2}" stroke="#fff" stroke-width=".6" opacity=".5"/>`;
+      if(spec.waist==="draw") s+=`<path d="M${cx-3} ${top+wb} q-4 14 -8 18 M${cx+3} ${top+wb} q4 14 8 18" stroke="#fff" stroke-width="1.4" fill="none"/>`;
+      if(spec.waist==="button") s+=`<circle cx="${cx}" cy="${top+wb/2}" r="2.4" fill="#d9b44a"/>`+[L0+10,cx-14,cx+14,R0-10].map(x=>`<rect x="${x-1.5}" y="${top-1}" width="3" height="${wb+3}" fill="${col}" stroke="rgba(255,255,255,.4)" stroke-width=".5"/>`).join(""); }
+    const fy=top+wb;
+    if(spec.fly==="zip"||spec.fly==="faux") s+=`<path d="M${cx} ${fy} V${fy+22} Q${cx-2} ${fy+28} ${cx-9} ${fy+26}" stroke="#e2c36b" stroke-width="1" fill="none" stroke-dasharray="${spec.fly==="faux"?"2 2":"none"}"/>`;
+    if(spec.pk==="real"||spec.pk==="faux"){ const d=spec.pk==="faux"?' stroke-dasharray="2 2"':""; s+=`<path d="M${L0+3} ${fy+2} Q${L0+14} ${fy+14} ${L0+20} ${fy+2}" stroke="#e2c36b" stroke-width="1" fill="none"${d}/><path d="M${R0-3} ${fy+2} Q${R0-14} ${fy+14} ${R0-20} ${fy+2}" stroke="#e2c36b" stroke-width="1" fill="none"${d}/>`; }
+    if(spec.rib||v==="jogger") s+=[-1,1].map(sd=>{ const a=cx+sd*(gap+1), b=cx+sd*(gap+hemW), x0=Math.min(a,b); return `<rect x="${x0}" y="${bot-8}" width="${Math.abs(b-a)}" height="8" fill="#3d4a5e"/>`; }).join("");
+    if(spec.fleece) s+=`<path d="M${L0+8} ${bot-30} h12 M${R0-20} ${bot-30} h12" stroke="#f3eadb" stroke-width="3" stroke-linecap="round"/>`+lab(R0+18,bot-26,"加绒",7,"start");
+    s+=lab(W/2,148,spec.label||"",8);
   } else if(spec.k==="stand"){         /* 画架 / 画箱 / 画柜：v 指定结构 */
     const v=spec.v, cv=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" class="sv-paper"/><path d="M${x+6} ${y+h-10} Q${x+w*0.4} ${y+h*0.3} ${x+w*0.6} ${y+h*0.6} T${x+w-6} ${y+12}" fill="none" stroke="${HUES[5]}" stroke-width="2"/>`;
     const wheels=(xs,y)=>xs.map(x=>`<circle cx="${x}" cy="${y}" r="4" class="sv-ink"/>`).join("");
@@ -4248,7 +4826,11 @@ function build(cat){
      c:cat.dims.map(g=>({t:g.g, role:"grp", about:g.about, c:g.cats.map(catNode)}))},
     {t:"③ 缺口与开品机会", role:"sec", sec:"opps", hc:"var(--s3)", n:`${cat.opps.filter(o=>"ABC".includes(o.pri)).length} 个机会 · ${cat.opps.filter(o=>o.pri==="Q").length} 条线索 · ${cat.opps.filter(o=>o.pri==="X").length} 个已排除`,
      about:"对比 ① 找出的缺口（假设）。按评分分 A / B / C，证据不足的列为线索，核实后不成立的列为已排除并保留原因。",
-     c:order.map(p=>({t:PRI_NAME[p], role:"grp", pk:p, c:cat.opps.filter(o=>o.pri===p).sort((a,b)=>(b.total||0)-(a.total||0)).map(o=>({...o, role:"opp"}))})).filter(g=>g.c.length)}
+     c:order.map(p=>({t:PRI_NAME[p], role:"grp", pk:p, c:cat.opps.filter(o=>o.pri===p).sort((a,b)=>(b.total||0)-(a.total||0)).map(o=>({...o, role:"opp"}))})).filter(g=>g.c.length)},
+    // 可选模块：竞品品牌（品类数据里有 brands 时才出现）
+    ...((cat.brands||[]).length ? [{t:"④ 竞品品牌", role:"sec", sec:"brands", hc:"var(--s4)", n:`${cat.brands.length} 组 · ${cat.brands.reduce((a,g)=>a+g.items.length,0)} 个品牌`,
+     about:"这个品类里主要的竞品品牌，按定位分组。每个品牌写定位、代表产品、价格带、渠道、主打卖点，以及覆盖的在售类型。",
+     c:cat.brands.map(g=>({t:g.g, role:"grp", about:g.about, c:g.items.map(b=>({...b, t:b.name, role:"brand"}))}))}] : [])
   ]};
 }
 const DATA = {}; CATS.forEach(c=>DATA[c.id]=build(c));
@@ -4261,7 +4843,7 @@ const idx = {};
 function prep(root,key){ let i=0; const walk=(n,d,p,hc)=>{ n.id=key+"-"+(i++); n.d=d; n.p=p; n.hc=n.hc||hc; idx[n.id]=n; (n.c||[]).forEach(ch=>walk(ch,d+1,n,n.hc)); }; walk(root,0,null,"var(--ink-3)"); }
 CATS.forEach(c=>prep(DATA[c.id],c.id));
 const all = key => Object.values(idx).filter(n=>n.id.startsWith(key+"-"));
-function foldDefault(key){ const s=collapsed[key]; s.clear(); all(key).forEach(n=>{ if(n.role==="cat"||n.role==="type"||(n.role==="grp"&&n.pk==="X")) s.add(n.id); }); }
+function foldDefault(key){ const s=collapsed[key]; s.clear(); all(key).forEach(n=>{ if(n.role==="cat"||n.role==="type"||(n.role==="grp"&&n.pk==="X")||(n.role==="grp"&&n.p&&n.p.sec==="brands")) s.add(n.id); }); }
 CATS.forEach(c=>foldDefault(c.id));
 try{ const t=localStorage.getItem("mm-tab"); if(t && DATA[t]) st.tab=t; }catch(e){}
 const CUR = () => catById(st.tab);
@@ -4276,9 +4858,9 @@ const tagPill = t => t ? `<i class="pill ${t}">${t==="L0"?"门槛":t}</i>` : "";
 const flagTag = f => f && FLAG[f] ? `<i class="fl ${FLAG[f][1]}">${FLAG[f][0]}</i>` : "";
 const priTag = p => `<i class="pri ${p}">${p==="Q"?"?":p==="X"?"×":p}</i>`;
 const li = a => (a||[]).map(x=>`<li>${esc(x)}</li>`).join("");
-function hay(n){ return [n.t,n.n,(n.kw||[]).join(" "),(n.combo||[]).join(" "),(n.spec||[]).join(" "),n.rep,n.why,n.pain,(n.ex||[]).map(e=>e.n).join(" ")].filter(Boolean).join(" ").toLowerCase(); }
+function hay(n){ return [n.t,n.n,(n.kw||[]).join(" "),(n.combo||[]).join(" "),(n.spec||[]).join(" "),n.rep,n.why,n.pain,(n.ex||[]).map(e=>e.n).join(" "),n.prod,n.sell,n.tier,(n.types||[]).join(" ")].filter(Boolean).join(" ").toLowerCase(); }
 const matches = n => !!st.q && n.role!=="info" && hay(n).includes(st.q.toLowerCase());
-const evLinks = keys => { const S=CUR().src; return (keys||[]).filter(k=>S[k]).map(k=>`<li><a href="${S[k][1]}" target="_blank" rel="noopener">${esc(S[k][0])}</a></li>`).join(""); };
+const evLinks = (keys, skipUrl) => { const S=CUR().src; return (keys||[]).filter(k=>S[k] && S[k][1]!==skipUrl).map(k=>`<li><a href="${S[k][1]}" target="_blank" rel="noopener">${esc(S[k][0])}</a></li>`).join(""); };
 const dimNode = (tab,name) => all(tab).find(x=>x.role==="dim" && x.t===name);
 const oppByTitle = t => CUR().opps.find(x=>x.t===t);
 function scoreHTML(o){
@@ -4311,6 +4893,7 @@ function nodeHTML(n, isCol){
     case "type": return `<div class="tt"><b>${esc(n.t)}</b>${volTag(n.vol)}<span class="comp ${n.comp}">${compLabel[n.comp]}</span>${verdictTag(n.verdict)}</div><div class="combo">${n.combo.map(esc).join(" · ")}</div><div class="meta">${esc(n.price)}${isCol?` · <span class="more">展开 5 项 ▸</span>`:""}</div>`;
     case "opp":  return `<div class="tt">${priTag(n.pri)}<b>${esc(n.t)}</b><span class="gap">${esc(n.gap)}</span></div><div class="combo">${n.spec.map(esc).join(" · ")}</div><div class="meta">${n.pri==="X"?"已排除："+esc(n.outWhy||""):n.pri==="Q"?"线索 · 待验证 · "+esc(n.price||""):`评分 ${n.total.toFixed(2)} · ${esc(n.price)} · 依据：${esc(n.evl)}`}</div>`;
     case "info": return `<div class="ih">${esc(n.t)}</div>${infoHTML(n.kind, n.ref, st.tab)}`;
+    case "brand": return `<div class="tt"><b>${esc(n.t)}</b><span class="btier">${esc(n.tier)}</span></div><div class="combo">${esc(n.prod)}</div><div class="meta">${esc(n.price)} · ${esc(n.ch)}</div>`;
   }
 }
 function render(){
@@ -4326,7 +4909,7 @@ function render(){
     n.w=e.offsetWidth; n.h=e.offsetHeight;
   });
   const gapX = n => n.role==="root"?56 : n.role==="sec"?48 : 40;
-  const gapY = n => ({sec:28, grp:16, cat:12, type:12, opp:10, dim:8, info:10})[n.role] ?? 4;
+  const gapY = n => ({sec:28, grp:16, cat:12, type:12, opp:10, brand:8, dim:8, info:10})[n.role] ?? 4;
   let y=56;
   const lay=n=>{
     n.x = n.p ? n.p.x + n.p.w + gapX(n.p) : 24;
@@ -4379,6 +4962,8 @@ function showDetail(n){
     INFO.forEach(([k,t])=>{ h+=`<h3>${t}</h3><div class="dinfo">${infoHTML(k,n,st.tab)}</div>`; });
     const rel=CUR().opps.filter(o=>(o.from||"").includes(n.t));
     if(rel.length) h+=`<h3>相关开品机会</h3><ul>${rel.map(o=>`<li>${priTag(o.pri)} ${esc(o.t)}</li>`).join("")}</ul>`;
+    const bs=brandsOf(n.t);
+    if(bs.length) h+=`<h3>主要竞品品牌</h3><div class="chips">${bs.map(b=>`<button type="button" class="chip go-brand" data-brand="${esc(b.name)}">${esc(b.name)}</button>`).join("")}</div>`;
     h+=`<h3>依据 <span class="evtag">${esc(n.evl)}</span></h3><ul class="ev">${evLinks(n.ev)}</ul>`;
   } else if(n.role==="opp"){
     h+=`<h2>${esc(n.t)}</h2><div class="row">${priTag(n.pri)}<span class="gap">${esc(n.gap)}</span><span class="evtag">依据：${esc(n.evl)}</span></div>`;
@@ -4392,6 +4977,13 @@ function showDetail(n){
     if(n.risk) h+=`<h3>风险</h3><p>${esc(n.risk)}</p>`;
     if(n.verify) h+=`<h3>验证方法</h3><p>${esc(n.verify)}</p>`;
     if(n.ev && n.ev.length) h+=`<h3>来源</h3><ul class="ev">${evLinks(n.ev)}</ul>`;
+  } else if(n.role==="brand"){
+    h+=`<h2>${esc(n.t)}</h2><div class="row"><span class="btier">${esc(n.tier)}</span>${n.origin?`<span class="evtag">${esc(n.origin)}</span>`:""}<span class="evtag">依据：${esc(n.evl||"")}</span></div>`;
+    h+=`<h3>代表产品</h3><p>${esc(n.prod)}</p><h3>价格带</h3><p>${esc(n.price)}</p><h3>主要渠道</h3><p>${esc(n.ch)}</p><h3>主力人群</h3><p>${esc(n.who)}</p><h3>主打卖点</h3><p>${esc(n.sell)}</p>`;
+    if((n.types||[]).length) h+=`<h3>覆盖的在售类型</h3><div class="chips">${n.types.map(t=>`<button type="button" class="chip go-type" data-type="${esc(t)}">${esc(t)}</button>`).join("")}</div>`;
+    h+=`<h3>优势</h3><ul>${li(n.pros)}</ul><h3>短板 / 常见差评</h3><ul>${li(n.cons)}</ul>`;
+    if(n.note) h+=`<p class="fine">${esc(n.note)}</p>`;
+    h+=`<h3>链接与依据</h3><ul class="ev">${n.url?`<li><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.urlLabel||"品牌 / 商品页")}</a></li>`:""}${evLinks(n.ev, n.url)}</ul>`;
   } else if(n.role==="sec"||n.role==="grp"){
     h+=`<h2>${esc(n.t)}</h2>`;
     if(n.about) h+=`<p>${esc(n.about)}</p>`;
@@ -4402,7 +4994,7 @@ function showDetail(n){
     if(n.role==="root"){ const sc=n.scope;
       h+=`<h3>品类定义</h3><p>${esc(sc.def)}</p><h3>纳入</h3><p>${esc(sc.include)}</p><h3>不纳入</h3><p>${esc(sc.exclude)}</p><h3>邻近品类（单独记录）</h3><p>${esc(sc.adjacent)}</p>`;
       if(sc.kw) h+=`<h3>平台搜索关键词</h3><div class="chips">${sc.kw.map(k=>`<span class="kw">${esc(k)}</span>`).join("")}</div>`;
-      h+=`<h3>怎么读这张图</h3><p>根节点下分三块：① 在售类型（已观察）、② 分类维度、③ 缺口与机会（假设）。① 的类型卡片展开后有五项；“对应分类维度”里的维度名可以点，会跳到 ② 里对应的位置。</p>`;
+      h+=`<h3>怎么读这张图</h3><p>根节点下分三块：① 在售类型（已观察）、② 分类维度、③ 缺口与机会（假设）；有竞品品牌数据的品类另有 ④ 竞品品牌。① 的类型卡片展开后有五项；“对应分类维度”里的维度名可以点，会跳到 ② 里对应的位置。</p>`;
     } else {
       if(n.def) h+=`<h3>定义</h3><p>${esc(n.def)}</p>`; else if(n.n) h+=`<h3>说明</h3><p>${esc(n.n)}</p>`;
       if(n.rule) h+=`<h3>判定 / 登记规则</h3><p>${esc(n.rule)}</p>`;
@@ -4415,7 +5007,13 @@ function showDetail(n){
   }
   det.innerHTML=h;
 }
-det.addEventListener("click",e=>{ const b=e.target.closest("[data-dim]"); if(b) jumpDim(b.dataset.dim); });
+det.addEventListener("click",e=>{ const b=e.target.closest("[data-dim]"); if(b) jumpDim(b.dataset.dim); goTypeOrBrand(e); });
+const brandsOf = t => (CUR().brands||[]).flatMap(g=>g.items).filter(b=>(b.types||[]).includes(t));
+function goTypeOrBrand(e){
+  const t=e.target.closest(".go-type"), b=e.target.closest(".go-brand");
+  const n = t ? all(st.tab).find(x=>x.role==="type" && x.t===t.dataset.type) : b ? all(st.tab).find(x=>x.role==="brand" && x.t===b.dataset.brand) : null;
+  if(n){ focusNode(n,{open:n.role==="type"}); goMap(); }
+}
 
 /* ---------- 白地图 ---------- */
 const SUP = {R:"红海",S:"有供给",L:"稀少",E:"空白",X:"不成立"};
@@ -4520,6 +5118,28 @@ document.getElementById("profiles").addEventListener("click",e=>{
   focusNode(n,{open:true}); goMap();
 });
 
+/* ---------- 竞品品牌 ---------- */
+function renderBrands(){
+  const cat=CUR(), B=cat.brands||[], has=B.length>0;
+  document.getElementById("s-brands").hidden=!has; document.getElementById("toc-brands").hidden=!has;
+  if(!has){ document.getElementById("t-brands").innerHTML=""; document.getElementById("brands").innerHTML=""; return; }
+  const T=cat.types.flatMap(g=>g.items.map(it=>it.t));
+  let h=`<thead><tr><th>品牌</th><th>定位</th><th>价格带</th>${T.map(t=>`<th class="tc"><button type="button" class="go-type" data-type="${esc(t)}" style="all:unset;cursor:pointer">${esc(t)}</button></th>`).join("")}</tr></thead><tbody>`;
+  B.forEach(g=>{ h+=`<tr class="grp-row"><td colspan="${T.length+3}">${esc(g.g)}</td></tr>`;
+    g.items.forEach(b=>{ h+=`<tr><td class="name bn"><button type="button" class="go-brand" data-brand="${esc(b.name)}" style="all:unset;cursor:pointer">${esc(b.name)}</button></td><td class="small">${esc(b.tier)}</td><td class="small">${esc(b.price)}</td>${T.map(t=>`<td class="dotc">${(b.types||[]).includes(t)?'<span class="on" title="有在售">●</span>':""}</td>`).join("")}</tr>`; }); });
+  document.getElementById("t-brands").innerHTML=h+`<tr class="grp-row"><td colspan="3">覆盖品牌数</td>${T.map(t=>`<td class="dotc small">${brandsOf(t).length||"—"}</td>`).join("")}</tr></tbody>`;
+  let c="";
+  B.forEach(g=>{ c+=`<div class="pf-group"><h3>${esc(g.g)}${g.about?`<span>${esc(g.about)}</span>`:""}</h3><div class="brands">`;
+    g.items.forEach(b=>{ c+=`<article class="bcard"><h4><button type="button" class="go-brand pf-t" data-brand="${esc(b.name)}">${esc(b.name)}</button><span class="btier">${esc(b.tier)}</span></h4>
+      <dl class="bk"><dt>来源</dt><dd>${esc(b.origin||"—")}</dd><dt>代表产品</dt><dd>${esc(b.prod)}</dd><dt>价格带</dt><dd>${esc(b.price)}</dd><dt>渠道</dt><dd>${esc(b.ch)}</dd><dt>人群</dt><dd>${esc(b.who)}</dd><dt>主打</dt><dd>${esc(b.sell)}</dd></dl>
+      <div class="bt">${(b.types||[]).map(t=>`<button type="button" class="chip go-type" data-type="${esc(t)}">${esc(t)}</button>`).join("")}</div>
+      <div class="pc"><div><b>优势</b><ul>${li((b.pros||[]).slice(0,3))}</ul></div><div><b>短板</b><ul>${li((b.cons||[]).slice(0,3))}</ul></div></div>
+      ${b.url?`<a href="${esc(b.url)}" target="_blank" rel="noopener" class="small">${esc(b.urlLabel||"品牌 / 商品页")} ↗</a>`:""}</article>`; });
+    c+=`</div></div>`; });
+  document.getElementById("brands").innerHTML=c;
+}
+document.getElementById("s-brands").addEventListener("click",goTypeOrBrand);
+
 /* ---------- 对照表与机会评估 ---------- */
 function renderTables(){
   const cat=CUR();
@@ -4548,6 +5168,7 @@ function renderChrome(){
   document.getElementById("h-map").textContent=`${cat.name}思维导图`;
   document.getElementById("h-grid").textContent=`${cat.name}白地图`;
   document.getElementById("h-prof").textContent=`${cat.name}类型档案`;
+  document.getElementById("h-brands").textContent=`${cat.name}竞品品牌`;
   document.getElementById("h-types").textContent=`${cat.name}类型对照表`;
   document.getElementById("h-opps").textContent=`${cat.name}机会评估`;
   const sc=cat.scope;
@@ -4618,6 +5239,7 @@ function outline(n,dep){
     return line;
   }
   if(n.role==="opp"){ line+=`\n${sub}- 缺口类型：${n.gap}`+(n.total!=null?`\n${sub}- 评分：${n.total.toFixed(2)}（${SCORE_DEF.map(d=>d.n+" "+n.score[d.k]).join("，")}）`:"")+(n.pri==="X"?`\n${sub}- 排除原因：${n.outWhy}`:"")+`\n${sub}- 依据：${n.why}\n${sub}- 维度组合：${n.spec.join(" · ")}`+(n.price?`\n${sub}- 建议价格：${n.price}`:"")+(n.risk?`\n${sub}- 风险：${n.risk}`:"")+(n.verify?`\n${sub}- 验证方法：${n.verify}`:""); return line; }
+  if(n.role==="brand"){ line+=`（${n.tier}）\n${sub}- 代表产品：${n.prod}\n${sub}- 价格带：${n.price}\n${sub}- 渠道：${n.ch}\n${sub}- 主打：${n.sell}`+L("覆盖类型",n.types)+L("优势",n.pros)+L("短板",n.cons)+(n.url?`\n${sub}- 链接：${n.url}`:""); return line; }
   if(n.role==="dim"&&n.def) line+=`\n${sub}- 定义：${n.def}`;
   if(n.role==="dim"&&n.rule) line+=`\n${sub}- 登记规则：${n.rule}`;
   return [line].concat((n.c||[]).map(c=>outline(c,dep+1)).filter(Boolean)).join("\n");
@@ -4631,7 +5253,7 @@ document.getElementById("btn-copy").addEventListener("click",()=>{ const r=DATA[
 document.getElementById("btn-json").addEventListener("click",()=>{ copyText(JSON.stringify(CUR(),(k,v)=>k==="total"||k==="pri"?undefined:v,2), `已复制${CUR().name}数据（JSON），可作为新品类模板参考`); });
 
 /* ---------- 启动 ---------- */
-function renderAll(){ renderChrome(); render(); showDetail(null); renderGrid(); renderProfiles(); renderTables(); }
+function renderAll(){ renderChrome(); render(); showDetail(null); renderGrid(); renderProfiles(); renderBrands(); renderTables(); }
 function setNavH(){ const n=document.getElementById("snav"); if(n) document.documentElement.style.setProperty("--nav-h",n.offsetHeight+"px"); }
 renderAll(); centerRoot(); setNavH();
 window.addEventListener("resize",setNavH);

@@ -41,7 +41,11 @@ function build(cat){
      c:cat.dims.map(g=>({t:g.g, role:"grp", about:g.about, c:g.cats.map(catNode)}))},
     {t:"③ 缺口与开品机会", role:"sec", sec:"opps", hc:"var(--s3)", n:`${cat.opps.filter(o=>"ABC".includes(o.pri)).length} 个机会 · ${cat.opps.filter(o=>o.pri==="Q").length} 条线索 · ${cat.opps.filter(o=>o.pri==="X").length} 个已排除`,
      about:"对比 ① 找出的缺口（假设）。按评分分 A / B / C，证据不足的列为线索，核实后不成立的列为已排除并保留原因。",
-     c:order.map(p=>({t:PRI_NAME[p], role:"grp", pk:p, c:cat.opps.filter(o=>o.pri===p).sort((a,b)=>(b.total||0)-(a.total||0)).map(o=>({...o, role:"opp"}))})).filter(g=>g.c.length)}
+     c:order.map(p=>({t:PRI_NAME[p], role:"grp", pk:p, c:cat.opps.filter(o=>o.pri===p).sort((a,b)=>(b.total||0)-(a.total||0)).map(o=>({...o, role:"opp"}))})).filter(g=>g.c.length)},
+    // 可选模块：竞品品牌（品类数据里有 brands 时才出现）
+    ...((cat.brands||[]).length ? [{t:"④ 竞品品牌", role:"sec", sec:"brands", hc:"var(--s4)", n:`${cat.brands.length} 组 · ${cat.brands.reduce((a,g)=>a+g.items.length,0)} 个品牌`,
+     about:"这个品类里主要的竞品品牌，按定位分组。每个品牌写定位、代表产品、价格带、渠道、主打卖点，以及覆盖的在售类型。",
+     c:cat.brands.map(g=>({t:g.g, role:"grp", about:g.about, c:g.items.map(b=>({...b, t:b.name, role:"brand"}))}))}] : [])
   ]};
 }
 const DATA = {}; CATS.forEach(c=>DATA[c.id]=build(c));
@@ -54,7 +58,7 @@ const idx = {};
 function prep(root,key){ let i=0; const walk=(n,d,p,hc)=>{ n.id=key+"-"+(i++); n.d=d; n.p=p; n.hc=n.hc||hc; idx[n.id]=n; (n.c||[]).forEach(ch=>walk(ch,d+1,n,n.hc)); }; walk(root,0,null,"var(--ink-3)"); }
 CATS.forEach(c=>prep(DATA[c.id],c.id));
 const all = key => Object.values(idx).filter(n=>n.id.startsWith(key+"-"));
-function foldDefault(key){ const s=collapsed[key]; s.clear(); all(key).forEach(n=>{ if(n.role==="cat"||n.role==="type"||(n.role==="grp"&&n.pk==="X")) s.add(n.id); }); }
+function foldDefault(key){ const s=collapsed[key]; s.clear(); all(key).forEach(n=>{ if(n.role==="cat"||n.role==="type"||(n.role==="grp"&&n.pk==="X")||(n.role==="grp"&&n.p&&n.p.sec==="brands")) s.add(n.id); }); }
 CATS.forEach(c=>foldDefault(c.id));
 try{ const t=localStorage.getItem("mm-tab"); if(t && DATA[t]) st.tab=t; }catch(e){}
 const CUR = () => catById(st.tab);
@@ -69,9 +73,9 @@ const tagPill = t => t ? `<i class="pill ${t}">${t==="L0"?"门槛":t}</i>` : "";
 const flagTag = f => f && FLAG[f] ? `<i class="fl ${FLAG[f][1]}">${FLAG[f][0]}</i>` : "";
 const priTag = p => `<i class="pri ${p}">${p==="Q"?"?":p==="X"?"×":p}</i>`;
 const li = a => (a||[]).map(x=>`<li>${esc(x)}</li>`).join("");
-function hay(n){ return [n.t,n.n,(n.kw||[]).join(" "),(n.combo||[]).join(" "),(n.spec||[]).join(" "),n.rep,n.why,n.pain,(n.ex||[]).map(e=>e.n).join(" ")].filter(Boolean).join(" ").toLowerCase(); }
+function hay(n){ return [n.t,n.n,(n.kw||[]).join(" "),(n.combo||[]).join(" "),(n.spec||[]).join(" "),n.rep,n.why,n.pain,(n.ex||[]).map(e=>e.n).join(" "),n.prod,n.sell,n.tier,(n.types||[]).join(" ")].filter(Boolean).join(" ").toLowerCase(); }
 const matches = n => !!st.q && n.role!=="info" && hay(n).includes(st.q.toLowerCase());
-const evLinks = keys => { const S=CUR().src; return (keys||[]).filter(k=>S[k]).map(k=>`<li><a href="${S[k][1]}" target="_blank" rel="noopener">${esc(S[k][0])}</a></li>`).join(""); };
+const evLinks = (keys, skipUrl) => { const S=CUR().src; return (keys||[]).filter(k=>S[k] && S[k][1]!==skipUrl).map(k=>`<li><a href="${S[k][1]}" target="_blank" rel="noopener">${esc(S[k][0])}</a></li>`).join(""); };
 const dimNode = (tab,name) => all(tab).find(x=>x.role==="dim" && x.t===name);
 const oppByTitle = t => CUR().opps.find(x=>x.t===t);
 function scoreHTML(o){
@@ -104,6 +108,7 @@ function nodeHTML(n, isCol){
     case "type": return `<div class="tt"><b>${esc(n.t)}</b>${volTag(n.vol)}<span class="comp ${n.comp}">${compLabel[n.comp]}</span>${verdictTag(n.verdict)}</div><div class="combo">${n.combo.map(esc).join(" · ")}</div><div class="meta">${esc(n.price)}${isCol?` · <span class="more">展开 5 项 ▸</span>`:""}</div>`;
     case "opp":  return `<div class="tt">${priTag(n.pri)}<b>${esc(n.t)}</b><span class="gap">${esc(n.gap)}</span></div><div class="combo">${n.spec.map(esc).join(" · ")}</div><div class="meta">${n.pri==="X"?"已排除："+esc(n.outWhy||""):n.pri==="Q"?"线索 · 待验证 · "+esc(n.price||""):`评分 ${n.total.toFixed(2)} · ${esc(n.price)} · 依据：${esc(n.evl)}`}</div>`;
     case "info": return `<div class="ih">${esc(n.t)}</div>${infoHTML(n.kind, n.ref, st.tab)}`;
+    case "brand": return `<div class="tt"><b>${esc(n.t)}</b><span class="btier">${esc(n.tier)}</span></div><div class="combo">${esc(n.prod)}</div><div class="meta">${esc(n.price)} · ${esc(n.ch)}</div>`;
   }
 }
 function render(){
@@ -119,7 +124,7 @@ function render(){
     n.w=e.offsetWidth; n.h=e.offsetHeight;
   });
   const gapX = n => n.role==="root"?56 : n.role==="sec"?48 : 40;
-  const gapY = n => ({sec:28, grp:16, cat:12, type:12, opp:10, dim:8, info:10})[n.role] ?? 4;
+  const gapY = n => ({sec:28, grp:16, cat:12, type:12, opp:10, brand:8, dim:8, info:10})[n.role] ?? 4;
   let y=56;
   const lay=n=>{
     n.x = n.p ? n.p.x + n.p.w + gapX(n.p) : 24;
@@ -172,6 +177,8 @@ function showDetail(n){
     INFO.forEach(([k,t])=>{ h+=`<h3>${t}</h3><div class="dinfo">${infoHTML(k,n,st.tab)}</div>`; });
     const rel=CUR().opps.filter(o=>(o.from||"").includes(n.t));
     if(rel.length) h+=`<h3>相关开品机会</h3><ul>${rel.map(o=>`<li>${priTag(o.pri)} ${esc(o.t)}</li>`).join("")}</ul>`;
+    const bs=brandsOf(n.t);
+    if(bs.length) h+=`<h3>主要竞品品牌</h3><div class="chips">${bs.map(b=>`<button type="button" class="chip go-brand" data-brand="${esc(b.name)}">${esc(b.name)}</button>`).join("")}</div>`;
     h+=`<h3>依据 <span class="evtag">${esc(n.evl)}</span></h3><ul class="ev">${evLinks(n.ev)}</ul>`;
   } else if(n.role==="opp"){
     h+=`<h2>${esc(n.t)}</h2><div class="row">${priTag(n.pri)}<span class="gap">${esc(n.gap)}</span><span class="evtag">依据：${esc(n.evl)}</span></div>`;
@@ -185,6 +192,13 @@ function showDetail(n){
     if(n.risk) h+=`<h3>风险</h3><p>${esc(n.risk)}</p>`;
     if(n.verify) h+=`<h3>验证方法</h3><p>${esc(n.verify)}</p>`;
     if(n.ev && n.ev.length) h+=`<h3>来源</h3><ul class="ev">${evLinks(n.ev)}</ul>`;
+  } else if(n.role==="brand"){
+    h+=`<h2>${esc(n.t)}</h2><div class="row"><span class="btier">${esc(n.tier)}</span>${n.origin?`<span class="evtag">${esc(n.origin)}</span>`:""}<span class="evtag">依据：${esc(n.evl||"")}</span></div>`;
+    h+=`<h3>代表产品</h3><p>${esc(n.prod)}</p><h3>价格带</h3><p>${esc(n.price)}</p><h3>主要渠道</h3><p>${esc(n.ch)}</p><h3>主力人群</h3><p>${esc(n.who)}</p><h3>主打卖点</h3><p>${esc(n.sell)}</p>`;
+    if((n.types||[]).length) h+=`<h3>覆盖的在售类型</h3><div class="chips">${n.types.map(t=>`<button type="button" class="chip go-type" data-type="${esc(t)}">${esc(t)}</button>`).join("")}</div>`;
+    h+=`<h3>优势</h3><ul>${li(n.pros)}</ul><h3>短板 / 常见差评</h3><ul>${li(n.cons)}</ul>`;
+    if(n.note) h+=`<p class="fine">${esc(n.note)}</p>`;
+    h+=`<h3>链接与依据</h3><ul class="ev">${n.url?`<li><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.urlLabel||"品牌 / 商品页")}</a></li>`:""}${evLinks(n.ev, n.url)}</ul>`;
   } else if(n.role==="sec"||n.role==="grp"){
     h+=`<h2>${esc(n.t)}</h2>`;
     if(n.about) h+=`<p>${esc(n.about)}</p>`;
@@ -195,7 +209,7 @@ function showDetail(n){
     if(n.role==="root"){ const sc=n.scope;
       h+=`<h3>品类定义</h3><p>${esc(sc.def)}</p><h3>纳入</h3><p>${esc(sc.include)}</p><h3>不纳入</h3><p>${esc(sc.exclude)}</p><h3>邻近品类（单独记录）</h3><p>${esc(sc.adjacent)}</p>`;
       if(sc.kw) h+=`<h3>平台搜索关键词</h3><div class="chips">${sc.kw.map(k=>`<span class="kw">${esc(k)}</span>`).join("")}</div>`;
-      h+=`<h3>怎么读这张图</h3><p>根节点下分三块：① 在售类型（已观察）、② 分类维度、③ 缺口与机会（假设）。① 的类型卡片展开后有五项；“对应分类维度”里的维度名可以点，会跳到 ② 里对应的位置。</p>`;
+      h+=`<h3>怎么读这张图</h3><p>根节点下分三块：① 在售类型（已观察）、② 分类维度、③ 缺口与机会（假设）；有竞品品牌数据的品类另有 ④ 竞品品牌。① 的类型卡片展开后有五项；“对应分类维度”里的维度名可以点，会跳到 ② 里对应的位置。</p>`;
     } else {
       if(n.def) h+=`<h3>定义</h3><p>${esc(n.def)}</p>`; else if(n.n) h+=`<h3>说明</h3><p>${esc(n.n)}</p>`;
       if(n.rule) h+=`<h3>判定 / 登记规则</h3><p>${esc(n.rule)}</p>`;
@@ -208,7 +222,13 @@ function showDetail(n){
   }
   det.innerHTML=h;
 }
-det.addEventListener("click",e=>{ const b=e.target.closest("[data-dim]"); if(b) jumpDim(b.dataset.dim); });
+det.addEventListener("click",e=>{ const b=e.target.closest("[data-dim]"); if(b) jumpDim(b.dataset.dim); goTypeOrBrand(e); });
+const brandsOf = t => (CUR().brands||[]).flatMap(g=>g.items).filter(b=>(b.types||[]).includes(t));
+function goTypeOrBrand(e){
+  const t=e.target.closest(".go-type"), b=e.target.closest(".go-brand");
+  const n = t ? all(st.tab).find(x=>x.role==="type" && x.t===t.dataset.type) : b ? all(st.tab).find(x=>x.role==="brand" && x.t===b.dataset.brand) : null;
+  if(n){ focusNode(n,{open:n.role==="type"}); goMap(); }
+}
 
 /* ---------- 白地图 ---------- */
 const SUP = {R:"红海",S:"有供给",L:"稀少",E:"空白",X:"不成立"};
@@ -313,6 +333,28 @@ document.getElementById("profiles").addEventListener("click",e=>{
   focusNode(n,{open:true}); goMap();
 });
 
+/* ---------- 竞品品牌 ---------- */
+function renderBrands(){
+  const cat=CUR(), B=cat.brands||[], has=B.length>0;
+  document.getElementById("s-brands").hidden=!has; document.getElementById("toc-brands").hidden=!has;
+  if(!has){ document.getElementById("t-brands").innerHTML=""; document.getElementById("brands").innerHTML=""; return; }
+  const T=cat.types.flatMap(g=>g.items.map(it=>it.t));
+  let h=`<thead><tr><th>品牌</th><th>定位</th><th>价格带</th>${T.map(t=>`<th class="tc"><button type="button" class="go-type" data-type="${esc(t)}" style="all:unset;cursor:pointer">${esc(t)}</button></th>`).join("")}</tr></thead><tbody>`;
+  B.forEach(g=>{ h+=`<tr class="grp-row"><td colspan="${T.length+3}">${esc(g.g)}</td></tr>`;
+    g.items.forEach(b=>{ h+=`<tr><td class="name bn"><button type="button" class="go-brand" data-brand="${esc(b.name)}" style="all:unset;cursor:pointer">${esc(b.name)}</button></td><td class="small">${esc(b.tier)}</td><td class="small">${esc(b.price)}</td>${T.map(t=>`<td class="dotc">${(b.types||[]).includes(t)?'<span class="on" title="有在售">●</span>':""}</td>`).join("")}</tr>`; }); });
+  document.getElementById("t-brands").innerHTML=h+`<tr class="grp-row"><td colspan="3">覆盖品牌数</td>${T.map(t=>`<td class="dotc small">${brandsOf(t).length||"—"}</td>`).join("")}</tr></tbody>`;
+  let c="";
+  B.forEach(g=>{ c+=`<div class="pf-group"><h3>${esc(g.g)}${g.about?`<span>${esc(g.about)}</span>`:""}</h3><div class="brands">`;
+    g.items.forEach(b=>{ c+=`<article class="bcard"><h4><button type="button" class="go-brand pf-t" data-brand="${esc(b.name)}">${esc(b.name)}</button><span class="btier">${esc(b.tier)}</span></h4>
+      <dl class="bk"><dt>来源</dt><dd>${esc(b.origin||"—")}</dd><dt>代表产品</dt><dd>${esc(b.prod)}</dd><dt>价格带</dt><dd>${esc(b.price)}</dd><dt>渠道</dt><dd>${esc(b.ch)}</dd><dt>人群</dt><dd>${esc(b.who)}</dd><dt>主打</dt><dd>${esc(b.sell)}</dd></dl>
+      <div class="bt">${(b.types||[]).map(t=>`<button type="button" class="chip go-type" data-type="${esc(t)}">${esc(t)}</button>`).join("")}</div>
+      <div class="pc"><div><b>优势</b><ul>${li((b.pros||[]).slice(0,3))}</ul></div><div><b>短板</b><ul>${li((b.cons||[]).slice(0,3))}</ul></div></div>
+      ${b.url?`<a href="${esc(b.url)}" target="_blank" rel="noopener" class="small">${esc(b.urlLabel||"品牌 / 商品页")} ↗</a>`:""}</article>`; });
+    c+=`</div></div>`; });
+  document.getElementById("brands").innerHTML=c;
+}
+document.getElementById("s-brands").addEventListener("click",goTypeOrBrand);
+
 /* ---------- 对照表与机会评估 ---------- */
 function renderTables(){
   const cat=CUR();
@@ -341,6 +383,7 @@ function renderChrome(){
   document.getElementById("h-map").textContent=`${cat.name}思维导图`;
   document.getElementById("h-grid").textContent=`${cat.name}白地图`;
   document.getElementById("h-prof").textContent=`${cat.name}类型档案`;
+  document.getElementById("h-brands").textContent=`${cat.name}竞品品牌`;
   document.getElementById("h-types").textContent=`${cat.name}类型对照表`;
   document.getElementById("h-opps").textContent=`${cat.name}机会评估`;
   const sc=cat.scope;
@@ -411,6 +454,7 @@ function outline(n,dep){
     return line;
   }
   if(n.role==="opp"){ line+=`\n${sub}- 缺口类型：${n.gap}`+(n.total!=null?`\n${sub}- 评分：${n.total.toFixed(2)}（${SCORE_DEF.map(d=>d.n+" "+n.score[d.k]).join("，")}）`:"")+(n.pri==="X"?`\n${sub}- 排除原因：${n.outWhy}`:"")+`\n${sub}- 依据：${n.why}\n${sub}- 维度组合：${n.spec.join(" · ")}`+(n.price?`\n${sub}- 建议价格：${n.price}`:"")+(n.risk?`\n${sub}- 风险：${n.risk}`:"")+(n.verify?`\n${sub}- 验证方法：${n.verify}`:""); return line; }
+  if(n.role==="brand"){ line+=`（${n.tier}）\n${sub}- 代表产品：${n.prod}\n${sub}- 价格带：${n.price}\n${sub}- 渠道：${n.ch}\n${sub}- 主打：${n.sell}`+L("覆盖类型",n.types)+L("优势",n.pros)+L("短板",n.cons)+(n.url?`\n${sub}- 链接：${n.url}`:""); return line; }
   if(n.role==="dim"&&n.def) line+=`\n${sub}- 定义：${n.def}`;
   if(n.role==="dim"&&n.rule) line+=`\n${sub}- 登记规则：${n.rule}`;
   return [line].concat((n.c||[]).map(c=>outline(c,dep+1)).filter(Boolean)).join("\n");
@@ -424,7 +468,7 @@ document.getElementById("btn-copy").addEventListener("click",()=>{ const r=DATA[
 document.getElementById("btn-json").addEventListener("click",()=>{ copyText(JSON.stringify(CUR(),(k,v)=>k==="total"||k==="pri"?undefined:v,2), `已复制${CUR().name}数据（JSON），可作为新品类模板参考`); });
 
 /* ---------- 启动 ---------- */
-function renderAll(){ renderChrome(); render(); showDetail(null); renderGrid(); renderProfiles(); renderTables(); }
+function renderAll(){ renderChrome(); render(); showDetail(null); renderGrid(); renderProfiles(); renderBrands(); renderTables(); }
 function setNavH(){ const n=document.getElementById("snav"); if(n) document.documentElement.style.setProperty("--nav-h",n.offsetHeight+"px"); }
 renderAll(); centerRoot(); setNavH();
 window.addEventListener("resize",setNavH);

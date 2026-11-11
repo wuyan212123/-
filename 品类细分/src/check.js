@@ -49,6 +49,18 @@ const { chromium } = require("playwright");
           });
         });
       });
+      // 可选模块：竞品品牌
+      const brandNames = new Set();
+      (cat.brands || []).forEach(g => {
+        if (!g.g || !Array.isArray(g.items)) errs.push("竞品品牌分组缺少 g 或 items");
+        (g.items || []).forEach(b => {
+          ["name","tier","prod","price","ch","who","sell","types","pros","cons","evl"].forEach(k => { if (b[k] === undefined) errs.push(`品牌「${b.name}」缺少字段 ${k}`); });
+          if (brandNames.has(b.name)) errs.push(`品牌「${b.name}」重复`); brandNames.add(b.name);
+          (b.types || []).forEach(t => { if (!typeNames.has(t)) errs.push(`品牌「${b.name}」覆盖的类型「${t}」不存在`); });
+          (b.ev || []).forEach(k => { if (!cat.src[k]) errs.push(`品牌「${b.name}」引用了不存在的来源 ${k}`); });
+          if (!b.url && !(b.ev || []).length) warn.push(`品牌「${b.name}」没有链接也没有来源`);
+        });
+      });
       // 《开品维度图谱规范》最低要求（样板：水彩本）
       const groups = cat.dims.map(g => g.g).join(" / ");
       if (groups !== "产品本体 / 销售形态 / 市场定位") errs.push(`维度分组应为 产品本体 / 销售形态 / 市场定位，实际为 ${groups}`);
@@ -60,8 +72,8 @@ const { chromium } = require("playwright");
       if (cat.grids.length !== 4) errs.push(`白地图 ${cat.grids.length} 张，应为 4 张`);
       if (!cat.grids.some(v => v.price)) errs.push("缺少“× 价格带”白地图（带 price 区间）");
       if (cat.series && !cat.pos) warn.push("有系列但没有一句话定位 pos");
-      const nType = [...typeNames].length, nDim = dimNames.size, nRef = Object.keys(cat.refs).length;
-      out.push({ cat: cat.name, stats: `${nType} 类型 · ${nDim} 维度 · ${cat.opps.length} 机会 · ${cat.grids.length} 张白地图 · ${nRef} 个参考商品`, errs, warn });
+      const nType = [...typeNames].length, nDim = dimNames.size, nRef = Object.keys(cat.refs).length, nBrand = brandNames.size;
+      out.push({ cat: cat.name, stats: `${nType} 类型 · ${nDim} 维度 · ${cat.opps.length} 机会 · ${cat.grids.length} 张白地图 · ${nRef} 个参考商品${nBrand ? ` · ${nBrand} 个竞品品牌` : ""}`, errs, warn });
     }
     return out;
   });

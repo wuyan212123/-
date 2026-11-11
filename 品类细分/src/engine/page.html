@@ -9,7 +9,7 @@
 :root{
   --paper:#f6f7f4; --sheet:#ffffff; --ink:#1b1f2a; --ink-2:#4a5162; --ink-3:#7c8394; --rule:#d9dcd3;
   --prussian:#1f4f7a; --prussian-soft:#e3ecf4; --hit:#fff1a8;
-  --s1:#1f4f7a; --s2:#3f6b4f; --s3:#a8332f;
+  --s1:#1f4f7a; --s2:#3f6b4f; --s3:#a8332f; --s4:#6b4f8a;
   --w1:#2f6f9f; --w2:#b2582f; --w3:#3f7d5a; --w4:#8a5aa8; --w5:#a07a1e; --w6:#b23a5a; --w7:#4b6b8a; --w8:#5c6b2f; --w9:#7a5230; --w10:#2f7f86;
   --l1:#1f4f7a; --l2:#3f7d5a; --l3:#a0601e; --l0:#b23a3a;
   --hi:#b23a3a; --mid:#a0701e; --lo:#3f7d5a;
@@ -21,14 +21,14 @@
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
   --paper:#14171d; --sheet:#1c2028; --ink:#e8eaee; --ink-2:#b9bfcb; --ink-3:#8790a0; --rule:#323845;
   --prussian:#7fb0dc; --prussian-soft:#1f2b3a; --hit:#5a4d12;
-  --s1:#7fb0dc; --s2:#86bd98; --s3:#e47c78;
+  --s1:#7fb0dc; --s2:#86bd98; --s3:#e47c78; --s4:#b9a2db;
   --w1:#6fa8d6; --w2:#e08a62; --w3:#74b48e; --w4:#b98fd6; --w5:#d3ad52; --w6:#e07592; --w7:#8eaccb; --w8:#a3b366; --w9:#c99a6e; --w10:#6cc3c9;
   --l1:#3f78b0; --l2:#3f8a5e; --l3:#b0702e; --l0:#c04848;
   --hi:#e47c78; --mid:#d9a05c; --lo:#74b48e; color-scheme:dark }}
 :root[data-theme="dark"]{
   --paper:#14171d; --sheet:#1c2028; --ink:#e8eaee; --ink-2:#b9bfcb; --ink-3:#8790a0; --rule:#323845;
   --prussian:#7fb0dc; --prussian-soft:#1f2b3a; --hit:#5a4d12;
-  --s1:#7fb0dc; --s2:#86bd98; --s3:#e47c78;
+  --s1:#7fb0dc; --s2:#86bd98; --s3:#e47c78; --s4:#b9a2db;
   --w1:#6fa8d6; --w2:#e08a62; --w3:#74b48e; --w4:#b98fd6; --w5:#d3ad52; --w6:#e07592; --w7:#8eaccb; --w8:#a3b366; --w9:#c99a6e; --w10:#6cc3c9;
   --l1:#3f78b0; --l2:#3f8a5e; --l3:#b0702e; --l0:#c04848;
   --hi:#e47c78; --mid:#d9a05c; --lo:#74b48e; color-scheme:dark }
@@ -132,6 +132,8 @@ svg.links{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
 .node.val::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--hue);margin-right:7px;vertical-align:1px}
 .node.type,.node.opp{width:360px;padding:8px 12px;border-left:3px solid var(--hue)}
 .node.opp.st-X{opacity:.72;border-left-style:dashed}
+.node.brand{width:340px;padding:8px 12px;border-left:3px solid var(--hue)}
+.btier{font:500 11px var(--font-body);border:1px solid var(--rule);border-radius:4px;padding:1px 6px;color:var(--ink-2);white-space:nowrap}
 .node .tt{display:flex;align-items:center;gap:5px;font-weight:700;font-size:13.5px;flex-wrap:wrap}
 .node .tt b{font-weight:700;margin-right:auto}
 .node .combo{font:12px/1.5 var(--font-body);color:var(--prussian);margin-top:3px}
@@ -280,6 +282,21 @@ ol.reflinks li{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
 .pf-req{margin:0;color:var(--ink-2);font-size:12.5px}
 .pf-v{margin:6px 0 0;padding-top:8px;border-top:1px dashed var(--rule);color:var(--ink-2);font-size:12.5px}
 .prof ul{margin:2px 0 0;padding-left:16px;color:var(--ink-2)}
+/* 竞品品牌 */
+.bmatrix td.dotc,.bmatrix th.tc{text-align:center;white-space:nowrap}
+.bmatrix th.tc{font-size:11px;font-weight:600;max-width:90px;white-space:normal;line-height:1.35;vertical-align:bottom}
+.bmatrix .on{color:var(--s4);font-size:15px}
+.bmatrix td.bn{white-space:nowrap}
+.brands{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.bcard{background:var(--sheet);border:1px solid var(--rule);border-left:3px solid var(--s4);border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:5px;font-size:13px;min-width:0}
+.bcard h4{margin:0;font-family:var(--font-display);font-weight:600;font-size:16px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.bcard .bk{display:grid;grid-template-columns:62px 1fr;gap:2px 8px;color:var(--ink-2);font-size:12.5px}
+.bcard .bk dt{color:var(--ink-3)} .bcard .bk dd{margin:0}
+.bcard .bt{display:flex;flex-wrap:wrap;gap:4px}
+.bcard ul{margin:0;padding-left:16px;color:var(--ink-2);font-size:12.5px}
+.bcard .pc{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.bcard .pc b{font-size:11px;color:var(--ink-3)}
+.go-type,.go-brand{cursor:pointer;font:inherit}
 /* 方法与规则 */
 .method{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
 .mcard{background:var(--sheet);border:1px solid var(--rule);border-radius:12px;padding:16px 18px;min-width:0}
@@ -310,7 +327,7 @@ ol.reflinks li{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
   <nav class="snav" id="snav" aria-label="品类与章节">
     <div class="tabs" id="cat-tabs" role="group" aria-label="选择品类"></div>
     <div class="toc">
-      <a href="#s-map">思维导图</a><a href="#s-grid">白地图</a><a href="#s-prof">类型档案</a><a href="#s-types">类型对照</a><a href="#s-opps">机会评估</a><a href="#s-method">方法与规则</a>
+      <a href="#s-map">思维导图</a><a href="#s-grid">白地图</a><a href="#s-prof">类型档案</a><a href="#s-brands" id="toc-brands">竞品品牌</a><a href="#s-types">类型对照</a><a href="#s-opps">机会评估</a><a href="#s-method">方法与规则</a>
     </div>
   </nav>
 
@@ -365,6 +382,13 @@ ol.reflinks li{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
     <h2 id="h-prof">类型档案</h2>
     <p>每个在售类型一张卡，按结构分组：结构示意、示例商品、优缺点、新品必须具备和必须避免的点。点类型名会在思维导图里展开它。示意图是结构示意，不是实拍。</p>
     <div id="profiles"></div>
+  </section>
+
+  <section class="block" id="s-brands">
+    <h2 id="h-brands">竞品品牌</h2>
+    <p>这个品类里主要的竞品品牌：定位、代表产品、价格带、渠道、主打卖点，以及各自覆盖哪些在售类型。矩阵里的圆点 = 该品牌有这一类型的在售产品（按本轮调研样本，不代表品牌全部产品线）。点品牌名或类型名会在思维导图里定位。</p>
+    <div class="tbl"><table id="t-brands" class="bmatrix"></table></div>
+    <div id="brands" style="margin-top:16px"></div>
   </section>
 
   <section class="block" id="s-types">
