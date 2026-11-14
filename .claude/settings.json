@@ -1,0 +1,28 @@
+{
+  "skillListingBudgetFraction": 0.02,
+  "skillOverrides": {
+    "webapp-testing": "name-only",
+    "hyperframes-cli": "name-only",
+    "hyperframes-registry": "name-only",
+    "media-use": "name-only",
+    "figma": "name-only",
+    "remotion-to-hyperframes": "name-only",
+    "reverse-any-video": "name-only",
+    "style-sampling": "name-only",
+    "remotion-captions": "name-only",
+    "remotion-create": "name-only",
+    "remotion-docs": "name-only",
+    "remotion-interactivity": "name-only",
+    "remotion-license": "name-only",
+    "remotion-maps": "name-only",
+    "remotion-markup": "name-only",
+    "remotion-multimedia": "name-only",
+    "remotion-render": "name-only",
+    "remotion-saas": "name-only",
+    "remotion-studio": "name-only",
+    "remotion-upgrade": "name-only"
+  },
+  "env": {
+    "HYPERFRAMES_NO_TELEMETRY": "1"
+  }
+}
